@@ -1,0 +1,364 @@
+[Version]
+파일명_생성시간
+
+[조합 Code 구성]
+Code#1=<부품>A0K-Pol,<불량대분류>B04-얼룩,<형태>G5G-해당없음:Pol 얼룩
+Code#2=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G8L-Scratch:Pol Scratch
+Code#3=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G1D-뜸
+Code#4=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G4S-찍힘
+Code#5=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G3K-연소
+Code#6=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G14-눌림
+Code#7=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G1J-미부착
+Code#8=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G1Q-백반
+Code#9=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G21-부착
+Code#10=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G0V-기포:Pol 기포
+Code#11=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G5G-해당없음
+Code#12=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G4Z-쿠닉:Pol 쿠닉
+Code#13=<부품>A0K-Pol,<불량대분류>B06-이물,<형태>G2P-선형이물(실오라기):Pol 선형이물
+Code#14=<부품>A0K-Pol,<불량대분류>B06-이물,<형태>G4C-점형이물:POL 점형 이물
+Code#15=<부품>A0K-Pol,<불량대분류>B06-이물,<형태>G5G-해당없음
+Code#16=<부품>A0J-PCB,<불량대분류>B0A-Bonding,<형태>G1K-미압착
+Code#17=<부품>A0J-PCB,<불량대분류>B0A-Bonding,<형태>G60-ACF부착불량
+Code#18=<부품>A0J-PCB,<불량대분류>B0C-M/A,<형태>G96-X축
+Code#19=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G05-가로띠형
+Code#20=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G06-가로선형:Gray계 가로선형 얼룩
+Code#21=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G1B-돌기:Gray계 돌기
+Code#22=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G1Y-부정형
+Code#23=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G29-사각형
+Code#24=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2C-사선형
+Code#25=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2H-색이상
+Code#26=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2K-선(Wave)
+Code#27=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2M-선형:Gray계 선형얼룩
+Code#28=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2S-세로띠형
+Code#29=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2T-세로선형:Gray계 세로선형 얼룩
+Code#30=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G3F-액정무구동(미충진):Gray계 미충진
+Code#31=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G3Q-원형:Gray계 원형 얼룩
+Code#32=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G4B-점형:Gray계 점형 얼룩
+Code#33=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G4R-중력:Gray계 중력
+Code#34=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G50-타원형
+Code#35=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G5G-해당없음
+Code#36=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F09-Flicker,<형태>G5G-해당없음:얼룩 Flicker
+Code#37=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F08-C/T,<형태>G06-가로선형
+Code#38=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F08-C/T,<형태>G2T-세로선형
+Code#39=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F06-Black계,<형태>G20-부정형빛샘:부정형 빛샘
+Code#40=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F06-Black계,<형태>G27-빛샘:Black계 빛샘 얼룩
+Code#41=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F06-Black계,<형태>G8J-S/C(Line)
+Code#42=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F04-해당없음,<형태>G2F-색감차:P.얼룩 색감차
+Code#43=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F04-해당없음,<형태>G5G-해당없음:P.해당 없음 얼룩
+Code#44=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F02-잔상,<형태>G5G-해당없음
+Code#45=<부품>A0G-Panel,<불량대분류>B05-외관,<형태>G33-식각,<부품(위치)>R0G-해당없음
+Code#46=<부품>A0G-Panel,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R0G-해당없음
+Code#47=<부품>A0G-Panel,<불량대분류>B05-외관,<형태>G8L-Scratch,<부품(위치)>R0G-해당없음:P.Scratch
+Code#48=<부품>A0G-Panel,<불량대분류>B05-외관,<형태>G8M-Scriber,<부품(위치)>R0G-해당없음
+Code#49=<부품>A0G-Panel,<불량대분류>B05-외관,<형태>G9H-Name Pen,<부품(위치)>R0G-해당없음
+Code#50=<부품>A0G-Panel,<불량대분류>B05-외관,<형태>G9Z-미세Crack,<부품(위치)>R0G-해당없음
+Code#51=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G5G-해당없음
+Code#52=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G6B-BG(전체패턴)
+Code#53=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G6H-BS(전체패턴)
+Code#54=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G6M-CG(Dim):P.CG(Dim)
+Code#55=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G6R-CS(Dim):P.CS(Dim)
+Code#56=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G6Z-DG(Block)
+Code#57=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G75-DS(Block):P.DS (Block)
+Code#58=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G13-누름휘점,<연결정보>L0H-해당없음:누름휘점
+Code#59=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G1N-반전휘점,<연결정보>L0H-해당없음:반전휘점
+Code#60=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G3Y-이물휘점,<연결정보>L0H-해당없음
+Code#61=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L01-3연결이상:PD 3연결 이상
+Code#62=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L02-가로2연결:PD 가로 2연결
+Code#63=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L04-개수Over:PD 개수 Over
+Code#64=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L0H-해당없음
+Code#65=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L0Q-Density:PD Density
+Code#66=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L01-3연결이상
+Code#67=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L02-가로2연결:휘점 가로 2연결
+Code#68=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L0G-최소거리:휘점 최소거리
+Code#69=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L0H-해당없음:휘점 해당없음
+Code#70=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L0R-G
+Code#71=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G89-Pinhole,<연결정보>L0H-해당없음
+Code#72=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G27-빛샘,<연결정보>
+Code#73=<부품>A0F-LCM,<불량대분류>B01-구동,<형태>G6N-CH NG:CH NG
+Code#73=<부품>A0F-LCM,<불량대분류>B01-구동,<형태>G7Z-M4통신에러
+Code#74=<부품>A0F-LCM,<불량대분류>B01-구동,<형태>G84-Pallet 조치불가:Pallet 조치 불가
+Code#75=<부품>A0F-LCM,<불량대분류>B01-구동,<형태>G8T-Short Test 에러
+Code#76=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G5G-해당없음
+Code#77=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G61-AG(특정패턴)
+Code#78=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G68-AS(특정패턴)
+Code#79=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G6B-BG(전체패턴)
+Code#80=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G6H-BS(전체패턴):D-IC BS
+Code#81=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G6M-CG(Dim)
+Code#82=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G6R-CS(Dim)
+Code#83=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G6Z-DG(Block)
+Code#84=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G75-DS(Block)
+Code#85=<부품>A08-B/L,<불량대분류>B01-구동,<형태>G49-점등불량:점등불량
+Code#86=<부품>A08-B/L,<불량대분류>B01-구동,<형태>G5G-해당없음
+Code#87=<부품>A08-B/L,<불량대분류>B01-구동,<형태>G63-AI 휘도가변 불량
+Code#88=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G1R-백점
+Code#89=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G1V-부분어두움:BL 부분 어두움
+Code#90=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G27-빛샘:BL 빛샘
+Code#91=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G5G-해당없음
+Code#92=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G5R-휘선:BL 휘선
+Code#93=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G8D-Ripple
+Code#94=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G8R-Sheet주름:BL Sheet 주름
+Code#95=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G12-누락,<부품(위치)>R0N-B/L Label
+Code#96=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G12-누락,<부품(위치)>R29-Panel Guide
+Code#97=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G14-눌림,<부품(위치)>R0G-해당없음
+Code#98=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G1E-마모,<부품(위치)>R2S-Screw Hole
+Code#99=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G38-심선노출,<부품(위치)>R0S-B/L Wire
+Code#100=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G4S-찍힘,<부품(위치)>R0G-해당없음
+Code#101=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G4U-체결,<부품(위치)>R0P-B/L Screw
+Code#102=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R04-도광판
+Code#103=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R0G-해당없음
+Code#104=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R0K-B/L 수축 Tube
+Code#105=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R0M-B/L CNT
+Code#106=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R0Q-B/L Support Main
+Code#107=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G5G-해당없음,<부품(위치)>R0G-해당없음
+Code#108=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G5G-해당없음,<부품(위치)>R1U-Lamp
+Code#109=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G5G-해당없음,<부품(위치)>R29-Panel Guide
+Code#110=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G6J-Burr,<부품(위치)>R0P-B/L Screw
+Code#111=<부품>A08-B/L,<불량대분류>B05-외관,<형태>G8L-Scratch,<부품(위치)>R0G-해당없음
+Code#112=<부품>A08-B/L,<불량대분류>B06-이물,<형태>G2P-선형이물(실오라기):BL 선형이물
+Code#113=<부품>A08-B/L,<불량대분류>B06-이물,<형태>G4C-점형이물
+Code#114=<부품>A08-B/L,<불량대분류>B06-이물,<형태>G5G-해당없음
+Code#115=<부품>A06-회로,<불량대분류>B01-구동,<형태>G0G-계조이상:계조이상
+Code#116=<부품>A06-회로,<불량대분류>B01-구동,<형태>G0L-과전류
+Code#117=<부품>A06-회로,<불량대분류>B01-구동,<형태>G3L-영상무감:영상무감
+Code#118=<부품>A06-회로,<불량대분류>B01-구동,<형태>G5G-해당없음
+Code#119=<부품>A06-회로,<불량대분류>B01-구동,<형태>G5N-화면이상:화면이상
+Code#120=<부품>A06-회로,<불량대분류>B01-구동,<형태>G64-AI/ODC 인식오류
+Code#121=<부품>A06-회로,<불량대분류>B01-구동,<형태>G9F-수평Noise:수평 Noise
+Code#122=<부품>A06-회로,<불량대분류>B05-외관,<형태>G3X-이물,<부품(위치)>R3C-User Connector
+Code#123=<부품>A06-회로,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R0H-회로부품:회로부품 파손
+Code#124=<부품>A03-부자재,<불량대분류>B05-외관,<형태>G12-누락,<부품(위치)>R1Y-LCM Label
+Code#125=<부품>A03-부자재,<불량대분류>B05-외관,<형태>G12-누락,<부품(위치)>R36-Tape
+Code#126=<부품>A03-부자재,<불량대분류>B05-외관,<형태>G21-부착,<부품(위치)>R36-Tape
+Code#127=<부품>A03-부자재,<불량대분류>B05-외관,<형태>G3P-오염,<부품(위치)>R0G-해당없음
+Code#128=<부품>A03-부자재,<불량대분류>B05-외관,<형태>G3P-오염,<부품(위치)>R26-Pad
+Code#129=<부품>A03-부자재,<불량대분류>B05-외관,<형태>G40-인쇄,<부품(위치)>R1Y-LCM Label
+Code#130=<부품>A03-부자재,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R1Y-LCM Label
+Code#131=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G12-누락,<부품(위치)>R10-C/Bottom
+Code#132=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G1D-뜸,<부품(위치)>R38-Top Case
+Code#133=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G21-부착,<부품(위치)>R10-C/Bottom
+Code#134=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G3P-오염,<부품(위치)>R38-Top Case
+Code#135=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G4S-찍힘,<부품(위치)>R38-Top Case
+Code#136=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G4U-체결,<부품(위치)>R38-Top Case
+Code#137=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G5G-해당없음,<부품(위치)>R0G-해당없음
+Code#138=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G5G-해당없음,<부품(위치)>R38-Top Case
+Code#139=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G5G-해당없음,<부품(위치)>R3B-Top Case(Bezel Open부)
+Code#140=<부품>A01-기구물,<불량대분류>B05-외관,<형태>G8L-Scratch,<부품(위치)>R38-Top Case
+Code#141=<부품>A0S-해당없음,<불량대분류>B0L-해당없음,<형태>GAB-개발모델
+Code#142=<부품>A0S-해당없음,<불량대분류>B0L-해당없음,<형태>GAA-단종모델
+
+[자주 사용하는 Code 조합(1)]
+Matrix(1,1)=<부품>A06-회로,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R0H-회로부품:회로부품 파손
+Matrix(2,1)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F04-해당없음,<형태>G5G-해당없음:P.해당 없음 얼룩
+Matrix(3,1)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L0H-해당없음:휘점 해당없음
+Matrix(4,1)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G4B-점형:Gray계 점형 얼룩
+Matrix(5,1)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G5N-화면이상:화면이상
+Matrix(6,1)=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G75-DS(Block):P.DS (Block)
+Matrix(7,1)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G13-누름휘점,<연결정보>L0H-해당없음:누름휘점
+Matrix(1,2)=<부품>A0F-LCM,<불량대분류>B01-구동,<형태>G6N-CH NG:CH NG
+Matrix(2,2)=<부품>A0K-Pol,<불량대분류>B06-이물,<형태>G4C-점형이물:POL 점형 이물
+Matrix(3,2)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2T-세로선형:Gray계 세로선형 얼룩
+Matrix(4,2)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F06-Black계,<형태>G27-빛샘:Black계 빛샘 얼룩
+Matrix(5,2)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G1N-반전휘점,<연결정보>L0H-해당없음:반전휘점
+Matrix(6,2)=<부품>A08-B/L,<불량대분류>B06-이물,<형태>G5G-해당없음
+Matrix(7,2)=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G0V-기포:Pol 기포
+Matrix(1,3)=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G5G-해당없음
+Matrix(2,3)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G1Y-부정형
+Matrix(3,3)=<부품>A0K-Pol,<불량대분류>B06-이물,<형태>G2P-선형이물(실오라기):Pol 선형이물
+Matrix(4,3)=<부품>A0G-Panel,<불량대분류>B05-외관,<형태>G8L-Scratch,<부품(위치)>R0G-해당없음:P.Scratch
+Matrix(5,3)=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G5G-해당없음
+Matrix(6,3)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F06-Black계,<형태>G20-부정형빛샘:부정형 빛샘
+Matrix(7,3)=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G6M-CG(Dim):P.CG(Dim)
+Matrix(1,4)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2M-선형:Gray계 선형얼룩
+Matrix(2,4)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L0Q-Density:PD Density
+Matrix(3,4)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G9F-수평Noise:수평 Noise
+Matrix(4,4)=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G5G-해당없음
+Matrix(5,4)=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G6R-CS(Dim):P.CS(Dim)
+Matrix(6,4)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L04-개수Over:PD 개수 Over
+Matrix(7,4)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G5G-해당없음
+Matrix(1,5)=<부품>A08-B/L,<불량대분류>B06-이물,<형태>G2P-선형이물(실오라기):BL 선형이물
+Matrix(2,5)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G06-가로선형:Gray계 가로선형 얼룩
+Matrix(3,5)=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G6H-BS(전체패턴):D-IC BS
+Matrix(4,5)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G3L-영상무감:영상무감
+Matrix(5,5)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G4R-중력:Gray계 중력
+Matrix(6,5)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G0G-계조이상:계조이상
+Matrix(7,5)=<부품>A08-B/L,<불량대분류>B01-구동,<형태>G49-점등불량:점등불량
+Matrix(1,6)=<부품>A0F-LCM,<불량대분류>B01-구동,<형태>G84-Pallet 조치불가:Pallet 조치 불가
+Matrix(2,6)=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G4Z-쿠닉:Pol 쿠닉
+Matrix(3,6)=<부품>A0K-Pol,<불량대분류>B04-얼룩,<형태>G5G-해당없음:Pol 얼룩
+Matrix(4,6)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F09-Flicker,<형태>G5G-해당없음:얼룩 Flicker
+Matrix(5,6)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L02-가로2연결:휘점 가로 2연결
+Matrix(6,6)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F04-해당없음,<형태>G2F-색감차:P.얼룩 색감차
+Matrix(7,6)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G3F-액정무구동(미충진):Gray계 미충진
+Matrix(1,7)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L0G-최소거리:휘점 최소거리
+Matrix(2,7)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G5G-해당없음
+Matrix(3,7)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G1B-돌기:Gray계 돌기
+Matrix(4,7)=<부품>A0K-Pol,<불량대분류>B06-이물,<형태>G5G-해당없음
+Matrix(5,7)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G3Q-원형:Gray계 원형 얼룩
+Matrix(6,7)=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G5R-휘선:BL 휘선
+Matrix(7,7)=<부품>A08-B/L,<불량대분류>B01-구동,<형태>G5G-해당없음
+Matrix(1,8)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L02-가로2연결:PD 가로 2연결
+Matrix(2,8)=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G5G-해당없음
+Matrix(3,8)=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G27-빛샘:BL 빛샘
+Matrix(4,8)=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G1V-부분어두움:BL 부분 어두움
+Matrix(5,8)=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G8R-Sheet주름:BL Sheet 주름
+Matrix(6,8)=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G8L-Scratch:Pol Scratch
+Matrix(7,8)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L01-3연결이상:PD 3연결 이상
+
+[자주 사용하는 Code 조합(2)]
+Matrix(1,1)=<부품>A06-회로,<불량대분류>B05-외관,<형태>G56-파손,<부품(위치)>R0H-회로부품:회로부품 파손
+Matrix(2,1)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F04-해당없음,<형태>G5G-해당없음:P.해당 없음 얼룩
+Matrix(3,1)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L0H-해당없음:휘점 해당없음
+Matrix(4,1)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G4B-점형:Gray계 점형 얼룩
+Matrix(5,1)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G5N-화면이상:화면이상
+Matrix(6,1)=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G75-DS(Block):P.DS (Block)
+Matrix(7,1)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G13-누름휘점,<연결정보>L0H-해당없음:누름휘점
+Matrix(8,1)=<부품>A0F-LCM,<불량대분류>B01-구동,<형태>G6N-CH NG:CH NG
+Matrix(9,1)=<부품>A0K-Pol,<불량대분류>B06-이물,<형태>G4C-점형이물:POL 점형 이물
+Matrix(10,1)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2T-세로선형:Gray계 세로선형 얼룩
+Matrix(1,2)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F06-Black계,<형태>G27-빛샘:Black계 빛샘 얼룩
+Matrix(2,2)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G1N-반전휘점,<연결정보>L0H-해당없음:반전휘점
+Matrix(3,2)=<부품>A08-B/L,<불량대분류>B06-이물,<형태>G5G-해당없음
+Matrix(4,2)=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G0V-기포:Pol 기포
+Matrix(5,2)=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G5G-해당없음
+Matrix(6,2)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G1Y-부정형
+Matrix(7,2)=<부품>A0K-Pol,<불량대분류>B06-이물,<형태>G2P-선형이물(실오라기):Pol 선형이물
+Matrix(8,2)=<부품>A0G-Panel,<불량대분류>B05-외관,<형태>G8L-Scratch,<부품(위치)>R0G-해당없음:P.Scratch
+Matrix(9,2)=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G5G-해당없음
+Matrix(10,2)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F06-Black계,<형태>G20-부정형빛샘:부정형 빛샘
+Matrix(1,3)=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G6M-CG(Dim):P.CG(Dim)
+Matrix(2,3)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G2M-선형:Gray계 선형얼룩
+Matrix(3,3)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L0Q-Density:PD Density
+Matrix(4,3)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G9F-수평Noise:수평 Noise
+Matrix(5,3)=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G5G-해당없음
+Matrix(6,3)=<부품>A0G-Panel,<불량대분류>B0B-L/D,<형태>G6R-CS(Dim):P.CS(Dim)
+Matrix(7,3)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L04-개수Over:PD 개수 Over
+Matrix(8,3)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G5G-해당없음
+Matrix(9,3)=<부품>A08-B/L,<불량대분류>B06-이물,<형태>G2P-선형이물(실오라기):BL 선형이물
+Matrix(10,3)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G06-가로선형:Gray계 가로선형 얼룩
+Matrix(1,4)=<부품>A0C-Drive IC,<불량대분류>B0B-L/D,<형태>G6H-BS(전체패턴):D-IC BS
+Matrix(2,4)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G3L-영상무감:영상무감
+Matrix(3,4)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G4R-중력:Gray계 중력
+Matrix(4,4)=<부품>A06-회로,<불량대분류>B01-구동,<형태>G0G-계조이상:계조이상
+Matrix(5,4)=<부품>A08-B/L,<불량대분류>B01-구동,<형태>G49-점등불량:점등불량
+Matrix(6,4)=<부품>A0F-LCM,<불량대분류>B01-구동,<형태>G84-Pallet 조치불가:Pallet 조치 불가
+Matrix(7,4)=<부품>A0K-Pol,<불량대분류>B05-외관,<형태>G4Z-쿠닉:Pol 쿠닉
+Matrix(8,4)=<부품>A0K-Pol,<불량대분류>B04-얼룩,<형태>G5G-해당없음:Pol 얼룩
+Matrix(9,4)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F09-Flicker,<형태>G5G-해당없음:얼룩 Flicker
+Matrix(10,4)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L02-가로2연결:휘점 가로 2연결
+Matrix(1,5)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F04-해당없음,<형태>G2F-색감차:P.얼룩 색감차
+Matrix(2,5)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G3F-액정무구동(미충진):Gray계 미충진
+Matrix(3,5)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>G5T-휘점,<연결정보>L0G-최소거리:휘점 최소거리
+Matrix(4,5)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G5G-해당없음
+Matrix(5,5)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G1B-돌기:Gray계 돌기
+Matrix(6,5)=<부품>A0K-Pol,<불량대분류>B06-이물,<형태>G5G-해당없음
+Matrix(7,5)=<부품>A0G-Panel,<불량대분류>B04-얼룩,<얼룩분류>F0A-Gray계,<형태>G3Q-원형:Gray계 원형 얼룩
+Matrix(8,5)=<부품>A08-B/L,<불량대분류>B04-얼룩,<형태>G5R-휘선:BL 휘선
+Matrix(9,5)=<부품>A08-B/L,<불량대분류>B01-구동,<형태>G5G-해당없음
+Matrix(10,5)=<부품>A0G-Panel,<불량대분류>B0D-P/D,<형태>B0D-해당없음,<연결정보>L02-가로2연결:PD 가로 2연결
+
+[Matrix 조합:Field#1,Field#2]
+A0G-Panel=B0D-P/D,B0B-L/D,B04-얼룩,B05-외관
+A0K-Pol=B04-얼룩,B06-이물,B05-외관
+A0F-LCM=B01-구동
+A08-B/L=B01-구동,B04-얼룩,B05-외관,B06-이물
+A06-회로=B01-구동,B05-외관
+A01-기구물=B05-외관
+A03-부자재=B05-외관
+A0C-Drive IC=B0B-L/D
+A0J-PCB=B0A-Bonding,B0C-M/A
+A0S-해당없음=B0L-해당없음
+
+[Panel-P/D]
+G5T-휘점=L01-3연결이상,L02-가로2연결,L0G-최소거리,LOR-G,L0H-해당없음
+G13-누름휘점=L0H-해당없음
+G1N-반전휘점=L0H-해당없음
+G3Y-이물휘점=L0H-해당없음
+G89-Pinhole=L0H-해당없음
+G27-빛샘=L0H-해당없음
+G5G-해당없음=L01-3연결이상,L02-가로2연결,L04-개수Over,L0Q-Density,L0H-해당없음
+
+[Panel-얼룩]
+<얼룩분류>=F0A-Gray계,F06-Black계,F08-C/T,F09-Flicker,F02-잔상,F04-해당없음
+<형태>=G05-가로띠형,G06-가로선형,G1B-돌기,G1Y-부정형,G20-부정형빛샘,G27-빛샘,G29-사각형,G2C-사선형,G2F-색감차,G2H-색이상,G2K-선(Wave),G2S-세로띠형,G2T-세로선형,G3F-액정무구동(미충진),G3Q-원형,G4B-점형,G4R-중력,G50-타원형,G8J-S/C(Line),G5G-해당없음
+
+[Panel-외관]
+G33-식각=R0G-해당없음
+G56-파손=R0G-해당없음
+G8L-Scratch=R0G-해당없음
+G8M-Scriber=R0G-해당없음
+G9H-Name Pen=R0G-해당없음
+G9Z-미세Crack=R0G-해당없음
+
+[Panel-L/D]
+G6B-BG(전체패턴),G6H-BS(전체패턴),G6M-CG(Dim),G6R-CS(Dim),G6Z-DG(Block),G75-DS(Block),G5G-해당없음
+
+[Pol-얼룩]
+G5G-해당없음
+
+[Pol-외관]
+G8L-Scratch,G1D-뜸,G4S-찍힘,G3K-연소,G14-눌림,G1J-미부착,G1Q-백반,G21-부착,G0V-기포,G4Z-쿠닉,G5G-해당없음
+
+[Pol-이물]
+G2P-선형이물(실오라기),G4C-점형이물,G5G-해당없음
+
+[PCB-Bonding]
+G1K-미압착,G60-ACF부착불량
+
+[PCB-M/A]
+G96-X축
+
+[LCM-구동]
+G6N-CH NG,G7Z-M4통신에러,G84-Pallet 조치불가,G8T-Short Test 에러
+
+[Drive IC-L/D]
+G61-AG(특정패턴),G68-AS(특정패턴),G6B-BG(전체패턴),G6H-BS(전체패턴),G6M-CG(Dim),G6R-CS(Dim),G6Z-DG(Block),G75-DS(Block)
+
+[B/L-구동]
+G49-점등불량,G63-AI 휘도가변 불량,G5G-해당없음
+
+[B/L-얼룩]
+G1R-백점,G1V-부분어두움,G27-뱇샘,G5R-휘선,G8D-Ripple,G8R-Sheet주름,G5G-해당없음
+
+[B/L-외관]
+G56-파손=R0K-B/L 수축 Tube,R0M-B/L CNT,R0Q-B/L Support Main
+G6J-Burr=R0P-B/L Screw
+G8L-Scratch=R0G-해당없음
+G5G-해당없음=R1U-Lamp,R29-Panel Guide,R0G-해당없음
+
+[B/L-이물]
+G2P-선형이물(실오라기),G4C-점형이물,G5G-해당없음
+
+[회로-구동]
+G0G-계조이상,G0L-과전류,G3L-영상무감,G5N-화면이상,G64-AI/ODC 인식오류,G9F-수평Noise,G5G-해당없음
+
+[회로-외관]
+G3X-이물=R3C-User Connector
+G56-파손=R0H-회로부품
+
+[부자재-외관]
+G12-누락=R1Y-LCM Label,R36-Tape
+G21-부착=R36-Tape
+G3P-오염=R0G-해당없음,R26-Pad
+G40-인쇄=R1Y-LCM Label
+G56-파손=R1Y-LCM Label
+
+[기구물-외관]
+G12-누락=R10-C/Bottom
+G1D-뜸=R38-Top Case
+G21-부착=R10-C/Bottom
+G3P-오염=R38-Top Case
+G4S-찍힘=R38-Top Case
+G4U-체결=R38-Top Case
+G8L-Scratch=R38-Top Case
+G5G-해당없음=R38-Top Case,R3B-Top Case(Bezel Open부),R0G-해당없음
+
+[해당없음-해당없음]
+GAB-개발모델,GAA-단종모델
+
+[Panel-얼룩 Combi Code POPUP]
+POP(1)=추가입력:<색상>K02-해당없음,K04-Black,K05-Black&White,K09-Green,K0E-White
+POP(1)=추가입력:<경계/특징>M0J-해당없음
+POP(1)=추가입력:<Map(위치)>Q01-국부,Q0E-전면,Q0G-주입구,Q0K-해당없음,Q23-tab간격
+
+[B/L-이물-해당없음 Combi Code POPUP]
+POP(1)=추가입력:<부품(위치)>R0E-표면

@@ -1,0 +1,122 @@
+[15:34:35 232]	[FullDisp] : Defect Initialize START
+[15:34:35 232]	[FullDisp] : Variable Reset Complete
+[15:34:35 388]	[FullDisp] : Screen Reform Complete
+[15:34:35 388]	[FullDisp] : Color Button Attach Complete
+[15:34:35 388]	[FullDisp] : Defect Button Initialize Complete
+[15:34:35 388]	[FullDisp] : Defect Button Position Set Complete
+[15:34:35 388]	Favorite Set : Start
+[15:34:35 388]	Favorite Set : New Button Make Complete
+[15:34:35 388]	Favorite Set : Result Button Update Complete
+[15:34:35 388]	Favorite Set : Display Button Reset Complete
+[15:34:35 388]	[FullDisp] : User Button Info Set Complete
+[15:34:35 388]	[FullDisp] : Button Color Set Complete
+[15:34:35 388]	[FullDisp] : Defect Initialize END
+[15:34:59 902]	[FullDisp] : Defect Initialize START
+[15:34:59 902]	[FullDisp] : Variable Reset Complete
+[15:35:00 043]	[FullDisp] : Screen Reform Complete
+[15:35:00 043]	[FullDisp] : Color Button Attach Complete
+[15:35:00 043]	[FullDisp] : Defect Button Initialize Complete
+[15:35:00 043]	[FullDisp] : Defect Button Position Set Complete
+[15:35:00 043]	Favorite Set : Start
+[15:35:00 043]	Favorite Set : New Button Make Complete
+[15:35:00 043]	Favorite Set : Result Button Update Complete
+[15:35:00 043]	Favorite Set : Display Button Reset Complete
+[15:35:00 058]	[FullDisp] : User Button Info Set Complete
+[15:35:00 058]	[FullDisp] : Button Color Set Complete
+[15:35:00 058]	[FullDisp] : Defect Initialize END
+[16:06:22 650]	[FullDisp] : Defect Initialize START
+[16:06:22 650]	[FullDisp] : Variable Reset Complete
+[16:06:22 721]	[FullDisp] : Screen Reform Complete
+[16:06:22 774]	[FullDisp] : Color Button Attach Complete
+[16:06:22 805]	[FullDisp] : Defect Button Initialize Complete
+[16:06:22 805]	[FullDisp] : Defect Button Position Set Complete
+[16:06:22 805]	Favorite Set : Start
+[16:06:22 805]	Favorite Set : New Button Make Complete
+[16:06:22 805]	Favorite Set : Result Button Update Complete
+[16:06:22 821]	Favorite Set : Display Button Reset Complete
+[16:06:22 821]	[FullDisp] : User Button Info Set Complete
+[16:06:22 821]	[FullDisp] : Button Color Set Complete
+[16:06:22 821]	[FullDisp] : Defect Initialize END
+[16:06:27 248]	BarCode Input : [WERTYUJKJHTRE]
+[16:14:39 365]	GiMCode : DefectCodeSet Dialog Open
+[16:14:50 607]	GiMCode : DefectCodeSetFTP Dialog Open
+[16:15:39 129]	GiMCode : DefectCodeSet Dialog Open
+[16:15:46 699]	Favorite Set : Start
+[16:15:46 699]	Favorite Set : New Button Make Complete
+[16:15:46 699]	Favorite Set : Result Button Update Complete
+[16:15:46 715]	Favorite Set : Display Button Reset Complete
+[16:17:46 621]	GiMCode : DefectCodeSet Dialog Open
+[16:19:05 213]	GiMCode : DefectCodeSet Dialog Open
+[16:19:10 534]	GiMCode : DefectCodeSet Dialog Open
+[16:19:43 929]	[FullDisp] : Defect Initialize START
+[16:19:43 929]	[FullDisp] : Variable Reset Complete
+[16:19:44 070]	[FullDisp] : Screen Reform Complete
+[16:19:44 070]	[FullDisp] : Color Button Attach Complete
+[16:19:44 085]	[FullDisp] : Defect Button Initialize Complete
+[16:19:44 085]	[FullDisp] : Defect Button Position Set Complete
+[16:19:44 085]	Favorite Set : Start
+[16:19:44 085]	Favorite Set : New Button Make Complete
+[16:19:44 085]	Favorite Set : Result Button Update Complete
+[16:19:44 085]	Favorite Set : Display Button Reset Complete
+[16:19:44 085]	[FullDisp] : User Button Info Set Complete
+[16:19:44 085]	[FullDisp] : Button Color Set Complete
+[16:19:44 085]	[FullDisp] : Defect Initialize END
+[16:22:24 419]	GiMCode : DefectCodeSet Dialog Open
+[16:29:19 329]	GiMCode : DefectCodeSet Dialog Open
+[16:36:25 839]	GiMCode : DefectCodeSet Dialog Open
+[16:36:30 801]	Favorite Set : Start
+[16:36:30 801]	Favorite Set : New Button Make Complete
+[16:36:30 801]	Favorite Set : Result Button Update Complete
+[16:36:30 801]	Favorite Set : Display Button Reset Complete
+[16:36:48 248]	[FullDisp] : Defect Initialize START
+[16:36:48 248]	[FullDisp] : Variable Reset Complete
+[16:36:48 295]	[FullDisp] : Screen Reform Complete
+[16:36:48 295]	[FullDisp] : Color Button Attach Complete
+[16:36:48 295]	[FullDisp] : Defect Button Initialize Complete
+[16:36:48 514]	[FullDisp] : Defect Button Position Set Complete
+[16:36:48 514]	Favorite Set : Start
+[16:36:48 514]	Favorite Set : New Button Make Complete
+[16:36:48 514]	Favorite Set : Result Button Update Complete
+[16:36:48 608]	Favorite Set : Display Button Reset Complete
+[16:36:48 608]	[FullDisp] : User Button Info Set Complete
+[16:36:48 608]	[FullDisp] : Button Color Set Complete
+[16:36:48 608]	[FullDisp] : Defect Initialize END
+[16:51:55 881]	[FullDisp] : Defect Initialize START
+[16:51:55 881]	[FullDisp] : Variable Reset Complete
+[16:51:56 022]	[FullDisp] : Screen Reform Complete
+[16:51:56 022]	[FullDisp] : Color Button Attach Complete
+[16:51:56 022]	[FullDisp] : Defect Button Initialize Complete
+[16:51:56 129]	[FullDisp] : Defect Button Position Set Complete
+[16:51:56 130]	Favorite Set : Start
+[16:51:56 131]	Favorite Set : New Button Make Complete
+[16:51:56 131]	Favorite Set : Result Button Update Complete
+[16:51:56 211]	Favorite Set : Display Button Reset Complete
+[16:51:56 211]	[FullDisp] : User Button Info Set Complete
+[16:51:56 211]	[FullDisp] : Button Color Set Complete
+[16:51:56 211]	[FullDisp] : Defect Initialize END
+[16:52:15 866]	[FullDisp] : Defect Initialize START
+[16:52:15 866]	[FullDisp] : Variable Reset Complete
+[16:52:16 007]	[FullDisp] : Screen Reform Complete
+[16:52:16 007]	[FullDisp] : Color Button Attach Complete
+[16:52:16 007]	[FullDisp] : Defect Button Initialize Complete
+[16:52:16 085]	[FullDisp] : Defect Button Position Set Complete
+[16:52:16 101]	Favorite Set : Start
+[16:52:16 101]	Favorite Set : New Button Make Complete
+[16:52:16 101]	Favorite Set : Result Button Update Complete
+[16:52:16 194]	Favorite Set : Display Button Reset Complete
+[16:52:16 194]	[FullDisp] : User Button Info Set Complete
+[16:52:16 194]	[FullDisp] : Button Color Set Complete
+[16:52:16 194]	[FullDisp] : Defect Initialize END
+[16:53:35 409]	[FullDisp] : Defect Initialize START
+[16:53:35 409]	[FullDisp] : Variable Reset Complete
+[16:53:35 471]	[FullDisp] : Screen Reform Complete
+[16:53:35 518]	[FullDisp] : Color Button Attach Complete
+[16:53:35 518]	[FullDisp] : Defect Button Initialize Complete
+[16:53:35 643]	[FullDisp] : Defect Button Position Set Complete
+[16:53:35 643]	Favorite Set : Start
+[16:53:35 643]	Favorite Set : New Button Make Complete
+[16:53:35 643]	Favorite Set : Result Button Update Complete
+[16:53:35 721]	Favorite Set : Display Button Reset Complete
+[16:53:35 721]	[FullDisp] : User Button Info Set Complete
+[16:53:35 721]	[FullDisp] : Button Color Set Complete
+[16:53:35 721]	[FullDisp] : Defect Initialize END

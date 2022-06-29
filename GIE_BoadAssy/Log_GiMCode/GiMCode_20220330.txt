@@ -1,0 +1,2 @@
+[10:26:04 099]	GiMCode : DefectCodeSet Dialog Open
+[10:26:06 177]	GiMCode : DefectCodeSetFTP Dialog Open
