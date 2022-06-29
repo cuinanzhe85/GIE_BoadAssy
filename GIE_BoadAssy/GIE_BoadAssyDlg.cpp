@@ -420,7 +420,7 @@ void CGIE_BoadAssyDlg::OnDestroy()
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	if(m_pApp->m_bIsGmesConnect == TRUE)
-		m_pApp->Gf_gmesDisConnect();
+		m_pApp->Gf_gmesDisConnect(SERVER_MES);
 }
 
 BOOL CGIE_BoadAssyDlg::PreTranslateMessage(MSG* pMsg)

@@ -88,6 +88,7 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_EEPROM_ADDR, m_cboEepAddr);
 	DDX_Control(pDX, IDC_STT_MICRO_PTN_PATH, m_sttMicroPtnPath);
 	DDX_Control(pDX, IDC_CMB_GFD250_ONOFF, m_cboGfd250Use);
+	DDX_Control(pDX, IDC_PIC_MD_PTN_PREVIEW, m_picPatternPreview);
 }
 
 
@@ -117,6 +118,7 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialog)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BTN_BLU_ONOFF, &CModelInfo::OnBnClickedBtnBluOnoff)
 	ON_BN_CLICKED(IDC_BTN_APPLY, &CModelInfo::OnBnClickedBtnApply)
+	ON_CBN_SELCHANGE(IDC_CMB_PTN_NAME, &CModelInfo::OnCbnSelchangeCmbPtnName)
 END_MESSAGE_MAP()
 
 
@@ -131,6 +133,7 @@ BOOL CModelInfo::OnInitDialog()
 	lpSystemInfo = m_pApp->GetSystemInfo();
 	m_pCmbPatternListName = (CComboBox* ) GetDlgItem(IDC_CMB_PTN_NAME);
 
+	Lf_initItemValue();
 	Lf_initFontSet();
 	Lf_setPatternList();
 	Lf_insertListColum();
@@ -158,7 +161,25 @@ void CModelInfo::OnDestroy()
 		m_Font[i].DeleteObject();
 	}
 }
+void CModelInfo::Lf_initItemValue()
+{
+	// 제품의 해상도 설정
+	CRect rcLCD, rcFrame;
 
+	rcLCD.top = 0;
+	rcLCD.left = 0;
+	rcLCD.right = 1919;
+	rcLCD.bottom = 1079;
+
+	// Preview 영역 설정
+	m_picPatternPreview.GetWindowRect(rcFrame);
+	ScreenToClient(rcFrame);
+
+	// Preview 영역 초기화
+	m_pApp->m_pPatternView->InitPatternRect(GetDC(), rcLCD, rcFrame);
+	m_pApp->m_pPatternView->InitPatternPath(_T(".\\Pattern"));
+	m_pApp->m_pPatternView->InitBmpPatternPath(_T(""));
+}
 void CModelInfo::Lf_initFontSet()
 {
 	/*******************************************************************************************************************/
@@ -795,12 +816,13 @@ void CModelInfo::Lf_setSwapData(int pos1, int pos2)
 void CModelInfo::Lf_setPtnDataChange(int sel)
 {
 	CString sdata=_T("");
+	CString strPtnName;
 	int nAllPtn=0;
 
 	UpdateData(TRUE);
 
-	sdata = m_lcPtnSetList.GetItemText(sel,0);
-	nAllPtn = m_cboPtnName.FindStringExact(nAllPtn, sdata);
+	strPtnName = m_lcPtnSetList.GetItemText(sel,0);
+	nAllPtn = m_cboPtnName.FindStringExact(nAllPtn, strPtnName);
 	
 	if(nAllPtn == CB_ERR)
 	{
@@ -828,6 +850,9 @@ void CModelInfo::Lf_setPtnDataChange(int sel)
 	if(!sdata.Compare(_T("ON")))	m_cboPtnTouch.SetCurSel(1);
 	else							m_cboPtnTouch.SetCurSel(0);
 
+	////////////////////////////////////////////////////////////////////////////////
+	m_pApp->m_pPatternView->drawPattern(strPtnName);
+	////////////////////////////////////////////////////////////////////////////////
 	UpdateData(FALSE);
 }
 
@@ -1470,4 +1495,15 @@ void CModelInfo::OnBnClickedBtnApply()
 		m_lcPtnSetList.SetItem( nItemIndex, 4, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 	}
 	UpdateData(FALSE);
+}
+
+
+void CModelInfo::OnCbnSelchangeCmbPtnName()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strPtnName;
+	m_cboPtnName.GetWindowTextW(strPtnName);
+	////////////////////////////////////////////////////////////////////////////////
+	m_pApp->m_pPatternView->drawPattern(strPtnName);
+	////////////////////////////////////////////////////////////////////////////////
 }

@@ -111,6 +111,15 @@ void CUserID::OnBnClickedOk()
 		}
 		else
 		{
+			if (m_pApp->m_bIsGmesConnect == FALSE)
+			{
+				if (m_pApp->Gf_gmesConnect(SERVER_MES) == FALSE)
+				{
+					//AfxMessageBox(_T("MES CONNECTION FAIL - MES can not be connected."), MB_ICONERROR);
+					m_pApp->Gf_writeLogData("[MES]", "Connection Fail");
+				}
+			}
+			
 			if(m_sUserId.GetLength() > 4)
 			{
 				if(lpSystemInfo->m_nOperationMode == IN_LINE)

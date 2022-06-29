@@ -75,6 +75,7 @@ public:
 	CComboBox m_cboSpiLevel;
 
 protected:
+	void Lf_initItemValue();
 	void Lf_initFontSet();
 	void Lf_loadModelData();
 	void Lf_saveCtrlData(CString modelName);
@@ -139,4 +140,6 @@ public:
 	CComboBox m_cboGfd250Use;
 	afx_msg void OnBnClickedBtnBluOnoff();
 	afx_msg void OnBnClickedBtnApply();
+	CStatic m_picPatternPreview;
+	afx_msg void OnCbnSelchangeCmbPtnName();
 };

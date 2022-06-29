@@ -35,6 +35,7 @@ CGIE_BoadAssyApp::CGIE_BoadAssyApp()
 	m_pPort			= new CPortController();
 	m_pCommand		= new CCommand();
 	m_pCimNet		= new CCimNetCommApi;
+	m_pPatternView = new CPatternView();
 }
 
 
@@ -80,12 +81,13 @@ BOOL CGIE_BoadAssyApp::InitInstance()
 	Gf_loadInspCount();
 	Lf_readGmesInfo();
 
-	if(m_pApp->Gf_gmesConnect() == FALSE)
-	{
-		//AfxMessageBox(_T("MES CONNECTION FAIL - MES can not be connected."), MB_ICONERROR);
-		m_pApp->Gf_writeLogData("[GMES]", "Connection Fail");
-	}
+	// GMES DLL Initialize
 
+	if (Gf_gmesInitServer(SERVER_MES) == FALSE)
+	{
+		AfxMessageBox(_T("TIB Driver Init Fail.\r\nPlease check whether you have installed the TibDriver and registered the MES DLL."), MB_ICONERROR);
+	}
+	
 	CUserID idDlg;
 	if(idDlg.DoModal() == IDCANCEL)
 		return FALSE;
@@ -386,12 +388,12 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 
 void CGIE_BoadAssyApp::Lf_readGmesInfo()
 {
-	Read_GmesFile(_T("NJ"),		_T("SERVICE_PORT"),		&lpSystemInfo->sMesServicePort);
-	Read_GmesFile(_T("NJ"),		_T("HOST_IP"),			&lpSystemInfo->sMesNetWork);
-	Read_GmesFile(_T("NJ"),		_T("DAEMON_PORT"),		&lpSystemInfo->sMesDaemonPort);
-	Read_GmesFile(_T("NJ"),		_T("LOCAL_SUBJECT"),	&lpSystemInfo->sMesLocalSubject);
-	Read_GmesFile(_T("NJ"),		_T("REMOTE_SUBJECT"),	&lpSystemInfo->sMesRemoteSubject);
-	Read_GmesFile(_T("NJ"),		_T("LOCAL_IP"),			&lpSystemInfo->sLocalIP);
+	Read_SysIniFile(_T("GMES"), _T("SERVICE"), &lpSystemInfo->sMesServicePort);
+	Read_SysIniFile(_T("GMES"), _T("NETWORK"), &lpSystemInfo->sMesNetWork);
+	Read_SysIniFile(_T("GMES"), _T("DAEMON_PORT"), &lpSystemInfo->sMesDaemonPort);
+	Read_SysIniFile(_T("GMES"), _T("LOCAL_SUBJECT"), &lpSystemInfo->sMesLocalSubject);
+	Read_SysIniFile(_T("GMES"), _T("REMOTE_SUBJECT"), &lpSystemInfo->sMesRemoteSubject);
+	Read_SysIniFile(_T("GMES"), _T("LOCAL_IP"), &lpSystemInfo->sLocalIP);
 }
 
 void CGIE_BoadAssyApp::Lf_parsingModFileData(CString szData, TCHAR (*szParseData)[255])
@@ -403,7 +405,7 @@ void CGIE_BoadAssyApp::Lf_parsingModFileData(CString szData, TCHAR (*szParseData
 	int nLoop=0;
 
 	memset(szTemp, 0, sizeof(szTemp));
-	int nCmdLength = _tcslen(szData);
+	int nCmdLength = szData.GetLength();//_tcslen(szData);
 
 	for(nLoop=0; nLoop<=nCmdLength; nLoop++)
 	{
@@ -1315,48 +1317,61 @@ void CGIE_BoadAssyApp::Gf_setPatEndCheckTime(int i)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL CGIE_BoadAssyApp::Gf_gmesConnect()
+BOOL CGIE_BoadAssyApp::Gf_gmesConnect(int nServerType)
 {
 	char szBuffer[64]={0,};
 
-	wchar_To_char(lpSystemInfo->m_sMachinName.GetBuffer(0), szBuffer);
-	m_pCimNet->SetMachineName(szBuffer);
+	m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 
-	if(m_pCimNet->Connect() == TRUE)
+	if(m_pCimNet->ConnectTibRv(nServerType) == TRUE)
 	{
-		if(DEBUG_GMES_TEST_SERVER)	
-			m_pCimNet->SetLocalTest();
-
-		if(m_pCimNet->Init()==TRUE)
-		{
-			return TRUE;
-		}
+		return TRUE;
 	}
 
 	return FALSE;
 }
 
-BOOL CGIE_BoadAssyApp::Gf_gmesDisConnect()
+BOOL CGIE_BoadAssyApp::Gf_gmesDisConnect(int nServerType)
 {
-	return m_pCimNet->CloseTibRv();
+	return m_pCimNet->CloseTibRv(nServerType);
 }
+BOOL CGIE_BoadAssyApp::Gf_gmesInitServer(BOOL nServerType)
+{
+	m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 
+	if ((DEBUG_GMES_TEST_SERVER == TRUE) && (nServerType == SERVER_MES))
+	{
+		m_pCimNet->SetLocalTest(nServerType);
+	}
+	else if (nServerType == SERVER_EAS)
+	{
+		m_pCimNet->SetLocalTest(nServerType);
+	}
+
+
+	if (m_pCimNet->Init(nServerType) == TRUE)
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
 void CGIE_BoadAssyApp::Gf_setGMesGoodInfo()
 {
  	m_pCimNet->SetPF(_T("P"));
 	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
- 	m_pCimNet->SetExpectedCode(lpWorkInfo->m_sExpectedCode.GetBuffer(0));
- 	if(lpWorkInfo->m_sExpectedCode.GetLength() > 0)
- 	{
- 		m_pCimNet->SetPatternInfo(_T("imsi"));//pUiPorc->pCimNet->SetPatternInfo(pUiPorc->comm.curData.strPtnTestInfo.GetBuffer(0));
- 	}
+ 	//m_pCimNet->SetExpectedCode(lpWorkInfo->m_sExpectedCode.GetBuffer(0));
+ 	//if(lpWorkInfo->m_sExpectedCode.GetLength() > 0)
+ 	//{
+ 	//	m_pCimNet->SetPatternInfo(_T("imsi"));//pUiPorc->pCimNet->SetPatternInfo(pUiPorc->comm.curData.strPtnTestInfo.GetBuffer(0));
+ 	//}
 }
 
 void CGIE_BoadAssyApp::Gf_setGMesBGradeInfo()
 {
 	m_pCimNet->SetPF(_T("P"));
 	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
- 	m_pCimNet->SetExpectedCode(lpWorkInfo->m_sExpectedCode.GetBuffer(0));
+ //	m_pCimNet->SetExpectedCode(lpWorkInfo->m_sExpectedCode.GetBuffer(0));
 // 	pUiPorc->pCimNet->SetPatternInfo(pUiPorc->comm.curData.strPtnTestInfo.GetBuffer(0));
 // 	pUiPorc->pCimNet->SetDefectPattern(pUiPorc->comm.curData.strDefectPattern.GetBuffer(0));
 }
@@ -1365,7 +1380,7 @@ void CGIE_BoadAssyApp::Gf_setGMesBadInfo()
 {
 	m_pCimNet->SetPF(_T("F"));
 	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
-	m_pCimNet->SetExpectedCode(lpWorkInfo->m_sExpectedCode.GetBuffer(0));
+//	m_pCimNet->SetExpectedCode(lpWorkInfo->m_sExpectedCode.GetBuffer(0));
  //	m_pCimNet->SetPatternInfo(pUiPorc->comm.curData.strPtnTestInfo.GetBuffer(0));
  //	m_pCimNet->SetDefectPattern(pUiPorc->comm.curData.strDefectPattern.GetBuffer(0));
 }

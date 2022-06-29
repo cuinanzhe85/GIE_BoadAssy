@@ -20,6 +20,9 @@
 // MFC의 공통 부분과 무시 가능한 경고 메시지에 대한 숨기기를 해제합니다.
 #define _AFX_ALL_WARNINGS
 
+#define _CRT_SECURE_NO_WARNINGS
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+
 #include <afxwin.h>         // MFC 핵심 및 표준 구성 요소입니다.
 #include <afxext.h>         // MFC 확장입니다.
 
@@ -39,14 +42,15 @@
 
 
 #include <afxsock.h>            // MFC 소켓 확장
-#include "GlobalDefine.h"       
+#include "_GlobalDefine.h"       
 #include "Struct.h"
 #include "IniProfileAPI.h"
 #include "GiMCodeDll.h"
+#include "PatternView.h"
 
 using namespace std;
-#import "C:\TibDriver_32bit_x86\ModuleECS_CommTibRV64.tlb" no_namespace, named_guids //no_namespace	//#import "C:\TibDriver_32bit_x86\MES_EAS_x86.tlb" no_namespace, named_guids //no_namespace
-//#import "C:\TibDriver_64bit_x64\MES_EAS_DLL.tlb" no_namespace, named_guids //no_namespace 
+//#import "C:\TibDriver_32bit_x86\ModuleECS_CommTibRV64.tlb" no_namespace, named_guids //no_namespace	//#import "C:\TibDriver_32bit_x86\MES_EAS_x86.tlb" no_namespace, named_guids //no_namespace
+#import "C:\TibDriver_64bit_x64\MES_EAS_DLL.tlb" no_namespace, named_guids //no_namespace 
 
 #ifdef _UNICODE
 #if defined _M_IX86

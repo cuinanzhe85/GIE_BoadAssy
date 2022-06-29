@@ -369,7 +369,7 @@ BOOL CTestReady::Lf_sendGMESData()
 			else if(lpWorkInfo->m_bDioJudgeOk == true)
 			{
 				m_pApp->m_pCimNet->SetRwkCode(_T(""));//pUiPorc->pCimNet->ResetRwkCode();
-				m_pApp->m_pCimNet->SetExpectedCode(_T(""));
+				//m_pApp->m_pCimNet->SetExpectedCode(_T(""));
 				lpWorkInfo->m_sBadCode.Empty();
 				lpWorkInfo->m_sExpectedCode.Empty();
 			}

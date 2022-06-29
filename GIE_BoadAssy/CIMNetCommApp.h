@@ -4,7 +4,7 @@
 #define RTN_MSG_NOT_SEND			1
 #define RTN_RCV_TIMEOUT				5
 
-#define ECS_WAIT_TIME				10000	// 10Sec
+#define ECS_WAIT_TIME				5000	// 10Sec
 
 #define	ECS_MODE_EAYT				0x01
 #define	ECS_MODE_UCHK				0x02
@@ -19,15 +19,30 @@
 #define	ECS_MODE_EQCC				0x0B
 #define	ECS_MODE_FLDR				0x0C
 #define	ECS_MODE_EPCR				0x0D
-#define ECS_MODE_AGN_INSP			0x0E
+#define ECS_MODE_AGN_IN				0x0E
 #define ECS_MODE_EICR_ABNORMAL		0x0F
 #define	ECS_MODE_MSET				0x10
 #define	ECS_MODE_MILT				0x11
 #define ECS_MODE_APDR				0x12
 #define ECS_MODE_WDCR				0x13
-#define ECS_MODE_AGCM				0x14
-#define ECS_MODE_AGN_IN				0x15
-#define ECS_MODE_AGN_OUT			0x16
+#define	ECS_MODE_RPLT				0x14
+#define	ECS_MODE_LPIR				0x15
+#define	ECS_MODE_RPRQ				0x16
+#define	ECS_MODE_SCRA				0x17
+#define ECS_MODE_BDCR				0x18
+#define ECS_MODE_AGN_INSP			0x19
+#define ECS_MODE_INSP_INFO			0x1A
+#define ECS_MODE_PINF				0x1B
+#define ECS_MODE_AGN_CTR			0x1C
+#define ECS_MODE_APTR				0x1D
+#define	ECS_MODE_SCRP				0x1E
+#define ECS_MODE_PPSET				0x1F
+#define ECS_MODE_POIR				0x20
+
+#define UTC_ZONE_VIETNAM			0x00
+#define UTC_ZONE_CHINA				0x01
+#define UTC_ZONE_KOREA				0x02
+
 
 class CCimNetCommApi
 {
@@ -35,25 +50,28 @@ public:
 	CCimNetCommApi(void);
 	~CCimNetCommApi(void);
 
-	ITIBrvDriverPtr	tib_ptr;
+	ICallGmesClass *gmes;
+	ICallEASClass *eas;
 
 	CLSID			clsid_ECS;
 	HRESULT			hr;
 
 	// ----------------------------------------
-	BOOL Connect();
-	BOOL Init();
-	BOOL CloseTibRv();
+	
+	BOOL Init(int nServerType);
+	BOOL ConnectTibRv(int nServerType);
+	BOOL CloseTibRv(int nServerType);
+	INT64 GetbytesSent(CString strIPadress);
+	INT64 GetbytesReceived(CString strIPadress);
 	BOOL MessageSend(int nMode);
 	BOOL MessageReceive();
 
-	BOOL GetFieldData(CString* pszSource, TCHAR* wszToken, int nMode=0);
+	BOOL GetFieldData(CString* pszSource, CString wszToken, int nMode=0);
 	CString GetHostSendMessage();
 	CString GetHostRecvMessage();
 
+	void getLocalSubjectIPAddress();
 
-	void SetMessagReceiveFlag();
-	void ResetMessageReceiveFlag();
 	// ----------------------------------------
 	// ---------------------------------------
 	// ----------------------------------------
@@ -67,11 +85,17 @@ public:
 
 	BOOL IISQ ();
 	BOOL EICR ();
+	BOOL RPLT (int station);
+	BOOL RPRQ(int station);
+	BOOL SCRA(int station);
+	BOOL SCRP(int station);
+	BOOL MSET ();
+
 	BOOL EICR_Abnormal ();
-	BOOL MSET ();			// 2009-12-24 추가.
 	BOOL APDR ();			// 2011-08-18 PDH. APDR Message 추가.
 	BOOL MILT ();			// 2013.03.28. KSM. MILT Message 추가.
 	BOOL WDCR ();			// 2014-11-20 PDH. WDCR Message 추가.
+
 	BOOL FLDR ();
 
 	// ---------------------------------------
@@ -80,23 +104,35 @@ public:
 	BOOL EESR ();
 	BOOL EEER ();
 	BOOL EQCC ();
-	BOOL AGN_INSP (char * pszBcrData, char * pszBuff,char * pszNgCode, char * pszGradeCode);
-	BOOL AGCM ();
 	BOOL AGN_IN ();
-	BOOL AGN_OUT ();
+	BOOL AGN_INSP ();
+	BOOL LPIR();
+	BOOL BDCR();
+	BOOL INSP_INFO();
+	BOOL PINF();
+	BOOL AGN_CTR();
+	BOOL APTR();
+	BOOL POIR();
+
 	// ---------------------------------------
-	void SetLocalTest();
+	void SetLocalTest(int nServerType);
 
 	// ---------------------------------------
 	void MakeClientTimeString();
 	void SetMesHostInterface();
+	void SetEasHostInterface();
+	void SetLocalTimeZone(int timeZone);
 	void SetLocalTimeData(CString strTime);
-	void SetMachineName(char* strBuff);
+	void SetMachineName(CString strBuff);
 	void SetUserId (CString strBuff);
+	void SetComment (CString strBuff);
+	void SetAgingChangeTime (CString strBuff);
+	void SetAptrAgingTime(CString strBuff);
+	void SetRemark (CString strBuff);
+	void SetNGPortOut (CString strBuff);
 	void SetRwkCode(CString strBuff);
 	void SetFLDRFileName(CString strBuff);
 	void SetPanelID(CString strBuff);
-	void SetChannelID (CString strBuff);
 	void SetBLID(CString strBuff);
 	void SetSerialNumber(CString strBuff);
 	void SetModelName(CString strBuff);
@@ -116,15 +152,39 @@ public:
 	void SetWDREnd(CString strBuff);
 	void SetAPDInfo(CString strBuff);
 	void SetDefectCommentCode(CString strBuff);
-	void SetExpectedCode(CString strBuff);
+	void SetFullYN(CString strBuff);
+	void SetGibCode(CString strBuff);
+	void SetToOper(CString strBuff);
+	CString GetToOper();
+	void SetRepairCD(CString strBuff);
+	void SetRespDept(CString strBuff);
+	void SetMaterialInfo(CString strBuff);
+	void SetSSFlag(CString strBuff);
+	void SetFromOper(CString strBuff);
+	void SetTACT(CString strBuff);
+	void SetRepairTypeCD(CString strBuff);
+	void SetAutoRespDeptFlag(CString strBuff);
+	void SetAgingLevelInfo(CString strBuff);
+	void SetPOIRProcessCode(CString strBuff);
+	void SetPOIRActFlag(CString strBuff);
+
 	// ---------------------------------------
 	CString GetRwkCode();
+	CString GetPF();
+	CString GetComment();
+	CString GetMachineName();
 
 
 
 
 protected:
-	BOOL	m_bIsLocalTestMode;
+	BOOL	m_bIsGmesLocalTestMode;
+	BOOL	m_bIsEasLocalTestMode;
+
+
+	CString m_strLocalSubjectIP;
+	CString m_strLocalSubjectMesF;
+	CString m_strLocalSubjectEasF;
 
 	CString m_strRemoteSubject;
 	CString m_strLocalSubject;
@@ -132,6 +192,13 @@ protected:
 	CString m_strServicePort;
 	CString m_strDaemon;
 	CString m_strLocalIP;
+
+	CString m_strRemoteSubjectEAS;
+	CString m_strLocalSubjectEAS;
+	CString m_strNetworkEAS;
+	CString m_strServicePortEAS;
+	CString m_strDaemonEAS;
+	CString m_strLocalIPEAS;
 
 	CString m_strNgComment;
 
@@ -141,9 +208,16 @@ protected:
 
 	CString m_strMachineName;
 	CString m_strUserID;
+	CString m_strComment;
+	CString m_strAgingChangeTime;
+	CString m_strAptrAgingTime;
+	CString m_strRemark;
+	CString m_strNGPortOut;
 	CString m_strRwkCode;
+	CString m_strSSFlag;
 	CString m_strFLDRFileName;
 	CString m_strPanelID;
+	CString m_strFrom_Oper;
 	CString m_strBLID;
 	CString m_strSerialNumber;
 	CString m_strModelName;
@@ -163,7 +237,19 @@ protected:
 	CString m_strWDRInfo;
 	CString m_strWDREnd;
 	CString m_strAPDInfo;
-	CString m_strChannelID;
+	CString m_strFullYN;
+	CString m_strGibCode;
+	CString m_strToOper;
+	CString m_strRepairCD;
+	CString m_strRespDept;
+	CString m_strMaterialInfo;
+	CString m_strTactTime;
+	CString m_strRepairTypeCD;
+	CString m_strAutoRespDeptFlag;
+	CString m_strAgingLevelInfo;
+	CString m_strPOIRProcessCode;
+	CString m_strPOIRActFlag;
+
 
 	CString m_strHostSendMessage;
 	CString m_strHostRecvMessage;
@@ -173,11 +259,23 @@ protected:
 	CString m_strFLDR;
 	CString m_strPCHK;
 	CString m_strEICR;
+	CString m_strRPLT;
+	CString m_strMSET;
+	CString m_strAGN_IN;
+	CString m_strAGN_INSP;
 	CString m_strAPDR;
 	CString m_strWDCR;
-	CString m_strAGCM;
-	CString m_strAGNIN;
-	CString m_strAGNOUT;
+	CString m_strLPIR;
+	CString m_strRPRQ;
+	CString m_strSCRA;
+	CString m_strSCRP;
+	CString m_strBDCR;
+	CString m_strINSP_INFO;
+	CString m_strPINF;
+	CString m_strAGN_CTR;
+	CString m_strAPTR;
+	CString m_strPOIR;
+
 	CString m_strDefectComCode;
 
 };

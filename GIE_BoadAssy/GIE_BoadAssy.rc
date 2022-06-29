@@ -16,13 +16,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 한국어 resources
+// 한국어(대한민국) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
-#ifdef _WIN32
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 #pragma code_page(949)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -72,6 +70,7 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\GIE_BoadAssy.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
@@ -103,24 +102,24 @@ BEGIN
     PUSHBUTTON      "MODEL CHANGE",IDC_BTN_MODEL_CHANGE,89,7,80,41
     PUSHBUTTON      "AUTO FIRMWARE",IDC_BTN_AUTOFIRMWARE,503,7,80,41
     LTEXT           "  :: Station Information",IDC_STT_STATION_INFO_TIT,7,98,201,20,SS_CENTERIMAGE
-    CTEXT           "Station Name",IDC_STT_EQP_NAME_TIT,14,121,78,17,SS_CENTERIMAGE
-    CTEXT           "Operation Mode",IDC_STT_OP_MODE_TIT,14,141,78,17,SS_CENTERIMAGE
-    CTEXT           "User ID",IDC_STT_USER_ID_TIT,14,161,78,17,SS_CENTERIMAGE
-    CTEXT           "User Name",IDC_STT_USER_NAME_TIT,14,181,78,17,SS_CENTERIMAGE
+    CTEXT           "Station Name",IDC_STT_EQP_NAME_TIT,7,121,81,17,SS_CENTERIMAGE
+    CTEXT           "Operation Mode",IDC_STT_OP_MODE_TIT,7,141,81,17,SS_CENTERIMAGE
+    CTEXT           "User ID",IDC_STT_USER_ID_TIT,7,161,81,17,SS_CENTERIMAGE
+    CTEXT           "User Name",IDC_STT_USER_NAME_TIT,7,181,81,17,SS_CENTERIMAGE
     CTEXT           "",IDC_STT_EQP_NAME_VALUE,92,121,114,17,SS_CENTERIMAGE
     CTEXT           "",IDC_STT_OP_MODE_VALUE,92,141,114,17,SS_CENTERIMAGE
     CTEXT           "",IDC_STT_USER_ID_VALUE,92,161,114,17,SS_CENTERIMAGE
     CTEXT           "",IDC_STT_USER_NAME_VALUE,92,181,114,17,SS_CENTERIMAGE
     LTEXT           "  :: Model Information",IDC_STT_MODEL_INFO_TIT,7,216,201,20,SS_CENTERIMAGE
-    CTEXT           "Model Nae",IDC_STT_MODEL_NAME_TIT,14,239,78,17,SS_CENTERIMAGE
-    CTEXT           "Resolution",IDC_STT_RESOLUTION_TIT,14,259,78,17,SS_CENTERIMAGE
-    CTEXT           "Signal Bit",IDC_STT_SIGNALBIT_TIT,14,279,78,17,SS_CENTERIMAGE
+    CTEXT           "Model Nae",IDC_STT_MODEL_NAME_TIT,7,239,81,17,SS_CENTERIMAGE
+    CTEXT           "Resolution",IDC_STT_RESOLUTION_TIT,7,259,81,17,SS_CENTERIMAGE
+    CTEXT           "Signal Bit",IDC_STT_SIGNALBIT_TIT,7,279,81,17,SS_CENTERIMAGE
     CTEXT           "",IDC_STT_MODEL_NAME_VALUE,92,239,114,17,SS_CENTERIMAGE
     CTEXT           "",IDC_STT_RESOLUTION_VALUE,92,259,114,17,SS_CENTERIMAGE
     CTEXT           "",IDC_STT_SIGNALBIT_VALUE,92,279,114,17,SS_CENTERIMAGE
     CTEXT           "VCC",IDC_STT_VCC_TIT,92,299,56,17,SS_CENTERIMAGE
-    CTEXT           "Voltage",IDC_STT_VOLT_TIT,14,319,78,17,SS_CENTERIMAGE
-    CTEXT           "Current",IDC_STT_CURR_TIT,14,339,78,17,SS_CENTERIMAGE
+    CTEXT           "Voltage",IDC_STT_VOLT_TIT,7,319,81,17,SS_CENTERIMAGE
+    CTEXT           "Current",IDC_STT_CURR_TIT,7,339,81,17,SS_CENTERIMAGE
     CTEXT           "VDD",IDC_STT_VDD_TIT,150,299,56,17,SS_CENTERIMAGE
     CTEXT           "",IDC_STT_VCC_VALUE,92,319,55,17,SS_CENTERIMAGE
     CTEXT           "",IDC_STT_VDD_VALUE,151,319,55,17,SS_CENTERIMAGE
@@ -310,6 +309,7 @@ BEGIN
     CTEXT           "System :",IDC_STT_SYSTEM_STATUS_TIT,439,431,45,22,SS_CENTERIMAGE
     CTEXT           "GFD250 :",IDC_STT_GFD250_STATUS_TIT,528,431,45,22,SS_CENTERIMAGE
     PUSHBUTTON      "Apply All",IDC_BTN_APPLY,91,222,63,28
+    CONTROL         "",IDC_PIC_MD_PTN_PREVIEW,"Static",SS_BLACKFRAME,432,345,110,72
 END
 
 IDD_INITIALIZE DIALOGEX 0, 0, 271, 287
@@ -551,7 +551,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -1021,16 +1021,32 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_GIE_BOADASSY_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MODEL_INFO AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUTBOX            "GIE_BoadAssy 정보(&A)..."
     IDP_SOCKETS_INIT_FAILED "Windows 소켓을 초기화하지 못했습니다."
 END
 
-#endif    // 한국어 resources
+#endif    // 한국어(대한민국) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

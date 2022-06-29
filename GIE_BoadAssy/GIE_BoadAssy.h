@@ -35,6 +35,7 @@ public:
 	CPortController*	m_pPort;
 	CCommand*			m_pCommand;
 	CCimNetCommApi*		m_pCimNet;
+	CPatternView* m_pPatternView;
 
 	LPFUSINGINFO		GetFusingInfo();
 	LPSYSTEMINFO		GetSystemInfo();
@@ -63,8 +64,9 @@ public:
 	void Gf_setPatStartCheckTime(int i);
 	void Gf_setPatEndCheckTime(int i);
 
-	BOOL Gf_gmesConnect();
-	BOOL Gf_gmesDisConnect();
+	BOOL Gf_gmesConnect(int nServerType);
+	BOOL Gf_gmesDisConnect(int nServerType);
+	BOOL Gf_gmesInitServer(BOOL nServerType);
 	void Gf_setGMesGoodInfo();
 	void Gf_setGMesBGradeInfo();
 	void Gf_setGMesBadInfo();

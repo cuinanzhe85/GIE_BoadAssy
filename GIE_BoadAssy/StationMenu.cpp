@@ -260,22 +260,22 @@ void CStationMenu::Lf_saveSystemInfo()
 	Write_SysIniFile(_T("SYSTEM"), _T("LED_BL_PORT"), lpSystemInfo->m_nLedBlPort);
 
 	m_edtMesServicePort.GetWindowText(lpSystemInfo->sMesServicePort);
-	Write_GmesFile(_T("NJ"), _T("SERVICE_PORT"),							lpSystemInfo->sMesServicePort);
+	Write_SysIniFile(_T("GMES"), _T("SERVICE"),							lpSystemInfo->sMesServicePort);
 
 	m_edtMesNetwork.GetWindowText(lpSystemInfo->sMesNetWork);
-	Write_GmesFile(_T("NJ"), _T("HOST_IP"),									lpSystemInfo->sMesNetWork);
+	Write_SysIniFile(_T("GMES"), _T("NETWORK"),									lpSystemInfo->sMesNetWork);
 
 	m_edtMesDaemonPort.GetWindowText(lpSystemInfo->sMesDaemonPort);
-	Write_GmesFile(_T("NJ"), _T("DAEMON_PORT"),								lpSystemInfo->sMesDaemonPort);
+	Write_SysIniFile(_T("GMES"), _T("DAEMON_PORT"),								lpSystemInfo->sMesDaemonPort);
 
 	m_edtMesLocalSubject.GetWindowText(lpSystemInfo->sMesLocalSubject);
-	Write_GmesFile(_T("NJ"), _T("LOCAL_SUBJECT"),							lpSystemInfo->sMesLocalSubject);
+	Write_SysIniFile(_T("GMES"), _T("LOCAL_SUBJECT"),							lpSystemInfo->sMesLocalSubject);
 
 	m_edtMesRemoteSubject.GetWindowText(lpSystemInfo->sMesRemoteSubject);
-	Write_GmesFile(_T("NJ"), _T("REMOTE_SUBJECT"),							lpSystemInfo->sMesRemoteSubject);
+	Write_SysIniFile(_T("GMES"), _T("REMOTE_SUBJECT"),							lpSystemInfo->sMesRemoteSubject);
 
 	m_ipaMesLocalIp.GetWindowText(lpSystemInfo->sLocalIP);
-	Write_GmesFile(_T("VH"), _T("LOCAL_IP"),								lpSystemInfo->sLocalIP);
+	Write_SysIniFile(_T("GMES"), _T("LOCAL_IP"),								lpSystemInfo->sLocalIP);
 
  	m_edtModFilePath.GetWindowText(lpSystemInfo->m_sModelDnPath);
  	Write_SysIniFile(_T("SYSTEM"), _T("MODEL_FILE_PATH"), lpSystemInfo->m_sModelDnPath);

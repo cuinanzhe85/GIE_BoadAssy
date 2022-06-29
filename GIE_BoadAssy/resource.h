@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by GIE_BoadAssy.rc
+// Microsoft Visual C++에서 생성한 포함 파일입니다.
+// GIE_BoadAssy.rc에서 사용되고 있습니다.
 //
 #define IDC_BTN_FILE_SELECT             3
 #define IDC_BTN_FW_VERSION              4
@@ -275,14 +275,15 @@
 #define IDC_STT_VDD_MEA_TIT             1167
 #define IDC_STT_VDD_SET_TIT             1168
 #define IDC_STT_TT_TIT                  1169
+#define IDC_PIC_MD_PTN_PREVIEW          1170
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        145
+#define _APS_NEXT_RESOURCE_VALUE        147
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1170
+#define _APS_NEXT_CONTROL_VALUE         1171
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

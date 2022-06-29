@@ -3,7 +3,7 @@
 #endif // _MSC_VER > 1000
 // CommApi.h : header file
 //
-#include "GlobalDefine.h"
+#include "_GlobalDefine.h"
 
 
 typedef struct _ST_FUSINGINFO_{
