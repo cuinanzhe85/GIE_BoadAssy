@@ -84,7 +84,26 @@ HBRUSH CAutoFirmware::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetBkColor(COLOR_DEEP_BLUE);
 			pDC->SetTextColor(COLOR_WHITE);
 			return m_Brush[COLOR_IDX_DEEP_BLUE];
-		}		
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_FILE_PATH
+			|| pWnd->GetDlgCtrlID() == IDC_STT_FW_VERSION)
+		{
+			pDC->SetBkColor(COLOR_WHITE);
+			pDC->SetTextColor(COLOR_BLACK);
+			return m_Brush[COLOR_IDX_WHITE];
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_FW_STATUS)
+		{
+			pDC->SetBkColor(COLOR_GRAY64);
+			pDC->SetTextColor(COLOR_CYAN);
+			return m_Brush[COLOR_IDX_GRAY64];
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_TARGET_SEL)
+		{
+			pDC->SetBkColor(COLOR_BLUISH);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_BLUISH];
+		}
 		break;
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
@@ -101,6 +120,10 @@ void CAutoFirmware::OnPaint()
 	GetClientRect(&rect);
 	rect.bottom=90;
 	dc.FillSolidRect(rect,COLOR_DEEP_BLUE);
+
+	GetClientRect(&rect);
+	rect.top = 91;
+	dc.FillSolidRect(rect, COLOR_GRAY64);
 }
 
 void CAutoFirmware::Lf_initFontSet()
@@ -132,13 +155,15 @@ void CAutoFirmware::Lf_initFontSet()
 
 	/*************************************************************************************************/
 	// Brush Set
-	m_Brush[0].CreateSolidBrush (COLOR_ORANGE);
+	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush (COLOR_ORANGE);
 	m_Brush[COLOR_IDX_RED].CreateSolidBrush (COLOR_RED);
-	m_Brush[2].CreateSolidBrush (COLOR_GRAY64);
-	m_Brush[3].CreateSolidBrush (COLOR_GRAY94);
+	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
+	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush (COLOR_GRAY94);
 	m_Brush[COLOR_IDX_LIGHT_GREEN].CreateSolidBrush (COLOR_LIGHT_GREEN);
 	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush (COLOR_WHITE);
-	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);	
+	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);
+	m_Brush[COLOR_IDX_CYAN].CreateSolidBrush(COLOR_CYAN);
+	m_Brush[COLOR_IDX_BLUISH].CreateSolidBrush(COLOR_BLUISH);
 }
 
 void CAutoFirmware::Lf_initVariable()

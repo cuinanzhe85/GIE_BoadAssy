@@ -50,4 +50,6 @@ protected:
 private:
 	CFont m_Font[FONT_IDX_MAX];
 	CBrush m_Brush[COLOR_IDX_MAX];
+public:
+	afx_msg void OnPaint();
 };

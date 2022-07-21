@@ -40,7 +40,7 @@ protected:
 	void Lf_sendPtnData();
 	BOOL Lf_sendBluData();
 	void Lf_sendPatternBluData();
-	void Lf_updateMeasureInfo();
+	BOOL Lf_updateMeasureInfo();
 	void Lf_excutePatternList(MSG* pMsg);
 	void Lf_insertListColum();
 	void Lf_insertListItem();
@@ -49,7 +49,10 @@ protected:
 	void Lf_showDisplayLockTimeText();
 	void Lf_initFontSet();
 	void Lf_initVariable();
+	void Lf_setPatternGrayLevel(int wParam);
+	void Lf_getPatternGrayLevel(CString strPattern, int* r_level, int* g_level, int* b_level);
 
+	void Lf_PtnTestEventView(CString Event);
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CListCtrl m_LCctrlPtnTestView;
@@ -61,4 +64,6 @@ private:
 	CBrush m_Brush[COLOR_IDX_MAX];
 public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnPaint();
+	CListBox m_listPtnTestEvent;
 };

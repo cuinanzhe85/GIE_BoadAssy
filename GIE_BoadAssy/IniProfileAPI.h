@@ -24,7 +24,20 @@ static void ProcessMessage()
 		DispatchMessage(&msg);
 	}
 }
+static void delayMS(DWORD delay)
+{
+	DWORD stTick, edTick;
 
+	stTick = ::GetTickCount();
+	while (1)
+	{
+		edTick = ::GetTickCount();
+		if ((edTick - stTick) >= delay)
+			break;
+
+		ProcessMessage();
+	}
+}
 /////////////////////////////////////////////////////////////////////////////
 static int _str_to_dec(CString hexStr)
 {

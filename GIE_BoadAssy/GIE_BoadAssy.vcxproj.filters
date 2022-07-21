@@ -24,9 +24,6 @@
     <ClCompile Include="Command.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Dio7250.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="GIE_BoadAssy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -81,6 +78,9 @@
     <ClCompile Include="PatternView.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Dio7230.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoFirmware.h">
@@ -90,9 +90,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Dio7250.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GIE_BoadAssy.h">
@@ -161,9 +158,30 @@
     <ClInclude Include="PatternView.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Dio7230.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\GIE_BoadAssy.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\icon1.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ico00001.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ico00003.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ico00009.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ico00010.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\icon_rel.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

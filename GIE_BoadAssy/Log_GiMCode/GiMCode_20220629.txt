@@ -1,0 +1,27 @@
+[16:38:49 604]	GiMCode : DefectCodeSet Dialog Open
+[16:38:56 933]	Favorite Set : Start
+[16:38:56 934]	Favorite Set : New Button Make Complete
+[16:38:56 937]	Favorite Set : Result Button Update Complete
+[16:38:56 948]	Favorite Set : Display Button Reset Complete
+[16:40:40 624]	Favorite Set : Start
+[16:40:40 624]	Favorite Set : New Button Make Complete
+[16:40:40 626]	Favorite Set : Result Button Update Complete
+[16:40:40 631]	Favorite Set : Display Button Reset Complete
+[16:48:57 960]	Favorite Set : Start
+[16:48:57 960]	Favorite Set : New Button Make Complete
+[16:48:57 964]	Favorite Set : Result Button Update Complete
+[16:48:57 977]	Favorite Set : Display Button Reset Complete
+[16:52:18 484]	GiMCode : DefectCodeSet Dialog Open
+[16:55:48 093]	GiMCode : DefectCodeSet Dialog Open
+[16:55:51 007]	Favorite Set : Start
+[16:55:51 009]	Favorite Set : New Button Make Complete
+[16:55:51 011]	Favorite Set : Result Button Update Complete
+[16:55:51 156]	Favorite Set : Display Button Reset Complete
+[16:55:54 528]	Favorite Set : Start
+[16:55:54 528]	Favorite Set : New Button Make Complete
+[16:55:54 530]	Favorite Set : Result Button Update Complete
+[16:55:54 572]	Favorite Set : Display Button Reset Complete
+[16:55:56 176]	Favorite Set : Start
+[16:55:56 177]	Favorite Set : New Button Make Complete
+[16:55:56 179]	Favorite Set : Result Button Update Complete
+[16:55:56 267]	Favorite Set : Display Button Reset Complete

@@ -25,6 +25,11 @@
 #define IDD_MESSAGE_ERROR               141
 #define IDD_DIALOG2                     143
 #define IDD_AUTO_FIRMWARE               143
+#define IDI_ICON_ADD                    155
+#define IDI_ICON_DELETE                 156
+#define IDI_ICON_DOWN                   157
+#define IDI_ICON_UP                     158
+#define IDI_ICON_CHANGE                 160
 #define IDC_BTN_USERID                  1000
 #define IDC_BTN_MODELINFO               1001
 #define IDC_BTN_FUSING                  1001
@@ -203,7 +208,9 @@
 #define IDC_STT_VCOM                    1101
 #define IDC_STT_ERR_MESSAGE             1101
 #define IDD_MESSAGE_QUESTION            1102
+#define IDC_STT_PTN_LIST_TITLE          1102
 #define IDC_BTN_MSG_CONFIRM             1103
+#define IDC_STT_PTN_TEST_MESSAGE        1103
 #define IDC_BTN_MSG_CLOSE               1104
 #define IDC_BTN_ERR_CLOSE               1105
 #define IDC_STT_MSG_MESSAGE             1106
@@ -276,14 +283,40 @@
 #define IDC_STT_VDD_SET_TIT             1168
 #define IDC_STT_TT_TIT                  1169
 #define IDC_PIC_MD_PTN_PREVIEW          1170
+#define IDC_STT_EQP_NAME                1171
+#define IDC_STT_TEST_MODE               1172
+#define IDC_STT_BLU_TYPE                1173
+#define IDC_STT_BLU_FREQ                1174
+#define IDC_STT_TEST_START_DELAY        1175
+#define IDC_STT_FAST_JUDGE              1176
+#define IDC_STT_PANELID_NG              1177
+#define IDC_STT_PG_PORT                 1178
+#define IDC_STT_GFD250_PORT             1179
+#define IDC_STT_AUTO_BCR_PORT           1180
+#define IDC_STT_BLU_PORT                1181
+#define IDC_STT_MES_SERV_PORT           1182
+#define IDC_STT_MES_NETWORK             1183
+#define IDC_STT_MES_DEAMON              1184
+#define IDC_STT_MES_LOCAL_SUBJ          1185
+#define IDC_STT_MES_REMOTE_SUBJ         1186
+#define IDC_STT_MES_LOCAL_IP            1187
+#define IDC_STT_MODEL_PATH              1188
+#define IDC_STT_PATTERN_PATH            1189
+#define IDC_STT_EDID_FILE_PATH          1190
+#define IDC_LIST_PATTERN_TEST_MASSAGE   1191
+#define IDC_STT_TP_COLOR_R_VAL          1193
+#define IDC_STT_TP_COLOR_G_VAL          1194
+#define IDC_STT_PTN_ADD                 1194
+#define IDC_STT_TP_COLOR_B_VAL          1195
+#define IDC_STT_TP_EDID_RESULT          1196
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        147
+#define _APS_NEXT_RESOURCE_VALUE        161
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1171
+#define _APS_NEXT_CONTROL_VALUE         1195
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

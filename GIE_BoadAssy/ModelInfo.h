@@ -142,4 +142,5 @@ public:
 	afx_msg void OnBnClickedBtnApply();
 	CStatic m_picPatternPreview;
 	afx_msg void OnCbnSelchangeCmbPtnName();
+	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 };

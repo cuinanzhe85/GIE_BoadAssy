@@ -202,7 +202,7 @@
     <ClCompile Include="AutoFirmware.cpp" />
     <ClCompile Include="CIMNetCommApp.cpp" />
     <ClCompile Include="Command.cpp" />
-    <ClCompile Include="Dio7250.cpp" />
+    <ClCompile Include="Dio7230.cpp" />
     <ClCompile Include="GieJudge.cpp" />
     <ClCompile Include="GIE_BoadAssy.cpp" />
     <ClCompile Include="GIE_BoadAssyDlg.cpp" />
@@ -231,7 +231,7 @@
     <ClInclude Include="AutoFirmware.h" />
     <ClInclude Include="CIMNetCommApp.h" />
     <ClInclude Include="Command.h" />
-    <ClInclude Include="Dio7250.h" />
+    <ClInclude Include="Dio7230.h" />
     <ClInclude Include="GieJudge.h" />
     <ClInclude Include="GIE_BoadAssy.h" />
     <ClInclude Include="GIE_BoadAssyDlg.h" />
@@ -257,6 +257,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\GIE_BoadAssy.ico" />
+    <Image Include="res\ico00001.ico" />
+    <Image Include="res\ico00003.ico" />
+    <Image Include="res\ico00009.ico" />
+    <Image Include="res\ico00010.ico" />
+    <Image Include="res\icon1.ico" />
+    <Image Include="res\icon_rel.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GIE_BoadAssy.rc" />

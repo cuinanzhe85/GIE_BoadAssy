@@ -31,7 +31,7 @@ CGIE_BoadAssyApp::CGIE_BoadAssyApp()
 	lpFusingInfo	= new FUSINGINFO;
 	lpModelInfo		= new MODELSETINFO;
 	lpWorkInfo		= new INSPWORKINFO;
-	m_pDio7250		= new CDIO7250;
+	m_pDio7230 = new CDIO7230;
 	m_pPort			= new CPortController();
 	m_pCommand		= new CCommand();
 	m_pCimNet		= new CCimNetCommApi;
@@ -143,83 +143,48 @@ LPINSPWORKINFO CGIE_BoadAssyApp::GetWorkInfo()
 	return lpWorkInfo;
 }
 
-void CGIE_BoadAssyApp::Gf_writeLogData(CString strEvent,CString strData)
-{
-	char szEvent[MLOG_MAX_LENGTH]={0,};
-	char szData[MLOG_MAX_LENGTH]={0,};
-
-	wchar_To_char(strEvent.GetBuffer(0), szEvent);
-	wchar_To_char(strData.GetBuffer(0), szData);
-	Gf_writeLogData(szEvent, szData);
-}
 
 void CGIE_BoadAssyApp::Gf_writeLogData(char Event[MLOG_MAX_LENGTH],char Data[MLOG_MAX_LENGTH])
 {
-	FILE* fp;
-	char filepath [128] = {0};
-	char filepath2 [128] = {0};
-	char buff [256] = {0};
-	char dataline [MLOG_MAX_LENGTH] = {0};
-	char szeqpname[50]={0,};
+	CString strEvent, strData;
+	strEvent = char_To_wchar(Event);
+	strData = char_To_wchar(Data);
+}
+void CGIE_BoadAssyApp::Gf_writeLogData(CString Event, CString Data)
+{
+	CFile file;
+	USHORT nShort = 0xfeff;
+	CString strFileName, strLog, path;
+	CString pStrWideChar;
+
 	SYSTEMTIME sysTime;
+	::GetSystemTime(&sysTime);
+	CTime time = CTime::GetCurrentTime();
+	pStrWideChar.Format(_T("%s %s"), Event, Data);
+	strLog.Format(_T("[%02d:%02d:%02d %03d] %06d%03d\t: %s\r\n"), time.GetHour(), time.GetMinute(), time.GetSecond(), sysTime.wMilliseconds, (time.GetHour() * 3600) + (time.GetMinute() * 60) + time.GetSecond(), sysTime.wMilliseconds, pStrWideChar);
 
-	::GetSystemTime (&sysTime);
-	CTime time = CTime::GetCurrentTime ();
 
-	wchar_To_char(lpSystemInfo->m_sMachinName.GetBuffer(0),szeqpname);//
-	sprintf_s (buff, "%04d%02d%02d", time.GetYear (),time.GetMonth (),time.GetDay ());
+	//	Read_SysIniFile(_T("SYSTEM"), _T("STATION_NO"), &lpSystemInfo->m_sStationNo);
+	strFileName.Format(_T("%s_%04d%02d%02d"), lpSystemInfo->m_sMachinName, time.GetYear(), time.GetMonth(), time.GetDay());
+	path.Format(_T(".\\MLog\\%s.txt"), strFileName);
 
-	if(time.GetHour () < 1)
+	if ((_access(".\\MLog", 0)) == -1)
+		_mkdir(".\\MLog");
+
+	if ((_access(".\\Logs\\MLog", 0)) == -1)
+		_mkdir(".\\Logs\\MLog");
+
+
+	if (file.Open(path, CFile::modeCreate | CFile::modeNoTruncate | CFile::modeWrite | CFile::typeBinary))
 	{
-		time = time + CTimeSpan(0, 0, 0,  0);
-		sprintf_s (buff, "%s_%04d%02d%02d",
-			szeqpname,
-			time.GetYear (),
-			time.GetMonth (),
-			time.GetDay ()
-			);
-		time = time + CTimeSpan(0, 0, 0,  0);
-	}
-	else
-	{
-		sprintf_s (buff, "%s_%04d%02d%02d",
-			szeqpname,
-			time.GetYear (),
-			time.GetMonth (),
-			time.GetDay ()
-			);
-	}
-
-	sprintf_s (filepath, ".\\MLog\\%s.txt", buff);
-	sprintf_s (filepath2, ".\\MLog\\%s_2.txt", buff); // 2007-08-01 : fseek.c(101) error
-	fopen_s (&fp, filepath, "r+");
-	if (fp == NULL)
-	{
-		if( (_access( ".\\MLog", 0 )) == -1 )
-			_mkdir ( ".\\MLog" );
-
-		fopen_s (&fp, filepath, "a+");
-		if (fp == NULL) // 2007-08-01 : fseek.c(101) error
+		if (file.GetLength() == 0)
 		{
-			if( (_access( filepath, 2 )) != -1 ) // 2007-09-02 : fseek.c(101) error
-			{
-				fopen_s (&fp, filepath, "a+");
-				if (fp == NULL) // 2007-09-02 : fseek.c(101) error
-				{
-					fopen_s (&fp, filepath2, "a+");
-				}
-			}
+			file.Write(&nShort, 2);
 		}
+		file.SeekToEnd();
+		file.Write(strLog, (strLog.GetLength() * 2));
+		file.Close();
 	}
-	fseek (fp, 0L, SEEK_END);
-
-	sprintf_s (buff,"[%02d:%02d:%02d %03d] %06d%03d",time.GetHour(),time.GetMinute(),time.GetSecond(),sysTime.wMilliseconds,(time.GetHour()*3600)+(time.GetMinute()*60)+time.GetSecond(),sysTime.wMilliseconds);
-	char* pos = dataline;
-
-	sprintf_s (dataline,"%s	%s : %s\n", buff, Event, Data);	
-	fprintf (fp, "%s", pos);
-
-	fclose (fp);
 }
 
 void CGIE_BoadAssyApp::Lf_initVariable()
@@ -572,8 +537,8 @@ void CGIE_BoadAssyApp::Lf_loadModelInfo()
 			memset(szParseData, NULL, sizeof(szParseData));
 
 			lpModelInfo->m_sLbPtnName[nLoop].Empty();
-			lpModelInfo->m_sLbPtnFg[nLoop].Empty();
-			lpModelInfo->m_sLbPtnBg[nLoop].Empty();
+			//lpModelInfo->m_sLbPtnFg[nLoop].Empty();
+			//lpModelInfo->m_sLbPtnBg[nLoop].Empty();
 			lpModelInfo->m_sLbPtnVcc[nLoop].Empty();
 			lpModelInfo->m_sLbPtnVdd[nLoop].Empty();
 			lpModelInfo->m_sLbPtnTms[nLoop].Empty();
@@ -585,15 +550,15 @@ void CGIE_BoadAssyApp::Lf_loadModelInfo()
 		else
 		{	
 			lpModelInfo->m_sLbPtnName[nLoop]=szParseData[0];
-			lpModelInfo->m_sLbPtnFg[nLoop]	=szParseData[1];
-			lpModelInfo->m_sLbPtnBg[nLoop]	=szParseData[2];
-			lpModelInfo->m_sLbPtnVcc[nLoop]=szParseData[3];
-			lpModelInfo->m_sLbPtnVdd[nLoop]=szParseData[4];
-			lpModelInfo->m_sLbPtnTms[nLoop]=szParseData[5];
-			lpModelInfo->m_sLbPtnVsync[nLoop]=szParseData[6];
-			lpModelInfo->m_sLbPtnVcom[nLoop].Format(_T("%s"), ((_tcslen(szParseData[7])==0) ? _T("OFF") :szParseData[7]));
-			lpModelInfo->m_sLbPtnBlu[nLoop].Format(_T("%s"), ((_tcslen(szParseData[8])==0) ? _T("100") :szParseData[8]));
-			lpModelInfo->m_sLbPtnTouch[nLoop].Format(_T("%s"), ((_tcslen(szParseData[9])==0) ? _T("OFF") :szParseData[9]));
+			//lpModelInfo->m_sLbPtnFg[nLoop]	=szParseData[1];
+			//lpModelInfo->m_sLbPtnBg[nLoop]	=szParseData[2];
+			lpModelInfo->m_sLbPtnVcc[nLoop]=szParseData[1];
+			lpModelInfo->m_sLbPtnVdd[nLoop]=szParseData[2];
+			lpModelInfo->m_sLbPtnTms[nLoop]=szParseData[3];
+			lpModelInfo->m_sLbPtnVsync[nLoop]=szParseData[4];
+			lpModelInfo->m_sLbPtnVcom[nLoop].Format(_T("%s"), ((_tcslen(szParseData[5])==0) ? _T("OFF") :szParseData[5]));
+			lpModelInfo->m_sLbPtnBlu[nLoop].Format(_T("%s"), ((_tcslen(szParseData[6])==0) ? _T("100") :szParseData[6]));
+			lpModelInfo->m_sLbPtnTouch[nLoop].Format(_T("%s"), ((_tcslen(szParseData[7])==0) ? _T("OFF") :szParseData[7]));
 			lpModelInfo->m_nLbCnt = nLoop+1;
 		}
 
@@ -604,7 +569,7 @@ void CGIE_BoadAssyApp::Lf_loadModelInfo()
 	}
 }
 
-void CGIE_BoadAssyApp::Gf_loadMedelFile()
+BOOL CGIE_BoadAssyApp::Gf_loadMedelFile()
 {
 	CString strLFileName, strNFileName, strDataFolder;
 
@@ -631,7 +596,7 @@ void CGIE_BoadAssyApp::Gf_loadMedelFile()
 						//default.mod setting
 						m_sModelFile.Format(_T("%s"),_T("Model file load NG!!!"));
 						Lf_loadModelInfo();
-						break;
+						return FALSE;
 					}
 				}
 
@@ -654,9 +619,10 @@ void CGIE_BoadAssyApp::Gf_loadMedelFile()
 		Lf_loadModelInfo();
 		FindClose (hSearch);
 	}
+	return TRUE;
 }
 
-void CGIE_BoadAssyApp::Gf_loadPatternFile()
+BOOL CGIE_BoadAssyApp::Gf_loadPatternFile()
 {
 	CString strDatafolder=_T(""),strFileName=_T(""), strNFileName=_T("");
 	WIN32_FIND_DATA wfd;
@@ -685,7 +651,7 @@ void CGIE_BoadAssyApp::Gf_loadPatternFile()
 							m_sPtnFile.Format(_T("%s"), _T("Pattern file load NG!!!"));
 							hSearch = FindFirstFile(strDatafolder, &wfd);
 							FindClose (hSearch);
-							return;
+							return FALSE;
 						}
 					}
 					else if(!strFileName.Compare(strNFileName))
@@ -705,6 +671,7 @@ void CGIE_BoadAssyApp::Gf_loadPatternFile()
 		m_sPtnFile.Format(_T("%s"),_T("Pattern file load NG!!!"));
 		AfxMessageBox(_T("Error Pattern File"), MB_ICONSTOP);
 	}
+	return TRUE;
 }
 
 void CGIE_BoadAssyApp::Gf_setSerialPort()
@@ -757,7 +724,7 @@ void CGIE_BoadAssyApp::Gf_setSerialPort()
 	if(lpSystemInfo->m_nLedBlPort)
 	{
 		strPort.Format(_T("COM%d"), lpSystemInfo->m_nLedBlPort);
-		if(!(m_pPort->OpenPort4(strPort, (DWORD) 9600, NULL)))	m_sSerialPort4.Format(_T("%s"),_T("LED BLU NG."));
+		if(!(m_pPort->OpenPort4(strPort, (DWORD) 115200, NULL)))	m_sSerialPort4.Format(_T("%s"),_T("LED BLU NG."));
 		else													m_sSerialPort4.Format(_T("%s"),_T("LED BLU OK."));	
 	}
 	else
@@ -871,8 +838,8 @@ void CGIE_BoadAssyApp::Gf_receivedBCRAckInfo(BYTE* aByte)
 {
 	CString sdata=_T(""),sAckData=_T("");
 	
-	sdata.Format(_T("%s"), char_To_wchar((char*)aByte));
-	Gf_writeLogData(_T("[Receive AUTO BCR]"), sdata);
+	sdata.Format(_T("Receive : %s"), char_To_wchar((char*)aByte));
+	Gf_writeLogData(_T("<BCR>"), sdata);
 	Lf_parseAutoBcr(aByte);
 }
 
@@ -883,14 +850,16 @@ void CGIE_BoadAssyApp::Gf_receivedBLUAckInfo(char* lpBuff)
 
 	nDataLen = (int)strlen(lpBuff);
 
-	if(nDataLen < 8)// Noise로 인한 PGM Down 방지.
-		return;		
+	if (nDataLen > 0)
+		m_nRcvMsgBlu = TRUE;
+	//if(nDataLen < 8)// Noise로 인한 PGM Down 방지.
+	//	return;		
 
-	if((lpBuff[0]==PACKET_STX) && (lpBuff[nDataLen-1]==PACKET_ETX))
-	{
-		sdata.Format(_T("%s"), char_To_wchar((char*)lpBuff));
-		m_nRcvMsgBlu = _tcstol(sdata.Mid(7, 2), NULL, 16);
-	}
+	//if((lpBuff[0]==PACKET_STX) && (lpBuff[nDataLen-1]==PACKET_ETX))
+	//{
+	//	sdata.Format(_T("%s"), char_To_wchar((char*)lpBuff));
+	//	m_nRcvMsgBlu = _tcstol(sdata.Mid(7, 2), NULL, 16);
+	//}
 }
 
 void CGIE_BoadAssyApp::Lf_parseHexData(BYTE* aByte)
@@ -1001,7 +970,7 @@ void CGIE_BoadAssyApp::Lf_parsingAckData(CString strAckData)
 	{
 		sLog.Format(_T("CMD:0x%02X  DATA:%s"), recvCMD, strAckData); 
 
-		Gf_writeLogData(_T("COMM_RX"), sLog.GetBuffer(0));
+		Gf_writeLogData(_T("<RS232_R>"), sLog.GetBuffer(0));
 	}
 
 	switch(recvCMD)
@@ -1070,7 +1039,7 @@ void CGIE_BoadAssyApp::Lf_parsingAckGfd250Data(CString strAckData)
 	{
 		sLog.Format(_T("CMD:0x%02X  DATA:%s"), recvCMD, strAckData); 
 
-		Gf_writeLogData(_T("COMM_RX"), sLog.GetBuffer(0));
+		Gf_writeLogData(_T("<RS232_R>"), sLog.GetBuffer(0));
 	}
 
 	switch(recvCMD)
@@ -1137,7 +1106,7 @@ void CGIE_BoadAssyApp::Lf_parsingAckGfd250Data(CString strAckData)
 //					if(m_nI2CCmdNumber == I2C_CMD_EDID_READ)
 					{
 						Lf_parsingEdidDataGfd250(strAckData);
-						Gf_writeLogData(_T("GFD250 Module EDID"), _T("Read OK"));
+						Gf_writeLogData(_T("<GFD250>"), _T("EDID Read OK"));
 					}
 // 					else if(m_nI2CCmdNumber == I2C_CMD_PMIC_READ)
 // 					{
@@ -1448,7 +1417,7 @@ void CGIE_BoadAssyApp::Gf_showPanelIdNg()
 	sdata = strMsg.Mid(0, 8);
 	if(sdata == _T("Panel ID"))
 	{
-		m_pDio7250->Gf_setDioWrite(/*DIO_PANEL_ID_NG*/3);
+		m_pDio7230->Gf_setDioWrite(/*DIO_PANEL_ID_NG*/3);
 	}
 	Read_ErrorCode(_T("EQP"), _T("2"), &strVal);
 	msg_dlg.m_strEMessage.Format(_T("%s. %s"), strVal.GetBuffer(0), strMsg.GetBuffer(0));

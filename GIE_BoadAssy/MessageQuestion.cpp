@@ -44,7 +44,7 @@ BOOL CMessageQuestion::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_pApp->Gf_writeLogData("[Question Message]", "Dialog OPEN");
+	m_pApp->Gf_writeLogData("<WND>", "Question Dialog OPEN");
 
 	Lf_initLocalValue();
 	Lf_initFontset();
@@ -103,14 +103,14 @@ HBRUSH CMessageQuestion::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CMessageQuestion::OnBnClickedBtnMsgConfirm()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->Gf_writeLogData(_T("[Question Message]"), _T("==> Confirm"));
+	m_pApp->Gf_writeLogData(_T("<WND>"), _T("Question Dialog Confirm"));
 	CDialog::OnOK();
 }
 
 void CMessageQuestion::OnBnClickedBtnMsgClose()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->Gf_writeLogData(_T("[Question Message]"), _T("==> Cancel"));
+	m_pApp->Gf_writeLogData(_T("<WND>"), _T("Question Dialog Cancel"));
 	CDialog::OnCancel();
 }
 
@@ -118,7 +118,7 @@ void CMessageQuestion::Lf_initLocalValue()
 {
 	m_sttMsgMessage.SetWindowText(m_strQMessage);
 
-	m_pApp->Gf_writeLogData(_T("[Question Message]"), m_strQMessage);
+	m_pApp->Gf_writeLogData(_T("<WND>"), m_strQMessage);
 
 	if(m_strLButton.IsEmpty() == FALSE)
 		m_btnMsgConfirm.SetWindowText(m_strLButton);

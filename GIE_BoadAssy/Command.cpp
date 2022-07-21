@@ -40,7 +40,7 @@ BOOL CCommand::Lf_SyncAckFusingMessage(int nMessage)
 			bRtnCode = TRUE;
 			break;
 		}
-		Sleep(10);
+		delayMS(10);
 
 		if(nCnt > 300)
 		{
@@ -54,7 +54,7 @@ BOOL CCommand::Lf_SyncAckFusingMessage(int nMessage)
 	return bRtnCode;
 }
 
-BOOL CCommand::Gf_setPacketSend(BYTE nId, int nCommand, int nSize, char* pdata)
+BOOL CCommand::Gf_setPacketSend(BYTE nId, int nCommand, int nSize, char* pdata, BOOL Ack)
 {
 	int target=0;
 	int datalen=0;
@@ -94,13 +94,17 @@ BOOL CCommand::Gf_setPacketSend(BYTE nId, int nCommand, int nSize, char* pdata)
 	int waitTime = 3000;
 
 	m_pApp->Gf_sendPgData((BYTE*)sendPacket, packetlen);
-
+	if (Ack == FALSE)
+	{
+		delayMS(200);
+		return TRUE;
+	}
 	return Lf_SyncAckFusingMessage(nCommand);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // eDP 1.4 Bridge보드에 CMD전송을 위한 함수.
-BOOL CCommand::Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE nCmd, int nLength, char* pData)
+BOOL CCommand::Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE nCmd, int nLength, char* pData, BOOL Ack)
 {
 	int target=0;
 	int datalen=0;
@@ -139,6 +143,11 @@ BOOL CCommand::Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE 
 
 	m_pApp->Gf_sendGfd250Data((BYTE*)sendPacket, packetlen);	
 
+	if (Ack == TRUE)
+	{
+		delayMS(200);
+		return TRUE;
+	}
 	int nRecCnt=0;
 	while(1)
 	{
@@ -147,67 +156,72 @@ BOOL CCommand::Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE 
 
 		if(nRecCnt++ > 100)					
 			return FALSE;
-		Sleep(40);
+		delayMS(50);
 	}
 
 	return TRUE;
 }
-
-BOOL CCommand::Gf_setPacketSendBLU(BYTE nCmd, int nLength, char* pData)
+BOOL CCommand::Gf_setBluDuty(int Duty)
 {
-	int target=0;
-	int datalen=0;
-	int packetlen=0;
-	BYTE nChkSum=0;
-	char szbuff[5]={0,};
-	char sendPacket[1024]={0,};
-
-// 	if(lpStationInfo->gucLedBlPort==0)
-// 	{
-// 		return TRUE;
-// 	}
+	char szpacket[512];
+	int packetlen;
+	sprintf_s(szpacket, "B0%04d%c", Duty, 0x0d);
+	packetlen = (int)strlen(szpacket);
 
 	m_pApp->m_nRcvMsgBlu = 0x00;
 
-	// data 앞까지 Packet 생성
-	sprintf_s(sendPacket, "%cA1%02X%02X%02X%04X", PACKET_STX, TARGET_CTRL, 0, nCmd, nLength);
-
-	// data를 포함하여 packet 생성. hex로 전송할 data가 있으므로 memcpy를 사용
-	packetlen = (int)strlen(sendPacket);
-	memcpy(&sendPacket[packetlen], pData, datalen);
-
-	// data 를 포함한 packet의 길이를 구한다.
-	packetlen += datalen;
-
-	// 생성된 Packet을 이용하여 CheckSum을 구한다.
-	for(int j=1; j<packetlen; j++)		// Check Sum
+	m_pApp->Gf_sendBLUData((BYTE*)szpacket, packetlen);
+	int nRecCnt = 0;
+	while (1)
 	{
-		nChkSum += sendPacket[j];
-	}
-	sprintf_s(szbuff, "%02X%c", nChkSum, 0x03);
-
-	// Checksum과 ETX 3byte를 붙여 다시 Packet을 만든다.
-	memcpy(&sendPacket[packetlen], szbuff, 3);
-	packetlen += 3;
-
-	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
-	sendPacket[packetlen] = 0x00;
-
-	m_pApp->Gf_sendBLUData((BYTE*)sendPacket, packetlen);
-
-	int nRecCnt=0;
-	while(1)
-	{
-		if(m_pApp->m_nRcvMsgBlu == nCmd)	
+		if (m_pApp->m_nRcvMsgBlu == TRUE)
 			break;
-		if(nRecCnt++ > 30)					
+		if (nRecCnt++ > 30)
 			return FALSE;
-		Sleep(10);
+		delayMS(10);
+	}
+
+	sprintf_s(szpacket, "L1%c", 0x0d);
+	packetlen = (int)strlen(szpacket);
+
+	m_pApp->m_nRcvMsgBlu = 0x00;
+
+	m_pApp->Gf_sendBLUData((BYTE*)szpacket, packetlen);
+	nRecCnt = 0;
+	while (1)
+	{
+		if (m_pApp->m_nRcvMsgBlu == TRUE)
+			break;
+		if (nRecCnt++ > 30)
+			return FALSE;
+		delayMS(10);
 	}
 
 	return TRUE;
 }
+BOOL CCommand::Gf_setBluOnOff(BOOL onoff)
+{
+	char szpacket[512];
+	int packetlen;
 
+	sprintf_s(szpacket, "L%01d%c", onoff, 0x0d);
+	packetlen = (int)strlen(szpacket);
+
+	m_pApp->m_nRcvMsgBlu = 0x00;
+
+	m_pApp->Gf_sendBLUData((BYTE*)szpacket, packetlen);
+	int nRecCnt = 0;
+	while (1)
+	{
+		if (m_pApp->m_nRcvMsgBlu == TRUE)
+			break;
+		if (nRecCnt++ > 30)
+			return FALSE;
+		delayMS(10);
+	}
+
+	return TRUE;
+}
 /////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CCommand::Lf_makeSystemFusingData(char* packet)
@@ -405,7 +419,30 @@ BOOL CCommand::Gf_setFusingSystemInfo()
 
 	return bRet;
 }
+BOOL CCommand::Gf_setPGInfoPatternString(CString strPtnPacket, BOOL Ack)
+{
+	BOOL bRet = FALSE;
+	int length = 0;
+	char szPacket[4096] = { 0, };
+	wchar_To_char(strPtnPacket.GetBuffer(0), szPacket);
+	length = (int)strlen(szPacket);
 
+	bRet = Gf_setPacketSend(0, CMD_T2PTN_SEND, length, szPacket, Ack);
+
+	return bRet;
+}
+BOOL CCommand::Gf_setGFD250InfoPatternString(CString strPtnPacket, BOOL Ack)
+{
+	BOOL bRet = FALSE;
+	int length = 0;
+	char szPacket[4096] = { 0, };
+	wchar_To_char(strPtnPacket.GetBuffer(0), szPacket);
+	length = (int)strlen(szPacket);
+
+	bRet = Gf_setPacketSendGfd250(TARGET_GFD250, PG_CMD, 0x00, CMD_T2PTN_SEND, length, szPacket);
+
+	return bRet;
+}
 CString CCommand::MakeT2PtnDataGFD250(CString strPtnName, BOOL bHotKeyFlags, BOOL bHkeyFlags)
 {
 	int nFG=0, nIndex=0;
@@ -419,11 +456,10 @@ CString CCommand::MakeT2PtnDataGFD250(CString strPtnName, BOOL bHotKeyFlags, BOO
 
 	strTmp.Format(_T(".\\PATTERN\\%s"), strPtnName);
 	strTmp = CT2CmdGen::makeT2dataStrFromFile(strTmp);
-
 	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nLcmInfoInterface, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 
 	lpData = strTmp;
-
+#if 0
 	nIndex = lpData.Find(_T("CBT"), 0);
 
 	nFG = _ttoi(lpModelInfo->m_sLbPtnFg[*m_pApp->pPtnIndex]);
@@ -460,7 +496,7 @@ CString CCommand::MakeT2PtnDataGFD250(CString strPtnName, BOOL bHotKeyFlags, BOO
 	{
 		lpData = Lf_ModifyPtn_RGB(strPtnName, lpData, 0, bHotKeyFlags);
 	}
-
+#endif // 0
 	return lpData;
 }
 
@@ -477,10 +513,11 @@ CString CCommand::MakeT2PtnFusingData(CString strPtnName, BOOL bHotKeyFlags, BOO
 
 	strTmp.Format(_T(".\\PATTERN\\%s"), strPtnName);
 	strTmp = CT2CmdGen::makeT2dataStrFromFile(strTmp);
-
 	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nLcmInfoInterface, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 
 	lpData = strTmp;
+#if 0
+
 
 	nIndex = lpData.Find(_T("CBT"), 0);
 
@@ -555,6 +592,7 @@ CString CCommand::MakeT2PtnFusingData(CString strPtnName, BOOL bHotKeyFlags, BOO
 		}
 	}
 
+#endif // 0
 	return lpData;
 }
 
@@ -656,7 +694,14 @@ CString CCommand::Lf_ModifyPtn_RGB(CString strPtnName, CString lpData, int nPtnI
 
 	return lpData;
 }
-
+CString CCommand::Gf_makePGPatternString(CString strPtnName)
+{
+	CString strTmp, retString;
+	strTmp.Format(_T(".\\PATTERN\\%s"), strPtnName);
+	strTmp = CT2CmdGen::makeT2dataStrFromFile(strTmp);
+	retString = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nLcmInfoInterface, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+	return retString;
+}
 BOOL CCommand::Gf_setPGInfo(CString strPtnName, BOOL bHotKeyFlags, BOOL bHkeyFlags)
 {
 	BOOL bRet=FALSE;
@@ -780,7 +825,8 @@ BOOL CCommand::Gf_setPowerSeqOnOff(int nOnOff)
 	m_PacketLength = (int)strlen(m_szPacket);
 
 	bRtnCode = Gf_setPacketSend(0, CMD_CTRL_POWER_SEQ_ONOFF, m_PacketLength, m_szPacket);
-
+	if (bRtnCode == TRUE)
+		delayMS(lpModelInfo->m_nSeqDelay + 500);
 	return bRtnCode;
 }
 
@@ -932,44 +978,6 @@ BOOL CCommand::Gf_setGoToBootSection()
 	return Gf_setPacketSend(0x00, CMD_CTRL_FW_GOTO_BOOT_SECTION, 0, NULL);
 }
 
-BOOL CCommand::Gf_setBluMinMax(BOOL bMinMax, int nPtnIndex)
-{
-	int m_nValue=0,vLine=2, hLine=4, lineOn=1, nMin=5; 
-	CString sdata=_T("");
-
-	m_nValue = _ttoi(lpModelInfo->m_sLbPtnBlu[nPtnIndex]);
-
-	sdata.Format(_T("%02X%02X%02X%02X%02X"), m_nValue,vLine,hLine,lineOn, lpModelInfo->m_nBluMin);
-	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
-
-	if(Gf_setPacketSendBLU(CMD_LEDBL_MINMAX_SET, m_PacketLength, m_szPacket) == TRUE)
-	{
-		if(bMinMax==_MIN_)
-		{
-			return Gf_setPacketSendBLU(CMD_LEDBL_MINMAX, 2, "01");
-		}
-		else
-		{
-			return Gf_setPacketSendBLU(CMD_LEDBL_MINMAX, 2, "02");
-		}
-	}
-	else
-	{
-		return FALSE;
-	}
-}
-
-BOOL CCommand::Gf_setBackLightFreqSet(int nFreq)
-{
-	CString sdata=_T("");
-
-	sdata.Format(_T("04x"), lpSystemInfo->m_nBluFreq);
-	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
-
-	return Gf_setPacketSendBLU(CMD_LEDBL_FREQ_SET, m_PacketLength, m_szPacket);
-}
 
 BOOL CCommand::Gf_setEEPRomReadData()
 {
@@ -995,7 +1003,7 @@ BOOL CCommand::Gf_setEEPRomReadData()
 // GFD250 Command List
 BOOL CCommand::Gf_setPGInfoGFD250(CString strPtnName, BOOL bHotKeyFlags, BOOL bHkeyFlags)
 {
-	BOOL bRtnCode;
+	BOOL bRtnCode = FALSE;
 	CString sdata;
 
 	sdata = MakeT2PtnDataGFD250(strPtnName, bHotKeyFlags, bHkeyFlags);

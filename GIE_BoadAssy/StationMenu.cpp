@@ -123,7 +123,33 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetBkColor(COLOR_LIGHT_BLUE);
 			pDC->SetTextColor(COLOR_BLACK);
 			return m_Brush[COLOR_IDX_LIGHT_BLUE];
-		}		
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_EQP_NAME
+			|| pWnd->GetDlgCtrlID() == IDC_STT_TEST_MODE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_TYPE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_FREQ
+			|| pWnd->GetDlgCtrlID() == IDC_STT_TEST_START_DELAY
+			|| pWnd->GetDlgCtrlID() == IDC_STT_FAST_JUDGE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_PANELID_NG
+			|| pWnd->GetDlgCtrlID() == IDC_STT_PG_PORT
+			|| pWnd->GetDlgCtrlID() == IDC_STT_GFD250_PORT
+			|| pWnd->GetDlgCtrlID() == IDC_STT_AUTO_BCR_PORT
+			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_PORT
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_SERV_PORT
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_NETWORK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_DEAMON
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_LOCAL_SUBJ
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_REMOTE_SUBJ
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_LOCAL_IP
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MODEL_PATH
+			|| pWnd->GetDlgCtrlID() == IDC_STT_PATTERN_PATH
+			|| pWnd->GetDlgCtrlID() == IDC_STT_EDID_FILE_PATH
+			)
+		{
+			pDC->SetBkColor(COLOR_BLUISH);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_BLUISH];
+		}
 		break;
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
@@ -140,6 +166,14 @@ void CStationMenu::OnPaint()
 	GetClientRect(&rect);
 	rect.bottom=90;
 	dc.FillSolidRect(rect,COLOR_DEEP_BLUE);
+
+	GetClientRect(&rect);
+	rect.top = 91;
+	dc.FillSolidRect(rect, COLOR_ORANGE);
+
+	GetClientRect(&rect);
+	rect.top = 92;
+	dc.FillSolidRect(rect, COLOR_GRAY64);
 }
 
 void CStationMenu::Lf_initFontSet()
@@ -148,29 +182,82 @@ void CStationMenu::Lf_initFontSet()
 	// Font Set
 	m_Font[0].CreateFont(24, 11, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
-	m_Font[1].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	m_Font[1].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	GetDlgItem(IDC_STT_STATIONDLG_TIT)->SetFont(&m_Font[1]);
+	
 
-	m_Font[2].CreateFont(15, 8, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	m_Font[2].CreateFont(34, 14, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	GetDlgItem(IDC_BTN_SAVE)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_BTN_CANCEL)->SetFont(&m_Font[2]);
 
-	m_Font[3].CreateFont(34, 14, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
-	GetDlgItem(IDC_BTN_SAVE)->SetFont(&m_Font[3]);
-	GetDlgItem(IDC_BTN_CANCEL)->SetFont(&m_Font[3]);
+	m_Font[3].CreateFont(19, 8, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI  Symbol"));
+	GetDlgItem(IDC_STT_SYS_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_PORT_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MES_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_PATH_TIT)->SetFont(&m_Font[3]);
+	
+	m_Font[4].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	GetDlgItem(IDC_EDT_EQP_NAME)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_TEST_MODE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_BLU_TYPE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDT_BLU_FREQ)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDT_TEST_START_DELAY)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_FAST_JUDGE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_PID_NG)->SetFont(&m_Font[4]);
 
-	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
-	GetDlgItem(IDC_STT_STATIONDLG_TIT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CBO_PG_COMPORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CBO_GFD250_COMPORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CBO_AUTO_BCR_COMPORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CBO_BLU_COMPORT)->SetFont(&m_Font[4]);
+
+	GetDlgItem(IDC_EDIT_MES_SERVICEPORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDIT_MES_NETWORK)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDIT_MES_DEMONPORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDIT_MES_LOCALSUBJECT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDIT_MES_REMOTESUBJECT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_IPADDRESS_LOCAL_IP)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_BTN_QUALITY_SETUP)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_BTN_QUALITY_FTP_SETUP)->SetFont(&m_Font[4]);
+
+	GetDlgItem(IDC_EDT_MOD_FILE_PATH)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDT_PTN_FILE_PATH)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDT_EDID_FILE_PATH)->SetFont(&m_Font[4]);
+
+	GetDlgItem(IDC_STT_EQP_NAME)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_TEST_MODE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_BLU_TYPE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_BLU_FREQ)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_TEST_START_DELAY)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_FAST_JUDGE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_PANELID_NG)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_PG_PORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_GFD250_PORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_AUTO_BCR_PORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_BLU_PORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MES_SERV_PORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MES_NETWORK)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MES_DEAMON)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MES_LOCAL_SUBJ)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MES_REMOTE_SUBJ)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MES_LOCAL_IP)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MODEL_PATH)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_PATTERN_PATH)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_EDID_FILE_PATH)->SetFont(&m_Font[4]);
+
 
 	m_Font[5].CreateFont(150, 70, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
 
 	/*************************************************************************************************/
 	// Brush Set
-	m_Brush[0].CreateSolidBrush (COLOR_ORANGE);
+	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush (COLOR_ORANGE);
 	m_Brush[COLOR_IDX_RED].CreateSolidBrush (COLOR_RED);
-	m_Brush[2].CreateSolidBrush (COLOR_GRAY64);
-	m_Brush[3].CreateSolidBrush (COLOR_GRAY94);
+	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
+	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush (COLOR_GRAY94);
 	m_Brush[COLOR_IDX_LIGHT_GREEN].CreateSolidBrush (COLOR_LIGHT_GREEN);
 	m_Brush[COLOR_IDX_LIGHT_BLUE].CreateSolidBrush (COLOR_LIGHT_BLUE);
 	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush (COLOR_WHITE);
-	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);	
+	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);
+	m_Brush[COLOR_IDX_BLUISH].CreateSolidBrush(COLOR_BLUISH);
 }
 
 void CStationMenu::Lf_initControls()
@@ -221,7 +308,7 @@ void CStationMenu::Lf_saveSystemInfo()
 
 	CString sdata=_T("");
 
-	m_pApp->Gf_writeLogData(_T("BUTTON EVENT"),_T("SYSTEM Setting Save"));
+	m_pApp->Gf_writeLogData(_T("<WND>"),_T("SYSTEM Setting Save"));
 
 	m_edtEqpName.GetWindowText(sdata);
 	lpSystemInfo->m_sMachinName.Format(_T("%s"),sdata);

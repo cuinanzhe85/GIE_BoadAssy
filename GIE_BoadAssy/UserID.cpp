@@ -79,7 +79,7 @@ void CUserID::OnBnClickedOk()
 
 	m_edtInputId.GetWindowText(m_sUserId);
 
-//	if(nUserIDmodeSet == 0)
+	if(m_sUserId.IsEmpty() == FALSE)
 	{
 		m_pApp->m_bUserIdCheck = false;
 		m_pApp->m_bUserIdPM = false;
@@ -116,7 +116,7 @@ void CUserID::OnBnClickedOk()
 				if (m_pApp->Gf_gmesConnect(SERVER_MES) == FALSE)
 				{
 					//AfxMessageBox(_T("MES CONNECTION FAIL - MES can not be connected."), MB_ICONERROR);
-					m_pApp->Gf_writeLogData("[MES]", "Connection Fail");
+					m_pApp->Gf_writeLogData("<MES>", "Connection Fail");
 				}
 			}
 			
@@ -171,11 +171,11 @@ void CUserID::OnBnClickedOk()
 			{
 				MessageBox(_T("Input again 'UserID'"));
 				GetDlgItem (IDC_EDIT_INPUT_ID)->SetWindowText (_T(""));
-				GetDlgItem (IDC_EDIT_INPUT_ID)->SetFocus ();
-				GetDlgItem(IDOK)->EnableWindow(TRUE);
 			}
 		}
 	}
+	GetDlgItem(IDC_EDIT_INPUT_ID)->SetFocus();
+	GetDlgItem(IDOK)->EnableWindow(TRUE);
 }
 
 BOOL CUserID::PreTranslateMessage(MSG* pMsg)
@@ -207,11 +207,12 @@ void CUserID::Lf_initFont()
 	GetDlgItem(IDC_EDIT_INPUT_ID)->SetFont(&m_Font[5]);
 	GetDlgItem(IDOK)->SetFont(&m_Font[5]);
 
-	m_Brush[0].CreateSolidBrush (COLOR_ORANGE);
-	m_Brush[1].CreateSolidBrush (COLOR_GRAY240);
+	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush (COLOR_ORANGE);
+	m_Brush[COLOR_IDX_GRAY240].CreateSolidBrush (COLOR_GRAY240);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);
-	m_Brush[3].CreateSolidBrush (RGB(128,128,128));
-	m_Brush[4].CreateSolidBrush (RGB(128,128,128));
+	m_Brush[COLOR_IDX_GRAY127].CreateSolidBrush (COLOR_GRAY127);
+	m_Brush[COLOR_IDX_GRAY96].CreateSolidBrush (COLOR_GRAY96);
+	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush(COLOR_GRAY64);
 }
 
 HBRUSH CUserID::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
@@ -238,6 +239,13 @@ HBRUSH CUserID::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetTextColor(COLOR_WHITE);
 			return m_Brush[COLOR_IDX_DEEP_BLUE];
 		}
+
+		if (pWnd->GetDlgCtrlID() == IDC_STT_USERID_TIT)
+		{
+			pDC->SetBkColor(COLOR_GRAY64);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_GRAY64];
+		}
 		break;
 	}	
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
@@ -254,4 +262,13 @@ void CUserID::OnPaint()
 	GetClientRect(&rect);
 	rect.bottom=90;
 	dc.FillSolidRect(rect,COLOR_DEEP_BLUE);
+
+	GetClientRect(&rect);
+	rect.top = 90;
+	rect.bottom = 91;
+	dc.FillSolidRect(rect, COLOR_GREEN);
+
+	GetClientRect(&rect);
+	rect.top = 92;
+	dc.FillSolidRect(rect, COLOR_GRAY64);
 }

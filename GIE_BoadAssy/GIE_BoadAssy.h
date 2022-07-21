@@ -9,7 +9,7 @@
 #endif
 
 #include "resource.h"		// 주 기호입니다.
-#include "DIO7250.h"
+#include "DIO7230.h"
 #include "PortController.h"
 #include "Command.h"
 #include "CIMNetCommApp.h"
@@ -31,7 +31,7 @@ public:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CDIO7250*			m_pDio7250;
+	CDIO7230* m_pDio7230;
 	CPortController*	m_pPort;
 	CCommand*			m_pCommand;
 	CCimNetCommApi*		m_pCimNet;
@@ -48,8 +48,8 @@ public:
 	void Gf_writeInspCount(int Type);
 	void Gf_loadInspCount();
 	void Gf_loadSystemInfo();	
-	void Gf_loadMedelFile();
-	void Gf_loadPatternFile();
+	BOOL Gf_loadMedelFile();
+	BOOL Gf_loadPatternFile();
 	void Gf_setSerialPort();
 	void Gf_sendPgData(BYTE* lpData, DWORD nSize);
 	void Gf_sendGfd250Data(BYTE* lpData, DWORD nSize);

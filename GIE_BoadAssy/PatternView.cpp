@@ -81,10 +81,10 @@ void CPatternView::drawPattern(CString ptnName)
 	LPMODELSETINFO lpModelInfo;
 	lpModelInfo = m_pApp->GetModelInfo();
 
-	fullpath.Format(_T("%s\\%s.pdb"), m_pathPatternLogical, ptnName);
+	fullpath.Format(_T("%s\\%s"), m_pathPatternLogical, ptnName);
 
-	strTmp = CT2CmdGen::makeT2dataStrFromFile(ptnName);
-	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nLcmInfoInterface,strTmp, 1920, 1080);
+	strTmp = CT2CmdGen::makeT2dataStrFromFile(fullpath);
+	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nLcmInfoInterface,strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 
 	drawPrevPattern(strTmp);
 }

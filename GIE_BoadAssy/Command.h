@@ -14,12 +14,15 @@ public:
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 public:
-	BOOL Gf_setPacketSend(BYTE nId, int nCommand, int nSize, char* pdata);
-	BOOL Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE nCmd, int nLength, char* pData);
-	BOOL Gf_setPacketSendBLU(BYTE nCmd, int nLength, char* pData);
+	BOOL Gf_setPacketSend(BYTE nId, int nCommand, int nSize, char* pdata, BOOL Ack=TRUE);
+	BOOL Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE nCmd, int nLength, char* pData, BOOL Ack = TRUE);
+
+	BOOL Gf_setBluDuty(int Duty);
+	BOOL Gf_setBluOnOff(BOOL onoff);
 
 	BOOL Gf_setFusingSystemInfo();
-	BOOL gf_setPGInfoPatternString(CString ptn_string);
+	BOOL Gf_setPGInfoPatternString(CString ptn_string, BOOL Ack = TRUE);
+	BOOL Gf_setGFD250InfoPatternString(CString strPtnPacket, BOOL Ack = TRUE);
 	CString MakeT2PtnDataGFD250(CString szPtnName, BOOL bHotKeyFlags, BOOL bHkeyFlags);
 	CString MakeT2PtnFusingData(CString strPtnName, BOOL bHotKeyFlags, BOOL bHkeyFlags);
 
@@ -45,9 +48,8 @@ public:
 	BOOL Gf_setPowerVoltSet(int nVoltName, float nVoltValue);
 	BOOL Gf_setI2CPullupEnable(int nID=0);
 	void Gf_ShowMessageBox(CString strMessage);
-	BOOL Gf_setBluMinMax(BOOL bMinMax, int nPtnIndex);
-	BOOL Gf_setBackLightFreqSet(int nFreq);
 	BOOL Gf_setEEPRomReadData();
+	CString Gf_makePGPatternString(CString strPtnName);
 
 	BOOL Gf_getFirmwareVersion();	
 	BOOL Gf_setGoToBootSection();	

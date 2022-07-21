@@ -119,6 +119,7 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialog)
 	ON_BN_CLICKED(IDC_BTN_BLU_ONOFF, &CModelInfo::OnBnClickedBtnBluOnoff)
 	ON_BN_CLICKED(IDC_BTN_APPLY, &CModelInfo::OnBnClickedBtnApply)
 	ON_CBN_SELCHANGE(IDC_CMB_PTN_NAME, &CModelInfo::OnCbnSelchangeCmbPtnName)
+	ON_WM_DRAWITEM()
 END_MESSAGE_MAP()
 
 
@@ -179,6 +180,36 @@ void CModelInfo::Lf_initItemValue()
 	m_pApp->m_pPatternView->InitPatternRect(GetDC(), rcLCD, rcFrame);
 	m_pApp->m_pPatternView->InitPatternPath(_T(".\\Pattern"));
 	m_pApp->m_pPatternView->InitBmpPatternPath(_T(""));
+
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_SIGNAL)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_CLOCK)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_VCOM)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_TIMING)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_POWER)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_EDID)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_OTHERS)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_PATTERN)->m_hWnd, _T(""), _T(""));
+	HICON hIcon;
+	CButton* pBtn;
+	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_ADD);
+	pBtn = (CButton*)GetDlgItem(IDC_BTN_ADD);
+	pBtn->SetIcon(hIcon);
+
+	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_DELETE);
+	pBtn = (CButton*)GetDlgItem(IDC_BTN_DELETE);
+	pBtn->SetIcon(hIcon);
+
+	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_UP);
+	pBtn = (CButton*)GetDlgItem(IDC_BTN_UP);
+	pBtn->SetIcon(hIcon);
+
+	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_DOWN);
+	pBtn = (CButton*)GetDlgItem(IDC_BTN_DOWN);
+	pBtn->SetIcon(hIcon);
+
+	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_CHANGE);
+	pBtn = (CButton*)GetDlgItem(IDC_BTN_CHANGE);
+	pBtn->SetIcon(hIcon);
 }
 void CModelInfo::Lf_initFontSet()
 {
@@ -204,7 +235,7 @@ void CModelInfo::Lf_initFontSet()
 	GetDlgItem(IDC_STT_CREATE_MODEL_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_EDT_CREATE_MODEL)->SetFont(&m_Font[3]);
 
-	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
 	GetDlgItem(IDC_STT_MODELINFODLG_TIT)->SetFont(&m_Font[4]);
 
 	m_Font[5].CreateFont(24, 11, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
@@ -218,11 +249,12 @@ void CModelInfo::Lf_initFontSet()
 
 	/*******************************************************************************************************************/
 	// Brush set
-	m_Brush[0].CreateSolidBrush (COLOR_ORANGE);
-	m_Brush[1].CreateSolidBrush (COLOR_GRAY240);
-	m_Brush[2].CreateSolidBrush (COLOR_GRAY64);
-	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush (COLOR_GRAY224);
+	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
+	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush (COLOR_ORANGE);
 	m_Brush[COLOR_IDX_GRAY240].CreateSolidBrush (COLOR_GRAY240);
+	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
+	m_Brush[COLOR_IDX_BLUISH].CreateSolidBrush(COLOR_BLUISH);
+	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush (COLOR_GRAY224);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);
 }
 
@@ -392,15 +424,15 @@ void CModelInfo::Lf_loadModelData()
 	for(loop = 0;loop < lpModelInfo->m_nLbCnt; loop++)
 	{
 		m_lcPtnSetList.InsertItem(loop, lpModelInfo->m_sLbPtnName[loop]);
-		m_lcPtnSetList.SetItemText(loop, 1, lpModelInfo->m_sLbPtnFg[loop]);
-		m_lcPtnSetList.SetItemText(loop, 2, lpModelInfo->m_sLbPtnBg[loop]);
-		m_lcPtnSetList.SetItemText(loop, 3, lpModelInfo->m_sLbPtnVcc[loop]);
-		m_lcPtnSetList.SetItemText(loop, 4, lpModelInfo->m_sLbPtnVdd[loop]);
-		m_lcPtnSetList.SetItemText(loop, 5, lpModelInfo->m_sLbPtnTms[loop]);
-		m_lcPtnSetList.SetItemText(loop, 6, lpModelInfo->m_sLbPtnVsync[loop]);
-		m_lcPtnSetList.SetItemText(loop, 7, lpModelInfo->m_sLbPtnVcom[loop]);
-		m_lcPtnSetList.SetItemText(loop, 8, lpModelInfo->m_sLbPtnBlu[loop]);
-		m_lcPtnSetList.SetItemText(loop, 9, lpModelInfo->m_sLbPtnTouch[loop]);
+		//m_lcPtnSetList.SetItemText(loop, 1, lpModelInfo->m_sLbPtnFg[loop]);
+		//m_lcPtnSetList.SetItemText(loop, 2, lpModelInfo->m_sLbPtnBg[loop]);
+		m_lcPtnSetList.SetItemText(loop, 1, lpModelInfo->m_sLbPtnVcc[loop]);
+		m_lcPtnSetList.SetItemText(loop, 2, lpModelInfo->m_sLbPtnVdd[loop]);
+		m_lcPtnSetList.SetItemText(loop, 3, lpModelInfo->m_sLbPtnTms[loop]);
+		m_lcPtnSetList.SetItemText(loop, 4, lpModelInfo->m_sLbPtnVsync[loop]);
+		m_lcPtnSetList.SetItemText(loop, 5, lpModelInfo->m_sLbPtnVcom[loop]);
+		m_lcPtnSetList.SetItemText(loop, 6, lpModelInfo->m_sLbPtnBlu[loop]);
+		m_lcPtnSetList.SetItemText(loop, 7, lpModelInfo->m_sLbPtnTouch[loop]);
 	}
 
 	m_sttMicroPtnPath.SetWindowText(lpModelInfo->m_sMicroPtnPath);
@@ -451,55 +483,55 @@ void CModelInfo::Lf_insertListColum()
 
 	m_lcPtnSetList.GetClientRect(&rect);
 	m_lcPtnSetList.InsertColumn( 0, _T("PATTERN NAME"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 1, _T("FG"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 2, _T("BG"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 3, _T("VCC"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 4, _T("VDD"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 5, _T("T(s)"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 6, _T("Vsync"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 7, _T("VCOM"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 8, _T("BLU"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 9, _T("Touch"), LVCFMT_LEFT, -1, -1 );
+	//m_lcPtnSetList.InsertColumn( 1, _T("FG"), LVCFMT_LEFT, -1, -1 );
+	//m_lcPtnSetList.InsertColumn( 2, _T("BG"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn( 1, _T("VCC"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn( 2, _T("VDD"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn( 3, _T("T(s)"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn( 4, _T("Vsync"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn( 5, _T("VCOM"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn( 6, _T("BLU"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn( 7, _T("Touch"), LVCFMT_LEFT, -1, -1 );
 
 	m_lcPtnSetList.SetColumnWidth( 0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // Pattern
 	GetDlgItem(IDC_CMB_PTN_NAME)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 0, rect2.Width());
 
-	m_lcPtnSetList.SetColumnWidth( 1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // FG
-	GetDlgItem(IDC_EDT_PTN_FG)->GetWindowRect(&rect2);
+	//m_lcPtnSetList.SetColumnWidth( 1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // FG
+	//GetDlgItem(IDC_EDT_PTN_FG)->GetWindowRect(&rect2);
+	//m_lcPtnSetList.SetColumnWidth( 1, rect2.Width()+offset);
+
+	//m_lcPtnSetList.SetColumnWidth( 2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // BG
+	//GetDlgItem(IDC_EDT_PTN_BG)->GetWindowRect(&rect2);
+	//m_lcPtnSetList.SetColumnWidth( 2, rect2.Width()+offset);
+
+	m_lcPtnSetList.SetColumnWidth( 1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCC
+	GetDlgItem(IDC_EDT_PTN_VCC)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 1, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // BG
-	GetDlgItem(IDC_EDT_PTN_BG)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth( 2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VDD
+	GetDlgItem(IDC_EDT_PTN_VDD)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 2, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 3, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCC
-	GetDlgItem(IDC_EDT_PTN_VCC)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth( 3, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // T(ms)
+	GetDlgItem(IDC_EDT_PTN_TMS)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 3, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 4, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VDD
-	GetDlgItem(IDC_EDT_PTN_VDD)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth( 4, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VSYNC
+	GetDlgItem(IDC_EDT_PTN_VSYNC)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 4, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 5, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // T(ms)
-	GetDlgItem(IDC_EDT_PTN_TMS)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth( 5, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCOM
+	GetDlgItem(IDC_CMB_PTN_VCOM)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 5, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 6, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VSYNC
-	GetDlgItem(IDC_EDT_PTN_VSYNC)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth( 6, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // BLU
+	GetDlgItem(IDC_EDT_PTN_BLU)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 6, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 7, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCOM
-	GetDlgItem(IDC_CMB_PTN_VCOM)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 7, rect2.Width()+offset);
-
-	m_lcPtnSetList.SetColumnWidth( 8, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // BLU
-	GetDlgItem(IDC_EDT_PTN_BLU)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 8, rect2.Width()+offset);
-
-	m_lcPtnSetList.SetColumnWidth( 9, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // TOUCH
+	m_lcPtnSetList.SetColumnWidth( 7, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // TOUCH
 	GetDlgItem(IDC_CMB_PTN_TOUCH)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 9, rect2.Width()+offset);
+	m_lcPtnSetList.SetColumnWidth( 7, rect2.Width()+offset);
 
 	DWORD dwStype = m_lcPtnSetList.GetExtendedStyle();
 	dwStype |= LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES;
@@ -834,19 +866,19 @@ void CModelInfo::Lf_setPtnDataChange(int sel)
 
 	m_cboPtnName.SetCurSel(nAllPtn);
 
-	m_edtPtnFg.SetWindowText(m_lcPtnSetList.GetItemText(sel,1));
-	m_edtPtnBg.SetWindowText(m_lcPtnSetList.GetItemText(sel,2));
-	m_edtPtnVCC.SetWindowText(m_lcPtnSetList.GetItemText(sel,3));
-	m_edtPtnVDD.SetWindowText(m_lcPtnSetList.GetItemText(sel,4));
-	m_edtPtnTMS.SetWindowText(m_lcPtnSetList.GetItemText(sel,5));
-	m_edtPtnVSync.SetWindowText(m_lcPtnSetList.GetItemText(sel,6));
-	sdata = m_lcPtnSetList.GetItemText(sel,7);
+	//m_edtPtnFg.SetWindowText(m_lcPtnSetList.GetItemText(sel,1));
+	//m_edtPtnBg.SetWindowText(m_lcPtnSetList.GetItemText(sel,2));
+	m_edtPtnVCC.SetWindowText(m_lcPtnSetList.GetItemText(sel,1));
+	m_edtPtnVDD.SetWindowText(m_lcPtnSetList.GetItemText(sel,2));
+	m_edtPtnTMS.SetWindowText(m_lcPtnSetList.GetItemText(sel,3));
+	m_edtPtnVSync.SetWindowText(m_lcPtnSetList.GetItemText(sel,4));
+	sdata = m_lcPtnSetList.GetItemText(sel,5);
 	if(!sdata.Compare(_T("ON")))	m_cboPtnVcom.SetCurSel(1);
 	else							m_cboPtnVcom.SetCurSel(0);
 
-	m_edtPtnBlu.SetWindowText(m_lcPtnSetList.GetItemText(sel,8));
+	m_edtPtnBlu.SetWindowText(m_lcPtnSetList.GetItemText(sel,6));
 
-	sdata = m_lcPtnSetList.GetItemText(sel,9);
+	sdata = m_lcPtnSetList.GetItemText(sel,7);
 	if(!sdata.Compare(_T("ON")))	m_cboPtnTouch.SetCurSel(1);
 	else							m_cboPtnTouch.SetCurSel(0);
 
@@ -858,31 +890,31 @@ void CModelInfo::Lf_setPtnDataChange(int sel)
 
 void CModelInfo::Lf_setChangeFont()
 {
-	if(m_nChangeFont & 0x0001)	{GetDlgItem(IDC_STT_FG_CLK)->SetFont(&m_Font[1]);}
+	/*if(m_nChangeFont & 0x0001)	{GetDlgItem(IDC_STT_FG_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_FG_CLK)->SetFont(&m_Font[2]);}
 
 	if(m_nChangeFont & 0x0002)	{GetDlgItem(IDC_STT_BG_CLK)->SetFont(&m_Font[1]);}
-	else						{GetDlgItem(IDC_STT_BG_CLK)->SetFont(&m_Font[2]);}
+	else						{GetDlgItem(IDC_STT_BG_CLK)->SetFont(&m_Font[2]);}*/
 
-	if(m_nChangeFont & 0x0004)	{GetDlgItem(IDC_STT_VCC_CLK)->SetFont(&m_Font[1]);}
+	if(m_nChangeFont & 0x0001)	{GetDlgItem(IDC_STT_VCC_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_VCC_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0008)	{GetDlgItem(IDC_STT_VDD_CLK)->SetFont(&m_Font[1]);}
+	if(m_nChangeFont & 0x0002)	{GetDlgItem(IDC_STT_VDD_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_VDD_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0010)	{GetDlgItem(IDC_STT_TMS_CLK)->SetFont(&m_Font[1]);}
+	if(m_nChangeFont & 0x0004)	{GetDlgItem(IDC_STT_TMS_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_TMS_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0020)	{GetDlgItem(IDC_STT_VSYNC_CLK)->SetFont(&m_Font[1]);}
+	if(m_nChangeFont & 0x0008)	{GetDlgItem(IDC_STT_VSYNC_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_VSYNC_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0040)	{GetDlgItem(IDC_STT_VCOM_CLK)->SetFont(&m_Font[1]);}
+	if(m_nChangeFont & 0x0010)	{GetDlgItem(IDC_STT_VCOM_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_VCOM_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0080)	{GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[1]);}
+	if(m_nChangeFont & 0x0020)	{GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0100)	{GetDlgItem(IDC_STT_TOUCH_CLK)->SetFont(&m_Font[1]);}
+	if(m_nChangeFont & 0x0040)	{GetDlgItem(IDC_STT_TOUCH_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_TOUCH_CLK)->SetFont(&m_Font[2]);}
 }
 
@@ -891,11 +923,11 @@ void CModelInfo::OnBnClickedBtnAdd()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	UpdateData(TRUE);
 
-	int nFgValue;
+	//int nFgValue;
 	int nPos, nCnt;
 	CString sdata=_T("");
 
-	m_edtPtnFg.GetWindowTextW(sdata);
+	/*m_edtPtnFg.GetWindowTextW(sdata);
 	nFgValue=_ttoi(sdata);
 
 	switch(lpModelInfo->m_nSignalBit)
@@ -922,7 +954,7 @@ void CModelInfo::OnBnClickedBtnAdd()
 			return;
 		}
 		break;
-	}
+	}*/
 
 	nCnt = m_lcPtnSetList.GetItemCount();
 
@@ -937,32 +969,32 @@ void CModelInfo::OnBnClickedBtnAdd()
 	m_cboPtnName.GetWindowText(sdata);
 	m_lcPtnSetList.InsertItem(nPos, sdata);
 
-	m_edtPtnFg.GetWindowText(sdata);
-	m_lcPtnSetList.SetItem(nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	//m_edtPtnFg.GetWindowText(sdata);
+	//m_lcPtnSetList.SetItem(nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
-	m_edtPtnBg.GetWindowText(sdata);
-	m_lcPtnSetList.SetItem(nPos, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	//m_edtPtnBg.GetWindowText(sdata);
+	//m_lcPtnSetList.SetItem(nPos, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_edtPtnVCC.GetWindowText(sdata);
-	m_lcPtnSetList.SetItem(nPos, 3, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_lcPtnSetList.SetItem(nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_edtPtnVDD.GetWindowText(sdata);
-	m_lcPtnSetList.SetItem(nPos, 4, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_lcPtnSetList.SetItem(nPos, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_edtPtnTMS.GetWindowText(sdata);
-	m_lcPtnSetList.SetItem(nPos, 5, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_lcPtnSetList.SetItem(nPos, 3, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_edtPtnVSync.GetWindowText(sdata);
-	m_lcPtnSetList.SetItem(nPos, 6, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_lcPtnSetList.SetItem(nPos, 4, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_cboPtnVcom.GetWindowText(sdata);
-	m_lcPtnSetList.SetItem(nPos, 7, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_lcPtnSetList.SetItem(nPos, 5, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_edtPtnBlu.GetWindowText(sdata);
-	m_lcPtnSetList.SetItem(nPos, 8, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_lcPtnSetList.SetItem(nPos, 6, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_cboPtnTouch.GetWindowText(sdata);
-	m_lcPtnSetList.SetItem(nPos, 9, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_lcPtnSetList.SetItem(nPos, 7, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_lcPtnSetList.SetSelectionMark(nPos); // Item Select & Focus
 	m_lcPtnSetList.SetItemState(nPos, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
@@ -1045,11 +1077,11 @@ void CModelInfo::OnBnClickedBtnChange()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	UpdateData(TRUE);
 
-	int nFgValue;
+	//int nFgValue;
 	int nPos;
 	CString sdata = _T("");
 
-	m_edtPtnFg.GetWindowTextW(sdata);
+	/*m_edtPtnFg.GetWindowTextW(sdata);
 	nFgValue=_ttoi(sdata);	
 
 	switch(lpModelInfo->m_nSignalBit)
@@ -1076,7 +1108,7 @@ void CModelInfo::OnBnClickedBtnChange()
 			return;
 		}
 		break;
-	}
+	}*/
 
 	POSITION pos = m_lcPtnSetList.GetFirstSelectedItemPosition();
 	nPos = m_lcPtnSetList.GetNextSelectedItem(pos);
@@ -1087,15 +1119,15 @@ void CModelInfo::OnBnClickedBtnChange()
 	
 	m_cboPtnName.GetLBText(m_cboPtnName.GetCurSel(),sdata);
 	m_lcPtnSetList.SetItem( nPos, 0, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_edtPtnFg.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_edtPtnBg.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_edtPtnVCC.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 3, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_edtPtnVDD.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 4, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_edtPtnTMS.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 5, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_edtPtnVSync.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 6, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_cboPtnVcom.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 7, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_edtPtnBlu.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 8, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_cboPtnTouch.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 9, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	//m_edtPtnFg.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	//m_edtPtnBg.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnVCC.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnVDD.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnTMS.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 3, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnVSync.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 4, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_cboPtnVcom.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 5, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnBlu.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 6, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_cboPtnTouch.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 7, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_lcPtnSetList.EnsureVisible( nPos, FALSE);
 
@@ -1125,7 +1157,7 @@ void CModelInfo::OnBnClickedBtnAll()
 
 	UpdateData(TRUE);
 
-	if(m_nSelClkFlags == 1)
+	/*if(m_nSelClkFlags == 1)
 	{
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
 		{
@@ -1141,9 +1173,9 @@ void CModelInfo::OnBnClickedBtnAll()
 			m_edtPtnBg.GetWindowText(sdata);
 			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE,0 ,0);
 		}
-	}
+	}*/
 
-	if(m_nSelClkFlags == 3)
+	if(m_nSelClkFlags == 1)
 	{
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
 		{
@@ -1152,7 +1184,7 @@ void CModelInfo::OnBnClickedBtnAll()
 		}
 	}
 
-	if(m_nSelClkFlags == 4)
+	if(m_nSelClkFlags == 2)
 	{
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
 		{
@@ -1161,7 +1193,7 @@ void CModelInfo::OnBnClickedBtnAll()
 		}
 	}
 
-	if(m_nSelClkFlags == 5)
+	if(m_nSelClkFlags == 3)
 	{
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
 		{
@@ -1170,7 +1202,7 @@ void CModelInfo::OnBnClickedBtnAll()
 		}
 	}
 
-	if(m_nSelClkFlags == 6)
+	if(m_nSelClkFlags == 4)
 	{
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
 		{
@@ -1179,7 +1211,7 @@ void CModelInfo::OnBnClickedBtnAll()
 		}
 	}
 
-	if(m_nSelClkFlags == 7)
+	if(m_nSelClkFlags == 5)
 	{
 		m_cboPtnVcom.GetWindowText(sdata);
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
@@ -1188,7 +1220,7 @@ void CModelInfo::OnBnClickedBtnAll()
 		}
 	}
 
-	if(m_nSelClkFlags == 8)
+	if(m_nSelClkFlags == 6)
 	{
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
 		{ 
@@ -1197,7 +1229,7 @@ void CModelInfo::OnBnClickedBtnAll()
 		}
 	}
 
-	if(m_nSelClkFlags == 9)
+	if(m_nSelClkFlags == 7)
 	{
 		m_cboPtnTouch.GetWindowText(sdata);
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
@@ -1229,13 +1261,31 @@ void CModelInfo::OnStnClickedSttBgClk()
 void CModelInfo::OnStnClickedSttVccClk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nSelClkFlags=1;
+	m_nChangeFont&=0x0000;
+	m_nChangeFont|=0x0001;
+	Lf_setChangeFont();
+}
+
+void CModelInfo::OnStnClickedSttVddClk()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nSelClkFlags=2;
+	m_nChangeFont&=0x0000;
+	m_nChangeFont|=0x0002;
+	Lf_setChangeFont();
+}
+
+void CModelInfo::OnStnClickedSttTmsClk()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_nSelClkFlags=3;
 	m_nChangeFont&=0x0000;
 	m_nChangeFont|=0x0004;
 	Lf_setChangeFont();
 }
 
-void CModelInfo::OnStnClickedSttVddClk()
+void CModelInfo::OnStnClickedSttVsyncClk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_nSelClkFlags=4;
@@ -1244,7 +1294,7 @@ void CModelInfo::OnStnClickedSttVddClk()
 	Lf_setChangeFont();
 }
 
-void CModelInfo::OnStnClickedSttTmsClk()
+void CModelInfo::OnStnClickedSttVcomClk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_nSelClkFlags=5;
@@ -1253,7 +1303,7 @@ void CModelInfo::OnStnClickedSttTmsClk()
 	Lf_setChangeFont();
 }
 
-void CModelInfo::OnStnClickedSttVsyncClk()
+void CModelInfo::OnStnClickedSttBluClk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_nSelClkFlags=6;
@@ -1262,30 +1312,12 @@ void CModelInfo::OnStnClickedSttVsyncClk()
 	Lf_setChangeFont();
 }
 
-void CModelInfo::OnStnClickedSttVcomClk()
+void CModelInfo::OnStnClickedSttTouchClk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_nSelClkFlags=7;
 	m_nChangeFont&=0x0000;
 	m_nChangeFont|=0x0040;
-	Lf_setChangeFont();
-}
-
-void CModelInfo::OnStnClickedSttBluClk()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_nSelClkFlags=8;
-	m_nChangeFont&=0x0000;
-	m_nChangeFont|=0x0080;
-	Lf_setChangeFont();
-}
-
-void CModelInfo::OnStnClickedSttTouchClk()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_nSelClkFlags=9;
-	m_nChangeFont&=0x0000;
-	m_nChangeFont|=0x0100;
 	Lf_setChangeFont();
 }
 
@@ -1298,7 +1330,7 @@ void CModelInfo::OnBnClickedBtnCancel()
 void CModelInfo::OnBnClickedBtnFusing()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->Gf_writeLogData("FUSING","MANUAL Fusing Start");
+	m_pApp->Gf_writeLogData("<TEST>","MANUAL Fusing Start");
 
 	GetDlgItem(IDC_STT_SYSTEM_STATUS)->SetWindowText(_T(""));
 	GetDlgItem(IDC_STT_GFD250_STATUS)->SetWindowText(_T(""));
@@ -1336,11 +1368,6 @@ void CModelInfo::OnBnClickedBtnFusing()
 	{
 		m_bgfd250flag=true;
 		GetDlgItem(IDC_STT_GFD250_STATUS)->SetWindowText(_T("NONE"));
-	}
-
-	if(lpSystemInfo->m_nBluType == 1)
-	{
-		m_pApp->m_pCommand->Gf_setBackLightFreqSet(100);
 	}
 }
 
@@ -1391,28 +1418,75 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			if(m_bfusingflag==false)
 			{
-				pDC->SetBkColor(COLOR_GRAY240);
+				pDC->SetBkColor(COLOR_GRAY64);
 				pDC->SetTextColor(COLOR_RED);
-				return m_Brush[COLOR_IDX_GRAY240];
+				return m_Brush[COLOR_IDX_GRAY64];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY64);
+				pDC->SetTextColor(COLOR_GREEN);
+				return m_Brush[COLOR_IDX_GRAY64];
 			}
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_GFD250_STATUS)
 		{
 			if(m_bgfd250flag==false)
 			{
-				pDC->SetBkColor(COLOR_GRAY240);
+				pDC->SetBkColor(COLOR_GRAY64);
 				pDC->SetTextColor(COLOR_RED);
-				return m_Brush[COLOR_IDX_GRAY240];
+				return m_Brush[COLOR_IDX_GRAY64];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY64);
+				pDC->SetTextColor(COLOR_GREEN);
+				return m_Brush[COLOR_IDX_GRAY64];
 			}
 		}
 		if((pWnd->GetDlgCtrlID()==IDC_STT_CUR_MODELNAME_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_CREATE_MODEL_TIT))
 		{
-			pDC->SetBkColor(COLOR_GRAY224);
-			pDC->SetTextColor(COLOR_BLACK);
-			return m_Brush[COLOR_IDX_GRAY224];
+			pDC->SetBkColor(COLOR_BLUISH);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_BLUISH];
 		}
-		
+		if (pWnd->GetDlgCtrlID() == IDC_STT_CUR_MODEL)
+		{
+			pDC->SetBkColor(COLOR_BLACK);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_BLACK];
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STATIC
+			|| pWnd->GetDlgCtrlID() == IDC_STT_FG_CLK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_BG_CLK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_VCC_CLK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_VDD_CLK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_TMS_CLK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_VSYNC_CLK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_VCOM_CLK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_CLK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_TOUCH_CLK)
+		{
+			pDC->SetBkColor(COLOR_BLUISH);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_BLUISH];
+		}
+		if ((pWnd->GetDlgCtrlID() == IDC_STT_SYSTEM_STATUS_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GFD250_STATUS_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_SIGNAL)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_CLOCK)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_VCOM)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_TIMING)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_POWER)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_OTHERS)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_EDID)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_PATTERN))
+		{
+			pDC->SetBkColor(COLOR_GRAY64);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_GRAY64];
+		}
 		break;
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
@@ -1429,6 +1503,14 @@ void CModelInfo::OnPaint()
 	GetClientRect(&rect);
 	rect.bottom=90;
 	dc.FillSolidRect(rect,COLOR_DEEP_BLUE);
+
+	GetClientRect(&rect);
+	rect.top = 91;
+	dc.FillSolidRect(rect, COLOR_YELLOW);
+
+	GetClientRect(&rect);
+	rect.top = 92;
+	dc.FillSolidRect(rect, COLOR_GRAY64);
 }
 
 void CModelInfo::OnBnClickedBtnBluOnoff()
@@ -1445,33 +1527,16 @@ void CModelInfo::OnBnClickedBtnBluOnoff()
 	bluMin = _ttoi(sdata);
 
 	
-	if (lpSystemInfo->m_nBluType == 0 || lpSystemInfo->m_nBluType == 1 )
+	if (bluMin > 100 || bluMin < 0)
 	{
-		if (bluMin > 100 || bluMin < 0)
-		{
-			AfxMessageBox(_T("BLU Max is 100!! Min is 0!!"));
-			return;
-		}
-		lpModelInfo->m_nBluMin = bluMin;		
-
-		/***************************************************************************************/
-		sdata.Format(_T("%02X%02X%02X%02X%02X"), m_nValue,vLine,hLine,lineOn, lpModelInfo->m_nBluMin);
-		wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-		len = (int)strlen(m_szPacket);
-
-		m_pApp->m_pCommand->Gf_setPacketSendBLU(CMD_LEDBL_MINMAX_SET, len, m_szPacket);
+		AfxMessageBox(_T("BLU Max is 100!! Min is 0!!"));
+		return;
 	}
-	else
-	{
-		if(bluMin > 255 || bluMin < 0)
-		{
-			AfxMessageBox(_T("BLU Max is 255!! Min is 0!!"));
-			return;
-		}
-		lpModelInfo->m_nBluMin = bluMin;
-	}
+	lpModelInfo->m_nBluMin = bluMin;		
+
+
+	m_pApp->m_pCommand->Gf_setBluDuty(bluMin);
 	
-	m_pApp->m_pCommand->Gf_setPacketSendBLU(CMD_LEDBL_MINMAX, 2, "01");
 	lpModelInfo->m_nBluMin = bluOnValue;
 }
 
@@ -1489,10 +1554,10 @@ void CModelInfo::OnBnClickedBtnApply()
 	for( nItemIndex=0; nItemIndex<nItemCnt; nItemIndex++)
 	{
 		m_edtVccSet.GetWindowText(sdata);
-		m_lcPtnSetList.SetItem( nItemIndex, 3, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+		m_lcPtnSetList.SetItem( nItemIndex, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 		m_edtVddSet.GetWindowText(sdata);
-		m_lcPtnSetList.SetItem( nItemIndex, 4, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+		m_lcPtnSetList.SetItem( nItemIndex, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 	}
 	UpdateData(FALSE);
 }
@@ -1506,4 +1571,12 @@ void CModelInfo::OnCbnSelchangeCmbPtnName()
 	////////////////////////////////////////////////////////////////////////////////
 	m_pApp->m_pPatternView->drawPattern(strPtnName);
 	////////////////////////////////////////////////////////////////////////////////
+}
+
+
+void CModelInfo::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	
+	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
 }

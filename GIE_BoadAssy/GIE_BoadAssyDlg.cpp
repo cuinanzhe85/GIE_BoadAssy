@@ -24,7 +24,7 @@ UINT ThreadDioRead(LPVOID pParam)
 
 	while(1)
 	{
-		m_pApp->m_pDio7250->Gf_getDioGetInput();
+		m_pApp->m_pDio7230->Gf_getDioGetInput();
 		Sleep(10);
 	}
 	return (0);
@@ -93,6 +93,7 @@ BEGIN_MESSAGE_MAP(CGIE_BoadAssyDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_INITIALIZE, &CGIE_BoadAssyDlg::OnBnClickedBtnInitialize)
 	ON_WM_CTLCOLOR()
 	ON_WM_DESTROY()
+	ON_WM_DRAWITEM()
 END_MESSAGE_MAP()
 
 
@@ -176,9 +177,20 @@ void CGIE_BoadAssyDlg::OnPaint()
 
 		// 아이콘을 그립니다.
 		dc.DrawIcon(x, y, m_hIcon);
+
+		
 	}
 	else
 	{
+		CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트
+		CRect rect;
+		GetClientRect(&rect);
+		rect.bottom = 100;
+		dc.FillSolidRect(rect, COLOR_GRAY64);
+		GetClientRect(&rect);
+		rect.top = 101;
+		dc.FillSolidRect(rect, COLOR_GRAY64);
+
 		CDialog::OnPaint();
 	}
 }
@@ -234,23 +246,23 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		if((pWnd->GetDlgCtrlID()==IDC_STT_EQP_NAME_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_OP_MODE_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_USER_ID_TIT)
-		|| (pWnd->GetDlgCtrlID()==IDC_STT_USER_NAME_TIT))		
+		|| (pWnd->GetDlgCtrlID()==IDC_STT_USER_NAME_TIT)		
+		||(pWnd->GetDlgCtrlID()==IDC_STT_MODEL_NAME_TIT)
+		|| (pWnd->GetDlgCtrlID()==IDC_STT_RESOLUTION_TIT)
+		|| (pWnd->GetDlgCtrlID()==IDC_STT_SIGNALBIT_TIT)
+		|| (pWnd->GetDlgCtrlID()==IDC_STT_VOLT_TIT)
+		|| (pWnd->GetDlgCtrlID()==IDC_STT_CURR_TIT))		
 		{
-			pDC->SetBkColor(COLOR_GRAY224);
+			pDC->SetBkColor(COLOR_LIGHT_YELLOW);
 			pDC->SetTextColor(COLOR_BLACK);
-			return m_Brush[COLOR_IDX_GRAY224];
+			return m_Brush[COLOR_IDX_LIGHT_YELLOW];
 		}
-		if((pWnd->GetDlgCtrlID()==IDC_STT_MODEL_NAME_TIT)
-			|| (pWnd->GetDlgCtrlID()==IDC_STT_RESOLUTION_TIT)
-			|| (pWnd->GetDlgCtrlID()==IDC_STT_SIGNALBIT_TIT)
-			|| (pWnd->GetDlgCtrlID()==IDC_STT_VCC_TIT)
-			|| (pWnd->GetDlgCtrlID()==IDC_STT_VDD_TIT)
-			|| (pWnd->GetDlgCtrlID()==IDC_STT_VOLT_TIT)
-			|| (pWnd->GetDlgCtrlID()==IDC_STT_CURR_TIT))		
+		if ((pWnd->GetDlgCtrlID() == IDC_STT_VCC_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_VDD_TIT))
 		{
-			pDC->SetBkColor(COLOR_GRAY192);
+			pDC->SetBkColor(COLOR_LIGHT_BLUE);
 			pDC->SetTextColor(COLOR_BLACK);
-			return m_Brush[COLOR_IDX_GRAY192];
+			return m_Brush[COLOR_IDX_LIGHT_BLUE];
 		}
 		break;
 	}
@@ -344,12 +356,14 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	sdata.Format(_T("%d x %d"), lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 	GetDlgItem(IDC_STT_RESOLUTION_VALUE)->SetWindowText(sdata);
 
-	if(lpModelInfo->m_nSignalBit==0)
+	if(lpModelInfo->m_nSignalBit==SIG_6BIT)
 		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("6 Bit"));
-	else if(lpModelInfo->m_nSignalBit==1)
+	else if(lpModelInfo->m_nSignalBit== SIG_8BIT)
 		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("8 Bit"));
-	else
+	else if (lpModelInfo->m_nSignalBit == SIG_10BIT)
 		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("10 Bit"));
+	else if (lpModelInfo->m_nSignalBit == SIG_12BIT)
+		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("12 Bit"));
 
 	sdata.Format(_T("%.2f"), lpModelInfo->m_fVoltVcc);
 	GetDlgItem(IDC_STT_VCC_VALUE)->SetWindowText(sdata);
@@ -403,15 +417,17 @@ void CGIE_BoadAssyDlg::Lf_InitFontSet()
 
 	/*************************************************************************************************/
 	// Brush Set
-	m_Brush[0].CreateSolidBrush (COLOR_ORANGE);
+	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush (COLOR_ORANGE);
 	m_Brush[COLOR_IDX_RED].CreateSolidBrush (COLOR_RED);
-	m_Brush[2].CreateSolidBrush (COLOR_GRAY64);
-	m_Brush[3].CreateSolidBrush (COLOR_GRAY94);
+	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
+	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush (COLOR_GRAY94);
 	m_Brush[COLOR_IDX_LIGHT_GREEN].CreateSolidBrush (COLOR_LIGHT_GREEN);
 	m_Brush[COLOR_IDX_GRAY192].CreateSolidBrush (COLOR_GRAY192);
 	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush (COLOR_GRAY224);
 	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush (COLOR_WHITE);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);	
+	m_Brush[COLOR_IDX_LIGHT_YELLOW].CreateSolidBrush(COLOR_LIGHT_YELLOW);
+	m_Brush[COLOR_IDX_LIGHT_BLUE].CreateSolidBrush(COLOR_LIGHT_BLUE);
 }
 
 void CGIE_BoadAssyDlg::OnDestroy()
@@ -487,4 +503,138 @@ BOOL CGIE_BoadAssyDlg::PreTranslateMessage(MSG* pMsg)
 		}
 	}
 	return CDialog::PreTranslateMessage(pMsg);
+}
+
+
+void CGIE_BoadAssyDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if ((nIDCtl == IDC_BTN_USERID) || (nIDCtl == IDC_BTN_MODEL_CHANGE) || (nIDCtl == IDC_BTN_MODELINFO)
+		|| (nIDCtl == IDC_BTN_SYSTEM) || (nIDCtl == IDC_BTN_TEST) || (nIDCtl == IDC_BTN_INITIALIZE)
+		|| (nIDCtl == IDC_BTN_AUTOFIRMWARE) || (nIDCtl == IDC_BTN_EXIT)
+		)
+	{
+		CDC dc;
+		RECT rect;
+		dc.Attach(lpDrawItemStruct->hDC);   // Get the Button DC to CDC
+
+		rect = lpDrawItemStruct->rcItem;     //Store the Button rect to our local rect.
+		dc.Draw3dRect(&rect, COLOR_RED, COLOR_RED);
+		dc.FillSolidRect(&rect,COLOR_GRAY127);//Here you can define the required color to appear on the Button.
+
+		TRIVERTEX vert1[2];
+		GRADIENT_RECT grt;
+		CPen pen1, pen2, pen3, pen4;
+		CBrush brush1(RGB(154, 128, 110));
+		CBrush brush2(RGB(229, 127, 57));//229,127,57	255,127,39
+		CBrush brush3(RGB(0, 0, 0));
+		CBrush brush4(RGB(126, 126, 126));
+
+		pen1.CreatePen(PS_SOLID, 1, RGB(154, 128, 110));//154,128,110
+		pen2.CreatePen(PS_SOLID, 1, RGB(229, 127, 57));//229,127,57
+		pen3.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+		pen4.CreatePen(PS_SOLID, 1, RGB(126, 126, 126));//126,126,126
+
+		dc.SelectObject(&brush1);
+		dc.SelectObject(&pen1);
+		dc.RoundRect(rect.left, rect.top, rect.right, rect.bottom, 0, 0);
+
+		rect.top += 1;
+		rect.bottom -= 1;
+		rect.left += 1;
+		rect.right -= 1;
+		dc.SelectObject(&brush2);
+		dc.SelectObject(&pen2);
+		dc.RoundRect(rect.left, rect.top, rect.right, rect.bottom, 0, 0);
+
+		rect.top += 1;
+		rect.bottom -= 1;
+		rect.left += 1;
+		rect.right -= 1;
+		dc.SelectObject(&brush3);
+		dc.SelectObject(&pen3);
+		dc.RoundRect(rect.left, rect.top, rect.right, rect.bottom, 0, 0);
+
+		rect.top += 1;
+		rect.bottom -= 1;
+		rect.left += 1;
+		rect.right -= 1;
+		dc.SelectObject(&brush4);
+		dc.SelectObject(&pen4);
+		dc.RoundRect(rect.left, rect.top, rect.right, rect.bottom, 0, 0);
+
+		rect.top += 1;
+		rect.bottom -= 1;
+		rect.left += 1;
+		rect.right -= 1;
+		vert1[0].x = rect.left;
+		vert1[0].y = rect.top;
+		vert1[0].Red = 0x4000;
+		vert1[0].Green = 0x4000;
+		vert1[0].Blue = 0x4000;
+		vert1[0].Alpha = 0;
+		vert1[1].x = rect.right;
+		vert1[1].y = rect.bottom;
+		vert1[1].Red = 0x5E00;
+		vert1[1].Green = 0x5E00;
+		vert1[1].Blue = 0x5E00;
+		vert1[1].Alpha = 0;
+
+		grt.LowerRight = 0;
+		grt.UpperLeft = 1;
+		dc.GradientFill(vert1, 2, &grt, 1, GRADIENT_FILL_RECT_V);
+
+		UINT state = lpDrawItemStruct->itemState;  //This defines the state of the Push button either pressed or not. 
+		if ((state & ODS_SELECTED))
+		{
+			//dc.DrawEdge(&rect,EDGE_SUNKEN,BF_RECT);
+			vert1[0].x = rect.left;
+			vert1[0].y = rect.top;
+			vert1[0].Red = 0x1600;
+			vert1[0].Green = 0x1600;
+			vert1[0].Blue = 0x1600;
+			vert1[0].Alpha = 0;
+
+			vert1[1].x = rect.right;
+			vert1[1].y = rect.bottom;
+			vert1[1].Red = 0x5E00;
+			vert1[1].Green = 0x5E00;
+			vert1[1].Blue = 0x5E00;
+			vert1[1].Alpha = 0;
+			grt.LowerRight = 0;
+			grt.UpperLeft = 1;
+			dc.GradientFill(vert1, 2, &grt, 1, GRADIENT_FILL_RECT_V);
+		}
+		else
+		{
+			//dc.DrawEdge(&rect,EDGE_RAISED,BF_RECT);
+			vert1[0].x = rect.left;
+			vert1[0].y = rect.top;
+			vert1[0].Red = 0x4000;
+			vert1[0].Green = 0x4000;
+			vert1[0].Blue = 0x4000;
+			vert1[0].Alpha = 0;
+
+			vert1[1].x = rect.right;
+			vert1[1].y = rect.bottom;
+			vert1[1].Red = 0x5E00;
+			vert1[1].Green = 0x5E00;
+			vert1[1].Blue = 0x5E00;
+			vert1[1].Alpha = 0;
+			grt.LowerRight = 0;
+			grt.UpperLeft = 1;
+			dc.GradientFill(vert1, 2, &grt, 1, GRADIENT_FILL_RECT_V);
+		}
+
+		//dc.SetBkColor(RGB(104,104,104));   //Setting the Text Background color
+		dc.SetTextColor(RGB(255, 255, 255));     //Setting the Text Color
+		::SetBkMode(dc, TRANSPARENT);
+		TCHAR buffer[MAX_PATH];           //To store the Caption of the button.
+		ZeroMemory(buffer, MAX_PATH);     //Intializing the buffer to zero
+		::GetWindowText(lpDrawItemStruct->hwndItem, buffer, MAX_PATH); //Get the Caption of Button Window 
+
+		dc.DrawText(buffer, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);//Redraw the  Caption of Button Window 
+		dc.Detach();
+	}
+	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
 }

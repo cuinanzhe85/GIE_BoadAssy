@@ -66,18 +66,18 @@ void CGieJudge::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	if (nIDEvent == 1)
 	{
-		if (m_pApp->m_pDio7250->Gf_getDIOJudgeNG() == TRUE)
+		if (m_pApp->m_pDio7230->Gf_getDIOJudgeNG() == TRUE)
 		{
 			KillTimer(nIDEvent);
 			lpWorkInfo->m_bGieJudgeNg = true;
-			m_pApp->Gf_writeLogData(_T("[JUDGE GIE MODE]"), _T("S/W NG"));
+			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("JUDGE S/W NG"));
 			CDialog::OnCancel();
 		}
-		if (m_pApp->m_pDio7250->Gf_getDIOJudgeOK() == TRUE)
+		if (m_pApp->m_pDio7230->Gf_getDIOJudgeOK() == TRUE)
 		{
 			KillTimer(nIDEvent);
 			lpWorkInfo->m_bGieJudgeOk = true;
-			m_pApp->Gf_writeLogData(_T("[JUDGE GIE MODE]"), _T("S/W OK"));
+			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("JUDGE S/W OK"));
 			CDialog::OnCancel();
 		}
 	}
@@ -89,7 +89,7 @@ void CGieJudge::OnBnClickedBtnOk()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	KillTimer(1);
 	lpWorkInfo->m_bGieJudgeOk = true;
-	m_pApp->Gf_writeLogData(_T("[JUDGE GIE MODE]"), _T("BUTTORN OK"));
+	m_pApp->Gf_writeLogData(_T("<WND>"), _T("GIE JUDGE BUTTORN OK"));
 	CDialog::OnCancel();
 }
 
@@ -98,6 +98,6 @@ void CGieJudge::OnBnClickedBtnNg()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	KillTimer(1);
 	lpWorkInfo->m_bGieJudgeNg = true;
-	m_pApp->Gf_writeLogData(_T("[JUDGE GIE MODE]"), _T("BUTTORN NG"));
+	m_pApp->Gf_writeLogData(_T("<WND>"), _T("GIE JUDGE BUTTORN NG"));
 	CDialog::OnCancel();	
 }

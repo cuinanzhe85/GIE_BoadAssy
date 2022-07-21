@@ -73,7 +73,7 @@ void CPanelID::OnBnClickedOk()
 		return;
 	}
 
-	m_pApp->Gf_writeLogData(_T("[Hand BCR] Panel ID"), strPanelId.GetBuffer(0));
+	m_pApp->Gf_writeLogData(_T("<BCR>"), strPanelId.GetBuffer(0));
 	wchar_To_char(strPanelId.GetBuffer(0), cbuff);
 	len = (int)strlen(cbuff);
 	for(i=0; i<len; i++)

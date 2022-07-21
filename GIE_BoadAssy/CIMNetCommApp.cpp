@@ -47,7 +47,7 @@ BOOL CCimNetCommApi::ConnectTibRv(int nServerType)
 		if(resultConnect == VARIANT_TRUE){
 
 			sLog.Format(_T("MES Connection Succeeded"));
-			m_pApp->Gf_writeLogData(_T("<INIT>"), sLog);
+			m_pApp->Gf_writeLogData(_T("<MES>"), sLog);
 
 			m_pApp->m_bIsGmesConnect = TRUE;
 			return TRUE;
@@ -55,7 +55,7 @@ BOOL CCimNetCommApi::ConnectTibRv(int nServerType)
 		else{
 			
 			sLog.Format(_T("MES Connection Retry"));
-			m_pApp->Gf_writeLogData(_T("<INIT>"),sLog);
+			m_pApp->Gf_writeLogData(_T("<MES>"),sLog);
 
 			resultConnect = gmes->Connect();
 
@@ -70,7 +70,7 @@ BOOL CCimNetCommApi::ConnectTibRv(int nServerType)
 			else{
 
 				sLog.Format(_T("MES Connection Fail"));
-				m_pApp->Gf_writeLogData(_T("<INIT>"),sLog);
+				m_pApp->Gf_writeLogData(_T("<MES>"),sLog);
 
 				m_pApp->m_bIsGmesConnect = FALSE;
 			}
@@ -84,7 +84,7 @@ BOOL CCimNetCommApi::ConnectTibRv(int nServerType)
 		if(resultConnect == VARIANT_TRUE){
 			
 			sLog.Format(_T("EAS Connection Succeeded"));
-			m_pApp->Gf_writeLogData(_T("<INIT>"),sLog);
+			m_pApp->Gf_writeLogData(_T("<EAS>"),sLog);
 
 			m_pApp->m_bIsEasConnect = TRUE;
 			return TRUE;
@@ -92,14 +92,14 @@ BOOL CCimNetCommApi::ConnectTibRv(int nServerType)
 		else{
 
 			sLog.Format(_T("EAS Connection Retry"));
-			m_pApp->Gf_writeLogData(_T("<INIT>"),sLog);
+			m_pApp->Gf_writeLogData(_T("<EAS>"),sLog);
 
 			resultConnect = eas->Connect();
 
 			if(resultConnect == VARIANT_TRUE){
 
 				sLog.Format(_T("EAS Connection Succeeded"));
-				m_pApp->Gf_writeLogData(_T("<INIT>"),sLog);
+				m_pApp->Gf_writeLogData(_T("<EAS>"),sLog);
 
 				m_pApp->m_bIsEasConnect = TRUE;
 				return TRUE;
@@ -107,7 +107,7 @@ BOOL CCimNetCommApi::ConnectTibRv(int nServerType)
 			else{
 
 				sLog.Format(_T("EAS Connection Fail"));
-				m_pApp->Gf_writeLogData(_T("<INIT>"),sLog);
+				m_pApp->Gf_writeLogData(_T("<EAS>"),sLog);
 
 				m_pApp->m_bIsEasConnect = FALSE;
 			}
@@ -201,9 +201,9 @@ void CCimNetCommApi::getLocalSubjectIPAddress()
 		if(aszIPAddresses[0] == '1' && aszIPAddresses[1] == '0' && aszIPAddresses[2] =='.'){
 			
 			m_strLocalSubjectIP.Format(_T("%s"), char_To_wchar(aszIPAddresses));
-			sLog.Format(_T("<INIT> STATION Local IP Addresses = %s"), m_strLocalSubjectIP);
+			sLog.Format(_T("STATION Local IP Addresses = %s"), m_strLocalSubjectIP);
 			//m_pApp->m_strLocalSubjectIP = m_strLocalSubjectIP;
-			m_pApp->Gf_writeLogData(_T("<INIT>"),sLog);
+			m_pApp->Gf_writeLogData(_T("<MES>"),sLog);
 		}
 	}
 
@@ -251,8 +251,8 @@ BOOL CCimNetCommApi::Init(int nServerType)
 			}
 		}
 
-		sLog.Format(_T("MES MES TIB INIT Fail"));
-		m_pApp->Gf_writeLogData(_T("<INIT>"),sLog);
+		sLog.Format(_T("TIB INIT Fail"));
+		m_pApp->Gf_writeLogData(_T("<MES>"),sLog);
 		return FALSE;
 	}
 	
@@ -281,8 +281,8 @@ BOOL CCimNetCommApi::Init(int nServerType)
 
 		}
 		
-		sLog.Format(_T("EAS TIB INIT Fail"));
-		m_pApp->Gf_writeLogData(_T("<INIT>"),sLog);
+		sLog.Format(_T("TIB INIT Fail"));
+		m_pApp->Gf_writeLogData(_T("<EAS>"),sLog);
 		return FALSE;
 	}
 

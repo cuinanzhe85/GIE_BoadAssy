@@ -43,7 +43,7 @@ BOOL CMessageError::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_pApp->Gf_writeLogData("[Error Message]", "Dialog OPEN");
+	m_pApp->Gf_writeLogData("<WND>", "Message Dialog OPEN");
 
 	Lf_initLocalValue();
 	Lf_initFontset();
@@ -109,7 +109,7 @@ void CMessageError::OnTimer(UINT_PTR nIDEvent)
 void CMessageError::OnBnClickedBtnErrClose()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->Gf_writeLogData(_T("[Error Message]"), _T("==> Close"));
+	m_pApp->Gf_writeLogData(_T("<WND>"), _T("Message Dialog Close"));
 	CDialog::OnCancel();
 }
 
@@ -138,7 +138,7 @@ void CMessageError::Lf_initLocalValue()
 {
 	m_sttErrMessage.SetWindowText(m_strEMessage);
 
-	m_pApp->Gf_writeLogData(_T("[Error Message]"), m_strEMessage);
+	m_pApp->Gf_writeLogData(_T("<WND>"), m_strEMessage);
 }
 
 void CMessageError::Lf_initFontset()

@@ -45,7 +45,7 @@ BOOL CModelChange::OnInitDialog()
 	lpSystemInfo	= m_pApp->GetSystemInfo();
 	lpModelInfo		= m_pApp->GetModelInfo();
 
-	m_pApp->Gf_writeLogData("[Model Change]", "Dialog Open");
+	m_pApp->Gf_writeLogData("<WND>", "Model Change Dialog Open");
 
 	Lf_initFont();
 	Lf_initLoadModelList();
@@ -148,7 +148,7 @@ void CModelChange::OnBnClickedBtnLoad()
 
 	Write_SysIniFile(_T("SYSTEM"),		_T("LAST_MODELNAME"),			modelName);
 
-	m_pApp->Gf_writeLogData(_T("[Model Change]"), modelName);
+	m_pApp->Gf_writeLogData(_T("<WND>"), modelName);
 
 	//	m_pApp->CopyModelDataFromServer(TRUE);
 	//	m_pApp->CopyPatternDataFromServer();
@@ -199,4 +199,12 @@ void CModelChange::OnPaint()
 	GetClientRect(&rect);
 	rect.bottom=90;
 	dc.FillSolidRect(rect,COLOR_DEEP_BLUE);
+
+	GetClientRect(&rect);
+	rect.top = 91;
+	dc.FillSolidRect(rect, COLOR_RED);
+
+	GetClientRect(&rect);
+	rect.top = 92;
+	dc.FillSolidRect(rect, COLOR_GRAY64);
 }
