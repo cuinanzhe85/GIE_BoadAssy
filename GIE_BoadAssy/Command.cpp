@@ -25,83 +25,6 @@ CCommand::~CCommand()
 BEGIN_MESSAGE_MAP(CCommand, CWnd)
 END_MESSAGE_MAP()
 
-
-BOOL CCommand::Lf_SyncAckFusingMessage(int nMessage)
-{
-	BOOL bRtnCode=FALSE;
-	int nCnt=0;
-
-	if(DEBUG_232RECEIVE_OK)	return TRUE;
-
-	while(TRUE)
-	{
-		if(nMessage == m_pApp->m_nRcvPgMsg)
-		{
-			bRtnCode = TRUE;
-			break;
-		}
-		delayMS(10);
-
-		if(nCnt > 300)
-		{
-			bRtnCode = FALSE;
-			break;
-		}
-		nCnt++;
-
-	}
-	m_pApp->m_nRcvPgMsg = 0x00;
-	return bRtnCode;
-}
-
-BOOL CCommand::Gf_setPacketSend(BYTE nId, int nCommand, int nSize, char* pdata, BOOL Ack)
-{
-	int target=0;
-	int datalen=0;
-	int packetlen=0;
-	BYTE nChkSum=0;
-	char szbuff[5]={0,};
-	char sendPacket[4096]={0,};
-
-	datalen = nSize;
-
-	// data 앞까지 Packet 생성
-	sprintf_s(sendPacket, "%cA1%02X%02X%02X%04X", PACKET_STX, TARGET_CTRL, nId, nCommand, datalen);
-
-	// data를 포함하여 packet 생성. hex로 전송할 data가 있으므로 memcpy를 사용
-	packetlen = (int)strlen(sendPacket);
-	memcpy(&sendPacket[packetlen], pdata, datalen);
-
-	// data 를 포함한 packet의 길이를 구한다.
-	packetlen += datalen;
-
-	// 생성된 Packet을 이용하여 CheckSum을 구한다.
-	for(int j=1; j<packetlen; j++)		// Check Sum
-	{
-		nChkSum += sendPacket[j];
-	}
-	sprintf_s(szbuff, "%02X%c", nChkSum, 0x03);
-
-	// Checksum과 ETX 3byte를 붙여 다시 Packet을 만든다.
-	memcpy(&sendPacket[packetlen], szbuff, 3);
-	packetlen += 3;
-
-	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
-	sendPacket[packetlen] = 0x00;
-
-	// 생성된 Packet을 전송.
-	UINT ret=TRUE;
-	int waitTime = 3000;
-
-	m_pApp->Gf_sendPgData((BYTE*)sendPacket, packetlen);
-	if (Ack == FALSE)
-	{
-		delayMS(200);
-		return TRUE;
-	}
-	return Lf_SyncAckFusingMessage(nCommand);
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // eDP 1.4 Bridge보드에 CMD전송을 위한 함수.
 BOOL CCommand::Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE nCmd, int nLength, char* pData, BOOL Ack)
@@ -415,7 +338,7 @@ BOOL CCommand::Gf_setFusingSystemInfo()
 	Lf_makeSystemFusingData(szPacket);
 	length = (int)strlen(szPacket);
 
- 	bRet = Gf_setPacketSend(0, CMD_CTRL_FUSING_SYSTEM, length, szPacket);
+	bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FUSING_SYSTEM, length, szPacket);
 
 	return bRet;
 }
@@ -427,7 +350,7 @@ BOOL CCommand::Gf_setPGInfoPatternString(CString strPtnPacket, BOOL Ack)
 	wchar_To_char(strPtnPacket.GetBuffer(0), szPacket);
 	length = (int)strlen(szPacket);
 
-	bRet = Gf_setPacketSend(0, CMD_T2PTN_SEND, length, szPacket, Ack);
+	bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_T2PTN_SEND, length, szPacket, Ack);
 
 	return bRet;
 }
@@ -769,7 +692,7 @@ BOOL CCommand::Gf_setPGInfo(CString strPtnName, BOOL bHotKeyFlags, BOOL bHkeyFla
 	else
 #endif
 	{
-		bRet = Gf_setPacketSend(0, CMD_T2PTN_SEND, m_PacketLength, m_szPacket);
+		bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_T2PTN_SEND, m_PacketLength, m_szPacket);
 	}
 
 	return bRet;
@@ -779,7 +702,7 @@ BOOL CCommand::Gf_getAreYouReady()
 {
 	BOOL bRtnCode=FALSE;
 
-	bRtnCode = Gf_setPacketSend(0, CMD_ARE_YOU_READY, 0, NULL);
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_ARE_YOU_READY, 0, NULL);
 
 	return bRtnCode;
 }
@@ -793,12 +716,12 @@ BOOL CCommand::Gf_setPowerVoltage(float fVcc, float fVdd, float fVbl, float fVbr
 	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
 
-	bRtnCode = Gf_setPacketSend(0, CMD_POWER_VOLTAGE_SET, m_PacketLength, m_szPacket);
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_POWER_VOLTAGE_SET, m_PacketLength, m_szPacket);
 
 	return bRtnCode;	
 }
 
-BOOL CCommand::Gf_setPowerOnOff(int nID, int nSel, int nOnOff)
+BOOL CCommand::Gf_setPowerOnOff(int nSel, int nOnOff)
 {
 	BOOL bRtnCode=FALSE;
 	CString sdata=_T("");
@@ -808,7 +731,7 @@ BOOL CCommand::Gf_setPowerOnOff(int nID, int nSel, int nOnOff)
 	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
 
-	bRtnCode = Gf_setPacketSend(nID, CMD_CTRL_POWER_ONOFF_SET, m_PacketLength, m_szPacket);
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_ONOFF_SET, m_PacketLength, m_szPacket);
 
 	return bRtnCode;
 }
@@ -824,7 +747,7 @@ BOOL CCommand::Gf_setPowerSeqOnOff(int nOnOff)
 	wchar_To_char(strCmd.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
 
-	bRtnCode = Gf_setPacketSend(0, CMD_CTRL_POWER_SEQ_ONOFF, m_PacketLength, m_szPacket);
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_SEQ_ONOFF, m_PacketLength, m_szPacket);
 	if (bRtnCode == TRUE)
 		delayMS(lpModelInfo->m_nSeqDelay + 500);
 	return bRtnCode;
@@ -834,7 +757,7 @@ BOOL CCommand::Gf_getFirmwareVersion()
 {
 	BOOL bRtnCode=FALSE;
 
-	bRtnCode = Gf_setPacketSend(0, CMD_CTRL_FW_VERSION, 0, NULL);
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_VERSION , 0, NULL);
 
 	return bRtnCode;
 }
@@ -851,10 +774,7 @@ BOOL CCommand::Lf_setIF5VPowerOffOn(int offon)
 	wchar_To_char(strCmd.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
 
-	Gf_setPacketSend(0, CMD_IF_5V_POWER_ONOFF, m_PacketLength, m_szPacket);	// 2012-08-28 PDH. IF 5V제어는 ACK를 Check하지 않는다. 강제 100ms Delay를 가져가도록 한다.
-	Sleep(100);
-
-	return TRUE;
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_IF_5V_POWER_ONOFF, m_PacketLength, m_szPacket);
 }
 
 void CCommand::Gf_setIF5VPowerOffOn(BOOL onoff)
@@ -865,7 +785,7 @@ void CCommand::Gf_setIF5VPowerOffOn(BOOL onoff)
 	}
 	else
 	{
-		Lf_setIF5VPowerOffOn(TRUE);
+		Lf_setIF5VPowerOffOn(ON);
 	}
 }
 
@@ -883,37 +803,10 @@ BOOL CCommand::Gf_getPowerMeasure(int nID)
 {
 	BOOL bRtnCode;
 
-	bRtnCode = Gf_setPacketSend(nID, CMD_MEASURE_ALL_POWER, 0, NULL);
-
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_MEASURE_ALL_POWER, 0, NULL);
 	return bRtnCode;
 }
 
-BOOL CCommand::Gf_set810BitSel(int nID, int nBit)
-{
-	BOOL bRtnCode=FALSE;
-	CString sdata=_T("");
-
-	sdata.Format(_T("%01d"), nBit);
-	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
-
-	bRtnCode = Gf_setPacketSend(nID, CMD_CTRL_810_BIT_SEL, m_PacketLength, m_szPacket);
-	return bRtnCode;
-}
-
-BOOL CCommand::Gf_setLGDISMsel(int nID, int nLgDism)
-{
-	BOOL bRtnCode=FALSE;
-	CString sdata=_T("");
-
-	sdata.Format(_T("%01d"), nLgDism);
-	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
-
-	bRtnCode = Gf_setPacketSend(nID, CMD_CTRL_LG_DISM_SEL, m_PacketLength, m_szPacket);
-
-	return bRtnCode;
-}
 
 BOOL CCommand::Gf_setZoneSel(int nZoneSel)
 {
@@ -923,7 +816,8 @@ BOOL CCommand::Gf_setZoneSel(int nZoneSel)
 	sdata.Format(_T("%01d"), nZoneSel);
 	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
-	bRtnCode = Gf_setPacketSend(0, CMD_ZONE_SET, m_PacketLength, m_szPacket);
+
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_ZONE_SET, m_PacketLength, m_szPacket);
 
 	return bRtnCode;
 }
@@ -939,7 +833,8 @@ BOOL CCommand::Gf_setI2cClock(int nID)
 	sdata.Format(_T("%03d"), lpSystemInfo->m_nI2CClock);
 	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
-	bRtnCode = Gf_setPacketSend(nID, CMD_IF_I2C_CLOCK, m_PacketLength, m_szPacket);
+
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_IF_I2C_CLOCK, m_PacketLength, m_szPacket);
 
 	return bRtnCode;
 }
@@ -952,34 +847,20 @@ BOOL CCommand::Gf_setPowerVoltSet(int nVoltName, float nVoltValue)
 	sdata.Format(_T("%01d%03d"), nVoltName, (int)((nVoltValue*10.0)+0.5));
 	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
-	bRtnCode = Gf_setPacketSend(0x00, CMD_CTRL_POWER_VOLT, m_PacketLength, m_szPacket);
+
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_VOLT, m_PacketLength, m_szPacket);
 
 	return bRtnCode;
 }
 
-BOOL CCommand::Gf_setI2CPullupEnable(int nID)
-{
-	CString sdata=_T("");
-	BOOL bRtnCode=FALSE;
-	nID |= 0x10;
-
-	nID&=0xF0;
-
-	sdata.Format(_T("%01d"), lpSystemInfo->m_nI2CPullUp);
-	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
-	bRtnCode = Gf_setPacketSend(0x00, CMD_IF_PULLUP_ENABLE, m_PacketLength, m_szPacket);
-
-	return bRtnCode;
-}
 
 BOOL CCommand::Gf_setGoToBootSection()
 {
-	return Gf_setPacketSend(0x00, CMD_CTRL_FW_GOTO_BOOT_SECTION, 0, NULL);
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_GOTO_BOOT_SECTION, 0, NULL);
 }
 
 
-BOOL CCommand::Gf_setEEPRomReadData()
+BOOL CCommand::Gf_getEEPRomReadData()
 {
 	CString sdata=_T("");
 	int stReg=0;
@@ -996,7 +877,7 @@ BOOL CCommand::Gf_setEEPRomReadData()
 	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
 
-	return Gf_setPacketSend(0/*nID*/, CMD_IF_GET_EDID_ODC_AI_DATA_EXPAND,m_PacketLength, m_szPacket);	 
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_IF_GET_EDID_ODC_AI_DATA_EXPAND, m_PacketLength, m_szPacket);
 }
 
 /**************************************************************************************************************************************************************/

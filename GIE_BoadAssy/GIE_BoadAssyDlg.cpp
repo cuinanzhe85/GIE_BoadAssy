@@ -87,6 +87,7 @@ BEGIN_MESSAGE_MAP(CGIE_BoadAssyDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_SYSTEM, &CGIE_BoadAssyDlg::OnBnClickedBtnSystem)
 	ON_BN_CLICKED(IDC_BTN_EXIT, &CGIE_BoadAssyDlg::OnBnClickedBtnExit)
 	ON_MESSAGE(WM_UPDATE_SYSTEM_INFO, OnUpdateSystemInfo)
+	ON_MESSAGE(WM_UDP_RECEIVE, OnUdpReceive)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_BTN_MODEL_CHANGE, &CGIE_BoadAssyDlg::OnBnClickedBtnModelChange)
 	ON_BN_CLICKED(IDC_BTN_AUTOFIRMWARE, &CGIE_BoadAssyDlg::OnBnClickedBtnAutofirmware)
@@ -336,7 +337,17 @@ void CGIE_BoadAssyDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 	CDialog::OnTimer(nIDEvent);
 }
+LRESULT CGIE_BoadAssyDlg::OnUdpReceive(WPARAM wParam, LPARAM lParam)
+{
+	CString strPacket;
+	CString recvPacket;
+	CString recvIP;
 
+	//	strPacket.Format(_T("%s"), char_To_wchar((char*)wParam));
+	m_pApp->udp_processPacket((char*)wParam, (int)lParam);
+
+	return 0;
+}
 LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 {
 	CString sdata=_T("");
@@ -365,17 +376,19 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	else if (lpModelInfo->m_nSignalBit == SIG_12BIT)
 		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("12 Bit"));
 
-	sdata.Format(_T("%.2f"), lpModelInfo->m_fVoltVcc);
+	sdata.Format(_T("%.2fV"), lpModelInfo->m_fVoltVcc);
 	GetDlgItem(IDC_STT_VCC_VALUE)->SetWindowText(sdata);
 	
-	sdata.Format(_T("%.2f"), lpModelInfo->m_fVoltVdd);
+	sdata.Format(_T("%.2fV"), lpModelInfo->m_fVoltVdd);
 	GetDlgItem(IDC_STT_VDD_VALUE)->SetWindowText(sdata);
 
-	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIccMax);
+	sdata.Format(_T("%.2fA"), lpModelInfo->m_fLimitIccMax);
 	GetDlgItem(IDC_STT_ICC_VALUE)->SetWindowText(sdata);
 
-	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIddMax);
+	sdata.Format(_T("%.2fA"), lpModelInfo->m_fLimitIddMax);
 	GetDlgItem(IDC_STT_IDD_VALUE)->SetWindowText(sdata);
+
+	GetDlgItem(IDC_STT_MAIN_FW_VERSION_VIEW)->SetWindowText(char_To_wchar(m_pApp->m_szMainFwVersion));
 
 	return (0);
 }
@@ -387,11 +400,11 @@ void CGIE_BoadAssyDlg::Lf_InitFontSet()
 	m_Font[0].CreateFont( 150, 70, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
 	m_Font[1].CreateFont( 60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
 	m_Font[2].CreateFont( 60, 18, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
-	m_Font[3].CreateFont( 19, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI"));
+	m_Font[3].CreateFont( 32, 13, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
 	GetDlgItem(IDC_STT_STATION_INFO_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_MODEL_INFO_TIT)->SetFont(&m_Font[3]);
 
-	m_Font[4].CreateFont( 16, 6, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI"));
+	m_Font[4].CreateFont( 21, 9, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
 	GetDlgItem(IDC_STT_EQP_NAME_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_EQP_NAME_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_OP_MODE_TIT)->SetFont(&m_Font[4]);
@@ -511,7 +524,7 @@ void CGIE_BoadAssyDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	if ((nIDCtl == IDC_BTN_USERID) || (nIDCtl == IDC_BTN_MODEL_CHANGE) || (nIDCtl == IDC_BTN_MODELINFO)
 		|| (nIDCtl == IDC_BTN_SYSTEM) || (nIDCtl == IDC_BTN_TEST) || (nIDCtl == IDC_BTN_INITIALIZE)
-		|| (nIDCtl == IDC_BTN_AUTOFIRMWARE) || (nIDCtl == IDC_BTN_EXIT)
+		|| (nIDCtl == IDC_BTN_AUTOFIRMWARE) ||(nIDCtl == IDC_BTN_BMP_DOWNLOAD)|| (nIDCtl == IDC_BTN_EXIT)
 		)
 	{
 		CDC dc;

@@ -58,7 +58,9 @@ BOOL CPatternTest::OnInitDialog()
 	
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_ON);
 	Lf_sendPatternBluData();
-	//m_pApp->m_pCommand->Gf_setI2CPullupEnable();
+
+	if (lpModelInfo->m_nGfd250 == ON)
+		m_pApp->m_pCommand->Gf_serGfd250SignalOnOff(ON);
 
 	SetTimer(1,200,NULL);	// EDID
 	SetTimer(2,1000,NULL);	// Power Measure
@@ -98,7 +100,8 @@ void CPatternTest::OnDestroy()
 		m_Font[i].DeleteObject();
 	}
 	m_pApp->m_pCommand->Gf_setBluDuty(lpModelInfo->m_nBluMin);
-
+	if (lpModelInfo->m_nGfd250 == ON)
+		m_pApp->m_pCommand->Gf_serGfd250SignalOnOff(ON);
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
 }
 
@@ -786,7 +789,7 @@ BOOL CPatternTest::Lf_cmpEdidData()
 	if(lpModelInfo->m_nGfd250 == TRUE)
 		m_bRtnCode = m_pApp->m_pCommand->Gf_getGfd250I2CReadPacketSend(0, size, 1/*I2C_CMD_EDID_READ*/);
 	else
-		m_bRtnCode = m_pApp->m_pCommand->Gf_setEEPRomReadData();
+		m_bRtnCode = m_pApp->m_pCommand->Gf_getEEPRomReadData();
 
 	return m_bRtnCode;
 }
@@ -884,7 +887,7 @@ void CPatternTest::Lf_showDisplayLockTimeText()
 			
 			wchar_To_char(sdata.GetBuffer(0), m_szPacket);
 			m_PacketLength = (int)strlen(m_szPacket);
-			m_pApp->m_pCommand->Gf_setPacketSend(0, CMD_T2PTN_SEND, m_PacketLength, m_szPacket);
+			m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_T2PTN_SEND, m_PacketLength, m_szPacket);
 
 			m_pApp->m_nBMtoggle = 'S';
 		}

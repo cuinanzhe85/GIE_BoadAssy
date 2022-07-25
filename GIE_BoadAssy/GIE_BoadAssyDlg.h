@@ -32,6 +32,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg LRESULT OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnUdpReceive(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 
 public:

@@ -348,8 +348,8 @@ BOOL CAutoFirmware::Lf_sendFirmwareFile()
 		packetLen= (int)strlen(szTempBuf);
 
 		memcpy((char*)(&szTempBuf[packetLen]),(char*)(szParsingData+(nLoop*FLASH_PAGE_SIZE)), FLASH_PAGE_SIZE);		
-
-		bRet= m_pApp->m_pCommand->Gf_setPacketSend(0x00, CMD_CTRL_FW_DOWNLOAD, (packetLen+FLASH_PAGE_SIZE), (char*)szTempBuf);//bRet= Lf_rs232_sendT4Packet(GFD250_MAIN_CMD_GFD, CMD_CTRL_FW_DOWNLOAD, (char*)szTempBuf, (packetLen+FLASH_PAGE_SIZE));
+		
+		bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_DOWNLOAD, (packetLen + FLASH_PAGE_SIZE), (char*)szTempBuf);
 
 		nProg= (startAddr*100)/m_nFirmwareDataLen;
 		m_progDownload.SetPos(nProg);
@@ -376,7 +376,7 @@ BOOL CAutoFirmware::Lf_sendFirmwareFile()
 
 		memcpy((char*)(&szTempBuf[packetLen]),(char*)(szParsingData+(nLoop*FLASH_PAGE_SIZE)), FLASH_PAGE_SIZE);
 
-		bRet= m_pApp->m_pCommand->Gf_setPacketSend(0x00, CMD_CTRL_FW_DOWNLOAD, (packetLen+FLASH_PAGE_SIZE), (char*)szTempBuf);//Lf_rs232_sendT4Packet(GFD250_MAIN_CMD_GFD, CMD_CTRL_FW_DOWNLOAD, (char*)szTempBuf, (packetLen+FLASH_PAGE_SIZE));
+		bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_DOWNLOAD, (packetLen + FLASH_PAGE_SIZE), (char*)szTempBuf);
 
 		nProg= (startAddr*100)/m_nFirmwareDataLen;
 		m_progDownload.SetPos(nProg);		
@@ -394,7 +394,7 @@ BOOL CAutoFirmware::Lf_sendFirmwareFile()
 
 BOOL CAutoFirmware::Lf_sendDownloadComplete()
 {
-	return m_pApp->m_pCommand->Gf_setPacketSend(0x00, CMD_CTRL_FW_COMPLETE, 0, NULL);
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_COMPLETE, 0, NULL);
 }
 
 BOOL CAutoFirmware::Lf_firmwareDownloadStart()

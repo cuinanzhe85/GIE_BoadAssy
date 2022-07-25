@@ -14,7 +14,6 @@ public:
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 public:
-	BOOL Gf_setPacketSend(BYTE nId, int nCommand, int nSize, char* pdata, BOOL Ack=TRUE);
 	BOOL Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE nCmd, int nLength, char* pData, BOOL Ack = TRUE);
 
 	BOOL Gf_setBluDuty(int Duty);
@@ -34,21 +33,16 @@ public:
 
 
 	BOOL Gf_setPowerVoltage( float fVcc, float fVdd, float fVbl, float fVbr);
-	BOOL Gf_setPowerOnOff(int nID, int nSel, int nOnOff);
+	BOOL Gf_setPowerOnOff(int nSel, int nOnOff);
 	BOOL Gf_setPowerSeqOnOff(int nOnOff);
 	void Gf_setIF5VPowerOffOn(BOOL onoff);
 
-	BOOL Gf_set810BitSel(int nID, int nBit);
-	BOOL Gf_setLGDISMsel(int nID, int nLgDism);
 	BOOL Gf_setPGInfoGFD250(CString strPtnName, BOOL bHotKeyFlags=FALSE, BOOL bHkeyFlags=FALSE);
 	BOOL Gf_setPGInfo(CString strPtnName, BOOL bHotKeyFlags=FALSE, BOOL bHkeyFlags=FALSE);
-	BOOL Gf_setpgGrayInfo(CString ptn_str);
-	BOOL Gf_setPG_F1Key_VttSet(int nBitsSwap);
 	BOOL Gf_setZoneSel(int nZoneSel);
 	BOOL Gf_setPowerVoltSet(int nVoltName, float nVoltValue);
-	BOOL Gf_setI2CPullupEnable(int nID=0);
 	void Gf_ShowMessageBox(CString strMessage);
-	BOOL Gf_setEEPRomReadData();
+	BOOL Gf_getEEPRomReadData();
 	CString Gf_makePGPatternString(CString strPtnName);
 
 	BOOL Gf_getFirmwareVersion();	
@@ -60,6 +54,9 @@ public:
 	BOOL Gf_serGfd250FirmwareVersion();
 	BOOL Gf_serGfd250GoToBootSection();
 	BOOL Gf_getGfd250I2CReadPacketSend(int nStartReg, int ReadNum, int Cmd);
+
+
+	char gszudpRcvPacket[4096];
 protected:
 	LPMODELSETINFO	lpModelInfo;
 	LPSYSTEMINFO	lpSystemInfo;
@@ -67,9 +64,9 @@ protected:
 
 	char m_szPacket[4096];
 	int m_PacketLength;
+	
 
 	void Lf_makeSystemFusingData(char* packet);
-	BOOL Lf_SyncAckFusingMessage(int nMessage);
 	BOOL Lf_setIF5VPowerOffOn(int offon);
 	CString Lf_MakeF1Key_VttData(int nBitsSwap);
 	CString Lf_ModifyPtn_RGB(CString strPtnName, CString lpData, int nPtnIndex, BOOL bHotKeyEnable);

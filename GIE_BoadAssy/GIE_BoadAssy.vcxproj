@@ -216,6 +216,7 @@
     <ClCompile Include="PatternTest.cpp" />
     <ClCompile Include="PatternView.cpp" />
     <ClCompile Include="PortController.cpp" />
+    <ClCompile Include="SocketUDP.cpp" />
     <ClCompile Include="StationMenu.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -235,6 +236,7 @@
     <ClInclude Include="GieJudge.h" />
     <ClInclude Include="GIE_BoadAssy.h" />
     <ClInclude Include="GIE_BoadAssyDlg.h" />
+    <ClInclude Include="SocketUDP.h" />
     <ClInclude Include="_GlobalDefine.h" />
     <ClInclude Include="IniProfileAPI.h" />
     <ClInclude Include="Initialize.h" />

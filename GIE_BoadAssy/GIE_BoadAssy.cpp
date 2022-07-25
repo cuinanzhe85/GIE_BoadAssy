@@ -36,6 +36,7 @@ CGIE_BoadAssyApp::CGIE_BoadAssyApp()
 	m_pCommand		= new CCommand();
 	m_pCimNet		= new CCimNetCommApi;
 	m_pPatternView = new CPatternView();
+	m_pSocketUDP = new CSocketUDP();
 }
 
 
@@ -81,6 +82,7 @@ BOOL CGIE_BoadAssyApp::InitInstance()
 	Gf_loadInspCount();
 	Lf_readGmesInfo();
 
+	InitCreateUdpSocket();
 	// GMES DLL Initialize
 
 	if (Gf_gmesInitServer(SERVER_MES) == FALSE)
@@ -142,7 +144,48 @@ LPINSPWORKINFO CGIE_BoadAssyApp::GetWorkInfo()
 
 	return lpWorkInfo;
 }
+void CGIE_BoadAssyApp::InitCreateUdpSocket()
+{
+	if (m_pSocketUDP->CreatSocket(UDP_SOCKET_PORT, SOCK_DGRAM) == FALSE)
+	{
+		AfxMessageBox(_T("UDP Socket Create Fail"), MB_ICONERROR);
+		return;
+	}
 
+	InitLocalHostIPAddress();
+}
+
+void CGIE_BoadAssyApp::InitLocalHostIPAddress()
+{
+	// Receive Message 처리를 제외할 자신의 IP와 GateIP를 가져온다.
+	//	m_pSocketUDP->m_bEthernetInit = FALSE;
+
+	m_pSocketUDP->getLocalIPAddress();
+	m_pSocketUDP->getLocalGateWay();
+}
+void CGIE_BoadAssyApp::udp_processPacket(char* wParam, int lParam)
+{
+	char szbuf[10] = { 0, };
+	int recvCMD = 0;
+	int ntoken = 0;
+	int recvRet = 0;
+
+	// Receive Packet에서 Group, Command 정보를 추출한다.
+	sprintf_s(szbuf, "%c%c", wParam[PACKET_PT_CMD], wParam[PACKET_PT_CMD + 1]);
+	recvCMD = strtol(szbuf, 0, 16);
+	recvRet = wParam[PACKET_PT_RET];
+
+	memcpy(m_pCommand->gszudpRcvPacket, wParam, lParam);
+
+	// Message 처리
+	switch (recvCMD)
+	{
+	case CMD_CTRL_FUSING_SYSTEM:
+		break;
+	}
+
+	m_nAckCmd[recvCMD] = TRUE;
+}
 
 void CGIE_BoadAssyApp::Gf_writeLogData(char Event[MLOG_MAX_LENGTH],char Data[MLOG_MAX_LENGTH])
 {
@@ -685,19 +728,7 @@ void CGIE_BoadAssyApp::Gf_setSerialPort()
 	m_pPort->ClosePort5();
 	m_pPort->ClosePort6();
 
-	Sleep(100);
-
-	if(lpSystemInfo->m_nPgPort)
-	{
-		strPort.Format(_T("COM%d"), lpSystemInfo->m_nPgPort);
-		if(!(m_pPort->OpenPort1 (strPort, (DWORD) 115200, NULL)))	m_sSerialPort1.Format(_T("%s"), _T("PG NG."));
-		else														m_sSerialPort1.Format(_T("%s"), _T("PG OK."));			
-
-	}
-	else
-	{
-		m_sSerialPort1.Format(_T("%s"), _T("Unuse"));
-	}
+	delayMS(100);
 
 	if(lpSystemInfo->m_nGfd250Port)
 	{
@@ -731,11 +762,6 @@ void CGIE_BoadAssyApp::Gf_setSerialPort()
 	{
 		m_sSerialPort4.Format(_T("%s"),_T("Unuse"));
 	}
-}
-
-void CGIE_BoadAssyApp::Gf_sendPgData(BYTE* lpData, DWORD nSize)
-{		
-	m_pPort->WritePort1(lpData, nSize);
 }
 
 void CGIE_BoadAssyApp::Gf_sendGfd250Data(BYTE* lpData, DWORD nSize)
@@ -1506,6 +1532,81 @@ Send_RETRY:
 			Gf_showPanelIdNg();
 		else
 			Gf_showLocalErrorMsg();
+	}
+	return FALSE;
+}
+BOOL CGIE_BoadAssyApp::udp_sendPacket(CString ipAddress, int nTarget, int nCommand, int nLength, char* pData, int recvACK, int waitTime)
+{
+	char szlog[1024] = { 0, };
+	char szpacket[4096] = { 0, };
+	int  packetlen;
+	char lpbuff[20] = { 0, };
+	BYTE nChkSum = 0;
+
+	// data 앞까지 Packet 생성
+	sprintf_s(szpacket, "%cA1%02X00%02X%04X", PACKET_STX, nTarget, nCommand, nLength);
+
+	// data를 포함하여 packet 생성. hex로 전송할 data가 있으므로 memcpy를 사용
+	packetlen = (int)strlen(szpacket);
+	memcpy(&szpacket[packetlen], pData, nLength);
+
+	// data 를 포함한 packet의 길이를 구한다.
+	packetlen += nLength;
+
+	// 생성된 Packet을 이용하여 CheckSum을 구한다.
+	for (int j = 1; j < packetlen; j++)		// Check Sum
+	{
+		nChkSum += szpacket[j];
+	}
+	sprintf_s(lpbuff, "%02X%c", nChkSum, PACKET_ETX);
+
+	// Checksum과 ETX 3byte를 붙여 다시 Packet을 만든다.
+	memcpy(&szpacket[packetlen], lpbuff, 3);
+	packetlen += 3;
+
+	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
+	szpacket[packetlen] = 0x00;
+
+
+	// Receive Buff를 Clear
+	ZeroMemory(m_pCommand->gszudpRcvPacket, sizeof(m_pCommand->gszudpRcvPacket));
+
+	// 생성된 Packet을 전송.
+	m_pSocketUDP->SendToUDP(ipAddress, packetlen, szpacket);
+
+	// ACK Receive
+	UINT ret = TRUE;
+	m_nAckCmd[nCommand] = FALSE;
+
+	if (recvACK == TRUE)
+	{
+		if (udp_procWaitRecvACK(nCommand, waitTime) == TRUE)
+			ret = TRUE;
+		else
+			ret = FALSE;
+	}
+
+	return ret;
+}
+
+BOOL CGIE_BoadAssyApp::udp_procWaitRecvACK(int cmd, DWORD waitTime)
+{
+	DWORD stTick = ::GetTickCount();
+
+	while (1)
+	{
+		DWORD edTick = GetTickCount();
+		if ((edTick - stTick) > waitTime)
+		{
+			return FALSE;
+		}
+
+		if (m_nAckCmd[cmd] == TRUE)
+		{
+			return TRUE;
+		}
+
+		ProcessMessage();
 	}
 	return FALSE;
 }

@@ -13,6 +13,7 @@
 #include "PortController.h"
 #include "Command.h"
 #include "CIMNetCommApp.h"
+#include "SocketUDP.h"
 // CGIE_BoadAssyApp:
 // 이 클래스의 구현에 대해서는 GIE_BoadAssy.cpp을 참조하십시오.
 //
@@ -36,6 +37,7 @@ public:
 	CCommand*			m_pCommand;
 	CCimNetCommApi*		m_pCimNet;
 	CPatternView* m_pPatternView;
+	CSocketUDP* m_pSocketUDP;
 
 	LPFUSINGINFO		GetFusingInfo();
 	LPSYSTEMINFO		GetSystemInfo();
@@ -51,7 +53,6 @@ public:
 	BOOL Gf_loadMedelFile();
 	BOOL Gf_loadPatternFile();
 	void Gf_setSerialPort();
-	void Gf_sendPgData(BYTE* lpData, DWORD nSize);
 	void Gf_sendGfd250Data(BYTE* lpData, DWORD nSize);
 	void Gf_sendBLUData(BYTE* lpData, DWORD nSize) ;
 	void Gf_receivedPgAckInfo (BYTE* aByte);
@@ -75,6 +76,14 @@ public:
 	void Gf_showPanelIdNg();
 	BOOL Gf_sendGmesHost(int nHostCmd);
 
+	void InitCreateUdpSocket();
+	void InitLocalHostIPAddress();
+	void udp_processPacket(char* wParam, int lParam);
+
+	BOOL udp_sendPacket(CString ipAddress, int nTarget, int nCommand, int nLength, char* pData, int recvACK=TRUE, int waitTime=2000);
+	BOOL udp_procWaitRecvACK(int cmd, DWORD waitTime);
+	int m_nAckCmd[255];
+	char m_szMainFwVersion[256];
 public:
 	CString m_sModelFile;
 	CString m_sSysIniFile;

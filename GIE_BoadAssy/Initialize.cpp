@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "GIE_BoadAssy.h"
+#include "GIE_BoadAssyDlg.h"
 #include "Initialize.h"
 
 
@@ -157,7 +158,7 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_PG_VALUE)
 		{
-			if(m_nStatus[ST_IRDA] == FALSE)
+			if(m_nStatus[ST_PG] == FALSE)
 			{
 				pDC->SetBkColor(COLOR_RED);
 				pDC->SetTextColor(COLOR_WHITE);
@@ -353,10 +354,10 @@ void CInitialize::Lf_loadData()
 	//==================================================================================== SERIAL PORT
 	m_pApp->Gf_setSerialPort();
 
-	if(!m_pApp->m_sSerialPort1.Compare(_T("PG NG.")))
-		m_nStatus[ST_IRDA] = FALSE;
+	if(m_pApp->m_pCommand->Gf_getAreYouReady() != TRUE)
+		m_nStatus[ST_PG] = FALSE;
 	else
-		m_nStatus[ST_IRDA] = TRUE;
+		m_nStatus[ST_PG] = TRUE;
 
 	//SetDlgItemText(IDC_STT_PG_VALUE, m_pApp->m_sSerialPort1);
 	GetDlgItem(IDC_STT_PG_VALUE)->Invalidate(FALSE);
@@ -387,11 +388,20 @@ void CInitialize::Lf_loadData()
 
 	UpdateData(FALSE);
 
-	if(m_nStatus[ST_IRDA] == TRUE)
+	if(m_nStatus[ST_PG] == TRUE)
 	{
-		m_pApp->m_pCommand->Gf_setPowerSeqOnOff(OFF);
+		m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
 		delayMS(500);
-		m_pApp->m_pCommand->Gf_getFirmwareVersion();
+		if (m_pApp->m_pCommand->Gf_getFirmwareVersion() == TRUE)
+		{
+			int nLength = 0;
+			sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_LEN], "%04X", &nLength);
+			memcpy(&m_pApp->m_szMainFwVersion,&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA],  nLength);
+			
+			CString strlog;
+			strlog.Format(_T("Main FW Ver : %s"), char_To_wchar(m_pApp->m_szMainFwVersion));
+			m_pApp->Gf_writeLogData(_T("<PG>"), strlog);
+		}
 	}	
 
 	for(int i=0;i<20;i++)

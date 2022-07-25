@@ -47,6 +47,7 @@
 #define IDC_EDT_H_WIDTH                 1007
 #define IDC_BTN_AUTOFIRMWARE            1007
 #define IDC_EDT_H_FRONT_PORCH           1008
+#define IDC_BTN_BMP_DOWNLOAD            1008
 #define IDC_EDT_H_BACK_PORCH            1009
 #define IDC_EDT_V_TOTAL                 1010
 #define IDC_EDT_V_ACTIVE                1011
@@ -306,17 +307,17 @@
 #define IDC_LIST_PATTERN_TEST_MASSAGE   1191
 #define IDC_STT_TP_COLOR_R_VAL          1193
 #define IDC_STT_TP_COLOR_G_VAL          1194
-#define IDC_STT_PTN_ADD                 1194
 #define IDC_STT_TP_COLOR_B_VAL          1195
+#define IDC_STT_MAIN_FW_VERSION_VIEW    1195
 #define IDC_STT_TP_EDID_RESULT          1196
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        161
+#define _APS_NEXT_RESOURCE_VALUE        162
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1195
+#define _APS_NEXT_CONTROL_VALUE         1196
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

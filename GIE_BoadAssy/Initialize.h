@@ -6,7 +6,7 @@
 #define ST_MOD		1
 #define ST_PTN		2
 #define ST_EDID		3
-#define ST_IRDA		4
+#define ST_PG		4
 #define ST_GFD250	5
 #define ST_BCR		6
 #define ST_LED_BLU	7

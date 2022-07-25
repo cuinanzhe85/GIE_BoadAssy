@@ -17,6 +17,14 @@
 #define DEBUG_RS232C_LOG			0
 #define DEBUG_PALLET_ARRIVE			0
 
+
+/////////////////////////////////////////////////////////////////////////////
+#define UDP_MAIN_IP					_T("192.168.10.15")		// CString type define
+
+
+/////////////////////////////////////////////////////////////////////////////
+#define PACKET_SIZE					1024*64
+
 /////////////////////////////////////////////////////////////////////////////
 // ON/OFF와 TRUE/FALSE에 관련된 Define은 여기에서 한다.
 /////////////////////////////////////////////////////////////////////////////
@@ -189,7 +197,16 @@ typedef enum _COLOR_IDX_{
 #define PACKET_ETX								0x03
 
 #define PG_CMD									0x10						
-#define NIOS_CMD								0x20	
+#define NIOS_CMD								0x20
+
+#define PACKET_PT_SOURCE					1
+#define PACKET_PT_DEST						3
+#define PACKET_PT_ID						5
+#define PACKET_PT_CMD						7//+6
+#define PACKET_PT_LEN						9//+6
+#define PACKET_PT_RET						13//+6
+#define PACKET_PT_CH						14//+6
+#define PACKET_PT_DATA						14//+6
 
 /////////////////////////////////////////////////////////////////////////////
 // Command Packet
