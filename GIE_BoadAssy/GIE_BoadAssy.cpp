@@ -712,7 +712,8 @@ BOOL CGIE_BoadAssyApp::Gf_loadPatternFile()
 	if( (hSearch == INVALID_HANDLE_VALUE) || ( lpModelInfo->m_sLbPtnName[0].IsEmpty() ) )
 	{
 		m_sPtnFile.Format(_T("%s"),_T("Pattern file load NG!!!"));
-		AfxMessageBox(_T("Error Pattern File"), MB_ICONSTOP);
+		//AfxMessageBox(_T("Error Pattern File"), MB_ICONSTOP);
+		return FALSE;
 	}
 	return TRUE;
 }

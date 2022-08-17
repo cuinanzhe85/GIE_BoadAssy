@@ -47,6 +47,7 @@
 #include "IniProfileAPI.h"
 #include "GiMCodeDll.h"
 #include "PatternView.h"
+#include "XImageInc/ximage.h"
 
 using namespace std;
 //#import "C:\TibDriver_32bit_x86\ModuleECS_CommTibRV64.tlb" no_namespace, named_guids //no_namespace	//#import "C:\TibDriver_32bit_x86\MES_EAS_x86.tlb" no_namespace, named_guids //no_namespace

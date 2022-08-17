@@ -119,11 +119,17 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else
+			else if (m_nStatus[ST_MOD] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_GREEN];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY96);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_PTNFILE_VALUE)
@@ -134,11 +140,17 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else
+			else if (m_nStatus[ST_PTN] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_GREEN];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY96);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}	
 		if(pWnd->GetDlgCtrlID()==IDC_STT_EDID_VALUE)
@@ -149,11 +161,17 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else
+			else if (m_nStatus[ST_EDID] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_GREEN];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY96);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_PG_VALUE)
@@ -164,11 +182,17 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else
+			else if (m_nStatus[ST_PG] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_GREEN];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY96);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_BCR_VALUE)
@@ -179,11 +203,17 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else
+			else if (m_nStatus[ST_BCR] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_GREEN];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY96);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_BCR_VALUE)
@@ -194,11 +224,17 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else
+			else if (m_nStatus[ST_BCR] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_GREEN];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY96);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_GFD250_VALUE)
@@ -209,11 +245,17 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else
+			else if (m_nStatus[ST_GFD250] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_GREEN];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY96);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_BLU_VALUE)
@@ -224,11 +266,17 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else
+			else if (m_nStatus[ST_LED_BLU] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_GREEN];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY96);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
 		break;
@@ -291,6 +339,7 @@ void CInitialize::Lf_initFontSet()
 	m_Brush[COLOR_IDX_GREEN].CreateSolidBrush(COLOR_GREEN);
 	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
 	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush (COLOR_GRAY94);
+	m_Brush[COLOR_IDX_GRAY96].CreateSolidBrush(COLOR_GRAY96);
 	m_Brush[COLOR_IDX_LIGHT_GREEN].CreateSolidBrush (COLOR_LIGHT_GREEN);
 	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush (COLOR_WHITE);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);	
@@ -300,16 +349,21 @@ void CInitialize::Lf_loadData()
 {
 	int i=0;
 
-	memset(m_nStatus, 1, sizeof(m_nStatus));
+	memset(m_nStatus, -1, sizeof(m_nStatus));
 	GetDlgItem(IDC_BTN_RETRY)->EnableWindow(FALSE);
 	GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
 
 	m_pApp->Gf_loadSystemInfo();
+	m_nStatus[ST_SYS] = TRUE;
 	//SetDlgItemText(IDC_STT_SYSTEM_VALUE, m_pApp->m_sSysIniFile);
 	GetDlgItem(IDC_STT_SYSTEM_VALUE)->Invalidate(FALSE);
 
 	//if(!m_pApp->m_sModelFile.Compare(_T("Model file load NG!!!")))
 	if (m_pApp->Gf_loadMedelFile() != TRUE)
+	{
+		m_nStatus[ST_MOD] = FALSE;
+	}
+	else
 	{
 		m_nStatus[ST_MOD] = TRUE;
 	}
@@ -318,6 +372,10 @@ void CInitialize::Lf_loadData()
 
 	//if(!m_pApp->m_sPtnFile.Compare(_T("Pattern file load NG!!!")))
 	if (m_pApp->Gf_loadPatternFile() != TRUE)
+	{
+		m_nStatus[ST_PTN] = FALSE;
+	}
+	else
 	{
 		m_nStatus[ST_PTN] = TRUE;
 	}

@@ -30,6 +30,11 @@
 #define IDI_ICON_DOWN                   157
 #define IDI_ICON_UP                     158
 #define IDI_ICON_CHANGE                 160
+#define IDD_BMP_DOWNLOAD                164
+#define IDI_ICON_DELETE2                167
+#define IDI_ICON_CLOSE                  168
+#define IDI_ICON2                       169
+#define IDI_ICON_SAVE                   169
 #define IDC_BTN_USERID                  1000
 #define IDC_BTN_MODELINFO               1001
 #define IDC_BTN_FUSING                  1001
@@ -310,14 +315,27 @@
 #define IDC_STT_TP_COLOR_B_VAL          1195
 #define IDC_STT_MAIN_FW_VERSION_VIEW    1195
 #define IDC_STT_TP_EDID_RESULT          1196
+#define IDC_STT_BMP_TITLE               1196
+#define IDC_LIST_BMP_TOTAL              1197
+#define IDC_LIST_BMP_DOWNLOAD           1198
+#define IDC_BTN_BMP_DELETE              1199
+#define IDC_BTN_BMP_DOWNLOAD_START      1200
+#define IDC_PROG_BMP_DOWNLOAD_STATUS    1201
+#define IDC_PIC_BMP_IMAGE               1202
+#define IDC_STT_TOTAL_LIST_TITLE        1203
+#define IDC_STT_DOWNLOAD_LIST_TITLE     1204
+#define IDC_STT_IMAGE_TITLE             1205
+#define IDC_STT_DOWNLOAD_STATUS         1206
+#define IDC_STT_IMAGE_DISPLAY           1207
+#define IDC_PICTURE_IMAGE               1208
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        162
+#define _APS_NEXT_RESOURCE_VALUE        170
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1196
+#define _APS_NEXT_CONTROL_VALUE         1209
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -26,27 +26,27 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -133,7 +133,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>./Libs/PCI-Dask64.lib;./Libs/PCI-Dask.lib;./Libs/GiMCodeDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>./Libs/PCI-Dask64.lib;./Libs/GiMCodeDll.lib;./XImageLib/cximageu.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -191,7 +191,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>./Libs/PCI-Dask64.lib;./Libs/PCI-Dask.lib;./Libs/GiMCodeDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>./Libs/PCI-Dask64.lib;./Libs/GiMCodeDll.lib;./XImageLib/cximageu.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -200,6 +200,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AutoFirmware.cpp" />
+    <ClCompile Include="BmpDownload.cpp" />
     <ClCompile Include="CIMNetCommApp.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Dio7230.cpp" />
@@ -230,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoFirmware.h" />
+    <ClInclude Include="BmpDownload.h" />
     <ClInclude Include="CIMNetCommApp.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Dio7230.h" />
@@ -237,6 +239,7 @@
     <ClInclude Include="GIE_BoadAssy.h" />
     <ClInclude Include="GIE_BoadAssyDlg.h" />
     <ClInclude Include="SocketUDP.h" />
+    <ClInclude Include="XImageInc\ximage.h" />
     <ClInclude Include="_GlobalDefine.h" />
     <ClInclude Include="IniProfileAPI.h" />
     <ClInclude Include="Initialize.h" />
@@ -258,6 +261,8 @@
     <ClInclude Include="UserID.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\Close.ico" />
+    <Image Include="res\Delete.ico" />
     <Image Include="res\GIE_BoadAssy.ico" />
     <Image Include="res\ico00001.ico" />
     <Image Include="res\ico00003.ico" />
@@ -265,6 +270,7 @@
     <Image Include="res\ico00010.ico" />
     <Image Include="res\icon1.ico" />
     <Image Include="res\icon_rel.ico" />
+    <Image Include="res\Save.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GIE_BoadAssy.rc" />

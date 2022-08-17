@@ -49,6 +49,7 @@ public:
 
 protected:
 	void Lf_InitFontSet();
+	void Lf_InitItemValue();
 
 private:
 	CFont m_Font[FONT_IDX_MAX];
@@ -57,4 +58,6 @@ public:
 	afx_msg void OnDestroy();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+	CStatic m_sttMainFwVerView;
+	afx_msg void OnBnClickedBtnBmpDownload();
 };

@@ -12,6 +12,7 @@
 #include "StationMenu.h"
 #include "ModelChange.h"
 #include "AutoFirmware.h"
+#include "BmpDownload.h"
 
 
 #ifdef _DEBUG
@@ -45,6 +46,7 @@ public:
 // 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
 };
 
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
@@ -74,6 +76,7 @@ CGIE_BoadAssyDlg::CGIE_BoadAssyDlg(CWnd* pParent /*=NULL*/)
 void CGIE_BoadAssyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_STT_MAIN_FW_VERSION_VIEW, m_sttMainFwVerView);
 }
 
 BEGIN_MESSAGE_MAP(CGIE_BoadAssyDlg, CDialog)
@@ -95,6 +98,7 @@ BEGIN_MESSAGE_MAP(CGIE_BoadAssyDlg, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_WM_DESTROY()
 	ON_WM_DRAWITEM()
+	ON_BN_CLICKED(IDC_BTN_BMP_DOWNLOAD, &CGIE_BoadAssyDlg::OnBnClickedBtnBmpDownload)
 END_MESSAGE_MAP()
 
 
@@ -136,6 +140,7 @@ BOOL CGIE_BoadAssyDlg::OnInitDialog()
 	lpModelInfo	= m_pApp->GetModelInfo();
 	lpWorkInfo = m_pApp->GetWorkInfo();
 
+	Lf_InitItemValue();
 	Lf_InitFontSet();
 
 	AfxBeginThread(ThreadDioRead, this);
@@ -392,7 +397,13 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 
 	return (0);
 }
-
+void CGIE_BoadAssyDlg::Lf_InitItemValue()
+{
+	CRect rect;
+	GetClientRect(rect);
+	rect.top = rect.bottom - 20;
+	m_sttMainFwVerView.MoveWindow(rect);
+}
 void CGIE_BoadAssyDlg::Lf_InitFontSet()
 {
 	/*************************************************************************************************/
@@ -404,7 +415,7 @@ void CGIE_BoadAssyDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_STATION_INFO_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_MODEL_INFO_TIT)->SetFont(&m_Font[3]);
 
-	m_Font[4].CreateFont( 21, 9, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[4].CreateFont( 21, 8, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
 	GetDlgItem(IDC_STT_EQP_NAME_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_EQP_NAME_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_OP_MODE_TIT)->SetFont(&m_Font[4]);
@@ -650,4 +661,12 @@ void CGIE_BoadAssyDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		dc.Detach();
 	}
 	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
+}
+
+
+void CGIE_BoadAssyDlg::OnBnClickedBtnBmpDownload()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CBmpDownload bmpdlg;
+	bmpdlg.DoModal();
 }

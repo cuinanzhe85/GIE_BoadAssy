@@ -210,6 +210,14 @@ void CModelInfo::Lf_initItemValue()
 	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_CHANGE);
 	pBtn = (CButton*)GetDlgItem(IDC_BTN_CHANGE);
 	pBtn->SetIcon(hIcon);
+
+	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_SAVE);
+	pBtn = (CButton*)GetDlgItem(IDC_BTN_SAVE);
+	pBtn->SetIcon(hIcon);
+
+	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_CLOSE);
+	pBtn = (CButton*)GetDlgItem(IDC_BTN_CANCEL);
+	pBtn->SetIcon(hIcon);
 }
 void CModelInfo::Lf_initFontSet()
 {

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="헤더 파일\XImageInc">
+      <UniqueIdentifier>{ace23f8d-4238-4884-bec6-7993afeb710b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AutoFirmware.cpp">
@@ -82,6 +85,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="SocketUDP.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BmpDownload.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -167,6 +173,12 @@
     <ClInclude Include="SocketUDP.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="BmpDownload.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="XImageInc\ximage.h">
+      <Filter>헤더 파일\XImageInc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\GIE_BoadAssy.ico">
@@ -188,6 +200,15 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\icon_rel.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Delete.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Close.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Save.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
