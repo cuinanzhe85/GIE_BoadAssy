@@ -90,6 +90,9 @@
     <ClCompile Include="BmpDownload.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Maint.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoFirmware.h">
@@ -179,6 +182,9 @@
     <ClInclude Include="XImageInc\ximage.h">
       <Filter>헤더 파일\XImageInc</Filter>
     </ClInclude>
+    <ClInclude Include="Maint.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\GIE_BoadAssy.ico">
@@ -209,6 +215,69 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\Save.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\UserLogin.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\UserLogin_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\111.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\BMP.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\BMP_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Exit.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Exit_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\FW.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\FW_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Initial.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Initial_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Maint.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Maint_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\MC.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\MC_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Model.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Model_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\System.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\System_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Test.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Test_Push.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

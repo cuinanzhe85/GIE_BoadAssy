@@ -209,6 +209,7 @@
     <ClCompile Include="GIE_BoadAssyDlg.cpp" />
     <ClCompile Include="IniProfileAPI.cpp" />
     <ClCompile Include="Initialize.cpp" />
+    <ClCompile Include="Maint.cpp" />
     <ClCompile Include="MessageError.cpp" />
     <ClCompile Include="MessageQuestion.cpp" />
     <ClCompile Include="ModelChange.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="GieJudge.h" />
     <ClInclude Include="GIE_BoadAssy.h" />
     <ClInclude Include="GIE_BoadAssyDlg.h" />
+    <ClInclude Include="Maint.h" />
     <ClInclude Include="SocketUDP.h" />
     <ClInclude Include="XImageInc\ximage.h" />
     <ClInclude Include="_GlobalDefine.h" />
@@ -261,8 +263,15 @@
     <ClInclude Include="UserID.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\111.bmp" />
+    <Image Include="res\BMP.bmp" />
+    <Image Include="res\BMP_Push.bmp" />
     <Image Include="res\Close.ico" />
     <Image Include="res\Delete.ico" />
+    <Image Include="res\Exit.bmp" />
+    <Image Include="res\Exit_Push.bmp" />
+    <Image Include="res\FW.bmp" />
+    <Image Include="res\FW_Push.bmp" />
     <Image Include="res\GIE_BoadAssy.ico" />
     <Image Include="res\ico00001.ico" />
     <Image Include="res\ico00003.ico" />
@@ -270,7 +279,21 @@
     <Image Include="res\ico00010.ico" />
     <Image Include="res\icon1.ico" />
     <Image Include="res\icon_rel.ico" />
+    <Image Include="res\Initial.bmp" />
+    <Image Include="res\Initial_Push.bmp" />
+    <Image Include="res\Maint.bmp" />
+    <Image Include="res\Maint_Push.bmp" />
+    <Image Include="res\MC.bmp" />
+    <Image Include="res\MC_Push.bmp" />
+    <Image Include="res\Model.bmp" />
+    <Image Include="res\Model_Push.bmp" />
     <Image Include="res\Save.ico" />
+    <Image Include="res\System.bmp" />
+    <Image Include="res\System_Push.bmp" />
+    <Image Include="res\Test.bmp" />
+    <Image Include="res\Test_Push.bmp" />
+    <Image Include="res\UserLogin.bmp" />
+    <Image Include="res\UserLogin_Push.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GIE_BoadAssy.rc" />

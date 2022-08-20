@@ -57,6 +57,26 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //DIO 
+#define DIO_OUT_RESET	0X00
+
+#define DIO_OUT_01		(1<<0)
+#define DIO_OUT_02		(1<<1)
+#define DIO_OUT_03		(1<<2)
+#define DIO_OUT_04		(1<<3)
+#define DIO_OUT_05		(1<<4)
+#define DIO_OUT_06		(1<<5)
+#define DIO_OUT_07		(1<<6)
+#define DIO_OUT_08		(1<<7)
+
+#define DIO_IN_01		(1<<0)
+#define DIO_IN_02		(1<<1)
+#define DIO_IN_03		(1<<2)
+#define DIO_IN_04		(1<<3)
+#define DIO_IN_05		(1<<4)
+#define DIO_IN_06		(1<<5)
+#define DIO_IN_07		(1<<6)
+#define DIO_IN_08		(1<<7)
+
 enum
 {
 	DIO_GUMI_M5_PRESS_DOWN = 0,

@@ -60,4 +60,15 @@ public:
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	CStatic m_sttMainFwVerView;
 	afx_msg void OnBnClickedBtnBmpDownload();
+	afx_msg void OnBnClickedBtnMint();
+	CButton m_btnMainUserID;
+	CButton m_btnMainMC;
+	CButton m_btnMainModel;
+	CButton m_btnMainTest;
+	CButton m_btnMainMaint;
+	CButton m_btnMainSystem;
+	CButton m_btnMainInit;
+	CButton m_btnMainFW;
+	CButton m_btnMainBmp;
+	CButton m_btnMainExit;
 };

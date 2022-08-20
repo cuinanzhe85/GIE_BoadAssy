@@ -33,8 +33,29 @@
 #define IDD_BMP_DOWNLOAD                164
 #define IDI_ICON_DELETE2                167
 #define IDI_ICON_CLOSE                  168
-#define IDI_ICON2                       169
 #define IDI_ICON_SAVE                   169
+#define IDD_MAINT                       170
+#define IDB_BITMAP_USER                 172
+#define IDB_BITMAP_USER_P               173
+#define IDB_BITMAP_BMP                  175
+#define IDB_BITMAP_BMP_P                176
+#define IDB_BITMAP_EXIT                 177
+#define IDB_BITMAP_EXIT_P               178
+#define IDB_BITMAP_FW                   179
+#define IDB_BITMAP_FW_P                 180
+#define IDB_BITMAP_INIT                 181
+#define IDB_BITMAP9                     182
+#define IDB_BITMAP_INIT_P               182
+#define IDB_BITMAP_MAINT                183
+#define IDB_BITMAP_MAINT_P              184
+#define IDB_BITMAP_MC                   185
+#define IDB_BITMAP_MC_P                 186
+#define IDB_BITMAP_MODEL                187
+#define IDB_BITMAP_MODEL_P              188
+#define IDB_BITMAP_SYSTEM               189
+#define IDB_BITMAP_SYSTEM_P             190
+#define IDB_BITMAP_TEST                 191
+#define IDB_BITMAP_TEST_P               192
 #define IDC_BTN_USERID                  1000
 #define IDC_BTN_MODELINFO               1001
 #define IDC_BTN_FUSING                  1001
@@ -54,6 +75,7 @@
 #define IDC_EDT_H_FRONT_PORCH           1008
 #define IDC_BTN_BMP_DOWNLOAD            1008
 #define IDC_EDT_H_BACK_PORCH            1009
+#define IDC_BTN_MINT                    1009
 #define IDC_EDT_V_TOTAL                 1010
 #define IDC_EDT_V_ACTIVE                1011
 #define IDC_EDT_V_WIDTH                 1012
@@ -176,6 +198,7 @@
 #define IDC_CMB_TEST_MODE               1085
 #define IDC_STT_ICC_MEASURE             1085
 #define IDC_CMB_PTN_TOUCH               1085
+#define IDC_CMB_PATTERN_LIST            1085
 #define IDC_STT_GOOD_CNT_TIT            1086
 #define IDC_STT_TOUCH_CLK               1086
 #define IDC_CMB_TEST_MODE2              1086
@@ -328,14 +351,36 @@
 #define IDC_STT_DOWNLOAD_STATUS         1206
 #define IDC_STT_IMAGE_DISPLAY           1207
 #define IDC_PICTURE_IMAGE               1208
+#define IDC_CHECK_DO_01                 1209
+#define IDC_CHECK_DO_02                 1210
+#define IDC_CHECK_DO_03                 1211
+#define IDC_CHECK_DO_04                 1212
+#define IDC_CHECK_DO_05                 1213
+#define IDC_CHECK_DO_06                 1214
+#define IDC_CHECK_DO_07                 1215
+#define IDC_CHECK_DO_08                 1216
+#define IDC_CHECK_DI_01                 1217
+#define IDC_CHECK_DI_02                 1218
+#define IDC_CHECK_DI_03                 1219
+#define IDC_CHECK_DI_04                 1220
+#define IDC_CHECK_DI_05                 1221
+#define IDC_CHECK_DI_06                 1222
+#define IDC_CHECK_DI_07                 1223
+#define IDC_CHECK_DI_08                 1224
+#define IDC_BTN_POWER_ON                1225
+#define IDC_BTN_POWER_OFF               1226
+#define IDC_STT_MT_VCC_MEASURE          1228
+#define IDC_STT_MT_ICC_MEASURE          1229
+#define IDC_STT_MT_VDD_MEASURE          1230
+#define IDC_STT_MT_IDD_MEASURE          1231
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        170
+#define _APS_NEXT_RESOURCE_VALUE        193
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1209
+#define _APS_NEXT_CONTROL_VALUE         1230
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

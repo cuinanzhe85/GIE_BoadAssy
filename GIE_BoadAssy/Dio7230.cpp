@@ -58,7 +58,7 @@ void CDIO7230::Dio_DO_WriteSetBit(U32 ulDOut, BOOL bOnOff)
 void CDIO7230::Gf_setDioWrite(U32 ulDOut)
 {
 	DO_WritePort(DIO_CARD_NUM, 0, ulDOut);
-	Sleep(500);
+	delayMS(500);
 	DO_WritePort(DIO_CARD_NUM, 0, DIO_INIT);
 }
 bool CDIO7230::Gf_getDIOJigArrive()

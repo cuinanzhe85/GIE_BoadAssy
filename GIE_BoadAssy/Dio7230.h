@@ -23,7 +23,7 @@ public:
 	void Dio_DO_WritePort(U32 ulDOut);
 	U32 Dio_DI_ReadPort();
 
-	void Dio_DO_WriteSetBit(U32 ulDOut, BOOL bOnOff);
+	void Dio_DO_WriteSetBit(U32 ulDOut, BOOL bOnOff = TRUE);
 
 	void Gf_setDioWrite(U32 ulDOut);
 	bool Gf_getDIOJigArrive();

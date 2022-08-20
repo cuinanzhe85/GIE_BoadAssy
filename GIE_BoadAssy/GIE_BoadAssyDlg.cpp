@@ -13,6 +13,7 @@
 #include "ModelChange.h"
 #include "AutoFirmware.h"
 #include "BmpDownload.h"
+#include "Maint.h"
 
 
 #ifdef _DEBUG
@@ -77,6 +78,16 @@ void CGIE_BoadAssyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_STT_MAIN_FW_VERSION_VIEW, m_sttMainFwVerView);
+	DDX_Control(pDX, IDC_BTN_USERID, m_btnMainUserID);
+	DDX_Control(pDX, IDC_BTN_MODEL_CHANGE, m_btnMainMC);
+	DDX_Control(pDX, IDC_BTN_MODELINFO, m_btnMainModel);
+	DDX_Control(pDX, IDC_BTN_TEST, m_btnMainTest);
+	DDX_Control(pDX, IDC_BTN_MINT, m_btnMainMaint);
+	DDX_Control(pDX, IDC_BTN_SYSTEM, m_btnMainSystem);
+	DDX_Control(pDX, IDC_BTN_INITIALIZE, m_btnMainInit);
+	DDX_Control(pDX, IDC_BTN_AUTOFIRMWARE, m_btnMainFW);
+	DDX_Control(pDX, IDC_BTN_BMP_DOWNLOAD, m_btnMainBmp);
+	DDX_Control(pDX, IDC_BTN_EXIT, m_btnMainExit);
 }
 
 BEGIN_MESSAGE_MAP(CGIE_BoadAssyDlg, CDialog)
@@ -99,6 +110,7 @@ BEGIN_MESSAGE_MAP(CGIE_BoadAssyDlg, CDialog)
 	ON_WM_DESTROY()
 	ON_WM_DRAWITEM()
 	ON_BN_CLICKED(IDC_BTN_BMP_DOWNLOAD, &CGIE_BoadAssyDlg::OnBnClickedBtnBmpDownload)
+	ON_BN_CLICKED(IDC_BTN_MINT, &CGIE_BoadAssyDlg::OnBnClickedBtnMint)
 END_MESSAGE_MAP()
 
 
@@ -279,57 +291,128 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CGIE_BoadAssyDlg::OnBnClickedBtnUserid()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	HBITMAP hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_USER_P));
+	m_btnMainUserID.SetBitmap(hBit);
 	CUserID userDlg;
 	userDlg.DoModal();
+
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_USER));
+	m_btnMainUserID.SetBitmap(hBit);
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnModelChange()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	HBITMAP hBit;
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MC_P));
+	m_btnMainMC.SetBitmap(hBit);
+
 	CModelChange mcDlg;
 	mcDlg.DoModal();
+
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MC));
+	m_btnMainMC.SetBitmap(hBit);
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnModelinfo()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	HBITMAP hBit;
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MODEL_P));
+	m_btnMainModel.SetBitmap(hBit);
 	CModelInfo modDlg;
 	modDlg.DoModal();
+
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MODEL));
+	m_btnMainModel.SetBitmap(hBit);
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnTest()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	HBITMAP hBit;
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_TEST_P));
+	m_btnMainTest.SetBitmap(hBit);
 	CTestReady TestDlg;
 	TestDlg.DoModal();
+
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_TEST));
+	m_btnMainTest.SetBitmap(hBit);
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnSystem()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	HBITMAP hBit;
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_SYSTEM_P));
+	m_btnMainSystem.SetBitmap(hBit);
+
 	CStationMenu stDlg;
 	stDlg.DoModal();
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_SYSTEM));
+	m_btnMainSystem.SetBitmap(hBit);
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnAutofirmware()
 {
+	HBITMAP hBit;
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_FW_P));
+	m_btnMainFW.SetBitmap(hBit);
 	CAutoFirmware fwDlg;
 	fwDlg.DoModal();
+
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_FW));
+	m_btnMainFW.SetBitmap(hBit);
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnInitialize()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	HBITMAP hBit;
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_INIT_P));
+	m_btnMainInit.SetBitmap(hBit);
+
 	CInitialize initDlg;
 	initDlg.DoModal();
+
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_INIT));
+	m_btnMainInit.SetBitmap(hBit);
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnExit()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	HBITMAP hBit;
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_EXIT_P));
+	m_btnMainExit.SetBitmap(hBit);
 	CDialog::OnOK();
 }
 
+void CGIE_BoadAssyDlg::OnBnClickedBtnBmpDownload()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	HBITMAP hBit;
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_BMP_P));
+	m_btnMainBmp.SetBitmap(hBit);
+	CBmpDownload bmpdlg;
+	bmpdlg.DoModal();
+
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_BMP));
+	m_btnMainBmp.SetBitmap(hBit);
+}
+
+
+void CGIE_BoadAssyDlg::OnBnClickedBtnMint()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	HBITMAP hBit;
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MAINT_P));
+	m_btnMainMaint.SetBitmap(hBit);
+	CMaint maintdlg;
+	maintdlg.DoModal();
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MAINT));
+	m_btnMainMaint.SetBitmap(hBit);
+}
 void CGIE_BoadAssyDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
@@ -403,6 +486,29 @@ void CGIE_BoadAssyDlg::Lf_InitItemValue()
 	GetClientRect(rect);
 	rect.top = rect.bottom - 20;
 	m_sttMainFwVerView.MoveWindow(rect);
+
+	/*m_btnMainUserID.LoadBitmaps(IDB_BITMAP_USER, IDB_BITMAP_USER_P, IDB_BITMAP_USER, IDB_BITMAP_USER);
+	m_btnMainUserID.SizeToContent();*/
+	HBITMAP hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_USER));
+	m_btnMainUserID.SetBitmap(hBit);
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MC));
+	m_btnMainMC.SetBitmap(hBit);
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MODEL));
+	m_btnMainModel.SetBitmap(hBit);
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_TEST));
+	m_btnMainTest.SetBitmap(hBit);
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MAINT));
+	m_btnMainMaint.SetBitmap(hBit);
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_SYSTEM));
+	m_btnMainSystem.SetBitmap(hBit);
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_INIT));
+	m_btnMainInit.SetBitmap(hBit);
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_FW));
+	m_btnMainFW.SetBitmap(hBit);
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_BMP));
+	m_btnMainBmp.SetBitmap(hBit);
+	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_EXIT));
+	m_btnMainExit.SetBitmap(hBit);
 }
 void CGIE_BoadAssyDlg::Lf_InitFontSet()
 {
@@ -529,14 +635,16 @@ BOOL CGIE_BoadAssyDlg::PreTranslateMessage(MSG* pMsg)
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-
 void CGIE_BoadAssyDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
+
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	if ((nIDCtl == IDC_BTN_USERID) || (nIDCtl == IDC_BTN_MODEL_CHANGE) || (nIDCtl == IDC_BTN_MODELINFO)
+	/*if ((nIDCtl == IDC_BTN_MODEL_CHANGE) || (nIDCtl == IDC_BTN_MODELINFO)
 		|| (nIDCtl == IDC_BTN_SYSTEM) || (nIDCtl == IDC_BTN_TEST) || (nIDCtl == IDC_BTN_INITIALIZE)
 		|| (nIDCtl == IDC_BTN_AUTOFIRMWARE) ||(nIDCtl == IDC_BTN_BMP_DOWNLOAD)|| (nIDCtl == IDC_BTN_EXIT)
-		)
+		|| (nIDCtl == IDC_BTN_MINT)
+		)//(nIDCtl == IDC_BTN_USERID) || 
+		
 	{
 		CDC dc;
 		RECT rect;
@@ -660,13 +768,9 @@ void CGIE_BoadAssyDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		dc.DrawText(buffer, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);//Redraw the  Caption of Button Window 
 		dc.Detach();
 	}
-	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
+	
+	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);*/
+
 }
 
 
-void CGIE_BoadAssyDlg::OnBnClickedBtnBmpDownload()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CBmpDownload bmpdlg;
-	bmpdlg.DoModal();
-}
