@@ -200,10 +200,10 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerFront_P);						makePacket.Append(sdata);
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerBack_P);						makePacket.Append(sdata);
 
-	sdata.Format(_T("%01d"), lpModelInfo->m_nClockIncDec);							makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), (int)((lpModelInfo->m_fClockDelay*10)+0.5));			makePacket.Append(sdata);
-	sdata.Format(_T("%01d"), lpModelInfo->m_nClockIncDec);							makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), (int)((lpModelInfo->m_fClockDelay*10)+0.5));			makePacket.Append(sdata);
+	sdata.Format(_T("%01d"), 0);							makePacket.Append(sdata);
+	sdata.Format(_T("%03d"), 0);			makePacket.Append(sdata);
+	sdata.Format(_T("%01d"), 0);							makePacket.Append(sdata);
+	sdata.Format(_T("%03d"), 0);			makePacket.Append(sdata);
 
 	// Aging Info
 	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);// Total Aging Time
@@ -569,8 +569,8 @@ CString CCommand::Lf_ModifyPtn_RGB(CString strPtnName, CString lpData, int nPtnI
 	}
 	else
 	{
-		m_pApp->m_nGrayValueFg = _ttoi(lpModelInfo->m_sLbPtnFg[*m_pApp->pPtnIndex]);
-		m_pApp->m_nGrayValueBg = _ttoi(lpModelInfo->m_sLbPtnBg[*m_pApp->pPtnIndex]);
+		//m_pApp->m_nGrayValueFg = _ttoi(lpModelInfo->m_sLbPtnFg[*m_pApp->pPtnIndex]);
+		//m_pApp->m_nGrayValueBg = _ttoi(lpModelInfo->m_sLbPtnBg[*m_pApp->pPtnIndex]);
 	}
 
 	short int snFgBitCalc, snBgBitCalc;

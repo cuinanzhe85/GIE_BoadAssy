@@ -288,18 +288,8 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 
 	lpModelInfo->m_nGfd100Use=0;
 	lpModelInfo->m_nSolomonMipi=0;
-	lpModelInfo->m_nMicroPtnCnt=0;
 	lpModelInfo->m_nBluMin=0;
 	lpModelInfo->m_nDp501InitCode=0;
-
-	lpModelInfo->m_nVocmAddr=0;
-	lpModelInfo->m_nVcomLine=0;
-	lpModelInfo->m_nVcomMinMaxUse=0;
-	lpModelInfo->m_nVcomMin=0;
-	lpModelInfo->m_nVcomMax=0;
-	lpModelInfo->m_nVcomDefault=0;
-	lpModelInfo->m_nVcomDrop=0;	
-	lpModelInfo->m_nVcomBitShift=0;
 
 	lpModelInfo->m_fTimingFreq=0.0;
 	lpModelInfo->m_nTimingHorActive=0;
@@ -316,21 +306,14 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpModelInfo->m_nLcmInfoInterface=0;
 	lpModelInfo->m_nLcmInfoMode=0;
 	lpModelInfo->m_nLcmInfoBitsSwap=0;
-	lpModelInfo->m_nLcmInfoDotClockInv=0;
-	lpModelInfo->m_nLcmInfoHsyncPolarity=0;
-	lpModelInfo->m_nLcmInfoVsyncPolarity=0;
-	lpModelInfo->m_nClockIncDec=0;
-	lpModelInfo->m_fClockDelay=0.0;	
 
 	lpModelInfo->m_nSignalType=0;
 	lpModelInfo->m_nSignalBit=0;
 	lpModelInfo->m_nSignalInterface=0;
 	lpModelInfo->m_nSignalBitSwap=0;
 	lpModelInfo->m_nBitSel=0;
-	lpModelInfo->m_nBistOnOff=0;
 	lpModelInfo->m_nLGDISMSelect=0;
 	lpModelInfo->m_nALPDPModelSel=0;
-	lpModelInfo->m_nLaneCurrPreEmp=0;
 	lpModelInfo->m_nAgpOnOff=0;
 	lpModelInfo->m_nSpiMode=0;
 	lpModelInfo->m_nSpiLevel=0;
@@ -357,15 +340,15 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	for(i=0; i<TOTALPATTERN; i++)
 	{
 		lpModelInfo->m_sLbPtnName[i].Empty();
-		lpModelInfo->m_sLbPtnFg[i].Empty();
-		lpModelInfo->m_sLbPtnBg[i].Empty();
 		lpModelInfo->m_sLbPtnVcc[i].Empty();
 		lpModelInfo->m_sLbPtnVdd[i].Empty();
 		lpModelInfo->m_sLbPtnTms[i].Empty();
 		lpModelInfo->m_sLbPtnVsync[i].Empty();
-		lpModelInfo->m_sLbPtnVcom[i].Empty();
 		lpModelInfo->m_sLbPtnBlu[i].Empty();
-		lpModelInfo->m_sLbPtnTouch[i].Empty();
+		lpModelInfo->m_sLbPtnIccLow[i].Empty();
+		lpModelInfo->m_sLbPtnIccHigh[i].Empty();
+		lpModelInfo->m_sLbPtnIddLow[i].Empty();
+		lpModelInfo->m_sLbPtnIddHigh[i].Empty();
 	}
 
 	lpWorkInfo->m_bPIDReadComplete = false;
@@ -390,7 +373,6 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 
 	lpWorkInfo->m_nGoodCnt=0;
 	lpWorkInfo->m_nBadCnt=0;
-	lpWorkInfo->m_bMicroPtnDone=false;
 	lpWorkInfo->m_sBadPattern.Empty();
 }
 
@@ -516,8 +498,6 @@ void CGIE_BoadAssyApp::Lf_loadModelInfo()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VER_WIDTH"),		&lpModelInfo->m_nTimingVerWidth);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("INTERFACE"),		&lpModelInfo->m_nLcmInfoInterface);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BITSWAP"),			&lpModelInfo->m_nLcmInfoBitsSwap);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("INCDEC"),			&lpModelInfo->m_nClockIncDec);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("CLKDELAY"),			&lpModelInfo->m_fClockDelay);
 
 	//-------------------------------------- EDID INFO
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("EDID_USE"),				&lpModelInfo->m_nEdidUse);
@@ -527,14 +507,6 @@ void CGIE_BoadAssyApp::Lf_loadModelInfo()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("EEPROM_TYPE"),			&lpModelInfo->m_nEEPRomType);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("EDID_SIZE"),			&lpModelInfo->m_nEdidSize);
 
-	//-------------------------------------- PVCOM INFO
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_ADDR"),			&lpModelInfo->m_nVocmAddr);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_LINE"),			&lpModelInfo->m_nVcomLine);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_BITSHIFT"),		&lpModelInfo->m_nVcomBitShift);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_MIN"),				&lpModelInfo->m_nVcomMin);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_MAX"),				&lpModelInfo->m_nVcomMax);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_DEFAULT"),			&lpModelInfo->m_nVcomDefault);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_DROP"),			&lpModelInfo->m_nVcomDrop);
 
 	//-------------------------------------- Function INFO
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("GFD100_USE"),			&lpModelInfo->m_nGfd100Use);
@@ -544,26 +516,41 @@ void CGIE_BoadAssyApp::Lf_loadModelInfo()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SPI_LEVEL"),			&lpModelInfo->m_nSpiLevel);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BLU_MIN"),				&lpModelInfo->m_nBluMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("GFD250"),				&lpModelInfo->m_nGfd250);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("MICRO_PTN_CNT"),		&lpModelInfo->m_nMicroPtnCnt);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("MICRO_PTN_PATH"),		&lpModelInfo->m_sMicroPtnPath);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("CABLE_OPEN_USE"),		&lpModelInfo->m_nCableOpenUse);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SHORT_TEST_USE"),		&lpModelInfo->m_nShortTestUse);
 	
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCC"),					&lpModelInfo->m_fVoltVcc);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VDD"),					&lpModelInfo->m_fVoltVdd);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGH"),					&lpModelInfo->m_fVoltVgh);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGL"),					&lpModelInfo->m_fVoltVgl);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCC_HIGH_LIMIT"),		&lpModelInfo->m_fLimitVccMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCC_LOW_LIMIT"),		&lpModelInfo->m_fLimitVccMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VDD_HIGH_LIMIT"),		&lpModelInfo->m_fLimitVddMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VDD_LOW_LIMIT"),		&lpModelInfo->m_fLimitVddMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("ICC_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIccMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("ICC_LOW_LIMIT"),		&lpModelInfo->m_fLimitIccMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IDD_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIddMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IDD_LOW_LIMIT"),		&lpModelInfo->m_fLimitIddMin);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGL_HIGH_LIMIT"),		&lpModelInfo->m_fLimitVglMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGL_LOW_LIMIT"),		&lpModelInfo->m_fLimitVglMin);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGH_HIGH_LIMIT"),		&lpModelInfo->m_fLimitVghMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGH_LOW_LIMIT"),		&lpModelInfo->m_fLimitVghMin);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGL_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIglMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGL_LOW_LIMIT"),		&lpModelInfo->m_fLimitIglMin);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIghMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_LOW_LIMIT"),		&lpModelInfo->m_fLimitIghMin);
 
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_TYPE"),			&lpModelInfo->m_nSignalType);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_BIT"),			&lpModelInfo->m_nSignalBit);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("LG_DISM"),				&lpModelInfo->m_nLGDISMSelect);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BIT_SELECT"),			&lpModelInfo->m_nBitSel);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("LANE_CUR_EMP"),			&lpModelInfo->m_nLaneCurrPreEmp);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BIST_ONOFF"),			&lpModelInfo->m_nBistOnOff);
 
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("POWER_SEQ_SEL"),		&lpModelInfo->m_nPwrSeq);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("POWER_SEQ_DELAY"),		&lpModelInfo->m_nSeqDelay);
 
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_PULLUP"), &lpModelInfo->m_nI2cPullup);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_FREQ"), &lpModelInfo->m_nI2cFreq);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_LEVEL"), &lpModelInfo->m_nI2cLevel);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////// Pattern File 
 	lpModelInfo->m_nLbCnt = 0;
@@ -580,28 +567,28 @@ void CGIE_BoadAssyApp::Lf_loadModelInfo()
 			memset(szParseData, NULL, sizeof(szParseData));
 
 			lpModelInfo->m_sLbPtnName[nLoop].Empty();
-			//lpModelInfo->m_sLbPtnFg[nLoop].Empty();
-			//lpModelInfo->m_sLbPtnBg[nLoop].Empty();
 			lpModelInfo->m_sLbPtnVcc[nLoop].Empty();
 			lpModelInfo->m_sLbPtnVdd[nLoop].Empty();
 			lpModelInfo->m_sLbPtnTms[nLoop].Empty();
 			lpModelInfo->m_sLbPtnVsync[nLoop].Empty();
-			lpModelInfo->m_sLbPtnVcom[nLoop].Empty();
 			lpModelInfo->m_sLbPtnBlu[nLoop].Empty();
-			lpModelInfo->m_sLbPtnTouch[nLoop].Empty();
+			lpModelInfo->m_sLbPtnIccLow[nLoop].Empty();
+			lpModelInfo->m_sLbPtnIccHigh[nLoop].Empty();
+			lpModelInfo->m_sLbPtnIddLow[nLoop].Empty();
+			lpModelInfo->m_sLbPtnIddHigh[nLoop].Empty();
 		}
 		else
 		{	
 			lpModelInfo->m_sLbPtnName[nLoop]=szParseData[0];
-			//lpModelInfo->m_sLbPtnFg[nLoop]	=szParseData[1];
-			//lpModelInfo->m_sLbPtnBg[nLoop]	=szParseData[2];
 			lpModelInfo->m_sLbPtnVcc[nLoop]=szParseData[1];
 			lpModelInfo->m_sLbPtnVdd[nLoop]=szParseData[2];
 			lpModelInfo->m_sLbPtnTms[nLoop]=szParseData[3];
 			lpModelInfo->m_sLbPtnVsync[nLoop]=szParseData[4];
-			lpModelInfo->m_sLbPtnVcom[nLoop].Format(_T("%s"), ((_tcslen(szParseData[5])==0) ? _T("OFF") :szParseData[5]));
-			lpModelInfo->m_sLbPtnBlu[nLoop].Format(_T("%s"), ((_tcslen(szParseData[6])==0) ? _T("100") :szParseData[6]));
-			lpModelInfo->m_sLbPtnTouch[nLoop].Format(_T("%s"), ((_tcslen(szParseData[7])==0) ? _T("OFF") :szParseData[7]));
+			lpModelInfo->m_sLbPtnIccLow[nLoop] = szParseData[5];
+			lpModelInfo->m_sLbPtnIccHigh[nLoop] = szParseData[6];
+			lpModelInfo->m_sLbPtnIddLow[nLoop] = szParseData[7];
+			lpModelInfo->m_sLbPtnIddHigh[nLoop] = szParseData[8];
+			lpModelInfo->m_sLbPtnBlu[nLoop].Format(_T("%s"), ((_tcslen(szParseData[6])==0) ? _T("100") :szParseData[9]));
 			lpModelInfo->m_nLbCnt = nLoop+1;
 		}
 
@@ -1291,7 +1278,7 @@ CString CGIE_BoadAssyApp::Lf_getPatternData()
 		if(chk != 0)
 		{
 			Num++;
-			sdata1.Format(_T("%d:%s(%d):%2.2f,"),Num,lpModelInfo->m_sLbPtnName[Num-1],_ttoi(lpModelInfo->m_sLbPtnFg[Num-1]),chk);
+			sdata1.Format(_T("%d:%s:%2.2f,"),Num,lpModelInfo->m_sLbPtnName[Num-1],chk);
 			sdata2.Append(sdata1);
 		}
 	}

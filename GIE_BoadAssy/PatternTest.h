@@ -36,7 +36,6 @@ protected:
 
 protected:
 	void RemoveMessageFromQueue();
-	bool Lf_checkMicroPattern();
 	void Lf_sendPtnData();
 	BOOL Lf_sendBluData();
 	void Lf_sendPatternBluData();
@@ -46,7 +45,6 @@ protected:
 	void Lf_insertListItem();
 	void Lf_compareEEPRomData();
 	BOOL Lf_cmpEdidData();
-	void Lf_showDisplayLockTimeText();
 	void Lf_initFontSet();
 	void Lf_initVariable();
 	void Lf_setPatternGrayLevel(int wParam);

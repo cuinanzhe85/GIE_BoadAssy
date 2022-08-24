@@ -67,9 +67,10 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nBitSel;
 	int m_nLGDISMSelect;
 	int m_nALPDPModelSel;
-	int m_nLaneCurrPreEmp;
 	int m_nSpiMode;
 	int m_nSpiLevel;
+	int m_nCableOpenUse;
+	int m_nShortTestUse;
 	
 	int m_nEdidUse;
 	int m_nEdidAddr;
@@ -90,12 +91,6 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nLcmInfoInterface;
 	int m_nLcmInfoMode;
 	int m_nLcmInfoBitsSwap;
-	int m_nLcmInfoDotClockInv;
-	int m_nLcmInfoHsyncPolarity;
-	int m_nLcmInfoVsyncPolarity;
-
-	int m_nClockIncDec;
-	float m_fClockDelay;
 
 	float m_fTimingFreq;
 	int	m_nTimingHorActive;
@@ -111,16 +106,29 @@ typedef struct _ST_MODELSETINFO_{
 
 	float m_fVoltVcc;
 	float m_fVoltVdd;
+	float m_fVoltVgh;
+	float m_fVoltVgl;
 	float m_fLimitVccMax;
+	float m_fLimitVccMin;
 	float m_fLimitVddMax;
+	float m_fLimitVddMin;
 	float m_fLimitIccMax;
+	float m_fLimitIccMin;
 	float m_fLimitIddMax;
+	float m_fLimitIddMin;
+	float m_fLimitVghMax;
+	float m_fLimitVghMin;
+	float m_fLimitVglMax;
+	float m_fLimitVglMin;
+	float m_fLimitIghMax;
+	float m_fLimitIghMin;
+	float m_fLimitIglMax;
+	float m_fLimitIglMin;
 	int	  m_nIccCheck;
 
 	BYTE gucFGColor;
 	BYTE gucLineColor;
 
-	int m_nMicroPtnCnt;
 	int m_nGfd100Use;
 	int m_nBluMin;
 	int m_nSolomonMipi;
@@ -130,20 +138,23 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nSeqDelay;
 
 	int m_nAgpOnOff;
-	int m_nBistOnOff;
 	int m_nGfd250;
+
+	int m_nI2cPullup;
+	int m_nI2cFreq;
+	int m_nI2cLevel;
 
 	int		m_nLbCnt;
 	CString m_sLbPtnName[TOTALPATTERN];
-	CString m_sLbPtnFg[TOTALPATTERN];
-	CString m_sLbPtnBg[TOTALPATTERN];
 	CString m_sLbPtnVcc[TOTALPATTERN];
 	CString m_sLbPtnVdd[TOTALPATTERN];
 	CString m_sLbPtnTms[TOTALPATTERN];
 	CString m_sLbPtnVsync[TOTALPATTERN];
-	CString m_sLbPtnVcom[TOTALPATTERN];
 	CString m_sLbPtnBlu[TOTALPATTERN];
-	CString m_sLbPtnTouch[TOTALPATTERN];
+	CString m_sLbPtnIccLow[TOTALPATTERN];
+	CString m_sLbPtnIccHigh[TOTALPATTERN];
+	CString m_sLbPtnIddLow[TOTALPATTERN];
+	CString m_sLbPtnIddHigh[TOTALPATTERN];
 	CString m_sHotPattern[10];
 	int m_nHotPatternGrayFg[10];
 	int m_nHotPatternGrayBg[10];
@@ -322,7 +333,6 @@ typedef struct _ST_INSPWORKINFO_{
 	CString m_sBadPattern;
 	int m_nPassOrFail;
 	
-	bool m_bMicroPtnDone;
 	bool m_bEscDetect;
 
 	CString m_sFirmwareVersion;

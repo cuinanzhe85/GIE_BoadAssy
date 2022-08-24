@@ -25,16 +25,10 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CMB_SIGNAL_TYPE, m_cboSignalType);
 	DDX_Control(pDX, IDC_CMB_SIGNAL_BIT, m_cboSignalBit);
-	DDX_Control(pDX, IDC_CMB_CUR_PREEMP, m_cboCurEmp);
 	DDX_Control(pDX, IDC_CMB_LVDS_SEL, m_cboLvdsSel);
 	DDX_Control(pDX, IDC_CMB_BIT_SEL, m_cboBitSel);
-	DDX_Control(pDX, IDC_CMB_BIST_SEL, m_cboBistOnOff);
 	DDX_Control(pDX, IDC_CMB_INTERFACE, m_cboInterface);
-	DDX_Control(pDX, IDC_CMB_HSYNC_POLALITY, m_cboHsyncPol);
-	DDX_Control(pDX, IDC_CMB_VSYNC_POLALITY, m_cboVsyncPol);
 	DDX_Control(pDX, IDC_CMB_BIT_SWAP, m_cboBitSwap);
-	DDX_Control(pDX, IDC_CMB_CLK_SET, m_cboClkIncDec);
-	DDX_Control(pDX, IDC_CMB_DCLK_INVERSE, m_cboClkInv);
 	DDX_Control(pDX, IDC_EDT_H_TOTAL, m_edtHorTotal);
 	DDX_Control(pDX, IDC_EDT_H_ACTIVE, m_edtHorActive);
 	DDX_Control(pDX, IDC_EDT_H_WIDTH, m_edtHorWidth);
@@ -59,36 +53,44 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_EDID_SIZE, m_cboEdidSize);
 	DDX_Control(pDX, IDC_CMB_EDID_LINE, m_cboEdidLine);
 	DDX_Control(pDX, IDC_CMB_EEPROM_TYPE, m_cboEepType);
-	DDX_Control(pDX, IDC_CMB_VCOM_LINE, m_cboVcomLine);
-	DDX_Control(pDX, IDC_CMB_VCOM_ADDR, m_cboVcomAddr);
-	DDX_Control(pDX, IDC_CMB_VCOM_BIT_SHIFT, m_cboVcomBitShift);
-	DDX_Control(pDX, IDC_EDT_VCOM_MIN, m_edtVcomMin);
-	DDX_Control(pDX, IDC_EDT_VCOM_MAX, m_edtVcomMax);
-	DDX_Control(pDX, IDC_EDT_VCOM_DROP, m_edtVcomDrop);
-	DDX_Control(pDX, IDC_EDT_VCOM_DEFAULT, m_edtVcomDefault);
 	DDX_Control(pDX, IDC_CMB_GFD100, m_cboGfd100OnOff);
-	DDX_Control(pDX, IDC_CMB_SOLOMON_MIPI, m_cboSolomonMipi);
 	DDX_Control(pDX, IDC_CMB_EDP_INITCODE, m_cboInitCode);
-	DDX_Control(pDX, IDC_EDT_MICRO_PTN_CNT, m_edtMicroPtnCnt);
 	DDX_Control(pDX, IDC_EDT_BLU_MIN, m_edtBluMin);
 	DDX_Control(pDX, IDC_CMB_SPI_MODE, m_cboSpiOnOff);
 	DDX_Control(pDX, IDC_CMB_SPI_LEVEL, m_cboSpiLevel);
-	DDX_Control(pDX, IDC_EDT_CLK_DELAY, m_edtClkDelay);
 	DDX_Control(pDX, IDC_LIST_PATTERNSET, m_lcPtnSetList);
 	DDX_Control(pDX, IDC_CMB_PTN_NAME, m_cboPtnName);
-	DDX_Control(pDX, IDC_CMB_PTN_VCOM, m_cboPtnVcom);
-	DDX_Control(pDX, IDC_EDT_PTN_FG, m_edtPtnFg);
-	DDX_Control(pDX, IDC_EDT_PTN_BG, m_edtPtnBg);
 	DDX_Control(pDX, IDC_EDT_PTN_VCC, m_edtPtnVCC);
 	DDX_Control(pDX, IDC_EDT_PTN_VDD, m_edtPtnVDD);
 	DDX_Control(pDX, IDC_EDT_PTN_TMS, m_edtPtnTMS);
 	DDX_Control(pDX, IDC_EDT_PTN_VSYNC, m_edtPtnVSync);
 	DDX_Control(pDX, IDC_EDT_PTN_BLU, m_edtPtnBlu);
-	DDX_Control(pDX, IDC_CMB_PTN_TOUCH, m_cboPtnTouch);
 	DDX_Control(pDX, IDC_CMB_EEPROM_ADDR, m_cboEepAddr);
-	DDX_Control(pDX, IDC_STT_MICRO_PTN_PATH, m_sttMicroPtnPath);
 	DDX_Control(pDX, IDC_CMB_GFD250_ONOFF, m_cboGfd250Use);
 	DDX_Control(pDX, IDC_PIC_MD_PTN_PREVIEW, m_picPatternPreview);
+	DDX_Control(pDX, IDC_EDT_PTN_ICC_LOW, m_edtPtnIccLow);
+	DDX_Control(pDX, IDC_EDT_PTN_ICC_HIGH, m_edtPtnIccHigh);
+	DDX_Control(pDX, IDC_EDT_PTN_IDD_LOW, m_edtPtnIddLow);
+	DDX_Control(pDX, IDC_EDT_PTN_IDD_HIGH, m_edtPtnIddHigh);
+	DDX_Control(pDX, IDC_EDT_VGH_SET, m_edtVghSet);
+	DDX_Control(pDX, IDC_EDT_VGL_SET, m_edtVglSet);
+	DDX_Control(pDX, IDC_EDT_VCC_LOW_LIMIT, m_edtVccLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_VDD_LOW_LIMIT, m_edtVddLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_VGH_HIGH_LIMIT, m_edtVghHighLimitSet);
+	DDX_Control(pDX, IDC_EDT_VGH_LOW_LIMIT, m_edtVghLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_VGL_HIGH_LIMIT, m_edtVglHighLimitSet);
+	DDX_Control(pDX, IDC_EDT_VGL_LOW_LIMIT, m_edtVglLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_ICC_LOW_LIMIT, m_edtIccLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_IDD_LOW_LIMIT, m_edtIddLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_IGH_HIGH_LIMIT, m_edtIghHighLimitSet);
+	DDX_Control(pDX, IDC_EDT_IGH_LOW_LIMIT, m_edtIghLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_IGL_HIGH_LIMIT, m_edtIglHighLimitSet);
+	DDX_Control(pDX, IDC_EDT_IGL_LOW_LIMIT, m_edtIglLowLimitSet);
+	DDX_Control(pDX, IDC_CMB_I2C_PULLUP, m_cmbI2cPullUp);
+	DDX_Control(pDX, IDC_CMB_I2C_FREQ, m_cmbI2cFreq);
+	DDX_Control(pDX, IDC_CMB_I2C_LEVEL, m_cmbI2cLevel);
+	DDX_Control(pDX, IDC_CMB_CABLE_OPEN, m_cmbCableOpenUse);
+	DDX_Control(pDX, IDC_CMB_SHORT_TEST, m_cmbShortTestUse);
 }
 
 
@@ -102,18 +104,13 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialog)
 	ON_BN_CLICKED(IDC_BTN_CHANGE, &CModelInfo::OnBnClickedBtnChange)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PATTERNSET, &CModelInfo::OnLvnItemchangedListPatternset)
 	ON_BN_CLICKED(IDC_BTN_ALL, &CModelInfo::OnBnClickedBtnAll)
-	ON_STN_CLICKED(IDC_STT_FG_CLK, &CModelInfo::OnStnClickedSttFgClk)
-	ON_STN_CLICKED(IDC_STT_BG_CLK, &CModelInfo::OnStnClickedSttBgClk)
 	ON_STN_CLICKED(IDC_STT_VCC_CLK, &CModelInfo::OnStnClickedSttVccClk)
 	ON_STN_CLICKED(IDC_STT_VDD_CLK, &CModelInfo::OnStnClickedSttVddClk)
 	ON_STN_CLICKED(IDC_STT_TMS_CLK, &CModelInfo::OnStnClickedSttTmsClk)
 	ON_STN_CLICKED(IDC_STT_VSYNC_CLK, &CModelInfo::OnStnClickedSttVsyncClk)
-	ON_STN_CLICKED(IDC_STT_VCOM_CLK, &CModelInfo::OnStnClickedSttVcomClk)
 	ON_BN_CLICKED(IDC_BTN_CANCEL, &CModelInfo::OnBnClickedBtnCancel)
 	ON_BN_CLICKED(IDC_BTN_FUSING, &CModelInfo::OnBnClickedBtnFusing)
 	ON_STN_CLICKED(IDC_STT_BLU_CLK, &CModelInfo::OnStnClickedSttBluClk)
-	ON_STN_CLICKED(IDC_STT_TOUCH_CLK, &CModelInfo::OnStnClickedSttTouchClk)
-	ON_BN_CLICKED(IDC_BTN_MICRO_PTN_PATH, &CModelInfo::OnBnClickedBtnMicroPtnPath)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BTN_BLU_ONOFF, &CModelInfo::OnBnClickedBtnBluOnoff)
@@ -182,13 +179,13 @@ void CModelInfo::Lf_initItemValue()
 	m_pApp->m_pPatternView->InitBmpPatternPath(_T(""));
 
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_SIGNAL)->m_hWnd, _T(""), _T(""));
-	SetWindowTheme(GetDlgItem(IDC_STT_GRP_CLOCK)->m_hWnd, _T(""), _T(""));
-	SetWindowTheme(GetDlgItem(IDC_STT_GRP_VCOM)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_TIMING)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_POWER)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_POWER_LIMIT)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_EDID)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_OTHERS)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_PATTERN)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_I2C_OPTION)->m_hWnd, _T(""), _T(""));
 	HICON hIcon;
 	CButton* pBtn;
 	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_ADD);
@@ -228,10 +225,10 @@ void CModelInfo::Lf_initFontSet()
 	GetDlgItem(IDC_STT_GRP_PATTERN)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_OTHERS)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_POWER)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_GRP_POWER_LIMIT)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_TIMING)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_EDID)->SetFont(&m_Font[0]);
-	GetDlgItem(IDC_STT_GRP_CLOCK)->SetFont(&m_Font[0]);
-	GetDlgItem(IDC_STT_GRP_VCOM)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_GRP_I2C_OPTION)->SetFont(&m_Font[0]);
 
 	m_Font[1].CreateFont( 15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
@@ -264,6 +261,8 @@ void CModelInfo::Lf_initFontSet()
 	m_Brush[COLOR_IDX_BLUISH].CreateSolidBrush(COLOR_BLUISH);
 	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush (COLOR_GRAY224);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);
+	m_Brush[COLOR_IDX_LIGHT_YELLOW].CreateSolidBrush(COLOR_LIGHT_YELLOW);
+	m_Brush[COLOR_IDX_MAGENTA].CreateSolidBrush(COLOR_MAGENTA);
 }
 
 void CModelInfo::Lf_loadModelData()
@@ -275,29 +274,13 @@ void CModelInfo::Lf_loadModelData()
 
 	m_cboSignalBit.SetCurSel(lpModelInfo->m_nSignalBit);
 
-	m_cboCurEmp.SetCurSel(lpModelInfo->m_nLaneCurrPreEmp);
-
 	m_cboLvdsSel.SetCurSel(lpModelInfo->m_nLGDISMSelect);
 
 	m_cboBitSel.SetCurSel(lpModelInfo->m_nBitSel);
 
-	m_cboBistOnOff.SetCurSel(lpModelInfo->m_nBistOnOff);
-
 	m_cboInterface.SetCurSel(lpModelInfo->m_nLcmInfoInterface);
 
-	m_cboHsyncPol.SetCurSel(lpModelInfo->m_nLcmInfoHsyncPolarity);
-
-	m_cboVsyncPol.SetCurSel(lpModelInfo->m_nLcmInfoVsyncPolarity);
-
 	m_cboBitSwap.SetCurSel(lpModelInfo->m_nLcmInfoBitsSwap);
-
-	m_cboClkInv.SetCurSel(lpModelInfo->m_nLcmInfoDotClockInv);
-
-	m_cboClkIncDec.SetCurSel(lpModelInfo->m_nClockIncDec);
-
-	sdata.Format(_T("%0.2f"),lpModelInfo->m_fClockDelay);
-
-	m_edtClkDelay.SetWindowText(sdata);
 
 	sdata.Format(_T("%.2f"),lpModelInfo->m_fTimingFreq);
 	m_edtFreq.SetWindowText(sdata);
@@ -334,12 +317,8 @@ void CModelInfo::Lf_loadModelData()
 
 	m_cboGfd100OnOff.SetCurSel(lpModelInfo->m_nGfd100Use);
 
-	m_cboSolomonMipi.SetCurSel(lpModelInfo->m_nSolomonMipi);
 
 	m_cboInitCode.SetCurSel(lpModelInfo->m_nDp501InitCode);
-
-	sdata.Format(_T("%d"),lpModelInfo->m_nMicroPtnCnt);
-	m_edtMicroPtnCnt.SetWindowText(sdata);
 
 	sdata.Format(_T("%d"),lpModelInfo->m_nBluMin);
 	m_edtBluMin.SetWindowText(sdata);
@@ -347,6 +326,10 @@ void CModelInfo::Lf_loadModelData()
 	m_cboSpiOnOff.SetCurSel(lpModelInfo->m_nSpiMode);
 
 	m_cboSpiLevel.SetCurSel(lpModelInfo->m_nSpiLevel);
+
+	m_cmbCableOpenUse.SetCurSel(lpModelInfo->m_nCableOpenUse);
+
+	m_cmbShortTestUse.SetCurSel(lpModelInfo->m_nShortTestUse);
 
 	m_cboEdidOnOff.SetCurSel(lpModelInfo->m_nEdidUse);
 
@@ -358,41 +341,65 @@ void CModelInfo::Lf_loadModelData()
 
 	m_cboEepAddr.SetCurSel(lpModelInfo->m_nEEPRomAddr);
 
-	m_cboVcomLine.SetCurSel(lpModelInfo->m_nVcomLine);
-
-	m_cboVcomAddr.SetCurSel(lpModelInfo->m_nVocmAddr);
-
-	m_cboVcomBitShift.SetCurSel(lpModelInfo->m_nVcomBitShift);
-
-	sdata.Format(_T("%d"),lpModelInfo->m_nVcomMin);
-	m_edtVcomMin.SetWindowText(sdata);
-
-	sdata.Format(_T("%d"),lpModelInfo->m_nVcomMax);
-	m_edtVcomMax.SetWindowText(sdata);
-
-	sdata.Format(_T("%d"),lpModelInfo->m_nVcomDrop);
-	m_edtVcomDrop.SetWindowText(sdata);
-
-	sdata.Format(_T("%d"),lpModelInfo->m_nVcomDefault);
-	m_edtVcomDefault.SetWindowText(sdata);
-
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fVoltVcc);
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fVoltVcc);
 	m_edtVccSet.SetWindowText(sdata);
 
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fVoltVdd);
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fVoltVdd);
 	m_edtVddSet.SetWindowText(sdata);
 
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitVccMax);
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fVoltVgh);
+	m_edtVghSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fVoltVgl);
+	m_edtVglSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVccMax);
 	m_edtVccHighLimitSet.SetWindowText(sdata);
 
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitVddMax);
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVccMin);
+	m_edtVccLowLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVddMax);
 	m_edtVddHighLimitSet.SetWindowText(sdata);
 
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIccMax);
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVddMin);
+	m_edtVddLowLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIccMax);
 	m_edtIccHighLimitSet.SetWindowText(sdata);
 
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIddMax);
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIccMin);
+	m_edtIccLowLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIddMax);
 	m_edtIddHighLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIddMin);
+	m_edtIddLowLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVghMax);
+	m_edtVghHighLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVghMin);
+	m_edtVghLowLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVglMax);
+	m_edtVglHighLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVglMin);
+	m_edtVglLowLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIghMax);
+	m_edtIghHighLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIghMin);
+	m_edtIghLowLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIglMax);
+	m_edtIglHighLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIglMin);
+	m_edtIglLowLimitSet.SetWindowText(sdata);
 
 	sdata.Format(_T("%d"), lpModelInfo->m_nIccCheck);	
 	m_edtIccCheck.SetWindowText(sdata);
@@ -404,15 +411,11 @@ void CModelInfo::Lf_loadModelData()
 
 	m_cboGfd250Use.SetCurSel(lpModelInfo->m_nGfd250);
 
+	m_cmbI2cPullUp.SetCurSel(lpModelInfo->m_nI2cPullup);
+	m_cmbI2cFreq.SetCurSel(lpModelInfo->m_nI2cFreq);
+	m_cmbI2cLevel.SetCurSel(lpModelInfo->m_nI2cLevel);
+
 	m_cboPtnName.SetCurSel(0);
-	m_cboPtnVcom.SetCurSel(0);
-	m_cboPtnTouch.SetCurSel(0);
-
-	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnFg[0]);
-	m_edtPtnFg.SetWindowText(sdata);
-
-	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnBg[0]);
-	m_edtPtnBg.SetWindowText(sdata);
 
 	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnVcc[0]);
 	m_edtPtnVCC.SetWindowText(sdata);
@@ -432,18 +435,17 @@ void CModelInfo::Lf_loadModelData()
 	for(loop = 0;loop < lpModelInfo->m_nLbCnt; loop++)
 	{
 		m_lcPtnSetList.InsertItem(loop, lpModelInfo->m_sLbPtnName[loop]);
-		//m_lcPtnSetList.SetItemText(loop, 1, lpModelInfo->m_sLbPtnFg[loop]);
-		//m_lcPtnSetList.SetItemText(loop, 2, lpModelInfo->m_sLbPtnBg[loop]);
 		m_lcPtnSetList.SetItemText(loop, 1, lpModelInfo->m_sLbPtnVcc[loop]);
 		m_lcPtnSetList.SetItemText(loop, 2, lpModelInfo->m_sLbPtnVdd[loop]);
 		m_lcPtnSetList.SetItemText(loop, 3, lpModelInfo->m_sLbPtnTms[loop]);
 		m_lcPtnSetList.SetItemText(loop, 4, lpModelInfo->m_sLbPtnVsync[loop]);
-		m_lcPtnSetList.SetItemText(loop, 5, lpModelInfo->m_sLbPtnVcom[loop]);
-		m_lcPtnSetList.SetItemText(loop, 6, lpModelInfo->m_sLbPtnBlu[loop]);
-		m_lcPtnSetList.SetItemText(loop, 7, lpModelInfo->m_sLbPtnTouch[loop]);
+		m_lcPtnSetList.SetItemText(loop, 5, lpModelInfo->m_sLbPtnIccLow[loop]);
+		m_lcPtnSetList.SetItemText(loop, 6, lpModelInfo->m_sLbPtnIccHigh[loop]);
+		m_lcPtnSetList.SetItemText(loop, 7, lpModelInfo->m_sLbPtnIddLow[loop]);
+		m_lcPtnSetList.SetItemText(loop, 8, lpModelInfo->m_sLbPtnIddHigh[loop]);
+		m_lcPtnSetList.SetItemText(loop, 9, lpModelInfo->m_sLbPtnBlu[loop]);
 	}
 
-	m_sttMicroPtnPath.SetWindowText(lpModelInfo->m_sMicroPtnPath);
 
 	UpdateData(FALSE);
 }
@@ -491,27 +493,19 @@ void CModelInfo::Lf_insertListColum()
 
 	m_lcPtnSetList.GetClientRect(&rect);
 	m_lcPtnSetList.InsertColumn( 0, _T("PATTERN NAME"), LVCFMT_LEFT, -1, -1 );
-	//m_lcPtnSetList.InsertColumn( 1, _T("FG"), LVCFMT_LEFT, -1, -1 );
-	//m_lcPtnSetList.InsertColumn( 2, _T("BG"), LVCFMT_LEFT, -1, -1 );
 	m_lcPtnSetList.InsertColumn( 1, _T("VCC"), LVCFMT_LEFT, -1, -1 );
 	m_lcPtnSetList.InsertColumn( 2, _T("VDD"), LVCFMT_LEFT, -1, -1 );
 	m_lcPtnSetList.InsertColumn( 3, _T("T(s)"), LVCFMT_LEFT, -1, -1 );
 	m_lcPtnSetList.InsertColumn( 4, _T("Vsync"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 5, _T("VCOM"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 6, _T("BLU"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 7, _T("Touch"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn(5, _T("ICC L"), LVCFMT_LEFT, -1, -1);
+	m_lcPtnSetList.InsertColumn(6, _T("ICC H"), LVCFMT_LEFT, -1, -1);
+	m_lcPtnSetList.InsertColumn(7, _T("IDD L"), LVCFMT_LEFT, -1, -1);
+	m_lcPtnSetList.InsertColumn(8, _T("IDD H"), LVCFMT_LEFT, -1, -1);
+	m_lcPtnSetList.InsertColumn( 9, _T("BLU"), LVCFMT_LEFT, -1, -1 );
 
 	m_lcPtnSetList.SetColumnWidth( 0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // Pattern
 	GetDlgItem(IDC_CMB_PTN_NAME)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 0, rect2.Width());
-
-	//m_lcPtnSetList.SetColumnWidth( 1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // FG
-	//GetDlgItem(IDC_EDT_PTN_FG)->GetWindowRect(&rect2);
-	//m_lcPtnSetList.SetColumnWidth( 1, rect2.Width()+offset);
-
-	//m_lcPtnSetList.SetColumnWidth( 2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // BG
-	//GetDlgItem(IDC_EDT_PTN_BG)->GetWindowRect(&rect2);
-	//m_lcPtnSetList.SetColumnWidth( 2, rect2.Width()+offset);
 
 	m_lcPtnSetList.SetColumnWidth( 1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCC
 	GetDlgItem(IDC_EDT_PTN_VCC)->GetWindowRect(&rect2);
@@ -529,17 +523,25 @@ void CModelInfo::Lf_insertListColum()
 	GetDlgItem(IDC_EDT_PTN_VSYNC)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 4, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 5, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCOM
-	GetDlgItem(IDC_CMB_PTN_VCOM)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 5, rect2.Width()+offset);
+	m_lcPtnSetList.SetColumnWidth(5, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // ICC LOW
+	GetDlgItem(IDC_EDT_PTN_ICC_LOW)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth(5, rect2.Width() + offset);
 
-	m_lcPtnSetList.SetColumnWidth( 6, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // BLU
+	m_lcPtnSetList.SetColumnWidth(6, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // ICC HIGH
+	GetDlgItem(IDC_EDT_PTN_ICC_HIGH)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth(6, rect2.Width() + offset);
+
+	m_lcPtnSetList.SetColumnWidth(7, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // IDD LOW
+	GetDlgItem(IDC_EDT_PTN_IDD_LOW)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth(7, rect2.Width() + offset);
+
+	m_lcPtnSetList.SetColumnWidth(8, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // IDD HIGH
+	GetDlgItem(IDC_EDT_PTN_IDD_HIGH)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth(8, rect2.Width() + offset);
+
+	m_lcPtnSetList.SetColumnWidth( 9, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // BLU
 	GetDlgItem(IDC_EDT_PTN_BLU)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 6, rect2.Width()+offset);
-
-	m_lcPtnSetList.SetColumnWidth( 7, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // TOUCH
-	GetDlgItem(IDC_CMB_PTN_TOUCH)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 7, rect2.Width()+offset);
+	m_lcPtnSetList.SetColumnWidth( 9, rect2.Width()+offset);
 
 	DWORD dwStype = m_lcPtnSetList.GetExtendedStyle();
 	dwStype |= LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES;
@@ -555,20 +557,11 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_nSignalType = m_cboSignalType.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_TYPE"),			lpModelInfo->m_nSignalType);	
 
-	lpModelInfo->m_nSignalBit = m_cboSignalBit.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_BIT"),			lpModelInfo->m_nSignalBit);
-
-	lpModelInfo->m_nLaneCurrPreEmp = m_cboCurEmp.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("LANE_CUR_EMP"),			lpModelInfo->m_nLaneCurrPreEmp);
-
 	lpModelInfo->m_nLGDISMSelect = m_cboLvdsSel.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("LG_DISM"),				lpModelInfo->m_nLGDISMSelect);
 
 	lpModelInfo->m_nBitSel = m_cboBitSel.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BIT_SELECT"),			lpModelInfo->m_nBitSel);
-
-	lpModelInfo->m_nBistOnOff	= m_cboBistOnOff.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BIST_ONOFF"),			lpModelInfo->m_nBistOnOff);
 
 	m_edtFreq.GetWindowText(sdata);
 	lpModelInfo->m_fTimingFreq = (float)_tstof(sdata);
@@ -620,13 +613,6 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_nLcmInfoBitsSwap = m_cboBitSwap.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BITSWAP"),				lpModelInfo->m_nLcmInfoBitsSwap);
 
-	lpModelInfo->m_nClockIncDec = m_cboClkIncDec.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("INCDEC"),				lpModelInfo->m_nClockIncDec);
-
-	m_edtClkDelay.GetWindowText(sdata);
-	lpModelInfo->m_fClockDelay = (float)_tstof(sdata);
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("CLKDELAY"),				lpModelInfo->m_fClockDelay);
-
 	m_edtVccSet.GetWindowText(sdata);
 	lpModelInfo->m_fVoltVcc	= (float)_tstof(sdata);
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCC"),					lpModelInfo->m_fVoltVcc);
@@ -635,21 +621,77 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_fVoltVdd	= (float)_tstof(sdata);
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VDD"),					lpModelInfo->m_fVoltVdd);
 
+	m_edtVghSet.GetWindowText(sdata);
+	lpModelInfo->m_fVoltVgh = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VGH"), lpModelInfo->m_fVoltVgh);
+
+	m_edtVglSet.GetWindowText(sdata);
+	lpModelInfo->m_fVoltVgl = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VGL"), lpModelInfo->m_fVoltVgl);
+
 	m_edtVccHighLimitSet.GetWindowText(sdata);
 	lpModelInfo->m_fLimitVccMax	= (float)_tstof(sdata);
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCC_HIGH_LIMIT"),		lpModelInfo->m_fLimitVccMax);
+
+	m_edtVccLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitVccMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VCC_LOW_LIMIT"), lpModelInfo->m_fLimitVccMin);
 
 	m_edtVddHighLimitSet.GetWindowText(sdata);
 	lpModelInfo->m_fLimitVddMax	= (float)_tstof(sdata);
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VDD_HIGH_LIMIT"),		lpModelInfo->m_fLimitVddMax);
 
+	m_edtVddLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitVddMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VDD_LOW_LIMIT"), lpModelInfo->m_fLimitVddMin);
+
 	m_edtIccHighLimitSet.GetWindowText(sdata);
 	lpModelInfo->m_fLimitIccMax	= (float)_tstof(sdata);
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("ICC_HIGH_LIMIT"),		lpModelInfo->m_fLimitIccMax);
 
+	m_edtIccLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitIccMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("ICC_LOW_LIMIT"), lpModelInfo->m_fLimitIccMin);
+
 	m_edtIddHighLimitSet.GetWindowText(sdata);
 	lpModelInfo->m_fLimitIddMax	= (float)_tstof(sdata);
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IDD_HIGH_LIMIT"),		lpModelInfo->m_fLimitIddMax);
+
+	m_edtIddLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitIddMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("IDD_LOW_LIMIT"), lpModelInfo->m_fLimitIddMin);
+
+	m_edtVglHighLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitVglMax = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VGL_HIGH_LIMIT"), lpModelInfo->m_fLimitVglMax);
+
+	m_edtVglLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitVglMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VGL_LOW_LIMIT"), lpModelInfo->m_fLimitVglMin);
+
+	m_edtVghHighLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitVghMax = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VGH_HIGH_LIMIT"), lpModelInfo->m_fLimitVghMax);
+
+	m_edtVghLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitVghMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VGH_LOW_LIMIT"), lpModelInfo->m_fLimitVghMin);
+
+	m_edtIglHighLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitIglMax = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("IGL_HIGH_LIMIT"), lpModelInfo->m_fLimitIglMax);
+
+	m_edtIglLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitIglMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("IGL_LOW_LIMIT"), lpModelInfo->m_fLimitIglMin);
+
+	m_edtIghHighLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitIghMax = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("IGH_HIGH_LIMIT"), lpModelInfo->m_fLimitIghMax);
+
+	m_edtIghLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitIghMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("IGH_LOW_LIMIT"), lpModelInfo->m_fLimitIghMin);
 
 	lpModelInfo->m_nPwrSeq = m_cboPowerSeqSel.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("POWER_SEQ_SEL"),		lpModelInfo->m_nPwrSeq);
@@ -673,42 +715,20 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_nEdidSize = m_cboEdidSize.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("EDID_SIZE"),			lpModelInfo->m_nEdidSize);
 
-	lpModelInfo->m_nVocmAddr = m_cboVcomAddr.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_ADDR"),			lpModelInfo->m_nVocmAddr);
-
-	lpModelInfo->m_nVcomLine = m_cboVcomLine.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_LINE"),			lpModelInfo->m_nVcomLine);
-
-	lpModelInfo->m_nVcomBitShift = m_cboVcomBitShift.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_BITSHIFT"),		lpModelInfo->m_nVcomBitShift);
-
-	m_edtVcomMin.GetWindowText(sdata);
-	lpModelInfo->m_nVcomMin = _ttoi(sdata);
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_MIN"),				lpModelInfo->m_nVcomMin);
-
-	m_edtVcomMax.GetWindowText(sdata);
-	lpModelInfo->m_nVcomMax = _ttoi(sdata);
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_MAX"),				lpModelInfo->m_nVcomMax);
-
-	m_edtVcomDefault.GetWindowText(sdata);
-	lpModelInfo->m_nVcomDefault = _ttoi(sdata);
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_DEFAULT"),			lpModelInfo->m_nVcomDefault);
-
-	m_edtVcomDrop.GetWindowText(sdata);
-	lpModelInfo->m_nVcomDrop = _ttoi(sdata);
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCOM_DROP"),			lpModelInfo->m_nVcomDrop);
-
 	lpModelInfo->m_nGfd100Use = m_cboGfd100OnOff.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("GFD100_USE"),			lpModelInfo->m_nGfd100Use);
 
 	lpModelInfo->m_nDp501InitCode = m_cboInitCode.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("DP501_INIT_CODE"),		lpModelInfo->m_nDp501InitCode);
 
-	lpModelInfo->m_nSolomonMipi = m_cboSolomonMipi.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SOLOMON_MIPI"),			lpModelInfo->m_nSolomonMipi);
-
 	lpModelInfo->m_nSpiMode = m_cboSpiOnOff.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SPI_MODE"),				lpModelInfo->m_nSpiMode);
+
+	lpModelInfo->m_nCableOpenUse = m_cmbCableOpenUse.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("CABLE_OPEN_USE"), lpModelInfo->m_nCableOpenUse);
+
+	lpModelInfo->m_nShortTestUse = m_cmbShortTestUse.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("SHORT_TEST_USE"), lpModelInfo->m_nShortTestUse);
 
 	lpModelInfo->m_nSpiLevel = m_cboSpiLevel.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SPI_LEVEL"),			lpModelInfo->m_nSpiLevel);
@@ -716,16 +736,19 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	m_edtBluMin.GetWindowText(sdata);
 	lpModelInfo->m_nBluMin = _ttoi(sdata);
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BLU_MIN"),				lpModelInfo->m_nBluMin);
-
-	m_edtMicroPtnCnt.GetWindowText(sdata);
-	lpModelInfo->m_nMicroPtnCnt = _ttoi(sdata);
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("MICRO_PTN_CNT"),		lpModelInfo->m_nMicroPtnCnt);
 	
 	lpModelInfo->m_nGfd250 = m_cboGfd250Use.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("GFD250"),				lpModelInfo->m_nGfd250);
 
-	m_sttMicroPtnPath.GetWindowText(lpModelInfo->m_sMicroPtnPath);
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("MICRO_PTN_PATH"),		lpModelInfo->m_sMicroPtnPath);
+	lpModelInfo->m_nI2cPullup = m_cmbI2cPullUp.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_PULLUP"), lpModelInfo->m_nI2cPullup);
+
+	lpModelInfo->m_nI2cFreq = m_cmbI2cFreq.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_FREQ"), lpModelInfo->m_nI2cFreq);
+
+	lpModelInfo->m_nI2cLevel = m_cmbI2cLevel.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_LEVEL"), lpModelInfo->m_nI2cLevel);
+
 
 	int i=0,nLbItemCnt=0;
 	CString strKey = _T(""), strPtnInfo = _T(""), strTemp = _T("");
@@ -839,7 +862,7 @@ void CModelInfo::Lf_setSwapData(int pos1, int pos2)
 	CString strTemp1 = _T(""), strTemp2 = _T("");
 	int i = 0;
 
-	for(i=0;i<19;i++)
+	for(i=0;i<10;i++)
 	{		
 		m_lcPtnSetList.GetItemText(pos1, i, temp1, 30);
 		m_lcPtnSetList.GetItemText(pos2, i, temp2, 30);
@@ -874,21 +897,16 @@ void CModelInfo::Lf_setPtnDataChange(int sel)
 
 	m_cboPtnName.SetCurSel(nAllPtn);
 
-	//m_edtPtnFg.SetWindowText(m_lcPtnSetList.GetItemText(sel,1));
-	//m_edtPtnBg.SetWindowText(m_lcPtnSetList.GetItemText(sel,2));
 	m_edtPtnVCC.SetWindowText(m_lcPtnSetList.GetItemText(sel,1));
 	m_edtPtnVDD.SetWindowText(m_lcPtnSetList.GetItemText(sel,2));
 	m_edtPtnTMS.SetWindowText(m_lcPtnSetList.GetItemText(sel,3));
 	m_edtPtnVSync.SetWindowText(m_lcPtnSetList.GetItemText(sel,4));
-	sdata = m_lcPtnSetList.GetItemText(sel,5);
-	if(!sdata.Compare(_T("ON")))	m_cboPtnVcom.SetCurSel(1);
-	else							m_cboPtnVcom.SetCurSel(0);
+	m_edtPtnIccLow.SetWindowText(m_lcPtnSetList.GetItemText(sel, 5));
+	m_edtPtnIccHigh.SetWindowText(m_lcPtnSetList.GetItemText(sel, 6));
+	m_edtPtnIddLow.SetWindowText(m_lcPtnSetList.GetItemText(sel, 7));
+	m_edtPtnIddHigh.SetWindowText(m_lcPtnSetList.GetItemText(sel, 8));
+	m_edtPtnBlu.SetWindowText(m_lcPtnSetList.GetItemText(sel,9));
 
-	m_edtPtnBlu.SetWindowText(m_lcPtnSetList.GetItemText(sel,6));
-
-	sdata = m_lcPtnSetList.GetItemText(sel,7);
-	if(!sdata.Compare(_T("ON")))	m_cboPtnTouch.SetCurSel(1);
-	else							m_cboPtnTouch.SetCurSel(0);
 
 	////////////////////////////////////////////////////////////////////////////////
 	m_pApp->m_pPatternView->drawPattern(strPtnName);
@@ -898,11 +916,6 @@ void CModelInfo::Lf_setPtnDataChange(int sel)
 
 void CModelInfo::Lf_setChangeFont()
 {
-	/*if(m_nChangeFont & 0x0001)	{GetDlgItem(IDC_STT_FG_CLK)->SetFont(&m_Font[1]);}
-	else						{GetDlgItem(IDC_STT_FG_CLK)->SetFont(&m_Font[2]);}
-
-	if(m_nChangeFont & 0x0002)	{GetDlgItem(IDC_STT_BG_CLK)->SetFont(&m_Font[1]);}
-	else						{GetDlgItem(IDC_STT_BG_CLK)->SetFont(&m_Font[2]);}*/
 
 	if(m_nChangeFont & 0x0001)	{GetDlgItem(IDC_STT_VCC_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_VCC_CLK)->SetFont(&m_Font[2]);}
@@ -916,14 +929,10 @@ void CModelInfo::Lf_setChangeFont()
 	if(m_nChangeFont & 0x0008)	{GetDlgItem(IDC_STT_VSYNC_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_VSYNC_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0010)	{GetDlgItem(IDC_STT_VCOM_CLK)->SetFont(&m_Font[1]);}
-	else						{GetDlgItem(IDC_STT_VCOM_CLK)->SetFont(&m_Font[2]);}
-
-	if(m_nChangeFont & 0x0020)	{GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[1]);}
+	if(m_nChangeFont & 0x0010)	{GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0040)	{GetDlgItem(IDC_STT_TOUCH_CLK)->SetFont(&m_Font[1]);}
-	else						{GetDlgItem(IDC_STT_TOUCH_CLK)->SetFont(&m_Font[2]);}
+	GetDlgItem(IDC_STT_TOUCH_CLK)->SetFont(&m_Font[2]);
 }
 
 void CModelInfo::OnBnClickedBtnAdd()
@@ -977,12 +986,6 @@ void CModelInfo::OnBnClickedBtnAdd()
 	m_cboPtnName.GetWindowText(sdata);
 	m_lcPtnSetList.InsertItem(nPos, sdata);
 
-	//m_edtPtnFg.GetWindowText(sdata);
-	//m_lcPtnSetList.SetItem(nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-
-	//m_edtPtnBg.GetWindowText(sdata);
-	//m_lcPtnSetList.SetItem(nPos, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-
 	m_edtPtnVCC.GetWindowText(sdata);
 	m_lcPtnSetList.SetItem(nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
@@ -995,14 +998,21 @@ void CModelInfo::OnBnClickedBtnAdd()
 	m_edtPtnVSync.GetWindowText(sdata);
 	m_lcPtnSetList.SetItem(nPos, 4, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
-	m_cboPtnVcom.GetWindowText(sdata);
+	m_edtPtnIccLow.GetWindowText(sdata);
 	m_lcPtnSetList.SetItem(nPos, 5, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
-	m_edtPtnBlu.GetWindowText(sdata);
+	m_edtPtnIccHigh.GetWindowText(sdata);
 	m_lcPtnSetList.SetItem(nPos, 6, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
-	m_cboPtnTouch.GetWindowText(sdata);
+	m_edtPtnIddLow.GetWindowText(sdata);
 	m_lcPtnSetList.SetItem(nPos, 7, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+
+	m_edtPtnIddHigh.GetWindowText(sdata);
+	m_lcPtnSetList.SetItem(nPos, 8, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+
+	m_edtPtnBlu.GetWindowText(sdata);
+	m_lcPtnSetList.SetItem(nPos, 9, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+
 
 	m_lcPtnSetList.SetSelectionMark(nPos); // Item Select & Focus
 	m_lcPtnSetList.SetItemState(nPos, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
@@ -1127,15 +1137,15 @@ void CModelInfo::OnBnClickedBtnChange()
 	
 	m_cboPtnName.GetLBText(m_cboPtnName.GetCurSel(),sdata);
 	m_lcPtnSetList.SetItem( nPos, 0, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	//m_edtPtnFg.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	//m_edtPtnBg.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 	m_edtPtnVCC.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 	m_edtPtnVDD.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 2, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 	m_edtPtnTMS.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 3, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 	m_edtPtnVSync.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 4, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_cboPtnVcom.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 5, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_edtPtnBlu.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 6, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
-	m_cboPtnTouch.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 7, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnIccLow.GetWindowText(sdata);	m_lcPtnSetList.SetItem( nPos, 5, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnIccHigh.GetWindowText(sdata);	m_lcPtnSetList.SetItem(nPos, 6, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnIddLow.GetWindowText(sdata);	m_lcPtnSetList.SetItem(nPos, 7, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnIddHigh.GetWindowText(sdata);	m_lcPtnSetList.SetItem(nPos, 8, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_edtPtnBlu.GetWindowText(sdata);	m_lcPtnSetList.SetItem(nPos, 9, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_lcPtnSetList.EnsureVisible( nPos, FALSE);
 
@@ -1165,23 +1175,6 @@ void CModelInfo::OnBnClickedBtnAll()
 
 	UpdateData(TRUE);
 
-	/*if(m_nSelClkFlags == 1)
-	{
-		for(nVertical = 0; nVertical < nCnt; nVertical++)
-		{
-			m_edtPtnFg.GetWindowText(sdata);
-			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata, 0, LVIF_STATE,0 ,0);
-		}
-	}
-
-	if(m_nSelClkFlags == 2)
-	{
-		for(nVertical = 0; nVertical < nCnt; nVertical++)
-		{
-			m_edtPtnBg.GetWindowText(sdata);
-			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE,0 ,0);
-		}
-	}*/
 
 	if(m_nSelClkFlags == 1)
 	{
@@ -1218,17 +1211,7 @@ void CModelInfo::OnBnClickedBtnAll()
 			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE,0 ,0);
 		}
 	}
-
 	if(m_nSelClkFlags == 5)
-	{
-		m_cboPtnVcom.GetWindowText(sdata);
-		for(nVertical = 0; nVertical < nCnt; nVertical++)
-		{
-			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE,0 ,0);
-		}
-	}
-
-	if(m_nSelClkFlags == 6)
 	{
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
 		{ 
@@ -1236,34 +1219,7 @@ void CModelInfo::OnBnClickedBtnAll()
 			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE,0 ,0);
 		}
 	}
-
-	if(m_nSelClkFlags == 7)
-	{
-		m_cboPtnTouch.GetWindowText(sdata);
-		for(nVertical = 0; nVertical < nCnt; nVertical++)
-		{
-			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE,0 ,0);
-		}
-	}
 	UpdateData(FALSE);
-}
-
-void CModelInfo::OnStnClickedSttFgClk()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_nSelClkFlags=1;
-	m_nChangeFont&=0x0000;
-	m_nChangeFont|=0x0001;
-	Lf_setChangeFont();
-}
-
-void CModelInfo::OnStnClickedSttBgClk()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_nSelClkFlags=2;
-	m_nChangeFont&=0x0000;
-	m_nChangeFont|=0x0002;
-	Lf_setChangeFont();
 }
 
 void CModelInfo::OnStnClickedSttVccClk()
@@ -1302,30 +1258,13 @@ void CModelInfo::OnStnClickedSttVsyncClk()
 	Lf_setChangeFont();
 }
 
-void CModelInfo::OnStnClickedSttVcomClk()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_nSelClkFlags=5;
-	m_nChangeFont&=0x0000;
-	m_nChangeFont|=0x0010;
-	Lf_setChangeFont();
-}
 
 void CModelInfo::OnStnClickedSttBluClk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_nSelClkFlags=6;
 	m_nChangeFont&=0x0000;
-	m_nChangeFont|=0x0020;
-	Lf_setChangeFont();
-}
-
-void CModelInfo::OnStnClickedSttTouchClk()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_nSelClkFlags=7;
-	m_nChangeFont&=0x0000;
-	m_nChangeFont|=0x0040;
+	m_nChangeFont|=0x0010;
 	Lf_setChangeFont();
 }
 
@@ -1379,25 +1318,6 @@ void CModelInfo::OnBnClickedBtnFusing()
 	}
 }
 
-void CModelInfo::OnBnClickedBtnMicroPtnPath()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString m_sPath=_T("");
-	TCHAR szFilePath[1024]={0,};
-
-	GetCurrentDirectory(sizeof(szFilePath), szFilePath);
-
-	CFileDialog m_ldFile( TRUE, _T("*|*"), _T("\\*.*"), OFN_READONLY, _T("Pattern File(*.*)|*.*|All File(*.*)|*.*|") );
-
-	if( m_ldFile.DoModal() == IDOK ) 
-	{
-		m_sPath = m_ldFile.GetPathName();
-
-		GetDlgItem(IDC_STT_MICRO_PTN_PATH)->SetWindowText(m_sPath);
-		SetCurrentDirectory(m_sPath);
-	}	
-}
-
 HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
@@ -1426,30 +1346,30 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			if(m_bfusingflag==false)
 			{
-				pDC->SetBkColor(COLOR_GRAY64);
+				pDC->SetBkColor(COLOR_WHITE);
 				pDC->SetTextColor(COLOR_RED);
-				return m_Brush[COLOR_IDX_GRAY64];
+				return m_Brush[COLOR_IDX_WHITE];
 			}
 			else
 			{
-				pDC->SetBkColor(COLOR_GRAY64);
+				pDC->SetBkColor(COLOR_WHITE);
 				pDC->SetTextColor(COLOR_GREEN);
-				return m_Brush[COLOR_IDX_GRAY64];
+				return m_Brush[COLOR_IDX_WHITE];
 			}
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_GFD250_STATUS)
 		{
 			if(m_bgfd250flag==false)
 			{
-				pDC->SetBkColor(COLOR_GRAY64);
+				pDC->SetBkColor(COLOR_WHITE);
 				pDC->SetTextColor(COLOR_RED);
-				return m_Brush[COLOR_IDX_GRAY64];
+				return m_Brush[COLOR_IDX_WHITE];
 			}
 			else
 			{
-				pDC->SetBkColor(COLOR_GRAY64);
+				pDC->SetBkColor(COLOR_WHITE);
 				pDC->SetTextColor(COLOR_GREEN);
-				return m_Brush[COLOR_IDX_GRAY64];
+				return m_Brush[COLOR_IDX_WHITE];
 			}
 		}
 		if((pWnd->GetDlgCtrlID()==IDC_STT_CUR_MODELNAME_TIT)
@@ -1466,34 +1386,41 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			return m_Brush[COLOR_IDX_BLACK];
 		}
 		if (pWnd->GetDlgCtrlID() == IDC_STATIC
-			|| pWnd->GetDlgCtrlID() == IDC_STT_FG_CLK
-			|| pWnd->GetDlgCtrlID() == IDC_STT_BG_CLK
 			|| pWnd->GetDlgCtrlID() == IDC_STT_VCC_CLK
 			|| pWnd->GetDlgCtrlID() == IDC_STT_VDD_CLK
 			|| pWnd->GetDlgCtrlID() == IDC_STT_TMS_CLK
 			|| pWnd->GetDlgCtrlID() == IDC_STT_VSYNC_CLK
-			|| pWnd->GetDlgCtrlID() == IDC_STT_VCOM_CLK
 			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_CLK
-			|| pWnd->GetDlgCtrlID() == IDC_STT_TOUCH_CLK)
+			|| pWnd->GetDlgCtrlID() == IDC_STT_PTN_ICC
+			|| pWnd->GetDlgCtrlID() == IDC_STT_PTN_IDD)
 		{
 			pDC->SetBkColor(COLOR_BLUISH);
 			pDC->SetTextColor(COLOR_WHITE);
 			return m_Brush[COLOR_IDX_BLUISH];
 		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_ICC_LOW
+			|| pWnd->GetDlgCtrlID() == IDC_STT_ICC_HIGH
+			|| pWnd->GetDlgCtrlID() == IDC_STT_IDD_LOW
+			|| pWnd->GetDlgCtrlID() == IDC_STT_IDD_HIGH)
+		{
+			pDC->SetBkColor(COLOR_MAGENTA);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_MAGENTA];
+		}
 		if ((pWnd->GetDlgCtrlID() == IDC_STT_SYSTEM_STATUS_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GFD250_STATUS_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_SIGNAL)
-			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_CLOCK)
-			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_VCOM)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_TIMING)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_POWER)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_POWER_LIMIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_OTHERS)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_EDID)
-			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_PATTERN))
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_PATTERN)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_I2C_OPTION))
 		{
-			pDC->SetBkColor(COLOR_GRAY64);
-			pDC->SetTextColor(COLOR_WHITE);
-			return m_Brush[COLOR_IDX_GRAY64];
+			pDC->SetBkColor(COLOR_WHITE);
+			pDC->SetTextColor(COLOR_GRAY64);
+			return m_Brush[COLOR_IDX_WHITE];
 		}
 		break;
 	}
@@ -1518,7 +1445,7 @@ void CModelInfo::OnPaint()
 
 	GetClientRect(&rect);
 	rect.top = 92;
-	dc.FillSolidRect(rect, COLOR_GRAY64);
+	dc.FillSolidRect(rect, COLOR_WHITE);
 }
 
 void CModelInfo::OnBnClickedBtnBluOnoff()

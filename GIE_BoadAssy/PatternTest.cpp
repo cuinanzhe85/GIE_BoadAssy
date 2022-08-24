@@ -121,7 +121,6 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 		switch(pMsg->wParam)
 		{
 		case VK_RETURN:
-			pMsg->wParam = VK_SPACE;
 		case VK_SPACE:
 			// ALT 또는 CONTROL 또는 SHIFT Key 입력 방지.
 			if((GetKeyState(VK_MENU)<0) || (GetKeyState(VK_CONTROL)<0) || (GetKeyState(VK_SHIFT)<0))
@@ -327,7 +326,6 @@ void CPatternTest::Lf_initVariable()
 	m_nSelNum=0;	
 	m_pApp->m_nOldVsync = 0;
 	m_pApp->pPtnIndex = &m_nSelNum;
-	lpWorkInfo->m_bMicroPtnDone = false;
 	lpWorkInfo->m_bEscDetect = false;
 	lpWorkInfo->m_nFastJudge = FAST_JUDGE_NONE;
 	m_nInspStartTime = ::GetTickCount ();
@@ -393,66 +391,33 @@ void CPatternTest::Lf_initFontSet()
 	m_Brush[COLOR_IDX_LIGHT_BLUE].CreateSolidBrush(COLOR_LIGHT_BLUE);
 }
 
-bool CPatternTest::Lf_checkMicroPattern()
-{
-	int total=0;
-
-	if((m_nSelNum == 0)&&(lpModelInfo->m_nMicroPtnCnt != 0))
-	{
-		total = lpWorkInfo->m_nGoodCnt+lpWorkInfo->m_nBadCnt;
-		if ((total%lpModelInfo->m_nMicroPtnCnt) == 0)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
 
 void CPatternTest::Lf_sendPtnData()
 {
 	CString sdata=_T(""),microPtn=_T("");
 
-	if(Lf_checkMicroPattern() == true)
-	{
-		microPtn = lpModelInfo->m_sMicroPtnPath.Mid(lpModelInfo->m_sMicroPtnPath.ReverseFind(TEXT('\\'))+1);
-		microPtn = microPtn.Mid(0, microPtn.GetLength()-4);
-		sdata.Format( _T("%s  %s  (%sHz)"), microPtn.GetBuffer(0),
-			lpModelInfo->m_sLbPtnFg[m_nSelNum].GetBuffer(0),
-			lpModelInfo->m_sLbPtnVsync[m_nSelNum].GetBuffer(0));
+	CString strPacket;
+	strPacket = m_pApp->m_pCommand->Gf_makePGPatternString(lpModelInfo->m_sLbPtnName[m_nSelNum]);
+	int nRedData, nGreenData, nBlueData;
+	Lf_getPatternGrayLevel(strPacket, &nRedData, &nGreenData, &nBlueData);
 
-		Lf_PtnTestEventView(sdata);
-		m_pApp->m_pCommand->Gf_setPGInfo(microPtn);
-		lpWorkInfo->m_bMicroPtnDone = true;
-	}
+	Lf_PtnTestEventView(strPacket);
+
+	sdata.Format(_T("%d"), nRedData);
+	GetDlgItem(IDC_STT_TP_COLOR_R_VAL)->SetWindowTextW(sdata);
+	sdata.Format(_T("%d"), nGreenData);
+	GetDlgItem(IDC_STT_TP_COLOR_G_VAL)->SetWindowTextW(sdata);
+	sdata.Format(_T("%d"), nBlueData);
+	GetDlgItem(IDC_STT_TP_COLOR_B_VAL)->SetWindowTextW(sdata);
+
+	sdata.Format( _T("%s (%sHz)"), lpModelInfo->m_sLbPtnName[m_nSelNum].GetBuffer(0)
+		, lpModelInfo->m_sLbPtnVsync[m_nSelNum].GetBuffer(0) );
+
+	Lf_PtnTestEventView(sdata);
+	if(lpModelInfo->m_nGfd250 == TRUE)
+		m_pApp->m_pCommand->Gf_setPGInfoGFD250(lpModelInfo->m_sLbPtnName[m_nSelNum]);
 	else
-	{
-		CString strPacket;
-		strPacket = m_pApp->m_pCommand->Gf_makePGPatternString(lpModelInfo->m_sLbPtnName[m_nSelNum]);
-		int nRedData, nGreenData, nBlueData;
-		Lf_getPatternGrayLevel(strPacket, &nRedData, &nGreenData, &nBlueData);
-
-		Lf_PtnTestEventView(strPacket);
-		CString sdata;
-		sdata.Format(_T("%d"), nRedData);
-		GetDlgItem(IDC_STT_TP_COLOR_R_VAL)->SetWindowTextW(sdata);
-		sdata.Format(_T("%d"), nGreenData);
-		GetDlgItem(IDC_STT_TP_COLOR_G_VAL)->SetWindowTextW(sdata);
-		sdata.Format(_T("%d"), nBlueData);
-		GetDlgItem(IDC_STT_TP_COLOR_B_VAL)->SetWindowTextW(sdata);
-
-		sdata.Format( _T("%s  %s  (%sHz)"), lpModelInfo->m_sLbPtnName[m_nSelNum].GetBuffer(0)
-			, lpModelInfo->m_sLbPtnFg[m_nSelNum].GetBuffer(0)
-			, lpModelInfo->m_sLbPtnVsync[m_nSelNum].GetBuffer(0) );
-
-		Lf_PtnTestEventView(sdata);
-		if(lpModelInfo->m_nGfd250 == TRUE)
-			m_pApp->m_pCommand->Gf_setPGInfoGFD250(lpModelInfo->m_sLbPtnName[m_nSelNum]);
-		else
-			m_pApp->m_pCommand->Gf_setPGInfo(lpModelInfo->m_sLbPtnName[m_nSelNum]);
-	}
-
-	Lf_showDisplayLockTimeText();
+		m_pApp->m_pCommand->Gf_setPGInfo(lpModelInfo->m_sLbPtnName[m_nSelNum]);
 }
 
 BOOL CPatternTest::Lf_sendBluData()
@@ -703,13 +668,15 @@ void CPatternTest::Lf_insertListColum()
 	m_LCctrlPtnTestView.GetClientRect(&rect);
 	m_LCctrlPtnTestView.InsertColumn( 0, _T("No"), LVCFMT_LEFT, -1, -1);
 	m_LCctrlPtnTestView.InsertColumn( 1, _T("Pattern Name"), LVCFMT_LEFT, -1, -1 );
-	//m_LCctrlPtnTestView.InsertColumn( 2, _T("FG"), LVCFMT_LEFT, -1, -1 );
-	//m_LCctrlPtnTestView.InsertColumn( 3, _T("BG"), LVCFMT_LEFT, -1, -1 );
 	m_LCctrlPtnTestView.InsertColumn( 2, _T("VCC"), LVCFMT_LEFT, -1, -1 );
 	m_LCctrlPtnTestView.InsertColumn( 3, _T("VDD"), LVCFMT_LEFT, -1, -1 );
 	m_LCctrlPtnTestView.InsertColumn( 4, _T("T(s)"), LVCFMT_LEFT, -1, -1 );
 	m_LCctrlPtnTestView.InsertColumn( 5, _T("VSync"), LVCFMT_LEFT, -1, -1 );
-	m_LCctrlPtnTestView.InsertColumn( 6, _T("VCOM"), LVCFMT_LEFT, -1, -1 );
+	m_LCctrlPtnTestView.InsertColumn(6, _T("ICC L"), LVCFMT_LEFT, -1, -1);
+	m_LCctrlPtnTestView.InsertColumn(7, _T("ICC H"), LVCFMT_LEFT, -1, -1);
+	m_LCctrlPtnTestView.InsertColumn(8, _T("IDD L"), LVCFMT_LEFT, -1, -1);
+	m_LCctrlPtnTestView.InsertColumn(9, _T("IDD H"), LVCFMT_LEFT, -1, -1);
+	m_LCctrlPtnTestView.InsertColumn(10, _T("BLU"), LVCFMT_LEFT, -1, -1);
 
 	m_LCctrlPtnTestView.SetColumnWidth( 0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // NO
 	GetDlgItem(IDC_STT_NUM)->GetWindowRect(&rect2);
@@ -718,14 +685,6 @@ void CPatternTest::Lf_insertListColum()
 	m_LCctrlPtnTestView.SetColumnWidth( 1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // Pattern
 	GetDlgItem(IDC_STT_PTN_NAME)->GetWindowRect(&rect2);
 	m_LCctrlPtnTestView.SetColumnWidth( 1, rect2.Width());
-
-	//m_LCctrlPtnTestView.SetColumnWidth( 2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // FG
-	//GetDlgItem(IDC_STT_FG)->GetWindowRect(&rect2);
-	//m_LCctrlPtnTestView.SetColumnWidth( 2, rect2.Width());
-
-	//m_LCctrlPtnTestView.SetColumnWidth( 3, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // BG
-	//GetDlgItem(IDC_STT_BG)->GetWindowRect(&rect2);
-	//m_LCctrlPtnTestView.SetColumnWidth( 3, rect2.Width());
 
 	m_LCctrlPtnTestView.SetColumnWidth( 2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCC
 	GetDlgItem(IDC_STT_VCC)->GetWindowRect(&rect2);
@@ -743,9 +702,25 @@ void CPatternTest::Lf_insertListColum()
 	GetDlgItem(IDC_STT_VSYNC)->GetWindowRect(&rect2);
 	m_LCctrlPtnTestView.SetColumnWidth( 5, rect2.Width());
 
-	m_LCctrlPtnTestView.SetColumnWidth( 6, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCOM
-	GetDlgItem(IDC_STT_VCOM)->GetWindowRect(&rect2);
-	m_LCctrlPtnTestView.SetColumnWidth( 6, rect2.Width());
+	m_LCctrlPtnTestView.SetColumnWidth(6, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // ICC LOW
+	GetDlgItem(IDC_STT_PTN_ICC_LOW)->GetWindowRect(&rect2);
+	m_LCctrlPtnTestView.SetColumnWidth(6, rect2.Width());
+
+	m_LCctrlPtnTestView.SetColumnWidth(7, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // ICC HIGH
+	GetDlgItem(IDC_STT_PTN_ICC_HIGH)->GetWindowRect(&rect2);
+	m_LCctrlPtnTestView.SetColumnWidth(7, rect2.Width());
+
+	m_LCctrlPtnTestView.SetColumnWidth(8, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // IDD LOW
+	GetDlgItem(IDC_STT_PTN_IDD_LOW)->GetWindowRect(&rect2);
+	m_LCctrlPtnTestView.SetColumnWidth(8, rect2.Width());
+
+	m_LCctrlPtnTestView.SetColumnWidth(9, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // IDD HIGH
+	GetDlgItem(IDC_STT_PTN_IDD_HIGH)->GetWindowRect(&rect2);
+	m_LCctrlPtnTestView.SetColumnWidth(9, rect2.Width());
+
+	m_LCctrlPtnTestView.SetColumnWidth(10, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // BLU
+	GetDlgItem(IDC_STT_PTN_BLU)->GetWindowRect(&rect2);
+	m_LCctrlPtnTestView.SetColumnWidth(10, rect2.Width());
 
 	dwStype = m_LCctrlPtnTestView.GetExtendedStyle();
 	dwStype |= LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES;
@@ -759,16 +734,18 @@ void CPatternTest::Lf_insertListItem()
 
 	for(loop=0; loop< lpModelInfo->m_nLbCnt; loop++)
 	{
-		strNum.Format(_T("%d"), loop);
+		strNum.Format(_T("%d"), loop+1);
 		m_LCctrlPtnTestView.InsertItem(loop, strNum);
 		m_LCctrlPtnTestView.SetItemText(loop, 1,lpModelInfo->m_sLbPtnName[loop]);
-		//m_LCctrlPtnTestView.SetItemText(loop, 2, lpModelInfo->m_sLbPtnFg[loop]);
-		//m_LCctrlPtnTestView.SetItemText(loop, 3, lpModelInfo->m_sLbPtnBg[loop]);
 		m_LCctrlPtnTestView.SetItemText(loop, 2, lpModelInfo->m_sLbPtnVcc[loop]);
 		m_LCctrlPtnTestView.SetItemText(loop, 3, lpModelInfo->m_sLbPtnVdd[loop]);
 		m_LCctrlPtnTestView.SetItemText(loop, 4, lpModelInfo->m_sLbPtnTms[loop]);
 		m_LCctrlPtnTestView.SetItemText(loop, 5, lpModelInfo->m_sLbPtnVsync[loop]);
-		m_LCctrlPtnTestView.SetItemText(loop, 6, lpModelInfo->m_sLbPtnVcom[loop]);
+		m_LCctrlPtnTestView.SetItemText(loop, 6, lpModelInfo->m_sLbPtnIccLow[loop]);
+		m_LCctrlPtnTestView.SetItemText(loop, 7, lpModelInfo->m_sLbPtnIccHigh[loop]);
+		m_LCctrlPtnTestView.SetItemText(loop, 8, lpModelInfo->m_sLbPtnIddLow[loop]);
+		m_LCctrlPtnTestView.SetItemText(loop, 9, lpModelInfo->m_sLbPtnIddHigh[loop]);
+		m_LCctrlPtnTestView.SetItemText(loop, 10, lpModelInfo->m_sLbPtnBlu[loop]);
 	}
 
 	m_LCctrlPtnTestView.SetSelectionMark(m_nSelNum); 
@@ -864,33 +841,6 @@ void CPatternTest::Lf_compareEEPRomData()
 			m_pApp->m_pCommand->Gf_ShowMessageBox(_T("EDID Read Communication Error!!!"));//AfxMessageBox(_T("EDID Read Communication Error!!!"));
 			m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
 		}	
-	}
-}
-
-void CPatternTest::Lf_showDisplayLockTimeText()
-{
-	char m_szPacket[1024]={0,};
-	int m_PacketLength=0;
-
-	if(lpSystemInfo->m_nOperationMode == IN_LINE)
-	{		
-		// 문자열이랑 "+"가 PG에서 같은 layer를 쓰고 있어서..... "BM"에 대한 Flag 이다. 130418
-		if((lpSystemInfo->m_sModelName.Find(_T("LP079Q")) == -1) 
-		//&& (!pUiPorc->comm.curData.cPG_BitmapFlag) 
-		&& (!(lpModelInfo->m_sLbPtnName[m_nSelNum] == _T("RG2Dot_127.pdb"))) 
-		&& (!(lpModelInfo->m_sLbPtnName[m_nSelNum] == _T("RG2Dot_255.pdb"))) 
-		)	
-		{
-			CString sdata=_T(""),str=_T("");							
-			str.Format(_T("%04d%04d%04d%04d%s"), ((lpModelInfo->m_nTimingHorActive-100)/2), (lpModelInfo->m_nTimingVerActive/2),200/*텍스트 길이*/,17/*텍스트 높이*/,_T("LOCK TIME"));
-			sdata.Format(_T("CBTFFFF00000000BS%03d%s"),str.GetLength()+5,str);
-			
-			wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-			m_PacketLength = (int)strlen(m_szPacket);
-			m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_T2PTN_SEND, m_PacketLength, m_szPacket);
-
-			m_pApp->m_nBMtoggle = 'S';
-		}
 	}
 }
 

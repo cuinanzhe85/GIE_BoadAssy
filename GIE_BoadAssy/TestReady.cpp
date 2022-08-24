@@ -352,11 +352,7 @@ BOOL CTestReady::Lf_sendGMESData()
 	{
  		lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
 		m_pApp->Gf_setGMesGoodInfo();
- 		if (lpWorkInfo->m_bMicroPtnDone == false)			
- 			sdata.Format(_T("N"));
- 		else
-			sdata.Format(_T("Y"));
-		
+ 		sdata.Format(_T(""));
 		m_pApp->m_pCimNet->SetOverHaulFlag(sdata.GetBuffer(0));
 	}
 	else
@@ -451,11 +447,7 @@ BOOL CTestReady::Lf_sendGMESData()
 				m_pApp->Gf_setGMesBadInfo();
 			}
 
-			if (lpWorkInfo->m_bMicroPtnDone == false)			
-				sdata.Format(_T("N"));
-			else
-				sdata.Format(_T("Y"));
-	
+			sdata.Format(_T(""));
 			m_pApp->m_pCimNet->SetOverHaulFlag(sdata.GetBuffer(0));//pUiPorc->pCimNet->ResetOverHaulFlag(strTemp.GetBuffer(0));			
 		}
 		else
