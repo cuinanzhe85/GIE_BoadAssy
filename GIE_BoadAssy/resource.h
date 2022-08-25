@@ -199,6 +199,7 @@
 #define IDC_STT_VDD_MEASURE             1081
 #define IDC_BTN_CHANGE                  1082
 #define IDC_STT_VDD_SET                 1082
+#define IDC_STT_VGH_MEASURE             1082
 #define IDC_BTN_ALL                     1083
 #define IDC_STT_TACT_TIME               1083
 #define IDC_BTN_TEST_START              1083
@@ -212,18 +213,22 @@
 #define IDC_CMB_PTN_TOUCH               1085
 #define IDC_CMB_PATTERN_LIST            1085
 #define IDC_STT_ICC_LOW                 1085
+#define IDC_CMB_MODEL_INCH              1085
 #define IDC_STT_GOOD_CNT_TIT            1086
 #define IDC_STT_TOUCH_CLK               1086
 #define IDC_CMB_TEST_MODE2              1086
 #define IDC_CMB_BLU_TYPE                1086
 #define IDC_STT_ICC_HIGH                1086
+#define IDC_STT_VGL_MEASURE             1086
 #define IDC_STT_BAD_CNT_TIT             1087
 #define IDC_CMB_FAST_JUDGE              1087
 #define IDC_BTN_MICRO_PTN_PATH          1087
 #define IDC_STT_IDD_LOW                 1087
+#define IDC_STT_IGL_MEASURE             1087
 #define IDC_STT_TOTAL_CNT_VALUE         1088
 #define IDC_CMB_PID_NG                  1088
 #define IDC_STT_IDD_HIGH                1088
+#define IDC_STT_IGH_MEASURE             1088
 #define IDC_STT_GOOD_CNT_VALUE          1089
 #define IDC_STT_PTN_ICC                 1089
 #define IDC_STT_BAD_CNT_VALUE           1090
@@ -308,7 +313,6 @@
 #define IDC_STT_GRP_CLOCK               1136
 #define IDC_STT_GRP_EDID                1137
 #define IDC_STT_GRP_VCOM                1138
-#define IDC_STT_GRP_POWER2              1138
 #define IDC_STT_GRP_POWER_LIMIT         1138
 #define IDC_STT_GRP_PATTERN             1139
 #define IDC_STT_USERID_TIT              1140
@@ -346,10 +350,14 @@
 #define IDC_STT_IDD_MEA_TIT             1166
 #define IDC_STT_VDD_MEA_TIT             1167
 #define IDC_STT_VDD_SET_TIT             1168
+#define IDC_STT_VGH_MEA_TIT             1168
 #define IDC_STT_TT_TIT                  1169
 #define IDC_PIC_MD_PTN_PREVIEW          1170
+#define IDC_STT_VGL_MEA_TIT             1170
 #define IDC_STT_EQP_NAME                1171
+#define IDC_STT_IGL_MEA_TIT             1171
 #define IDC_STT_TEST_MODE               1172
+#define IDC_STT_IGH_MEA_TIT             1172
 #define IDC_STT_BLU_TYPE                1173
 #define IDC_STT_BLU_FREQ                1174
 #define IDC_STT_TEST_START_DELAY        1175
@@ -408,7 +416,13 @@
 #define IDC_STT_MT_VCC_MEASURE          1228
 #define IDC_STT_MT_ICC_MEASURE          1229
 #define IDC_STT_MT_VDD_MEASURE          1230
+#define IDC_STT_MODEL_SIZE_TITLE        1230
 #define IDC_STT_MT_IDD_MEASURE          1231
+#define IDC_BTN_ALL_MODEL               1231
+#define IDC_STT_MC_DRIVE_PATH           1232
+#define IDC_STT_MODEL_SIZE_TITLE2       1233
+#define IDC_STT_MODEL_LIST_TITLE        1233
+#define IDC_STT_INCH                    1234
 
 // Next default values for new objects
 // 
@@ -416,7 +430,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        193
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1230
+#define _APS_NEXT_CONTROL_VALUE         1235
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

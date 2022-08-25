@@ -429,6 +429,18 @@ void CModelInfo::Lf_loadModelData()
 	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnVsync[0]);
 	m_edtPtnVSync.SetWindowText(sdata);
 
+	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnIccLow[0]);
+	m_edtPtnIccLow.SetWindowTextW(sdata);
+
+	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnIccHigh[0]);
+	m_edtPtnIccHigh.SetWindowTextW(sdata);
+
+	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnIddLow[0]);
+	m_edtPtnIddLow.SetWindowTextW(sdata);
+
+	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnIddHigh[0]);
+	m_edtPtnIddHigh.SetWindowTextW(sdata);
+
 	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnBlu[0]);
 	m_edtPtnBlu.SetWindowText(sdata);
 
@@ -833,8 +845,8 @@ void CModelInfo::OnBnClickedBtnSave()
 
 	if(strCurrentModel.Compare(strSaveModel))
 	{
-		strSource.Format(_T(".\\Model\\%s.MOL"), strCurrentModel);
-		strTarget.Format(_T(".\\Model\\%s.MOL"), strSaveModel);
+		strSource.Format(_T(".\\Model\\%s.mod"), strCurrentModel);
+		strTarget.Format(_T(".\\Model\\%s.mod"), strSaveModel);
 
 		// Model File Copy
 		CopyFile(strSource , strTarget, FALSE);
@@ -1392,20 +1404,15 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| pWnd->GetDlgCtrlID() == IDC_STT_VSYNC_CLK
 			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_CLK
 			|| pWnd->GetDlgCtrlID() == IDC_STT_PTN_ICC
-			|| pWnd->GetDlgCtrlID() == IDC_STT_PTN_IDD)
-		{
-			pDC->SetBkColor(COLOR_BLUISH);
-			pDC->SetTextColor(COLOR_WHITE);
-			return m_Brush[COLOR_IDX_BLUISH];
-		}
-		if (pWnd->GetDlgCtrlID() == IDC_STT_ICC_LOW
+			|| pWnd->GetDlgCtrlID() == IDC_STT_PTN_IDD
+			||pWnd->GetDlgCtrlID() == IDC_STT_ICC_LOW
 			|| pWnd->GetDlgCtrlID() == IDC_STT_ICC_HIGH
 			|| pWnd->GetDlgCtrlID() == IDC_STT_IDD_LOW
 			|| pWnd->GetDlgCtrlID() == IDC_STT_IDD_HIGH)
 		{
-			pDC->SetBkColor(COLOR_MAGENTA);
+			pDC->SetBkColor(COLOR_BLUISH);
 			pDC->SetTextColor(COLOR_WHITE);
-			return m_Brush[COLOR_IDX_MAGENTA];
+			return m_Brush[COLOR_IDX_BLUISH];
 		}
 		if ((pWnd->GetDlgCtrlID() == IDC_STT_SYSTEM_STATUS_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GFD250_STATUS_TIT)

@@ -240,24 +240,28 @@ HBRUSH CPatternTest::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	case CTLCOLOR_BTN:
 		break;
 	case CTLCOLOR_STATIC:
-		if((pWnd->GetDlgCtrlID()==IDC_STT_VCC_SET_TIT)
-		|| (pWnd->GetDlgCtrlID()==IDC_STT_VCC_MEA_TIT)
+		if((pWnd->GetDlgCtrlID()==IDC_STT_VCC_MEA_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_ICC_MEA_TIT)
-		|| (pWnd->GetDlgCtrlID()==IDC_STT_VDD_SET_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_VDD_MEA_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_IDD_MEA_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGH_MEA_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGL_MEA_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_IGH_MEA_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_IGL_MEA_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_TT_TIT))
 		{
 			pDC->SetBkColor(COLOR_DEEP_BLUE);
 			pDC->SetTextColor(COLOR_WHITE);
 			return m_Brush[COLOR_IDX_DEEP_BLUE];
 		}
-		if((pWnd->GetDlgCtrlID()==IDC_STT_VCC_SET)
-		|| (pWnd->GetDlgCtrlID()==IDC_STT_VDD_SET)
-		|| (pWnd->GetDlgCtrlID()==IDC_STT_VCC_MEASURE)
+		if((pWnd->GetDlgCtrlID()==IDC_STT_VCC_MEASURE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_VDD_MEASURE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_ICC_MEASURE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_IDD_MEASURE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGH_MEASURE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGL_MEASURE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_IGH_MEASURE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_IGL_MEASURE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_TACT_TIME))
 		{
 			pDC->SetBkColor(COLOR_BLACK);
@@ -341,19 +345,23 @@ void CPatternTest::Lf_initFontSet()
 	m_Font[0].CreateFont(24, 11, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
 	m_Font[1].CreateFont(16, 6, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("SYSTEM"));
-	GetDlgItem(IDC_STT_VCC_SET_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VCC_MEA_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_ICC_MEA_TIT)->SetFont(&m_Font[1]);
-	GetDlgItem(IDC_STT_VDD_SET_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VDD_MEA_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_IDD_MEA_TIT)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_VGH_MEA_TIT)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_VGL_MEA_TIT)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_IGH_MEA_TIT)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_IGL_MEA_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_TT_TIT)->SetFont(&m_Font[1]);
-	GetDlgItem(IDC_STT_VCC_SET)->SetFont(&m_Font[1]);
-	GetDlgItem(IDC_STT_VDD_SET)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VCC_MEASURE)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_ICC_MEASURE)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VDD_MEASURE)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_IDD_MEASURE)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_VGH_MEASURE)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_VGL_MEASURE)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_IGH_MEASURE)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_IGL_MEASURE)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_TACT_TIME)->SetFont(&m_Font[1]);
 
 	GetDlgItem(IDC_LIST__PTN_VIEW)->SetFont(&m_Font[1]);
@@ -590,17 +598,11 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 		}
 	}
 	
-	sdata.Format(_T("%.2f V"), (float)(lpModelInfo->m_fVoltVcc));
-	GetDlgItem(IDC_STT_VCC_SET)->SetWindowText(sdata);	
-
 	sdata.Format(_T("%.2f V"), (float)(m_pApp->m_nLcmPInfo[0]*0.01));
 	GetDlgItem(IDC_STT_VCC_MEASURE)->SetWindowText(sdata);
 
 	sdata.Format(_T("%d mA"), m_pApp->m_nLcmPInfo[3]);
 	GetDlgItem(IDC_STT_ICC_MEASURE)->SetWindowText(sdata);	
-
-	sdata.Format(_T("%.2f V"), (float)(lpModelInfo->m_fVoltVdd));
-	GetDlgItem(IDC_STT_VDD_SET)->SetWindowText(sdata);
 
 	sdata.Format(_T("%.2f V"), (float)(m_pApp->m_nLcmPInfo[1]*0.01));
 	GetDlgItem(IDC_STT_VDD_MEASURE)->SetWindowText(sdata);

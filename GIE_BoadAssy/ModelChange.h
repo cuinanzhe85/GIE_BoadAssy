@@ -31,6 +31,9 @@ protected:
 	void Lf_initLoadModelList();
 	void Lf_initFont();
 
+	void Lf_InitModelInchInfo();
+	void Lf_LoadModelList();
+
 public:
 	CListBox m_lcModelList;
 	afx_msg void OnBnClickedBtnLoad();
@@ -41,4 +44,8 @@ private:
 	CFont m_Font[FONT_IDX_MAX];
 	CBrush m_Brush[COLOR_IDX_MAX];
 
+public:
+	CComboBox m_cmbModelInch;
+	afx_msg void OnCbnSelchangeCmbModelInch();
+	afx_msg void OnBnClickedBtnAllModel();
 };

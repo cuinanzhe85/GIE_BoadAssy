@@ -205,7 +205,7 @@ static void Write_ModelFile(LPCWSTR lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey,
 {
 	CString szModelPath;
 
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), lpModelName);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), lpModelName);
 	::WritePrivateProfileString(lpTitle, lpKey, lpValue, szModelPath);        
 }
 
@@ -215,7 +215,7 @@ static void Write_ModelFile(LPCWSTR lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey,
 	CString szModelPath;
 
 	szData.Format(_T("%d"), ndata);
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), lpModelName);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), lpModelName);
 	::WritePrivateProfileString(lpTitle, lpKey, szData, szModelPath);        
 }
 
@@ -225,7 +225,7 @@ static void Write_ModelFile(LPCWSTR lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey,
 	CString szModelPath;
 
 	szData.Format(_T("%d"), nData);
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), lpModelName);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), lpModelName);
 	::WritePrivateProfileString(lpTitle, lpKey, szData, szModelPath);        
 }
 
@@ -235,7 +235,7 @@ static void Write_ModelFile(LPCWSTR lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey,
 	CString szModelPath;
 
 	szData.Format(_T("%f"), fdata);
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), lpModelName);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), lpModelName);
 	::WritePrivateProfileString(lpTitle, lpKey, szData, szModelPath);        
 }
 
@@ -256,7 +256,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, CS
 	char_To_wchar(lpModelName, wszModel);
 
 	// 모델 File 경로 설정
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), wszModel);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), szModelPath);
 
@@ -275,7 +275,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, ch
 	memset(szRetString,'\0',sizeof(szRetString));
 
 	// 모델 File 경로 설정
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), wszModel);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), szModelPath);
 
@@ -293,7 +293,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, in
 
 	// 모델 File 경로 설정
 	*pRetValue = 0;
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), wszModel);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), szModelPath);        
 
@@ -312,7 +312,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, LO
 
 	// 모델 File 경로 설정
 	*pRetValue = 0;
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), wszModel);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), szModelPath);        
 
@@ -330,7 +330,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, fl
 
 	// 모델 File 경로 설정
 	*pRetValue = 0;
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), wszModel);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), szModelPath);        
 
@@ -350,7 +350,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, do
 
 	// 모델 File 경로 설정
 	*pRetValue = 0;
-	szModelPath.Format(_T(".\\Model\\%s.MOL"), wszModel);
+	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), szModelPath);        
 

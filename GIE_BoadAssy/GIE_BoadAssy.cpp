@@ -607,7 +607,7 @@ BOOL CGIE_BoadAssyApp::Gf_loadMedelFile()
 	HANDLE hSearch;
 	int nLoof=1;
 
-	strDataFolder.Format(_T(".\\%s\\*.MOL"), _T("Model"));
+	strDataFolder.Format(_T(".\\%s\\*.mod"), _T("Model"));
 	hSearch = FindFirstFile(strDataFolder, &wfd);
 
 	if (hSearch != INVALID_HANDLE_VALUE)
@@ -616,7 +616,7 @@ BOOL CGIE_BoadAssyApp::Gf_loadMedelFile()
 		{
 			while(nLoof)
 			{
-				strLFileName.Format(_T("%s.MOL"), lpSystemInfo->m_sModelName);		strLFileName.MakeUpper();
+				strLFileName.Format(_T("%s.mod"), lpSystemInfo->m_sModelName);		strLFileName.MakeUpper();
 				strNFileName.Format(_T("%s"), wfd.cFileName);						strNFileName.MakeUpper();
 				if(strLFileName.Compare(strNFileName)) // When model file is't existed in folder, this sentence is executed. : Difference
 				{
@@ -630,7 +630,7 @@ BOOL CGIE_BoadAssyApp::Gf_loadMedelFile()
 					}
 				}
 
-				strLFileName.Format(_T("%s.MOL"), lpSystemInfo->m_sModelName);		strLFileName.MakeUpper();
+				strLFileName.Format(_T("%s.mod"), lpSystemInfo->m_sModelName);		strLFileName.MakeUpper();
 				strNFileName.Format(_T("%s"), wfd.cFileName);						strNFileName.MakeUpper();
 				if(!strLFileName.Compare(strNFileName)) // When model file is existed in folder, this sentence is executed. : equal
 				{		
