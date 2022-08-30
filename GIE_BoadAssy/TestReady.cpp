@@ -490,76 +490,67 @@ BOOL CTestReady::Lf_sendGMESData()
 void CTestReady::Lf_openResult()
 {
 	m_pApp->Gf_writeLogData(_T("<WND>"), _T("Judge Start"));
-
-	if(lpSystemInfo->m_nOperationMode == IN_LINE) 
-	{
-		if(m_pApp->m_bUserIdPM == true || m_pApp->m_bUserIdGieng == true)
+	if(m_pApp->m_bUserIdPM == true || m_pApp->m_bUserIdGieng == true)
 		{
-			int boxResult = 0;
-			m_pApp->Gf_writeLogData(_T("<WND>"), _T("[TEST MODE] TECH or GIENG"));
+		int boxResult = 0;
+		m_pApp->Gf_writeLogData(_T("<WND>"), _T("[TEST MODE] TECH or GIENG"));
 
-			if (lpWorkInfo->m_nFastJudge != FAST_JUDGE_OK && lpWorkInfo->m_nFastJudge != FAST_JUDGE_NG)
-			{
-				CGieJudge gieDlg;
-				gieDlg.DoModal();
-			}
+		if (lpWorkInfo->m_nFastJudge != FAST_JUDGE_OK && lpWorkInfo->m_nFastJudge != FAST_JUDGE_NG)
+		{
+			CGieJudge gieDlg;
+			gieDlg.DoModal();
+		}
 
-			if(lpWorkInfo->m_bGieJudgeNg == true || lpWorkInfo->m_nFastJudge == FAST_JUDGE_NG)
-			{
-				//TEST OK 신호를 출력하여 JIG가 대기 위치로 이동 하도록 한다. 
-				//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다.				
-				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);//Dio_OutPut(DIO_GUMI_M5_TEST_OK, 1);
+		if(lpWorkInfo->m_bGieJudgeNg == true || lpWorkInfo->m_nFastJudge == FAST_JUDGE_NG)
+		{
+			//TEST OK 신호를 출력하여 JIG가 대기 위치로 이동 하도록 한다. 
+			//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다.				
+			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);//Dio_OutPut(DIO_GUMI_M5_TEST_OK, 1);
 
-				Sleep(500); //PLC로 TEST OK, NG 신호를 동시에 들어가도 상관은 없으나 일단 안정적으로 FLOW를 가기 위해 Delay 줌. T/T 과 상관없음
+			Sleep(500); //PLC로 TEST OK, NG 신호를 동시에 들어가도 상관은 없으나 일단 안정적으로 FLOW를 가기 위해 Delay 줌. T/T 과 상관없음
 
-				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_JUDGE_NG);//Dio_OutPut(DIO_JUDGE_NG, 1);
-				m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE NG"));
-				Lf_createCount(BAD_CNT); 
-			}
-			else if(lpWorkInfo->m_bGieJudgeOk == true || lpWorkInfo->m_nFastJudge == FAST_JUDGE_OK)
-			{
-				//TEST OK 신호를 출력하여 JIG가 대기 위치로 이동 하도록 한다. 
-				//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다.
-				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);//Dio_OutPut(DIO_GUMI_M5_TEST_OK, 1);	
+			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_JUDGE_NG);//Dio_OutPut(DIO_JUDGE_NG, 1);
+			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE NG"));
+			Lf_createCount(BAD_CNT); 
+		}
+		else if(lpWorkInfo->m_bGieJudgeOk == true || lpWorkInfo->m_nFastJudge == FAST_JUDGE_OK)
+		{
+			//TEST OK 신호를 출력하여 JIG가 대기 위치로 이동 하도록 한다. 
+			//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다.
+			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);//Dio_OutPut(DIO_GUMI_M5_TEST_OK, 1);	
 
-				Sleep(500);  //PLC로 TEST OK, NG 신호를 동시에 들어가도 상관은 없으나 일단 안정적으로 FLOW를 가기 위해 Delay 줌. T/T 과 상관없음
+			Sleep(500);  //PLC로 TEST OK, NG 신호를 동시에 들어가도 상관은 없으나 일단 안정적으로 FLOW를 가기 위해 Delay 줌. T/T 과 상관없음
 
-				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_JUDGE_OK);//Dio_OutPut(DIO_JUDGE_OK, 1);	
-				m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE OK"));
-				Lf_createCount(GOOD_CNT);
-			}
-			else
-			{
-				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_INIT);//Dio_OutPut(DIO_MAX, 1);
-				m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> NO SIGNAL"));
-			}
+			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_JUDGE_OK);//Dio_OutPut(DIO_JUDGE_OK, 1);	
+			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE OK"));
+			Lf_createCount(GOOD_CNT);
 		}
 		else
 		{
-			if(Lf_sendGMESData()==TRUE)
-			{
-				if(lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS) 
-				{
-					Lf_createCount(GOOD_CNT);
-
-					m_pApp->m_pDio7230->Gf_setDioWrite(DIO_JUDGE_OK);//Dio_OutPut(DIO_JUDGE_OK, 1);
-					m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE OK"));
-	
-				}
-				else if(lpWorkInfo->m_nPassOrFail == GMES_PNF_FAIL)
-				{
-					Lf_createCount(BAD_CNT);
-
-					m_pApp->m_pDio7230->Gf_setDioWrite(DIO_JUDGE_NG);//Dio_OutPut(DIO_JUDGE_NG, 1);
-					m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE NG"));
-				}
-			}
+			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_INIT);//Dio_OutPut(DIO_MAX, 1);
+			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> NO SIGNAL"));
 		}
 	}
 	else
 	{
-		if (lpWorkInfo->m_bEscDetect == false)
-			Lf_createCount(GOOD_CNT);
+		if(Lf_sendGMESData()==TRUE)
+		{
+			if(lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS) 
+			{
+				Lf_createCount(GOOD_CNT);
+
+				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_JUDGE_OK);//Dio_OutPut(DIO_JUDGE_OK, 1);
+				m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE OK"));
+	
+			}
+			else if(lpWorkInfo->m_nPassOrFail == GMES_PNF_FAIL)
+			{
+				Lf_createCount(BAD_CNT);
+
+				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_JUDGE_NG);//Dio_OutPut(DIO_JUDGE_NG, 1);
+				m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE NG"));
+			}
+		}
 	}
 }
 
@@ -592,7 +583,7 @@ bool CTestReady::Lf_startTest()
 	BYTE dioRd=0;
 	CPatternTest ptnDlg;
 
-	if(lpSystemInfo->m_nOperationMode == EQP_INLINE)
+	if (m_pApp->m_bUserIdGieng != true && m_pApp->m_bUserIdPM != true)
 	{
 		if(m_pApp->m_pDio7230->Gf_getDIOJigArrive())
 		{
@@ -605,8 +596,6 @@ bool CTestReady::Lf_startTest()
 		}
 	}
 
-	m_pApp->m_pCommand->Gf_setIF5VPowerOffOn(TRUE);
-
 	if(Lf_getControlBdReady() == false)
 	{
 		return false;
@@ -618,7 +607,7 @@ bool CTestReady::Lf_startTest()
 	// 	pUiPorc->comm.curData.iStartTest = SEQ_PTN_TEST_START;
 	// 	pUiPorc->comm.curData.strPtnTestInfo = "";
 	// 
-	if(lpSystemInfo->m_nOperationMode == EQP_INLINE)
+	if (m_pApp->m_bUserIdGieng != true && m_pApp->m_bUserIdPM != true)
 	{
 		Lf_checkPanelId();
 	}
@@ -628,7 +617,7 @@ bool CTestReady::Lf_startTest()
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("Start Pattern Test"));
 	ptnDlg.DoModal();
 
-	if(lpSystemInfo->m_nOperationMode == EQP_INLINE)
+	if (m_pApp->m_bUserIdGieng != true && m_pApp->m_bUserIdPM != true)
 	{
 		delayMS(lpSystemInfo->m_nTestStartDelay);
 		m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_PRESS_NOMAL_UP);
@@ -651,8 +640,6 @@ bool CTestReady::Lf_startTest()
 	/*********************************************************************************************************************/
 	// after test initialize
 	Lf_setVariableAfter();
-
-	m_pApp->m_pCommand->Gf_setIF5VPowerOffOn(FALSE);
 
 	return true;
 }

@@ -39,11 +39,8 @@ protected:
 
 public:	
 	CEdit m_edtEqpName;
-	CComboBox m_cboTestMode;
 	CComboBox m_cboBluType;
 	CEdit m_edtTestStartDelay;
-	CComboBox m_cboFastJudge;
-	CComboBox m_cboPidNg;
 	CComboBox m_cboPgComPort;
 	CComboBox m_cboBcrComPort;
 	CComboBox m_cboGfd250ComPort;

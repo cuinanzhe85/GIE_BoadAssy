@@ -200,132 +200,7 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerFront_P);						makePacket.Append(sdata);
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerBack_P);						makePacket.Append(sdata);
 
-	sdata.Format(_T("%01d"), 0);							makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), 0);			makePacket.Append(sdata);
-	sdata.Format(_T("%01d"), 0);							makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), 0);			makePacket.Append(sdata);
-
-	// Aging Info
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);// Total Aging Time
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);// Aging Pattern Interval
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);// Start LCM Time		
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);// Auto ON Time
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);// Auto OFF Time	
-	sdata.Format(_T("%02d"), 0);													makePacket.Append(sdata);// NG Count
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Current check
-	sdata.Format(_T("%02d"), 0);													makePacket.Append(sdata);// Low Limit Count
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);// NG Off->On Time(S)
-	sdata.Format(_T("%02d"), 0);													makePacket.Append(sdata);// Unchanged Current Count
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);// Unchanged Current
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Aging Monitoring Pattern On/Off
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);// Aging Monitoring Pattern Display Time
-
-	sdata.Format(_T("%01d"), lpModelInfo->m_nSignalType);							makePacket.Append(sdata);
-	sdata.Format(_T("%01d"), lpModelInfo->m_nSignalBit);							makePacket.Append(sdata);
-	sdata.Format(_T("%01d"), lpModelInfo->m_nLcmInfoInterface);						makePacket.Append(sdata);
-
-	sdata.Format(_T("%01d"), lpModelInfo->m_nLGDISMSelect);							makePacket.Append(sdata);				
-	sdata.Format(_T("%01d"), lpModelInfo->m_nBitSel);								makePacket.Append(sdata);					
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);//lpModelInfo->m_nUserCableCheck			
-	sdata.Format(_T("%01d"), lpModelInfo->m_nAgpOnOff);								makePacket.Append(sdata);//Aging AGP Mode
-	sdata.Format(_T("%01d"), lpModelInfo->m_nSpiMode);								makePacket.Append(sdata);
 	
-	sdata.Format(_T("%03d"), (int)(lpModelInfo->m_fVoltVcc*10+0.5));				makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), (int)(lpModelInfo->m_fVoltVdd*10+0.5));				makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);//vbl
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);//vbr
-
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);//vcc offset
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);//vdd offset
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);//vbl offset
-
-	sdata.Format(_T("%01s"), (lpModelInfo->m_nPwrSeq==0)?_T("V"):_T("S"));			makePacket.Append(sdata);
-	
-	sdata.Format(_T("%03d"), lpModelInfo->m_nSeqDelay);								makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);
-
-	// Inverter
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);//lpModelInfo->m_nInvType
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);//lpModelInfo->m_nInvMode
-	sdata.Format(_T("%02d"), 00);													makePacket.Append(sdata);// BL Cable Check Off
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch1 On/Off
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch2 On/Off
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch3 On/Off
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch4 On/Off
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch5 On/Off
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch6 On/Off
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public All off /ng ch off
-	sdata.Format(_T("%02d"), 0);													makePacket.Append(sdata);// public Freq;
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// public inch info
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Retry When NG
-
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch1 Shut Down
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch1 Shut Down
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch1 Shut Down
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch1 Shut Down
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch1 Shut Down
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Public Ch1 Shut Down
-
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);//lpModelInfo->m_nInvSyncEnb					
-	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);//lpModelInfo->m_nInvPwmFreq					
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);//lpModelInfo->m_nInvPwmDutyHigh			
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);//lpModelInfo->m_nInvPwmLevel		
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);//lpModelInfo->m_nInvMode
-	sdata.Format(_T("%01d"), 1);													makePacket.Append(sdata);// BRTI/P On Off
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// AI Model. AI MODEL Set is Always '0'
-
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVccMax*100));				makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVddMax*100));				makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), 9999);													makePacket.Append(sdata);
-
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIccMax*1000));				makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIddMax*1000));				makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), 9999);													makePacket.Append(sdata);
-
-	sdata.Format(_T("%02d"), 0);													makePacket.Append(sdata);//lpModelInfo->m_nInvPwmDutyLow
-	
-	// NBPC LED B/L Info
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// I2C Line Sel.
-	sdata.Format(_T("%02X"), 0);													makePacket.Append(sdata);// SMBUS Salve Addr
-	sdata.Format(_T("%02X"), 0);													makePacket.Append(sdata);// SMBUS Reg Addr
-	sdata.Format(_T("%02X"), 0);													makePacket.Append(sdata);// SMBUS Data
-	sdata.Format(_T("%02X"), 0);													makePacket.Append(sdata);// NBPC VSet
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// IT-LED Inverter IC Sel
-	// ALS/089 Model Set
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// NBPC ALS Model
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// NBPC 089 Model
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);// NBPC 089 Current Set
-	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);// NBPC 089 Current Sensing Time Set
-
-	sdata.Format(_T("%01d"), lpSystemInfo->m_nI2CPullUp);							makePacket.Append(sdata);
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Inspection Mode (InLine or OffLine)	1:조정 0:오프라인.
-	sdata.Format(_T("%03d"), lpSystemInfo->m_nI2CClock);							makePacket.Append(sdata);
-	sdata.Format(_T("%01d"), lpModelInfo->m_nSpiLevel);								makePacket.Append(sdata);
-
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// PreDisplay On/Off
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// PreDisplay Aging Error Pallet Display
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// PreDisplay Display Pattern Type
-
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);//	Lamp Status NG Mode 0:OFF, 1:Low NG, 2:High NG
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);//	Lamp Status NG Voltage
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);//	AGP BIST Control
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// Always BLU Mode
-// 	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// SOLOMON MIPI USE/UNUSE
-// 	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);// PARADE CHIP SELECT
-// 	sdata.Format(_T("%02X%02X"), LaneCurrent[lpModelInfo->m_nLaneCurrPreEmp], PreEmphasis[lpModelInfo->m_nLaneCurrPreEmp]);	makePacket.Append(sdata);
-// 	sdata.Format(_T("%01d"),lpSystemInfo->m_neDPInitCodeSelect);					makePacket.Append(sdata);
-// 	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);//Auto Model PDC Signal
-
-	wchar_To_char(makePacket.GetBuffer(0), packet);
 }
 
 
@@ -749,7 +624,18 @@ BOOL CCommand::Gf_setPowerSeqOnOff(int nOnOff)
 
 	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_SEQ_ONOFF, m_PacketLength, m_szPacket);
 	if (bRtnCode == TRUE)
-		delayMS(lpModelInfo->m_nSeqDelay + 500);
+	{
+		DWORD dWait;
+		if (nOnOff == POWER_ON)
+			dWait = (lpModelInfo->m_nPowerOnSeqDelay01 + lpModelInfo->m_nPowerOnSeqDelay02 + lpModelInfo->m_nPowerOnSeqDelay03 + lpModelInfo->m_nPowerOnSeqDelay04 + lpModelInfo->m_nPowerOnSeqDelay05
+			+ lpModelInfo->m_nPowerOnSeqDelay06 + lpModelInfo->m_nPowerOnSeqDelay07 + lpModelInfo->m_nPowerOnSeqDelay08 + lpModelInfo->m_nPowerOnSeqDelay09 + lpModelInfo->m_nPowerOnSeqDelay10
+			+ lpModelInfo->m_nPowerOnSeqDelay11 + lpModelInfo->m_nPowerOnSeqDelay12 + lpModelInfo->m_nPowerOnSeqDelay13 + lpModelInfo->m_nPowerOnSeqDelay14);
+		else
+			dWait = (lpModelInfo->m_nPowerOffSeqDelay01 + lpModelInfo->m_nPowerOffSeqDelay02 + lpModelInfo->m_nPowerOffSeqDelay03 + lpModelInfo->m_nPowerOffSeqDelay04 + lpModelInfo->m_nPowerOffSeqDelay05
+				+ lpModelInfo->m_nPowerOffSeqDelay06 + lpModelInfo->m_nPowerOffSeqDelay07 + lpModelInfo->m_nPowerOffSeqDelay08 + lpModelInfo->m_nPowerOffSeqDelay09 + lpModelInfo->m_nPowerOffSeqDelay10
+				+ lpModelInfo->m_nPowerOffSeqDelay11 + lpModelInfo->m_nPowerOffSeqDelay12 + lpModelInfo->m_nPowerOffSeqDelay13 + lpModelInfo->m_nPowerOffSeqDelay14);
+		delayMS(dWait + 500);
+	}
 	return bRtnCode;
 }
 

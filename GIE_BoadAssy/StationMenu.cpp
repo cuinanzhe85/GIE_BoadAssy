@@ -28,11 +28,8 @@ void CStationMenu::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CBO_GFD250_COMPORT, m_cboGfd250ComPort);
 	DDX_Control(pDX, IDC_CBO_BLU_COMPORT, m_cboBluComPort);
 	DDX_Control(pDX, IDC_EDT_EQP_NAME, m_edtEqpName);
-	DDX_Control(pDX, IDC_CMB_TEST_MODE, m_cboTestMode);
 	DDX_Control(pDX, IDC_CMB_BLU_TYPE, m_cboBluType);
 	DDX_Control(pDX, IDC_EDT_TEST_START_DELAY, m_edtTestStartDelay);
-	DDX_Control(pDX, IDC_CMB_FAST_JUDGE, m_cboFastJudge);
-	DDX_Control(pDX, IDC_CMB_PID_NG, m_cboPidNg);
 	DDX_Control(pDX, IDC_EDT_BLU_FREQ, m_edtBluFreq);
 	DDX_Control(pDX, IDC_EDIT_MES_SERVICEPORT, m_edtMesServicePort);
 	DDX_Control(pDX, IDC_EDIT_MES_NETWORK, m_edtMesNetwork);
@@ -135,12 +132,9 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			return m_Brush[COLOR_IDX_LIGHT_BLUE];
 		}
 		if (pWnd->GetDlgCtrlID() == IDC_STT_EQP_NAME
-			|| pWnd->GetDlgCtrlID() == IDC_STT_TEST_MODE
 			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_TYPE
 			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_FREQ
 			|| pWnd->GetDlgCtrlID() == IDC_STT_TEST_START_DELAY
-			|| pWnd->GetDlgCtrlID() == IDC_STT_FAST_JUDGE
-			|| pWnd->GetDlgCtrlID() == IDC_STT_PANELID_NG
 			|| pWnd->GetDlgCtrlID() == IDC_STT_PG_PORT
 			|| pWnd->GetDlgCtrlID() == IDC_STT_GFD250_PORT
 			|| pWnd->GetDlgCtrlID() == IDC_STT_AUTO_BCR_PORT
@@ -183,7 +177,7 @@ void CStationMenu::OnPaint()
 
 	GetClientRect(&rect);
 	rect.top = 92;
-	dc.FillSolidRect(rect, COLOR_GRAY64);
+	dc.FillSolidRect(rect, COLOR_WHITE);
 }
 
 void CStationMenu::Lf_initFontSet()
@@ -208,12 +202,9 @@ void CStationMenu::Lf_initFontSet()
 	
 	m_Font[4].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_EDT_EQP_NAME)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_CMB_TEST_MODE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CMB_BLU_TYPE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_EDT_BLU_FREQ)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_EDT_TEST_START_DELAY)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_CMB_FAST_JUDGE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_CMB_PID_NG)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_CBO_PG_COMPORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CBO_GFD250_COMPORT)->SetFont(&m_Font[4]);
@@ -234,12 +225,9 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_EDT_EDID_FILE_PATH)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_STT_EQP_NAME)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_TEST_MODE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_BLU_TYPE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_BLU_FREQ)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_TEST_START_DELAY)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_FAST_JUDGE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_PANELID_NG)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_PG_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_GFD250_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_AUTO_BCR_PORT)->SetFont(&m_Font[4]);
@@ -276,8 +264,6 @@ void CStationMenu::Lf_initControls()
 
 	m_edtEqpName.SetWindowText(lpSystemInfo->m_sMachinName);
 
-	m_cboTestMode.SetCurSel(lpSystemInfo->m_nOperationMode);
-
 	m_cboBluType.SetCurSel(lpSystemInfo->m_nBluType);
 
 	sdata.Format(_T("%d"), lpSystemInfo->m_nBluFreq);
@@ -285,10 +271,6 @@ void CStationMenu::Lf_initControls()
 
 	sdata.Format(_T("%d"), lpSystemInfo->m_nTestStartDelay);
 	m_edtTestStartDelay.SetWindowText(sdata);
-
-	m_cboFastJudge.SetCurSel(lpSystemInfo->m_nFastJudge);
-
-	m_cboPidNg.SetCurSel(lpSystemInfo->m_nPidNg);
 
 	m_cboPgComPort.SetCurSel(lpSystemInfo->m_nPgPort);
 
@@ -324,9 +306,6 @@ void CStationMenu::Lf_saveSystemInfo()
 	lpSystemInfo->m_sMachinName.Format(_T("%s"),sdata);
 	Write_SysIniFile(_T("SYSTEM"), _T("MACHIN_NAME"), lpSystemInfo->m_sMachinName);
 
-	lpSystemInfo->m_nOperationMode = m_cboTestMode.GetCurSel();
-	Write_SysIniFile(_T("SYSTEM"), _T("OPERATION_MODE"), lpSystemInfo->m_nOperationMode);	
-
 	lpSystemInfo->m_nBluType = m_cboBluType.GetCurSel();
 	Write_SysIniFile(_T("SYSTEM"), _T("BLU_TYPE"), lpSystemInfo->m_nBluType);
 
@@ -337,12 +316,6 @@ void CStationMenu::Lf_saveSystemInfo()
 	m_edtTestStartDelay.GetWindowText(sdata);
 	lpSystemInfo->m_nTestStartDelay = _ttoi(sdata);
 	Write_SysIniFile(_T("SYSTEM"), _T("TEST_START_DELAY"), lpSystemInfo->m_nTestStartDelay);
-
-	lpSystemInfo->m_nFastJudge = m_cboFastJudge.GetCurSel();
-	Write_SysIniFile(_T("SYSTEM"), _T("FAST_JUDGE"), lpSystemInfo->m_nFastJudge);	
-
-	lpSystemInfo->m_nPidNg = m_cboPidNg.GetCurSel();
-	Write_SysIniFile(_T("SYSTEM"), _T("PID_NG"), lpSystemInfo->m_nPidNg);
 
 	lpSystemInfo->m_nPgPort = m_cboPgComPort.GetCurSel();
 	Write_SysIniFile(_T("SYSTEM"), _T("IRDA_PORT"), lpSystemInfo->m_nPgPort);

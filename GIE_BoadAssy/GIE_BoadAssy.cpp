@@ -239,12 +239,9 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpSystemInfo->m_sModelName=_T("");
 	lpSystemInfo->m_sMachinName=_T("");
 	lpSystemInfo->m_nMeasureInterval=0;
-	lpSystemInfo->m_nOperationMode=0;
 	lpSystemInfo->m_nBluType=0;
 	lpSystemInfo->m_nBluFreq=0;
 	lpSystemInfo->m_nTestStartDelay=0;
-	lpSystemInfo->m_nPidNg=0;
-	lpSystemInfo->m_nFastJudge=0;
 	lpSystemInfo->m_nI2CPullUp=0;
 	lpSystemInfo->m_nI2CClock=0;
 	lpSystemInfo->m_nPGSystemType=0;
@@ -325,8 +322,6 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpModelInfo->m_fLimitIccMax=0;
 	lpModelInfo->m_fLimitIddMax=0;
 	lpModelInfo->m_nIccCheck=0;
-	lpModelInfo->m_nPwrSeq=0;
-	lpModelInfo->m_nSeqDelay=0;
 
 	for(i=0; i<10; i++)
 	{
@@ -418,12 +413,9 @@ void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 	Read_SysIniFile(_T("SYSTEM"),		_T("LAST_MODELNAME"),				&lpSystemInfo->m_sModelName);
 	Read_SysIniFile(_T("SYSTEM"),		_T("MACHIN_NAME"),					&lpSystemInfo->m_sMachinName);
 	Read_SysIniFile(_T("SYSTEM"),		_T("MEASURE_INTERVAL"),				&lpSystemInfo->m_nMeasureInterval);
-	Read_SysIniFile(_T("SYSTEM"),		_T("OPERATION_MODE"),				&lpSystemInfo->m_nOperationMode);
 	Read_SysIniFile(_T("SYSTEM"),		_T("BLU_TYPE"),						&lpSystemInfo->m_nBluType);
 	Read_SysIniFile(_T("SYSTEM"),		_T("BLU_FREQ"),						&lpSystemInfo->m_nBluFreq);
 	Read_SysIniFile(_T("SYSTEM"),		_T("TEST_START_DELAY"),				&lpSystemInfo->m_nTestStartDelay);
-	Read_SysIniFile(_T("SYSTEM"),		_T("FAST_JUDGE"),					&lpSystemInfo->m_nFastJudge);
-	Read_SysIniFile(_T("SYSTEM"),		_T("PID_NG"),						&lpSystemInfo->m_nPidNg);
 	
 
 
@@ -496,8 +488,7 @@ void CGIE_BoadAssyApp::Lf_loadModelInfo()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VER_BACKPORCH"),	&lpModelInfo->m_nTimingVerBack_P);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VER_FRONTPORCH"),	&lpModelInfo->m_nTimingVerFront_P);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VER_WIDTH"),		&lpModelInfo->m_nTimingVerWidth);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("INTERFACE"),		&lpModelInfo->m_nLcmInfoInterface);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BITSWAP"),			&lpModelInfo->m_nLcmInfoBitsSwap);
+	
 
 	//-------------------------------------- EDID INFO
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("EDID_USE"),				&lpModelInfo->m_nEdidUse);
@@ -544,9 +535,71 @@ void CGIE_BoadAssyApp::Lf_loadModelInfo()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_BIT"),			&lpModelInfo->m_nSignalBit);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("LG_DISM"),				&lpModelInfo->m_nLGDISMSelect);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BIT_SELECT"),			&lpModelInfo->m_nBitSel);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("INTERFACE"), &lpModelInfo->m_nLcmInfoInterface);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("BITSWAP"), &lpModelInfo->m_nLcmInfoBitsSwap);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_DELAY"), &lpModelInfo->m_nLcmInfoBitsSwap);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_DELAY"), &lpModelInfo->m_nClockDelay);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_RISING"), &lpModelInfo->m_nClockRising);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("HSYNC_POLARITY"), &lpModelInfo->m_nHSyncPolarity);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VSYNC_POLARITY"), &lpModelInfo->m_nVSyncPolarity);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("ODD_EVEN"), &lpModelInfo->m_nOddEven);
 
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("POWER_SEQ_SEL"),		&lpModelInfo->m_nPwrSeq);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("POWER_SEQ_DELAY"),		&lpModelInfo->m_nSeqDelay);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_01"), &lpModelInfo->m_nPowerOnSeqOp01);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_02"), &lpModelInfo->m_nPowerOnSeqOp02);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_03"), &lpModelInfo->m_nPowerOnSeqOp03);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_04"), &lpModelInfo->m_nPowerOnSeqOp04);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_05"), &lpModelInfo->m_nPowerOnSeqOp05);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_06"), &lpModelInfo->m_nPowerOnSeqOp06);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_07"), &lpModelInfo->m_nPowerOnSeqOp07);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_08"), &lpModelInfo->m_nPowerOnSeqOp08);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_09"), &lpModelInfo->m_nPowerOnSeqOp09);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_10"), &lpModelInfo->m_nPowerOnSeqOp10);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_11"), &lpModelInfo->m_nPowerOnSeqOp11);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_12"), &lpModelInfo->m_nPowerOnSeqOp12);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_13"), &lpModelInfo->m_nPowerOnSeqOp13);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_14"), &lpModelInfo->m_nPowerOnSeqOp14);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_01"), &lpModelInfo->m_nPowerOffSeqOp01);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_02"), &lpModelInfo->m_nPowerOffSeqOp02);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_03"), &lpModelInfo->m_nPowerOffSeqOp03);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_04"), &lpModelInfo->m_nPowerOffSeqOp04);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_05"), &lpModelInfo->m_nPowerOffSeqOp05);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_06"), &lpModelInfo->m_nPowerOffSeqOp06);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_07"), &lpModelInfo->m_nPowerOffSeqOp07);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_08"), &lpModelInfo->m_nPowerOffSeqOp08);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_09"), &lpModelInfo->m_nPowerOffSeqOp09);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_10"), &lpModelInfo->m_nPowerOffSeqOp10);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_11"), &lpModelInfo->m_nPowerOffSeqOp11);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_12"), &lpModelInfo->m_nPowerOffSeqOp12);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_13"), &lpModelInfo->m_nPowerOffSeqOp13);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_14"), &lpModelInfo->m_nPowerOffSeqOp14);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_01"), &lpModelInfo->m_nPowerOnSeqDelay01);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_02"), &lpModelInfo->m_nPowerOnSeqDelay02);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_03"), &lpModelInfo->m_nPowerOnSeqDelay03);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_04"), &lpModelInfo->m_nPowerOnSeqDelay04);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_05"), &lpModelInfo->m_nPowerOnSeqDelay05);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_06"), &lpModelInfo->m_nPowerOnSeqDelay06);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_07"), &lpModelInfo->m_nPowerOnSeqDelay07);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_08"), &lpModelInfo->m_nPowerOnSeqDelay08);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_09"), &lpModelInfo->m_nPowerOnSeqDelay09);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_10"), &lpModelInfo->m_nPowerOnSeqDelay10);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_11"), &lpModelInfo->m_nPowerOnSeqDelay11);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_12"), &lpModelInfo->m_nPowerOnSeqDelay12);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_13"), &lpModelInfo->m_nPowerOnSeqDelay13);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_14"), &lpModelInfo->m_nPowerOnSeqDelay14);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_01"), &lpModelInfo->m_nPowerOffSeqDelay01);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_02"), &lpModelInfo->m_nPowerOffSeqDelay02);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_03"), &lpModelInfo->m_nPowerOffSeqDelay03);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_04"), &lpModelInfo->m_nPowerOffSeqDelay04);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_05"), &lpModelInfo->m_nPowerOffSeqDelay05);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_06"), &lpModelInfo->m_nPowerOffSeqDelay06);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_07"), &lpModelInfo->m_nPowerOffSeqDelay07);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_08"), &lpModelInfo->m_nPowerOffSeqDelay08);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_09"), &lpModelInfo->m_nPowerOffSeqDelay09);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_10"), &lpModelInfo->m_nPowerOffSeqDelay10);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_11"), &lpModelInfo->m_nPowerOffSeqDelay11);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_12"), &lpModelInfo->m_nPowerOffSeqDelay12);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_13"), &lpModelInfo->m_nPowerOffSeqDelay13);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_14"), &lpModelInfo->m_nPowerOffSeqDelay14);
 
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_PULLUP"), &lpModelInfo->m_nI2cPullup);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_FREQ"), &lpModelInfo->m_nI2cFreq);
@@ -1510,16 +1563,7 @@ Send_RETRY:
 	}
 	else
 	{
-// 		while(Gf_getGmesRTNCD()==_T("2705"))
-// 		{
-// 			Gf_showLocalErrorMsg();
-// 
-// 			return FALSE;
-// 		}
-		if(lpSystemInfo->m_nPidNg == TRUE)
-			Gf_showPanelIdNg();
-		else
-			Gf_showLocalErrorMsg();
+		Gf_showLocalErrorMsg();
 	}
 	return FALSE;
 }

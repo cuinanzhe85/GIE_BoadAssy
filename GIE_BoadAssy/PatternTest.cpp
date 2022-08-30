@@ -65,8 +65,8 @@ BOOL CPatternTest::OnInitDialog()
 	SetTimer(1,200,NULL);	// EDID
 	SetTimer(2,1000,NULL);	// Power Measure
 	
-	if(lpSystemInfo->m_nFastJudge == TRUE)
-		SetTimer(3, 100, NULL); 
+	//if(lpSystemInfo->m_nFastJudge == TRUE)
+		SetTimer(3, 1000, NULL);  // OK,NG DIO Input Check
 
 	//SetTimer(4,100,NULL); 무슨 기능인지 모르겠음.
 	SetTimer(100,100,NULL);

@@ -122,30 +122,28 @@ void CUserID::OnBnClickedOk()
 			
 			if(m_sUserId.GetLength() > 4)
 			{
-				if(lpSystemInfo->m_nOperationMode == IN_LINE)
+				if(m_pApp->Gf_sendGmesHost(HOST_EAYT)==FALSE)	
 				{
-					if(m_pApp->Gf_sendGmesHost(HOST_EAYT)==FALSE)	
-					{
 //						m_pApp->m_bHostComuChk = FALSE;
-						GetDlgItem(IDOK)->EnableWindow(TRUE);
-						return;
-					}
+					GetDlgItem(IDOK)->EnableWindow(TRUE);
+					return;
+				}
 			
-					m_pApp->m_pCimNet->SetUserId(m_sUserId);
-					lpWorkInfo->m_sUserID.Format(_T("%s"), m_sUserId);					
+				m_pApp->m_pCimNet->SetUserId(m_sUserId);
+				lpWorkInfo->m_sUserID.Format(_T("%s"), m_sUserId);					
 
-					if(m_pApp->Gf_sendGmesHost(HOST_UCHK)==FALSE)
-					{
+				if(m_pApp->Gf_sendGmesHost(HOST_UCHK)==FALSE)
+				{
 //						m_pApp->m_bHostComuChk = FALSE;
-						GetDlgItem(IDOK)->EnableWindow(TRUE);
-						return;
-					}
-					if(m_pApp->Gf_sendGmesHost(HOST_EDTI)==FALSE)
-					{
+					GetDlgItem(IDOK)->EnableWindow(TRUE);
+					return;
+				}
+				if(m_pApp->Gf_sendGmesHost(HOST_EDTI)==FALSE)
+				{
 //						m_pApp->m_bHostComuChk = FALSE;
-						GetDlgItem(IDOK)->EnableWindow(TRUE);
-						return;
-					}
+					GetDlgItem(IDOK)->EnableWindow(TRUE);
+					return;
+				}
 // 					m_pApp->m_bUserIdCheck = TRUE;
 // 					m_pApp->Gf_writeLogData(_T("UserID"), m_pApp->m_pTibDrive->m_sTibUserId);
 // 
@@ -158,14 +156,7 @@ void CUserID::OnBnClickedOk()
 // 					}
 // 					m_pApp->m_bFldrSendOn = TRUE;
 
-					CDialog::OnOK();
-				}
-				else
-				{
-					lpWorkInfo->m_sUserID.Format(_T("%s"), m_sUserId);
-					m_pApp->Gf_writeLogData(_T("UserID"), lpWorkInfo->m_sUserID);
-					CDialog::OnOK();
-				}
+				CDialog::OnOK();
 			}
 			else
 			{

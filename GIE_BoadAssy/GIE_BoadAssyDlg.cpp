@@ -204,7 +204,7 @@ void CGIE_BoadAssyDlg::OnPaint()
 		CRect rect;
 		GetClientRect(&rect);
 		rect.bottom = 100;
-		dc.FillSolidRect(rect, COLOR_GRAY64);
+		dc.FillSolidRect(rect, COLOR_BLACK);
 		GetClientRect(&rect);
 		rect.top = 101;
 		dc.FillSolidRect(rect, COLOR_GRAY64);
@@ -320,6 +320,7 @@ void CGIE_BoadAssyDlg::OnBnClickedBtnModelinfo()
 	HBITMAP hBit;
 	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MODEL_P));
 	m_btnMainModel.SetBitmap(hBit);
+
 	CModelInfo modDlg;
 	modDlg.DoModal();
 
@@ -442,7 +443,7 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	
 	GetDlgItem(IDC_STT_EQP_NAME_VALUE)->SetWindowText(lpSystemInfo->m_sMachinName);
 
-	if(lpSystemInfo->m_nOperationMode == OFF_LINE)
+	if(m_pApp->m_bUserIdGieng == true || m_pApp->m_bUserIdPM == true)
 		GetDlgItem(IDC_STT_OP_MODE_VALUE)->SetWindowText(_T("OFF-LINE"));
 	else
 		GetDlgItem(IDC_STT_OP_MODE_VALUE)->SetWindowText(_T("IN-LINE"));

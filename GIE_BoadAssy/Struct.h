@@ -91,6 +91,68 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nLcmInfoInterface;
 	int m_nLcmInfoMode;
 	int m_nLcmInfoBitsSwap;
+	int m_nClockDelay;
+	int m_nClockRising;
+	int m_nHSyncPolarity;
+	int m_nVSyncPolarity;
+	int m_nOddEven;
+
+	int m_nPowerOnSeqOp01;
+	int m_nPowerOnSeqOp02;
+	int m_nPowerOnSeqOp03;
+	int m_nPowerOnSeqOp04;
+	int m_nPowerOnSeqOp05;
+	int m_nPowerOnSeqOp06;
+	int m_nPowerOnSeqOp07;
+	int m_nPowerOnSeqOp08;
+	int m_nPowerOnSeqOp09;
+	int m_nPowerOnSeqOp10;
+	int m_nPowerOnSeqOp11;
+	int m_nPowerOnSeqOp12;
+	int m_nPowerOnSeqOp13;
+	int m_nPowerOnSeqOp14;
+	int m_nPowerOffSeqOp01;
+	int m_nPowerOffSeqOp02;
+	int m_nPowerOffSeqOp03;
+	int m_nPowerOffSeqOp04;
+	int m_nPowerOffSeqOp05;
+	int m_nPowerOffSeqOp06;
+	int m_nPowerOffSeqOp07;
+	int m_nPowerOffSeqOp08;
+	int m_nPowerOffSeqOp09;
+	int m_nPowerOffSeqOp10;
+	int m_nPowerOffSeqOp11;
+	int m_nPowerOffSeqOp12;
+	int m_nPowerOffSeqOp13;
+	int m_nPowerOffSeqOp14;
+	int m_nPowerOnSeqDelay01;
+	int m_nPowerOnSeqDelay02;
+	int m_nPowerOnSeqDelay03;
+	int m_nPowerOnSeqDelay04;
+	int m_nPowerOnSeqDelay05;
+	int m_nPowerOnSeqDelay06;
+	int m_nPowerOnSeqDelay07;
+	int m_nPowerOnSeqDelay08;
+	int m_nPowerOnSeqDelay09;
+	int m_nPowerOnSeqDelay10;
+	int m_nPowerOnSeqDelay11;
+	int m_nPowerOnSeqDelay12;
+	int m_nPowerOnSeqDelay13;
+	int m_nPowerOnSeqDelay14;
+	int m_nPowerOffSeqDelay01;
+	int m_nPowerOffSeqDelay02;
+	int m_nPowerOffSeqDelay03;
+	int m_nPowerOffSeqDelay04;
+	int m_nPowerOffSeqDelay05;
+	int m_nPowerOffSeqDelay06;
+	int m_nPowerOffSeqDelay07;
+	int m_nPowerOffSeqDelay08;
+	int m_nPowerOffSeqDelay09;
+	int m_nPowerOffSeqDelay10;
+	int m_nPowerOffSeqDelay11;
+	int m_nPowerOffSeqDelay12;
+	int m_nPowerOffSeqDelay13;
+	int m_nPowerOffSeqDelay14;
 
 	float m_fTimingFreq;
 	int	m_nTimingHorActive;
@@ -134,9 +196,6 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nSolomonMipi;
 	int m_nDp501InitCode;
 
-	int m_nPwrSeq;
-	int m_nSeqDelay;
-
 	int m_nAgpOnOff;
 	int m_nGfd250;
 
@@ -168,12 +227,9 @@ typedef struct _ST_SYSTEMINFO_{
 
 	CString m_sMachinName;
 	CString m_sModelName;
-	int		m_nOperationMode;
 	int		m_nBluType;
 	int		m_nBluFreq;
 	int		m_nTestStartDelay;
-	int		m_nFastJudge;
-	int		m_nPidNg;
 
 	int		m_nPGSystemType;
 	int		m_nMeasureInterval;
