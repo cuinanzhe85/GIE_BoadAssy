@@ -372,18 +372,35 @@ void CBmpDownload::OnBnClickedBtnBmpDownloadStart()
 		DWORD len;
 		ReadFile(fd, (LPSTR)&bmpHeader, sizeof(bmpHeader), &len, NULL);
 		CloseHandle(fd);*/
-
-		if (sendBmpRawData(resizefilepath) == FALSE)
+		if (sendBmpPtnInfo(index, sfilename) == FALSE)
 		{
 			DeleteFile(resizefilepath);
-			GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Download Fail"));
+			GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Pattern Info Settting Fail"));
+			return;
+		}
+		if (sendBmpRawData(index,resizefilepath) == FALSE)
+		{
+			DeleteFile(resizefilepath);
+			GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Raw Data Download Fail"));
 			return;
 		}
 		DeleteFile(resizefilepath);
 	}
 	GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Download Complete"));
 }
-BOOL CBmpDownload::sendBmpRawData(CString sfilepath)
+BOOL CBmpDownload::sendBmpPtnInfo(int index, CString filename)
+{
+	char szFilename[20];
+	char szPacket[128];
+	int length;
+	filename.MakeUpper();
+	sprintf_s(szFilename, "%s.BMP", wchar_To_char(filename.GetBuffer(0)));
+	sprintf_s(szPacket, "%02d%04d%04d%03d%s", index, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive, filename.GetLength(), szFilename);
+	length = (int)strlen(szPacket);
+	
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DOWNLOAD_PTN_INFO, length, szPacket, TRUE, 2000);
+}
+BOOL CBmpDownload::sendBmpRawData(int index, CString sfilepath)
 {
 
 	BYTE tempStr[4096 * 3] = { 0, };
@@ -398,7 +415,6 @@ BOOL CBmpDownload::sendBmpRawData(CString sfilepath)
 	BOOL ret = TRUE;
 	int	WidthRead, WidthCell, HeightCell;
 	int LineNo = 0, nandWriteAddr = 0;
-	int bmpIndex=0;
 	DWORD size, len;
 
 	int m_status = 0;
@@ -471,7 +487,7 @@ BOOL CBmpDownload::sendBmpRawData(CString sfilepath)
 	while (1)
 	{
 		// BMP write Packet 을 만든다.
-		sprintf_s(stemp, "%02d%08X", bmpIndex, nandWriteAddr);			// BMP Index, NAND flash write address
+		sprintf_s(stemp, "%02d%08X", index, nandWriteAddr);			// BMP Index, NAND flash write address
 		sPacket[0] = stemp[0];
 		sPacket[1] = stemp[1];
 		sPacket[2] = stemp[2];
@@ -498,7 +514,7 @@ BOOL CBmpDownload::sendBmpRawData(CString sfilepath)
 		memcpy(&sPacket[10], &pRaw[nandWriteAddr], size);
 		size = size + (DWORD)strlen(stemp);
 
-		if(m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, 0x00, size, sPacket, TRUE, 20000) == FALSE)
+		if(m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DOWNLOAD_RAW_DATA, size, sPacket, TRUE, 20000) == FALSE)
 		{
 			// 3회연속 Packet Error 발생 시 Error Return 한다.
 			if (++error_count >= 3)
@@ -534,23 +550,39 @@ BOOL CBmpDownload::sendBmpRawData(CString sfilepath)
 		ProcessMessage();
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 5. BMP File이 정상적으로 Download 되었을때 전체 Packet의 갯수 정보를 Write한다.
-	if (ret == TRUE)
-	{
-		/*delayMS(10);
-		sendBmpDownComplete(0);*/
-	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 6. Progress
+	// 5. Progress
 	m_progBmpDownloadStatus.SetPos(nTotalPage);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 7. Release
+	// 6. Release
 	if (tDib)	delete tDib;
 	if (pRaw)	delete pRaw;
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 7. BMP File이 정상적으로 Download 되었을때 Done Check 한다.
+	if (ret == TRUE)
+	{
+		delayMS(100);
+		if (sendBmpDownloadDone() != TRUE)
+			return FALSE;
+	}
+
 	return ret;
 }
+BOOL CBmpDownload::sendBmpDownloadDone()
+{
 
+	if (m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DOWNLOAD_DONE_CHECK, 0, "", TRUE, 2000)==TRUE)
+	{
+		if (m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_RET] == '0')
+		{
+			if (m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA] == '1')
+			{
+				return TRUE;
+			}
+		}
+	}
+	return FALSE;
+}

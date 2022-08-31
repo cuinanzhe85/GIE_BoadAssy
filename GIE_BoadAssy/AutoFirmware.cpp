@@ -294,26 +294,19 @@ void CAutoFirmware::Lf_readyInitialize()
 
 BOOL CAutoFirmware::Lf_checkDownloadReady()
 {
-	DWORD sTick, eTick;
-
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(_T("Go To Boot Section!"));
-	sTick = ::GetTickCount();
-	while(1)
-	{
-		m_pApp->m_nDownloadCountUp=TRUE;
-		m_pApp->m_pCommand->Gf_setGoToBootSection();
-		Sleep(100);
+	m_pApp->m_nDownloadReadyAckCount = 0;
 
-		if(m_pApp->m_nDownloadReadyAckCount > 10)
+	for (int i = 0; i < 10; i++)
+	{
+		m_pApp->m_nDownloadCountUp = TRUE;
+		m_pApp->m_pCommand->Gf_setGoToBootDownload();
+		delayMS(200);
+
+		if (m_pApp->m_nDownloadReadyAckCount == 2)
 		{
 			return TRUE;
 		}
-
-		eTick = ::GetTickCount();
-		if((eTick - sTick) > 30000)
-			break;
-
-		ProcessMessage();
 	}
 
 	return FALSE;
@@ -409,7 +402,7 @@ BOOL CAutoFirmware::Lf_firmwareDownloadStart()
 	}
 
 	// Step2. Download Start
-	Sleep(100);
+	delayMS(100);
 	if(Lf_sendFirmwareFile()==FALSE)
 	{
 		AfxMessageBox(_T("xxx   Firmware Download Fail - Data Download   xxx"));
@@ -417,7 +410,7 @@ BOOL CAutoFirmware::Lf_firmwareDownloadStart()
 	}
 
 	// Step3. Download Complete Check
-	Sleep(100);
+	delayMS(100);
 	if(Lf_sendDownloadComplete()==FALSE)
 	{
 		AfxMessageBox(_T("xxx   Firmware Download Fail - Complete Check  xxx"));

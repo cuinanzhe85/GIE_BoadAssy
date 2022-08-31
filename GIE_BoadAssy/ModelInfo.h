@@ -27,7 +27,7 @@ public:
 	CComboBox m_cboSignalBit;
 	CComboBox m_cboLvdsSel;
 	CComboBox m_cboBitSel;
-	CComboBox m_cboInterface;
+	CComboBox m_cboPixelType;
 	CComboBox m_cboBitSwap;
 	CEdit m_edtHorTotal;
 	CEdit m_edtHorActive;

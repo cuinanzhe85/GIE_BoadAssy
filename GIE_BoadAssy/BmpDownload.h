@@ -31,7 +31,9 @@ protected:
 	void Lf_InitItemFont();
 	void Lf_InitColorBrush();
 
-	BOOL sendBmpRawData(CString sfilepath);
+	BOOL sendBmpPtnInfo(int index, CString filename);
+	BOOL sendBmpRawData(int index, CString sfilepath);
+	BOOL sendBmpDownloadDone();
 
 	CFont m_Font[FONT_IDX_MAX];
 	CBrush m_brush[COLOR_IDX_MAX];

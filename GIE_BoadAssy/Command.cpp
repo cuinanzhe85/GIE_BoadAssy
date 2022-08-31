@@ -149,59 +149,161 @@ BOOL CCommand::Gf_setBluOnOff(BOOL onoff)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CCommand::Lf_makeSystemFusingData(char* packet)
 {
-	CString makePacket;
+	CString makePacket = _T("");
 	CString sdata = _T("");
-	SYSTEMTIME sysTime;
-	unsigned char LaneCurrent[16]={0x00,0x55,0xAA,0xFF,0x00,0x55,0xAA,0xFF,0x00,0x55,0xAA,0xFF,0x00,0x55,0xAA,0xFF};
-	unsigned char PreEmphasis[16]={0x00,0x00,0x00,0x00,0x55,0x55,0x55,0x55,0xAA,0xAA,0xAA,0xAA,0xFF,0xFF,0xFF,0xFF};
-
-	::GetSystemTime (&sysTime);
-	CTime time = CTime::GetCurrentTime ();
-
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	sdata.Format(_T("%s******************************"),	_T("DEFUALT_LCM_NAME"));
-	sdata = sdata.Left(30);															makePacket.Append(sdata);
-	sdata.Format(_T("%02d"),time.GetDay());											makePacket.Append(sdata);// Date
 
 	int nInterface = 0;
 	int nMode = 0;
 	int nBitsSwap = lpModelInfo->m_nLcmInfoBitsSwap << 4;
-	int nDotClockInv=0;
-	int nHsyncPolarity = 0x00;
-	int nVsyncPolarity = 0x00;
+	int nHsyncPolarity = lpModelInfo->m_nHSyncPolarity;
+	int nVsyncPolarity = lpModelInfo->m_nVSyncPolarity;
 
-	if(lpModelInfo->m_nLcmInfoInterface == SINGLE)			nInterface=3;
-	else if(lpModelInfo->m_nLcmInfoInterface == DUAL)		nInterface=2;
-	else if(lpModelInfo->m_nLcmInfoInterface == QUAD)		nInterface=0;
+	sdata.Format(_T("INFO"));														makePacket.Append(sdata);
 
-	sdata.Format(_T("%02X"), (nInterface | nMode | nBitsSwap));						makePacket.Append(sdata);
-	sdata.Format(_T("%01X"), (nDotClockInv | nHsyncPolarity | nVsyncPolarity));		makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorActive);						makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerActive);						makePacket.Append(sdata);
+	if(lpModelInfo->m_nPixelType == SINGLE)			nInterface=3;
+	else if(lpModelInfo->m_nPixelType == DUAL)		nInterface=2;
+	else if(lpModelInfo->m_nPixelType == QUAD)		nInterface=0;
 
-	if(lpModelInfo->m_nLcmInfoInterface == SINGLE)
+	sdata.Format(_T("%02X"), (nInterface | nMode | nBitsSwap));						makePacket.Append(sdata);	// MODE
+	sdata.Format(_T("%01X"), (nHsyncPolarity | nVsyncPolarity));					makePacket.Append(sdata);	// Polarity
+	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorActive);						makePacket.Append(sdata);	// H Active
+	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerActive);						makePacket.Append(sdata);	// V Active
+
+	if(lpModelInfo->m_nPixelType == SINGLE)
 	{
-		sdata.Format(_T("%06.2f"), lpModelInfo->m_fTimingFreq);						makePacket.Append(sdata);
+		sdata.Format(_T("%06.2f"), lpModelInfo->m_fTimingFreq);						makePacket.Append(sdata);	// M Clock
 	}
-	else if(lpModelInfo->m_nLcmInfoInterface == DUAL)
+	else if(lpModelInfo->m_nPixelType == DUAL)
 	{
-		sdata.Format(_T("%06.2f"), lpModelInfo->m_fTimingFreq / 2.f);				makePacket.Append(sdata);
+		sdata.Format(_T("%06.2f"), lpModelInfo->m_fTimingFreq / 2.f);				makePacket.Append(sdata);	// M Clock
 	}
-	else if(lpModelInfo->m_nLcmInfoInterface == QUAD)
+	else if(lpModelInfo->m_nPixelType == QUAD)
 	{
-		sdata.Format(_T("%06.2f"), lpModelInfo->m_fTimingFreq / 4.f);				makePacket.Append(sdata);
+		sdata.Format(_T("%06.2f"), lpModelInfo->m_fTimingFreq / 4.f);				makePacket.Append(sdata);	// M Clock
 	}
 
-	sdata.Format(_T("%03d"), lpModelInfo->m_nTimingHorWidth);						makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorFront_P);						makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorBack_P);						makePacket.Append(sdata);
+	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorWidth);						makePacket.Append(sdata);	// H Width
+	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorFront_P);						makePacket.Append(sdata);	// H Front P
+	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorBack_P);						makePacket.Append(sdata);	// H Back P
 
-	sdata.Format(_T("%03d"), lpModelInfo->m_nTimingVerWidth);						makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerFront_P);						makePacket.Append(sdata);
-	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerBack_P);						makePacket.Append(sdata);
+	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerWidth);						makePacket.Append(sdata);	// V Width
+	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerFront_P);						makePacket.Append(sdata);	// V Front P
+	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerBack_P);						makePacket.Append(sdata);	// V Back P
 
-	
+	sdata.Format(_T("%01d"), lpModelInfo->m_nSignalType);							makePacket.Append(sdata);	// Signal Type
+	sdata.Format(_T("%01d"), lpModelInfo->m_nSignalBit);							makePacket.Append(sdata);	// Signal Bit
+	sdata.Format(_T("%01d"), lpModelInfo->m_nPixelType);							makePacket.Append(sdata);	// Pixel Type
+	sdata.Format(_T("%01d"), lpModelInfo->m_nOddEven);								makePacket.Append(sdata);	// ODD/EVEN
+	sdata.Format(_T("%01d"), lpModelInfo->m_nClockRising);							makePacket.Append(sdata);	// Clock Rising
+	sdata.Format(_T("%04d"), lpModelInfo->m_nClockDelay);							makePacket.Append(sdata);	// Clock Delay
+
+	sdata.Format(_T("%05d"), lpModelInfo->m_fVoltVcc * 1000);						makePacket.Append(sdata);	// Vcc
+	sdata.Format(_T("%05d"), lpModelInfo->m_fVoltVdd * 1000);						makePacket.Append(sdata);	// Vdd
+	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbl
+	sdata.Format(_T("%05d"), lpModelInfo->m_fVoltVgh * 1000);						makePacket.Append(sdata);	// Vgh
+	sdata.Format(_T("%05d"), lpModelInfo->m_fVoltVgl * 1000);						makePacket.Append(sdata);	// Vgl
+	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbr
+
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVccMin * 1000);					makePacket.Append(sdata);	// Vcc low
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVccMax * 1000);					makePacket.Append(sdata);	// Vcc high
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVddMin * 1000);					makePacket.Append(sdata);	// Vdd low
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVddMax * 1000);					makePacket.Append(sdata);	// Vdd high
+	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbl low
+	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbl high
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVghMin * 1000);					makePacket.Append(sdata);	// Vgh low
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVghMax * 1000);					makePacket.Append(sdata);	// Vgh high
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVglMin * 1000);					makePacket.Append(sdata);	// Vgl low
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVglMax * 1000);					makePacket.Append(sdata);	// Vgl high
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIccMin * 1000);					makePacket.Append(sdata);	// Icc low
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIccMax * 1000);					makePacket.Append(sdata);	// Icc high
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIddMin * 1000);					makePacket.Append(sdata);	// Idd low
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIddMax * 1000);					makePacket.Append(sdata);	// Idd high
+	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Ibl low
+	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Ibl high
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIghMin * 1000);					makePacket.Append(sdata);	// Igh low
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIghMax * 1000);					makePacket.Append(sdata);	// Igh high
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIglMin * 1000);					makePacket.Append(sdata);	// Igl low
+	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIglMax * 1000);					makePacket.Append(sdata);	// Igl high
+
+	// Power On Sequence
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType01);						makePacket.Append(sdata);	// Power On Seq Type 1
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType02);						makePacket.Append(sdata);	// Power On Seq Type 2
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType03);						makePacket.Append(sdata);	// Power On Seq Type 3
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType04);						makePacket.Append(sdata);	// Power On Seq Type 4
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType05);						makePacket.Append(sdata);	// Power On Seq Type 5
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType06);						makePacket.Append(sdata);	// Power On Seq Type 6
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType07);						makePacket.Append(sdata);	// Power On Seq Type 7
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType08);						makePacket.Append(sdata);	// Power On Seq Type 8
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType09);						makePacket.Append(sdata);	// Power On Seq Type 9
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType10);						makePacket.Append(sdata);	// Power On Seq Type 10
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType11);						makePacket.Append(sdata);	// Power On Seq Type 11
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType12);						makePacket.Append(sdata);	// Power On Seq Type 12
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType13);						makePacket.Append(sdata);	// Power On Seq Type 13
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType14);						makePacket.Append(sdata);	// Power On Seq Type 14
+	sdata.Format(_T("%02d"), 0);													makePacket.Append(sdata);	// Power On Seq Type 
+
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay01);					makePacket.Append(sdata);	// Power On Seq Delay 1
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay02);					makePacket.Append(sdata);	// Power On Seq Delay 2
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay03);					makePacket.Append(sdata);	// Power On Seq Delay 3
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay04);					makePacket.Append(sdata);	// Power On Seq Delay 4
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay05);					makePacket.Append(sdata);	// Power On Seq Delay 5
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay06);					makePacket.Append(sdata);	// Power On Seq Delay 6
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay07);					makePacket.Append(sdata);	// Power On Seq Delay 7
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay08);					makePacket.Append(sdata);	// Power On Seq Delay 8
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay09);					makePacket.Append(sdata);	// Power On Seq Delay 9
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay10);					makePacket.Append(sdata);	// Power On Seq Delay 10
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay11);					makePacket.Append(sdata);	// Power On Seq Delay 11
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay12);					makePacket.Append(sdata);	// Power On Seq Delay 12
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay13);					makePacket.Append(sdata);	// Power On Seq Delay 13
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOnSeqDelay14);					makePacket.Append(sdata);	// Power On Seq Delay 14
+	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);	// Power On Seq Delay 
+
+	// Power Off Sequence
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType01);					makePacket.Append(sdata);	// Power Off Seq Type 1
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType02);					makePacket.Append(sdata);	// Power Off Seq Type 2
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType03);					makePacket.Append(sdata);	// Power Off Seq Type 3
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType04);					makePacket.Append(sdata);	// Power Off Seq Type 4
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType05);					makePacket.Append(sdata);	// Power Off Seq Type 5
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType06);					makePacket.Append(sdata);	// Power Off Seq Type 6
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType07);					makePacket.Append(sdata);	// Power Off Seq Type 7
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType08);					makePacket.Append(sdata);	// Power Off Seq Type 8
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType09);					makePacket.Append(sdata);	// Power Off Seq Type 9
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType10);					makePacket.Append(sdata);	// Power Off Seq Type 10
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType11);					makePacket.Append(sdata);	// Power Off Seq Type 11
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType12);					makePacket.Append(sdata);	// Power Off Seq Type 12
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType13);					makePacket.Append(sdata);	// Power Off Seq Type 13
+	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeqType14);					makePacket.Append(sdata);	// Power Off Seq Type 14
+	sdata.Format(_T("%02d"), 0);													makePacket.Append(sdata);	// Power Off Seq Type 
+
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay01);					makePacket.Append(sdata);	// Power Off Seq Delay 1
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay02);					makePacket.Append(sdata);	// Power Off Seq Delay 2
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay03);					makePacket.Append(sdata);	// Power Off Seq Delay 3
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay04);					makePacket.Append(sdata);	// Power Off Seq Delay 4
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay05);					makePacket.Append(sdata);	// Power Off Seq Delay 5
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay06);					makePacket.Append(sdata);	// Power Off Seq Delay 6
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay07);					makePacket.Append(sdata);	// Power Off Seq Delay 7
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay08);					makePacket.Append(sdata);	// Power Off Seq Delay 8
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay09);					makePacket.Append(sdata);	// Power Off Seq Delay 9
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay10);					makePacket.Append(sdata);	// Power Off Seq Delay 10
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay11);					makePacket.Append(sdata);	// Power Off Seq Delay 11
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay12);					makePacket.Append(sdata);	// Power Off Seq Delay 12
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay13);					makePacket.Append(sdata);	// Power Off Seq Delay 13
+	sdata.Format(_T("%04d"), lpModelInfo->m_nPowerOffSeqDelay14);					makePacket.Append(sdata);	// Power Off Seq Delay 14
+	sdata.Format(_T("%04d"), 0);													makePacket.Append(sdata);	// Power Off Seq Delay 
+
+	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);	// LED Type
+	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// LED Ovp
+	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);	// LED ISet
+	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);	// Cable Open Check (Chamber용)
+	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// PWM Freq
+	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);	// PWM Duty
+	sdata.Format(_T("%01d"), lpModelInfo->m_nI2cLevel);								makePacket.Append(sdata);	// I2C Level 
+	sdata.Format(_T("%01d"), lpModelInfo->m_nI2cPullup);							makePacket.Append(sdata);	// I2C PullUP
+
+	wchar_To_char(makePacket.GetBuffer(), packet);
 }
+
 
 
 BOOL CCommand::Gf_setFusingSystemInfo()
@@ -254,7 +356,7 @@ CString CCommand::MakeT2PtnDataGFD250(CString strPtnName, BOOL bHotKeyFlags, BOO
 
 	strTmp.Format(_T(".\\PATTERN\\%s"), strPtnName);
 	strTmp = CT2CmdGen::makeT2dataStrFromFile(strTmp);
-	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nLcmInfoInterface, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nPixelType, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 
 	lpData = strTmp;
 #if 0
@@ -311,7 +413,7 @@ CString CCommand::MakeT2PtnFusingData(CString strPtnName, BOOL bHotKeyFlags, BOO
 
 	strTmp.Format(_T(".\\PATTERN\\%s"), strPtnName);
 	strTmp = CT2CmdGen::makeT2dataStrFromFile(strTmp);
-	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nLcmInfoInterface, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nPixelType, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 
 	lpData = strTmp;
 #if 0
@@ -497,82 +599,36 @@ CString CCommand::Gf_makePGPatternString(CString strPtnName)
 	CString strTmp, retString;
 	strTmp.Format(_T(".\\PATTERN\\%s"), strPtnName);
 	strTmp = CT2CmdGen::makeT2dataStrFromFile(strTmp);
-	retString = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nLcmInfoInterface, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+	retString = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nPixelType, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 	return retString;
 }
-BOOL CCommand::Gf_setPGInfo(CString strPtnName, BOOL bHotKeyFlags, BOOL bHkeyFlags)
+BOOL CCommand::Gf_setPGInfoPatternName(CString strPtnName, BOOL bHotKeyFlags, BOOL bHkeyFlags)
 {
 	BOOL bRet=FALSE;
 	CString ptn_str;
 
-	ptn_str = MakeT2PtnFusingData(strPtnName, bHotKeyFlags, bHkeyFlags);
-	wchar_To_char(ptn_str.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
-#if 0
-	if(m_PacketLength > 1000)
+	if (strPtnName.Find(_T(".BMP")) != -1)
 	{
-		// 이 알고리즘은 특정 Pattern에서 무조건 Error가 발생할 것이다.	
-		// 언젠가는 수정해야만 한다.
-		int nFindPtr=0;			// Packet을 자를 위치를 찾기 위한 변수.
-		int nReadPtr=0;			// Packet을 읽을 위치를 저장하기 위한 변수.
-		BYTE nX = 0;			// 현재 전송하는 Packet의 번호.
-		BYTE nY = 0;			// 전송해야할 전체 Packet의 수.
-		CString strReData;
-		CStringArray strArry;
-
-		while(1)
-		{
-			// 800Byte 이후부터 "TA" Command를 찾는다.
-			nFindPtr = strCmd.Find("TA", (nFindPtr+800));
-
-			// "TA" Command를 찾지 못했을 경우. (-1)
-			if(nFindPtr == -1)
-			{
-				// 읽어야 하는 위치부터 남아있는 String의 값을 가져온다.
-				strReData.Format("%s", strCmd.Mid(nReadPtr));
-
-				// 지금은 1000Byte이하의 패턴만 있으므로 문제되지 않지만 이후 문제되면 이부분 수정하자.
-				if(strReData.GetLength() < 1000)
-				{	// 남아있는 String의 길이가 1000Byte 이하일 경우 Array에 Add후 종료한다.
-					strArry.Add(strReData);
-					break;
-				}
-				else
-				{	// 남아있는 String의 길이가 1000Byte 이상일 경우 다른 Command를 검색한다.
-					// "TB", "TD", "LC", "TC", "RH", "OL", "LH", "LV", "LT", "LP", "LR", "BS", "RV", "BM", "CD", "CLN", "CBT", "CFG", "CBG"
-					// 위 Command를 모두 찾으려면 String 검색에 다소 시간이 소요되므로 알고리즘을 잘 판단하자.
-
-				}
-			}
-			// 읽어야할 위치에서 부터 "TA" Command 앞까지의 String을 자른다.
-			strReData.Format("%s", strCmd.Mid(nReadPtr, nFindPtr-nReadPtr));
-			strArry.Add(strReData);
-
-			// 다음 Packet 읽을 위치를 "TA" Command의 앞으로 이동 시킨다.
-			nReadPtr = nFindPtr;
-		}
-
-		// 저장된 Packet을 차례대로 전송한다.
-		nX = 0;
-		nY = strArry.GetSize();
-		for(int i=0; i<nY; i++)
-		{
-			nX = i;
-			strReData = strArry.GetAt(i);			
-			bRet = Gf_setPacketSend(((nX<<4)|nY), CMD_T2PTN_SEND, m_PacketLength, m_szPacket);
-			if(i==0)	m_pApp->gf_LogDataWrite(_T("3D Pattern", _T("First Packet Send"));
-			if(i==1)	m_pApp->gf_LogDataWrite(_T("3D Pattern", _T("Second Packet Send"));
-		}
+		Gf_setBmpPtnDisplay(strPtnName);
 	}
 	else
-#endif
 	{
+		ptn_str = MakeT2PtnFusingData(strPtnName, bHotKeyFlags, bHkeyFlags);
+		wchar_To_char(ptn_str.GetBuffer(0), m_szPacket);
+		m_PacketLength = (int)strlen(m_szPacket);
+
 		bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_T2PTN_SEND, m_PacketLength, m_szPacket);
 	}
-
 	return bRet;
 }
-
+BOOL CCommand::Gf_setBmpPtnDisplay(CString bmpname)
+{
+	char szPacket[50];
+	int length;
+	wchar_To_char(bmpname.GetBuffer(0), szPacket);
+	length = (int)strlen(szPacket);
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DISPLAY, length, szPacket);
+}
 BOOL CCommand::Gf_getAreYouReady()
 {
 	BOOL bRtnCode=FALSE;
@@ -582,42 +638,13 @@ BOOL CCommand::Gf_getAreYouReady()
 	return bRtnCode;
 }
 
-BOOL CCommand::Gf_setPowerVoltage(float fVcc, float fVdd, float fVbl, float fVbr)
-{
-	BOOL bRtnCode=FALSE;
-	CString sdata=_T("");
-
-	sdata.Format(_T("%03d%03d%03d%03d"), (int)(fVcc*10.0+0.5), (int)(fVdd*10.0+0.5), (int)(fVbl*10.0+0.5), (int)(fVbr*10.0+0.5));
-	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
-
-	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_POWER_VOLTAGE_SET, m_PacketLength, m_szPacket);
-
-	return bRtnCode;	
-}
-
-BOOL CCommand::Gf_setPowerOnOff(int nSel, int nOnOff)
-{
-	BOOL bRtnCode=FALSE;
-	CString sdata=_T("");
-
-	sdata.Format(_T("%01d%01d"), nSel, nOnOff);
-
-	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
-
-	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_ONOFF_SET, m_PacketLength, m_szPacket);
-
-	return bRtnCode;
-}
-
-BOOL CCommand::Gf_setPowerSeqOnOff(int nOnOff)
+BOOL CCommand::Gf_setPowerSeqOnOff(int nOnOff, int nCh)
 {
 	BOOL bRtnCode;
 	CString strCmd=_T("");
 	int len=0;
 
-	strCmd.Format(_T("%01d"), nOnOff);
+	strCmd.Format(_T("%01d%01d"), nOnOff, nCh);
 
 	wchar_To_char(strCmd.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
@@ -648,33 +675,6 @@ BOOL CCommand::Gf_getFirmwareVersion()
 	return bRtnCode;
 }
 
-BOOL CCommand::Lf_setIF5VPowerOffOn(int offon)
-{
-	BYTE nID=0;
-	CString strCmd=_T("");
-	CString lpData=_T("");
-
-	nID = 0x10;
-
-	strCmd.Format(_T("%01d"), offon);
-	wchar_To_char(strCmd.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
-
-	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_IF_5V_POWER_ONOFF, m_PacketLength, m_szPacket);
-}
-
-void CCommand::Gf_setIF5VPowerOffOn(BOOL onoff)
-{
-	if(lpModelInfo->m_nSignalType == SIG_TYPE_EDP)
-	{
-		Lf_setIF5VPowerOffOn(onoff);
-	}
-	else
-	{
-		Lf_setIF5VPowerOffOn(ON);
-	}
-}
-
 void CCommand::Gf_ShowMessageBox(CString strMessage)
 {
 
@@ -687,10 +687,10 @@ void CCommand::Gf_ShowMessageBox(CString strMessage)
 
 BOOL CCommand::Gf_getPowerMeasure(int nID)
 {
-	BOOL bRtnCode;
+	BOOL ret;
 
-	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_MEASURE_ALL_POWER, 0, NULL);
-	return bRtnCode;
+	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_MEASURE_ALL_POWER, 0, NULL);
+	return ret;
 }
 
 
@@ -707,7 +707,32 @@ BOOL CCommand::Gf_setZoneSel(int nZoneSel)
 
 	return bRtnCode;
 }
+BOOL CCommand::Gf_setSignalOnOff(int nCh, int OnOff)
+{
+	BOOL ret = FALSE;
+	char szPacket[50];
+	int length;
 
+	sprintf_s(szPacket, "%01d%01d", nCh, OnOff);
+	length = (int)strlen(szPacket);
+
+	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_SIGNAL_ONOFF, length, szPacket);
+
+	return ret;
+}
+BOOL CCommand::Gf_setPwmOnOff(int OnOff, int duty, int freq)
+{
+	BOOL ret = FALSE;
+	char szPacket[50];
+	int length;
+
+	sprintf_s(szPacket, "%01d%03d%05d%01d%03d%05d", OnOff, duty, freq, OnOff, duty, freq); // Chanel 1,2 동일한 값으로 전달. CNZ
+	length = (int)strlen(szPacket);
+
+	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_PWM_SET, length, szPacket);
+
+	return ret;
+}
 BOOL CCommand::Gf_setI2cClock(int nID)
 {
 	CString sdata=_T("");
@@ -724,27 +749,163 @@ BOOL CCommand::Gf_setI2cClock(int nID)
 
 	return bRtnCode;
 }
-
-BOOL CCommand::Gf_setPowerVoltSet(int nVoltName, float nVoltValue)
+BOOL CCommand::Gf_setI2cWrite(int line, int slave, int startReg, int addrType, int wrLength, BYTE* wrpData, BOOL bMlogWrite)
 {
-	BOOL bRtnCode=FALSE;
 	CString sdata = _T("");
+	BOOL bRtnCode = FALSE;
+	char szPacket[1024 * 4];
+	int nLength;
 
-	sdata.Format(_T("%01d%03d"), nVoltName, (int)((nVoltValue*10.0)+0.5));
-	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
-	m_PacketLength = (int)strlen(m_szPacket);
+	int nI2cFreq = makeI2cClock(lpModelInfo->m_nI2cFreq);
 
-	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_VOLT, m_PacketLength, m_szPacket);
+	sprintf_s(szPacket, "%01d%03d%02X%04X%01d%04X", line, nI2cFreq, slave, startReg, addrType, wrLength);
+	nLength = (int)strlen(szPacket);
+	memcpy(&szPacket[nLength], wrpData, wrLength);
 
+	nLength += wrLength;
+
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_I2C_WRITE, nLength, m_szPacket);
+	if (bRtnCode == TRUE)
+	{
+		if (gszudpRcvPacket[PACKET_PT_RET] == '0')
+		{
+			m_pApp->Gf_writeLogData("<I2C>", "Write OK");
+			return TRUE;
+		}
+		else
+		{
+			m_pApp->Gf_writeLogData("<I2C>", "Write ACK Fail");
+			return FALSE;
+		}
+	}
+	m_pApp->Gf_writeLogData("<I2C>", "Write NACK NG");
 	return bRtnCode;
 }
-
-
-BOOL CCommand::Gf_setGoToBootSection()
+BOOL CCommand::Gf_getI2cRead(int line, int slave, int startReg, int addrType, int rdLength, BYTE* rdpData)
 {
-	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_GOTO_BOOT_SECTION, 0, NULL);
+	BOOL ret = FALSE;
+	int length;
+	int i2c_freq = 200;
+	char szPacket[4096] = { 0, };
+
+	i2c_freq = makeI2cClock(lpModelInfo->m_nI2cFreq);
+
+	sprintf_s(szPacket, "%01d%03d%02X%04X%01d%04X", line, i2c_freq, slave, startReg, addrType, rdLength);
+	length = (int)strlen(szPacket);
+
+	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_I2C_READ, length, m_szPacket);
+	
+	if (ret == TRUE)
+	{
+		if (gszudpRcvPacket[PACKET_PT_RET] == '0')	// I2C Result Code Check
+		{
+			memcpy(rdpData, &gszudpRcvPacket[PACKET_PT_DATA], rdLength);
+			m_pApp->Gf_writeLogData("<I2C>", "Read OK");
+		}
+		else
+		{
+			ret = FALSE; // 2019.04.12 CNZ
+			m_pApp->Gf_writeLogData("<I2C>", "Read ACK Fail");
+		}
+	}
+	else
+	{
+		ret = FALSE;
+		m_pApp->Gf_writeLogData("<I2C>", "Read NACK NG");
+	}
+	return ret;
+}
+int CCommand::makeI2cClock(int index)
+{
+	int i2c_freq = 100;
+
+	if (index == 0)		i2c_freq = 20;	//실제20
+	if (index == 1)		i2c_freq = 50;	//실제50
+	if (index == 2)		i2c_freq = 100;	//실제100
+	if (index == 3)		i2c_freq = 154;	//실제150
+	if (index == 4)		i2c_freq = 208;	//실제200
+	if (index == 5)		i2c_freq = 250;	//실제240
+	if (index == 6)		i2c_freq = 319;	//실제300
+	if (index == 7)		i2c_freq = 376;	//실제350
+	if (index == 8)		i2c_freq = 422;	//실제400
+
+	return i2c_freq;
+}
+BOOL CCommand::Gf_CheckCableOpen()
+{
+	BOOL ret = TRUE;
+	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_CABLE_OPEN_TEST, 0, "");
+	if (ret == TRUE)
+	{
+		if (gszudpRcvPacket[PACKET_PT_RET] == '0')	// I2C Result Code Check
+		{
+			char szData[50];
+			memcpy(szData, &gszudpRcvPacket[PACKET_PT_DATA], 10);
+			for (int i = 0; i < 10; i++)
+			{
+				if (szData[i] != '0')
+				{
+					ret = FALSE;
+					break;
+				}
+			}
+		}
+	}
+	return ret;
+}
+BOOL CCommand::Gf_setPowerVoltSet(float vcc, float vdd, float vgh, float vgl)
+{
+	BOOL ret=FALSE;
+	char szpacket[50];
+	int length;
+
+	sprintf_s(szpacket, "%05d%05d%05d%05d%05d", (int)vcc * 1000, (int)vdd * 1000, 0, (int)vgh * 1000, (int)vgl * 1000);
+	length = (int)strlen(szpacket);
+
+	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_VOLTAGE_SET, length, szpacket);
+
+	return ret;
+}
+BOOL CCommand::Gf_setSRunnerControl(int EnableDisable)
+{
+	BOOL ret = FALSE;
+	char szpacket[50];
+	int length;
+
+	sprintf_s(szpacket, "%01d", EnableDisable);
+	length = (int)strlen(szpacket);
+
+	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_SRUNNER_CONTROL, length, szpacket);
+
+	return ret;
 }
 
+BOOL CCommand::Gf_setGoToBootDownload()
+{
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_GOTO_BOOT_DOWNLOAD, 0, NULL);
+}
+BOOL CCommand::Gf_setGoToBootUpdate()
+{
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_GOTO_BOOT_UPDATE, 0, NULL);
+}
+BOOL CCommand::Gf_setMainBoardReset()
+{
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_RESET_CTRLBOARD, 0, NULL);
+}
+BOOL CCommand::Gf_getGfd250FpgaVersion()
+{
+	BOOL ret = FALSE;
+
+	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_GFD250_FPGA_VER_READ, 0, NULL);
+	if (ret == TRUE)
+	{
+		char szData[50];
+		int length;
+		sscanf_s(&gszudpRcvPacket[PACKET_PT_LEN], "%04X", &length);
+		memcpy(szData, &gszudpRcvPacket[PACKET_PT_DATA], length);
+	}
+	return ret;
+}
 
 BOOL CCommand::Gf_getEEPRomReadData()
 {
@@ -856,9 +1017,9 @@ BOOL CCommand::Gf_setGFD250Timeing()
 
 	sdata.Format(_T("INFO"));														makePacket.Append(sdata);
 
-	if(lpModelInfo->m_nLcmInfoInterface == SINGLE)			nInterface=0;
-	else if(lpModelInfo->m_nLcmInfoInterface == DUAL)		nInterface=1;
-	else if(lpModelInfo->m_nLcmInfoInterface == QUAD)		nInterface=2;
+	if(lpModelInfo->m_nPixelType == SINGLE)			nInterface=0;
+	else if(lpModelInfo->m_nPixelType == DUAL)		nInterface=1;
+	else if(lpModelInfo->m_nPixelType == QUAD)		nInterface=2;
 
 	sdata.Format(_T("%02X"), (nInterface | nMode | nBitsSwap));						makePacket.Append(sdata);
 	sdata.Format(_T("%01X"), (nDotClockInv | nHsyncPolarity | nVsyncPolarity));		makePacket.Append(sdata);
@@ -866,11 +1027,11 @@ BOOL CCommand::Gf_setGFD250Timeing()
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerActive);						makePacket.Append(sdata);
 
 	float fMclk;
-	if(lpModelInfo->m_nLcmInfoInterface == SINGLE)
+	if(lpModelInfo->m_nPixelType == SINGLE)
 		fMclk = lpModelInfo->m_fTimingFreq;
-	else if(lpModelInfo->m_nLcmInfoInterface == DUAL)
+	else if(lpModelInfo->m_nPixelType == DUAL)
 		fMclk = (lpModelInfo->m_fTimingFreq / 2.f);
-	else if(lpModelInfo->m_nLcmInfoInterface == QUAD)
+	else if(lpModelInfo->m_nPixelType == QUAD)
 		fMclk = (lpModelInfo->m_fTimingFreq / 4.f);
 
 	// HBR3는 /2 를 한번 더 함
@@ -947,7 +1108,7 @@ BOOL CCommand::Gf_getGfd250I2CReadPacketSend(int nStartReg, int ReadNum, int Cmd
 	wchar_To_char(sdata.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
 
-	bRtnCode = Gf_setPacketSendGfd250(TARGET_GFD250, NIOS_CMD, 0/*nID*/, 0x08, m_PacketLength, m_szPacket);
+	bRtnCode = Gf_setPacketSendGfd250(TARGET_GFD250, NIOS_CMD, 0, CMD_NIOS_I2C_READ, m_PacketLength, m_szPacket);
 
 	return bRtnCode;
 }

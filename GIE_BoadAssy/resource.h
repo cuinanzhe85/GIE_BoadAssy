@@ -344,9 +344,14 @@
 #define IDC_STT_VDD_TIT                 1131
 #define IDC_EDT_OFF_SEQ_DEL_2           1131
 #define IDC_STT_GRP_SIGNAL              1132
+#define IDC_STT_VGH_TIT                 1132
 #define IDC_STT_GRP_TIMING              1133
+#define IDC_STT_VGL_TIT                 1133
 #define IDC_STT_GRP_POWER               1134
+#define IDC_STT_VGH_VALUE               1134
 #define IDC_STT_GRP_OTHERS              1135
+#define IDC_STT_VDD_VALUE2              1135
+#define IDC_STT_VGL_VALUE               1135
 #define IDC_STT_GRP_CLOCK               1136
 #define IDC_CMB_OFF_SEQ_OP_3            1136
 #define IDC_STT_GRP_EDID                1137
@@ -419,7 +424,6 @@
 #define IDC_EDT_OFF_SEQ_DEL_14          1171
 #define IDC_STT_TEST_MODE               1172
 #define IDC_STT_IGH_MEA_TIT             1172
-#define IDC_STT_GRP_POWER2              1172
 #define IDC_STT_GRP_POWER_SEQ           1172
 #define IDC_STT_BLU_TYPE                1173
 #define IDC_STT_BLU_FREQ                1174
@@ -483,8 +487,13 @@
 #define IDC_STT_MT_IDD_MEASURE          1231
 #define IDC_BTN_ALL_MODEL               1231
 #define IDC_STT_MC_DRIVE_PATH           1232
+#define IDC_STT_MT_VGH_MEASURE          1232
 #define IDC_STT_MODEL_LIST_TITLE        1233
+#define IDC_STT_MT_IGH_MEASURE          1233
 #define IDC_STT_INCH                    1234
+#define IDC_STT_MT_VGL_MEASURE          1234
+#define IDC_STT_MT_IGL_MEASURE          1235
+#define IDC_STT_PTN_IMAGE_SIZE          1235
 
 // Next default values for new objects
 // 
@@ -492,7 +501,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        193
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1235
+#define _APS_NEXT_CONTROL_VALUE         1236
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

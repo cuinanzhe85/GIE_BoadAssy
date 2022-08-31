@@ -84,7 +84,7 @@ void CPatternView::drawPattern(CString ptnName)
 	fullpath.Format(_T("%s\\%s"), m_pathPatternLogical, ptnName);
 
 	strTmp = CT2CmdGen::makeT2dataStrFromFile(fullpath);
-	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nLcmInfoInterface,strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nPixelType,strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 
 	drawPrevPattern(strTmp);
 }

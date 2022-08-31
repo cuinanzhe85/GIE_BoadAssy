@@ -52,6 +52,8 @@ public:
 	void Gf_loadSystemInfo();	
 	BOOL Gf_loadMedelFile();
 	BOOL Gf_loadPatternFile();
+	void Gf_loadModelData();
+
 	void Gf_setSerialPort();
 	void Gf_sendGfd250Data(BYTE* lpData, DWORD nSize);
 	void Gf_sendBLUData(BYTE* lpData, DWORD nSize) ;
@@ -109,7 +111,7 @@ public:
 	int	m_nDownloadCountUp;	
 	
 	bool m_bAreYouReady;
-	int m_nLcmPInfo[10];//[0]:VCC [1]:VDD [2]:VBL [3]:ICC [4]:IDD [5]:IBL [6]:BRTI(VBR) [7]:Name [8]:Hi/Low [9]:Limit
+	int m_nLcmPInfo[20];//VCC,ICC,VDD,IDD,VBL,IBL,VGH,IGH,VGL,IGL,VCC_FB,VBL_FB,VLED_FB,THERMISTOR
 
 	char m_nEEPRomReadData[1024];
 	char m_nEEPRomFileData[1024];
@@ -127,7 +129,7 @@ public:
 protected:
 	BOOL Lf_loadEdidFile(CString spath);
 	void Lf_initVariable();
-	void Lf_loadModelInfo();
+	
 	void Lf_readGmesInfo();
 	void Lf_parseHexData(BYTE* aByte);
 	void Lf_parsingModFileData(CString szData, TCHAR (*szParseData)[255]);

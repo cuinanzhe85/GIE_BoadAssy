@@ -27,7 +27,7 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_SIGNAL_BIT, m_cboSignalBit);
 	DDX_Control(pDX, IDC_CMB_LVDS_SEL, m_cboLvdsSel);
 	DDX_Control(pDX, IDC_CMB_BIT_SEL, m_cboBitSel);
-	DDX_Control(pDX, IDC_CMB_INTERFACE, m_cboInterface);
+	DDX_Control(pDX, IDC_CMB_INTERFACE, m_cboPixelType);
 	DDX_Control(pDX, IDC_CMB_BIT_SWAP, m_cboBitSwap);
 	DDX_Control(pDX, IDC_EDT_H_TOTAL, m_edtHorTotal);
 	DDX_Control(pDX, IDC_EDT_H_ACTIVE, m_edtHorActive);
@@ -339,7 +339,7 @@ void CModelInfo::Lf_loadModelData()
 
 	m_cboBitSel.SetCurSel(lpModelInfo->m_nBitSel);
 
-	m_cboInterface.SetCurSel(lpModelInfo->m_nLcmInfoInterface);
+	m_cboPixelType.SetCurSel(lpModelInfo->m_nPixelType);
 
 	m_cboBitSwap.SetCurSel(lpModelInfo->m_nLcmInfoBitsSwap);
 	
@@ -353,34 +353,34 @@ void CModelInfo::Lf_loadModelData()
 
 	m_cmbOddEven.SetCurSel(lpModelInfo->m_nOddEven);
 
-	m_cmbOnSeqOp01.SetCurSel(lpModelInfo->m_nPowerOnSeqOp01);
-	m_cmbOnSeqOp02.SetCurSel(lpModelInfo->m_nPowerOnSeqOp02);
-	m_cmbOnSeqOp03.SetCurSel(lpModelInfo->m_nPowerOnSeqOp03);
-	m_cmbOnSeqOp04.SetCurSel(lpModelInfo->m_nPowerOnSeqOp04);
-	m_cmbOnSeqOp05.SetCurSel(lpModelInfo->m_nPowerOnSeqOp05);
-	m_cmbOnSeqOp06.SetCurSel(lpModelInfo->m_nPowerOnSeqOp06);
-	m_cmbOnSeqOp07.SetCurSel(lpModelInfo->m_nPowerOnSeqOp07);
-	m_cmbOnSeqOp08.SetCurSel(lpModelInfo->m_nPowerOnSeqOp08);
-	m_cmbOnSeqOp09.SetCurSel(lpModelInfo->m_nPowerOnSeqOp09);
-	m_cmbOnSeqOp10.SetCurSel(lpModelInfo->m_nPowerOnSeqOp10);
-	m_cmbOnSeqOp11.SetCurSel(lpModelInfo->m_nPowerOnSeqOp11);
-	m_cmbOnSeqOp12.SetCurSel(lpModelInfo->m_nPowerOnSeqOp12);
-	m_cmbOnSeqOp13.SetCurSel(lpModelInfo->m_nPowerOnSeqOp13);
-	m_cmbOnSeqOp14.SetCurSel(lpModelInfo->m_nPowerOnSeqOp14);
-	m_cmbOffSeqOp01.SetCurSel(lpModelInfo->m_nPowerOffSeqOp01);
-	m_cmbOffSeqOp02.SetCurSel(lpModelInfo->m_nPowerOffSeqOp02);
-	m_cmbOffSeqOp03.SetCurSel(lpModelInfo->m_nPowerOffSeqOp03);
-	m_cmbOffSeqOp04.SetCurSel(lpModelInfo->m_nPowerOffSeqOp04);
-	m_cmbOffSeqOp05.SetCurSel(lpModelInfo->m_nPowerOffSeqOp05);
-	m_cmbOffSeqOp06.SetCurSel(lpModelInfo->m_nPowerOffSeqOp06);
-	m_cmbOffSeqOp07.SetCurSel(lpModelInfo->m_nPowerOffSeqOp07);
-	m_cmbOffSeqOp08.SetCurSel(lpModelInfo->m_nPowerOffSeqOp08);
-	m_cmbOffSeqOp09.SetCurSel(lpModelInfo->m_nPowerOffSeqOp09);
-	m_cmbOffSeqOp10.SetCurSel(lpModelInfo->m_nPowerOffSeqOp10);
-	m_cmbOffSeqOp11.SetCurSel(lpModelInfo->m_nPowerOffSeqOp11);
-	m_cmbOffSeqOp12.SetCurSel(lpModelInfo->m_nPowerOffSeqOp12);
-	m_cmbOffSeqOp13.SetCurSel(lpModelInfo->m_nPowerOffSeqOp13);
-	m_cmbOffSeqOp14.SetCurSel(lpModelInfo->m_nPowerOffSeqOp14);
+	m_cmbOnSeqOp01.SetCurSel(lpModelInfo->m_nPowerOnSeqType01);
+	m_cmbOnSeqOp02.SetCurSel(lpModelInfo->m_nPowerOnSeqType02);
+	m_cmbOnSeqOp03.SetCurSel(lpModelInfo->m_nPowerOnSeqType03);
+	m_cmbOnSeqOp04.SetCurSel(lpModelInfo->m_nPowerOnSeqType04);
+	m_cmbOnSeqOp05.SetCurSel(lpModelInfo->m_nPowerOnSeqType05);
+	m_cmbOnSeqOp06.SetCurSel(lpModelInfo->m_nPowerOnSeqType06);
+	m_cmbOnSeqOp07.SetCurSel(lpModelInfo->m_nPowerOnSeqType07);
+	m_cmbOnSeqOp08.SetCurSel(lpModelInfo->m_nPowerOnSeqType08);
+	m_cmbOnSeqOp09.SetCurSel(lpModelInfo->m_nPowerOnSeqType09);
+	m_cmbOnSeqOp10.SetCurSel(lpModelInfo->m_nPowerOnSeqType10);
+	m_cmbOnSeqOp11.SetCurSel(lpModelInfo->m_nPowerOnSeqType11);
+	m_cmbOnSeqOp12.SetCurSel(lpModelInfo->m_nPowerOnSeqType12);
+	m_cmbOnSeqOp13.SetCurSel(lpModelInfo->m_nPowerOnSeqType13);
+	m_cmbOnSeqOp14.SetCurSel(lpModelInfo->m_nPowerOnSeqType14);
+	m_cmbOffSeqOp01.SetCurSel(lpModelInfo->m_nPowerOffSeqType01);
+	m_cmbOffSeqOp02.SetCurSel(lpModelInfo->m_nPowerOffSeqType02);
+	m_cmbOffSeqOp03.SetCurSel(lpModelInfo->m_nPowerOffSeqType03);
+	m_cmbOffSeqOp04.SetCurSel(lpModelInfo->m_nPowerOffSeqType04);
+	m_cmbOffSeqOp05.SetCurSel(lpModelInfo->m_nPowerOffSeqType05);
+	m_cmbOffSeqOp06.SetCurSel(lpModelInfo->m_nPowerOffSeqType06);
+	m_cmbOffSeqOp07.SetCurSel(lpModelInfo->m_nPowerOffSeqType07);
+	m_cmbOffSeqOp08.SetCurSel(lpModelInfo->m_nPowerOffSeqType08);
+	m_cmbOffSeqOp09.SetCurSel(lpModelInfo->m_nPowerOffSeqType09);
+	m_cmbOffSeqOp10.SetCurSel(lpModelInfo->m_nPowerOffSeqType10);
+	m_cmbOffSeqOp11.SetCurSel(lpModelInfo->m_nPowerOffSeqType11);
+	m_cmbOffSeqOp12.SetCurSel(lpModelInfo->m_nPowerOffSeqType12);
+	m_cmbOffSeqOp13.SetCurSel(lpModelInfo->m_nPowerOffSeqType13);
+	m_cmbOffSeqOp14.SetCurSel(lpModelInfo->m_nPowerOffSeqType14);
 
 	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnSeqDelay01);
 	m_edtOnSeqDelay01.SetWindowTextW(sdata);
@@ -644,8 +644,26 @@ void CModelInfo::Lf_setPatternList()
 		}
 		FindClose (hSearch);
 	}
-	else
+	hSearch = FindFirstFile(_T(".\\Pattern\\BMP\\*.bmp"), &wfd);
+
+	if (hSearch != INVALID_HANDLE_VALUE)
 	{
+		if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+		{
+			strfilename.Format(_T("%s"), wfd.cFileName);
+			strfilename.MakeUpper();
+			m_pCmbPatternListName->AddString(strfilename);
+		}
+		while (FindNextFile(hSearch, &wfd))
+		{
+			if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+			{
+				strfilename.Format(_T("%s"), wfd.cFileName);
+				strfilename.MakeUpper();
+				m_pCmbPatternListName->AddString(strfilename);
+			}
+		}
+		FindClose(hSearch);
 	}
 
 	m_cboPtnName.SetCurSel(0);
@@ -772,8 +790,8 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_nTimingVerWidth = _ttoi(sdata);
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VER_WIDTH"),			lpModelInfo->m_nTimingVerWidth);
 
-	lpModelInfo->m_nLcmInfoInterface = m_cboInterface.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("INTERFACE"),			lpModelInfo->m_nLcmInfoInterface);
+	lpModelInfo->m_nPixelType = m_cboPixelType.GetCurSel();
+	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("PIXEL_TYPE"),			lpModelInfo->m_nPixelType);
 
 	lpModelInfo->m_nLcmInfoBitsSwap = m_cboBitSwap.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BITSWAP"),				lpModelInfo->m_nLcmInfoBitsSwap);
@@ -793,89 +811,89 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_nOddEven = m_cmbOddEven.GetCurSel();
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("ODD_EVEN"), lpModelInfo->m_nOddEven);
 
-	lpModelInfo->m_nPowerOnSeqOp01 = m_cmbOnSeqOp01.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_01"), lpModelInfo->m_nPowerOnSeqOp01);
+	lpModelInfo->m_nPowerOnSeqType01 = m_cmbOnSeqOp01.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_01"), lpModelInfo->m_nPowerOnSeqType01);
 
-	lpModelInfo->m_nPowerOnSeqOp02 = m_cmbOnSeqOp02.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_02"), lpModelInfo->m_nPowerOnSeqOp02);
+	lpModelInfo->m_nPowerOnSeqType02 = m_cmbOnSeqOp02.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_02"), lpModelInfo->m_nPowerOnSeqType02);
 
-	lpModelInfo->m_nPowerOnSeqOp03 = m_cmbOnSeqOp03.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_03"), lpModelInfo->m_nPowerOnSeqOp03);
+	lpModelInfo->m_nPowerOnSeqType03 = m_cmbOnSeqOp03.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_03"), lpModelInfo->m_nPowerOnSeqType03);
 
-	lpModelInfo->m_nPowerOnSeqOp04 = m_cmbOnSeqOp04.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_04"), lpModelInfo->m_nPowerOnSeqOp04);
+	lpModelInfo->m_nPowerOnSeqType04 = m_cmbOnSeqOp04.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_04"), lpModelInfo->m_nPowerOnSeqType04);
 
-	lpModelInfo->m_nPowerOnSeqOp05 = m_cmbOnSeqOp05.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_05"), lpModelInfo->m_nPowerOnSeqOp05);
+	lpModelInfo->m_nPowerOnSeqType05 = m_cmbOnSeqOp05.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_05"), lpModelInfo->m_nPowerOnSeqType05);
 
-	lpModelInfo->m_nPowerOnSeqOp06 = m_cmbOnSeqOp06.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_06"), lpModelInfo->m_nPowerOnSeqOp06);
+	lpModelInfo->m_nPowerOnSeqType06 = m_cmbOnSeqOp06.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_06"), lpModelInfo->m_nPowerOnSeqType06);
 
-	lpModelInfo->m_nPowerOnSeqOp07 = m_cmbOnSeqOp07.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_07"), lpModelInfo->m_nPowerOnSeqOp07);
+	lpModelInfo->m_nPowerOnSeqType07 = m_cmbOnSeqOp07.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_07"), lpModelInfo->m_nPowerOnSeqType07);
 
-	lpModelInfo->m_nPowerOnSeqOp08 = m_cmbOnSeqOp08.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_08"), lpModelInfo->m_nPowerOnSeqOp08);
+	lpModelInfo->m_nPowerOnSeqType08 = m_cmbOnSeqOp08.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_08"), lpModelInfo->m_nPowerOnSeqType08);
 
-	lpModelInfo->m_nPowerOnSeqOp09 = m_cmbOnSeqOp09.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_09"), lpModelInfo->m_nPowerOnSeqOp09);
+	lpModelInfo->m_nPowerOnSeqType09 = m_cmbOnSeqOp09.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_09"), lpModelInfo->m_nPowerOnSeqType09);
 
-	lpModelInfo->m_nPowerOnSeqOp10 = m_cmbOnSeqOp10.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_10"), lpModelInfo->m_nPowerOnSeqOp10);
+	lpModelInfo->m_nPowerOnSeqType10 = m_cmbOnSeqOp10.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_10"), lpModelInfo->m_nPowerOnSeqType10);
 
-	lpModelInfo->m_nPowerOnSeqOp11 = m_cmbOnSeqOp11.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_11"), lpModelInfo->m_nPowerOnSeqOp11);
+	lpModelInfo->m_nPowerOnSeqType11 = m_cmbOnSeqOp11.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_11"), lpModelInfo->m_nPowerOnSeqType11);
 
-	lpModelInfo->m_nPowerOnSeqOp12 = m_cmbOnSeqOp12.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_12"), lpModelInfo->m_nPowerOnSeqOp12);
+	lpModelInfo->m_nPowerOnSeqType12 = m_cmbOnSeqOp12.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_12"), lpModelInfo->m_nPowerOnSeqType12);
 
-	lpModelInfo->m_nPowerOnSeqOp13 = m_cmbOnSeqOp13.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_13"), lpModelInfo->m_nPowerOnSeqOp13);
+	lpModelInfo->m_nPowerOnSeqType13 = m_cmbOnSeqOp13.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_13"), lpModelInfo->m_nPowerOnSeqType13);
 
-	lpModelInfo->m_nPowerOnSeqOp14 = m_cmbOnSeqOp14.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_14"), lpModelInfo->m_nPowerOnSeqOp14);
+	lpModelInfo->m_nPowerOnSeqType14 = m_cmbOnSeqOp14.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_14"), lpModelInfo->m_nPowerOnSeqType14);
 
-	lpModelInfo->m_nPowerOffSeqOp01 = m_cmbOffSeqOp01.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_01"), lpModelInfo->m_nPowerOffSeqOp01);
+	lpModelInfo->m_nPowerOffSeqType01 = m_cmbOffSeqOp01.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_01"), lpModelInfo->m_nPowerOffSeqType01);
 
-	lpModelInfo->m_nPowerOffSeqOp02 = m_cmbOffSeqOp02.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_02"), lpModelInfo->m_nPowerOffSeqOp02);
+	lpModelInfo->m_nPowerOffSeqType02 = m_cmbOffSeqOp02.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_02"), lpModelInfo->m_nPowerOffSeqType02);
 
-	lpModelInfo->m_nPowerOffSeqOp03 = m_cmbOffSeqOp03.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_03"), lpModelInfo->m_nPowerOffSeqOp03);
+	lpModelInfo->m_nPowerOffSeqType03 = m_cmbOffSeqOp03.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_03"), lpModelInfo->m_nPowerOffSeqType03);
 
-	lpModelInfo->m_nPowerOffSeqOp04 = m_cmbOffSeqOp04.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_04"), lpModelInfo->m_nPowerOffSeqOp04);
+	lpModelInfo->m_nPowerOffSeqType04 = m_cmbOffSeqOp04.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_04"), lpModelInfo->m_nPowerOffSeqType04);
 
-	lpModelInfo->m_nPowerOffSeqOp05 = m_cmbOffSeqOp05.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_05"), lpModelInfo->m_nPowerOffSeqOp05);
+	lpModelInfo->m_nPowerOffSeqType05 = m_cmbOffSeqOp05.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_05"), lpModelInfo->m_nPowerOffSeqType05);
 
-	lpModelInfo->m_nPowerOffSeqOp06 = m_cmbOffSeqOp06.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_06"), lpModelInfo->m_nPowerOffSeqOp06);
+	lpModelInfo->m_nPowerOffSeqType06 = m_cmbOffSeqOp06.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_06"), lpModelInfo->m_nPowerOffSeqType06);
 
-	lpModelInfo->m_nPowerOffSeqOp07 = m_cmbOffSeqOp07.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_07"), lpModelInfo->m_nPowerOffSeqOp07);
+	lpModelInfo->m_nPowerOffSeqType07 = m_cmbOffSeqOp07.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_07"), lpModelInfo->m_nPowerOffSeqType07);
 
-	lpModelInfo->m_nPowerOffSeqOp08 = m_cmbOffSeqOp08.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_08"), lpModelInfo->m_nPowerOffSeqOp08);
+	lpModelInfo->m_nPowerOffSeqType08 = m_cmbOffSeqOp08.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_08"), lpModelInfo->m_nPowerOffSeqType08);
 
-	lpModelInfo->m_nPowerOffSeqOp09 = m_cmbOffSeqOp09.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_09"), lpModelInfo->m_nPowerOffSeqOp09);
+	lpModelInfo->m_nPowerOffSeqType09 = m_cmbOffSeqOp09.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_09"), lpModelInfo->m_nPowerOffSeqType09);
 
-	lpModelInfo->m_nPowerOffSeqOp10 = m_cmbOffSeqOp10.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_10"), lpModelInfo->m_nPowerOffSeqOp10);
+	lpModelInfo->m_nPowerOffSeqType10 = m_cmbOffSeqOp10.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_10"), lpModelInfo->m_nPowerOffSeqType10);
 
-	lpModelInfo->m_nPowerOffSeqOp11 = m_cmbOffSeqOp11.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_11"), lpModelInfo->m_nPowerOffSeqOp11);
+	lpModelInfo->m_nPowerOffSeqType11 = m_cmbOffSeqOp11.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_11"), lpModelInfo->m_nPowerOffSeqType11);
 
-	lpModelInfo->m_nPowerOffSeqOp12 = m_cmbOffSeqOp12.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_12"), lpModelInfo->m_nPowerOffSeqOp12);
+	lpModelInfo->m_nPowerOffSeqType12 = m_cmbOffSeqOp12.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_12"), lpModelInfo->m_nPowerOffSeqType12);
 
-	lpModelInfo->m_nPowerOffSeqOp13 = m_cmbOffSeqOp13.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_13"), lpModelInfo->m_nPowerOffSeqOp13);
+	lpModelInfo->m_nPowerOffSeqType13 = m_cmbOffSeqOp13.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_13"), lpModelInfo->m_nPowerOffSeqType13);
 
-	lpModelInfo->m_nPowerOffSeqOp14 = m_cmbOffSeqOp14.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_14"), lpModelInfo->m_nPowerOffSeqOp14);
+	lpModelInfo->m_nPowerOffSeqType14 = m_cmbOffSeqOp14.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_14"), lpModelInfo->m_nPowerOffSeqType14);
 
 	m_edtOnSeqDelay01.GetWindowTextW(sdata);
 	lpModelInfo->m_nPowerOnSeqDelay01 = (int)_ttoi(sdata);
@@ -1211,16 +1229,18 @@ void CModelInfo::OnBnClickedBtnSave()
 		Lf_saveCtrlData(strSaveModel);
 
 		Write_SysIniFile(_T("SYSTEM"),		_T("LAST_MODELNAME"),			strSaveModel);
+
+		m_pApp->Gf_loadModelData();
 	}
 	else
 	{
 		Lf_saveCtrlData(lpSystemInfo->m_sModelName);
 	}
 
-	CInitialize initDlg;
-	initDlg.DoModal();
-
+	/*CInitialize initDlg;
+	initDlg.DoModal();*/
 	UpdateData(FALSE);
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 }
 
 void CModelInfo::Lf_setSwapData(int pos1, int pos2)
@@ -1278,7 +1298,23 @@ void CModelInfo::Lf_setPtnDataChange(int sel)
 
 
 	////////////////////////////////////////////////////////////////////////////////
-	m_pApp->m_pPatternView->drawPattern(strPtnName);
+	if (strPtnName.Find(_T(".BMP")) != -1)
+	{
+		CRect rc;
+		CString sPath;
+		GetDlgItem(IDC_STT_PTN_IMAGE_SIZE)->GetWindowRect(rc);
+		ScreenToClient(rc);
+		rc.right -= 10;
+		rc.bottom -= 20;
+		sPath.Format(_T(".\\Pattern\\BMP\\%s"), strPtnName);
+		HBITMAP hBitmap = (HBITMAP)LoadImage(AfxGetInstanceHandle(), sPath, IMAGE_BITMAP, rc.Width(), rc.Height(), LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+		m_picPatternPreview.SetBitmap(hBitmap);
+		Invalidate(FALSE);
+	}
+	else
+		m_pApp->m_pPatternView->drawPattern(strPtnName);
+
+	
 	////////////////////////////////////////////////////////////////////////////////
 	UpdateData(FALSE);
 }
@@ -1312,35 +1348,6 @@ void CModelInfo::OnBnClickedBtnAdd()
 	//int nFgValue;
 	int nPos, nCnt;
 	CString sdata=_T("");
-
-	/*m_edtPtnFg.GetWindowTextW(sdata);
-	nFgValue=_ttoi(sdata);
-
-	switch(lpModelInfo->m_nSignalBit)
-	{
-	case SIG_6BIT:
-		if(nFgValue>63)
-		{
-			AfxMessageBox(_T("GRAY VALUE ERROR. Setting Signal Bit 6, Gray Value Over"));
-			return;
-		}
-		break;
-	case SIG_8BIT:
-		if(nFgValue>255)
-		{
-			AfxMessageBox(_T("GRAY VALUE ERROR. Setting Signal Bit 8, Gray Value Over"));
-			return;
-		}
-		break;
-
-	case SIG_10BIT:
-		if(nFgValue>1023)
-		{
-			AfxMessageBox(_T("GRAY VALUE ERROR. Setting Signal Bit 10, Gray Value Over"));
-			return;
-		}
-		break;
-	}*/
 
 	nCnt = m_lcPtnSetList.GetItemCount();
 

@@ -35,6 +35,14 @@ protected:
 	afx_msg LRESULT OnUdpReceive(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 
+protected:
+	void Lf_InitFontSet();
+	void Lf_InitItemValue();
+
+private:
+	CFont m_Font[FONT_IDX_MAX];
+	CBrush m_Brush[COLOR_IDX_MAX];
+
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedBtnUserid();
@@ -46,29 +54,20 @@ public:
 	afx_msg void OnBnClickedBtnAutofirmware();
 	afx_msg void OnBnClickedBtnExit();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-
-protected:
-	void Lf_InitFontSet();
-	void Lf_InitItemValue();
-
-private:
-	CFont m_Font[FONT_IDX_MAX];
-	CBrush m_Brush[COLOR_IDX_MAX];	
-public:
 	afx_msg void OnDestroy();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+	//afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	CStatic m_sttMainFwVerView;
 	afx_msg void OnBnClickedBtnBmpDownload();
 	afx_msg void OnBnClickedBtnMint();
-	CButton m_btnMainUserID;
-	CButton m_btnMainMC;
-	CButton m_btnMainModel;
-	CButton m_btnMainTest;
-	CButton m_btnMainMaint;
-	CButton m_btnMainSystem;
-	CButton m_btnMainInit;
-	CButton m_btnMainFW;
-	CButton m_btnMainBmp;
-	CButton m_btnMainExit;
+	CBitmapButton m_btnMainUserID;
+	CBitmapButton m_btnMainMC;
+	CBitmapButton m_btnMainModel;
+	CBitmapButton m_btnMainTest;
+	CBitmapButton m_btnMainMaint;
+	CBitmapButton m_btnMainSystem;
+	CBitmapButton m_btnMainInit;
+	CBitmapButton m_btnMainFW;
+	CBitmapButton m_btnMainBmp;
+	CBitmapButton m_btnMainExit;
 };
