@@ -654,13 +654,15 @@ BOOL CCommand::Gf_setPowerSeqOnOff(int nOnOff, int nCh)
 	{
 		DWORD dWait;
 		if (nOnOff == POWER_ON)
-			dWait = (lpModelInfo->m_nPowerOnSeqDelay01 + lpModelInfo->m_nPowerOnSeqDelay02 + lpModelInfo->m_nPowerOnSeqDelay03 + lpModelInfo->m_nPowerOnSeqDelay04 + lpModelInfo->m_nPowerOnSeqDelay05
-			+ lpModelInfo->m_nPowerOnSeqDelay06 + lpModelInfo->m_nPowerOnSeqDelay07 + lpModelInfo->m_nPowerOnSeqDelay08 + lpModelInfo->m_nPowerOnSeqDelay09 + lpModelInfo->m_nPowerOnSeqDelay10
-			+ lpModelInfo->m_nPowerOnSeqDelay11 + lpModelInfo->m_nPowerOnSeqDelay12 + lpModelInfo->m_nPowerOnSeqDelay13 + lpModelInfo->m_nPowerOnSeqDelay14);
+			dWait = (lpModelInfo->m_nPowerOnSeqDelay01 + lpModelInfo->m_nPowerOnSeqDelay02 + lpModelInfo->m_nPowerOnSeqDelay03 + lpModelInfo->m_nPowerOnSeqDelay04
+				+ lpModelInfo->m_nPowerOnSeqDelay05 + lpModelInfo->m_nPowerOnSeqDelay06 + lpModelInfo->m_nPowerOnSeqDelay07 + lpModelInfo->m_nPowerOnSeqDelay08
+				+ lpModelInfo->m_nPowerOnSeqDelay09 + lpModelInfo->m_nPowerOnSeqDelay10 + lpModelInfo->m_nPowerOnSeqDelay11 + lpModelInfo->m_nPowerOnSeqDelay12
+				+ lpModelInfo->m_nPowerOnSeqDelay13 + lpModelInfo->m_nPowerOnSeqDelay14);
 		else
-			dWait = (lpModelInfo->m_nPowerOffSeqDelay01 + lpModelInfo->m_nPowerOffSeqDelay02 + lpModelInfo->m_nPowerOffSeqDelay03 + lpModelInfo->m_nPowerOffSeqDelay04 + lpModelInfo->m_nPowerOffSeqDelay05
-				+ lpModelInfo->m_nPowerOffSeqDelay06 + lpModelInfo->m_nPowerOffSeqDelay07 + lpModelInfo->m_nPowerOffSeqDelay08 + lpModelInfo->m_nPowerOffSeqDelay09 + lpModelInfo->m_nPowerOffSeqDelay10
-				+ lpModelInfo->m_nPowerOffSeqDelay11 + lpModelInfo->m_nPowerOffSeqDelay12 + lpModelInfo->m_nPowerOffSeqDelay13 + lpModelInfo->m_nPowerOffSeqDelay14);
+			dWait = (lpModelInfo->m_nPowerOffSeqDelay01 + lpModelInfo->m_nPowerOffSeqDelay02 + lpModelInfo->m_nPowerOffSeqDelay03 + lpModelInfo->m_nPowerOffSeqDelay04
+				+ lpModelInfo->m_nPowerOffSeqDelay05 + lpModelInfo->m_nPowerOffSeqDelay06 + lpModelInfo->m_nPowerOffSeqDelay07 + lpModelInfo->m_nPowerOffSeqDelay08
+				+ lpModelInfo->m_nPowerOffSeqDelay09 + lpModelInfo->m_nPowerOffSeqDelay10 + lpModelInfo->m_nPowerOffSeqDelay11 + lpModelInfo->m_nPowerOffSeqDelay12
+				+ lpModelInfo->m_nPowerOffSeqDelay13 + lpModelInfo->m_nPowerOffSeqDelay14);
 		delayMS(dWait + 500);
 	}
 	return bRtnCode;
@@ -673,15 +675,6 @@ BOOL CCommand::Gf_getFirmwareVersion()
 	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_VERSION , 0, NULL);
 
 	return bRtnCode;
-}
-
-void CCommand::Gf_ShowMessageBox(CString strMessage)
-{
-
-	CMessageError err_dlg;
-
-	err_dlg.m_strEMessage = strMessage;
-	err_dlg.DoModal();
 }
 
 
@@ -837,7 +830,7 @@ BOOL CCommand::Gf_CheckCableOpen()
 	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_CABLE_OPEN_TEST, 0, "");
 	if (ret == TRUE)
 	{
-		if (gszudpRcvPacket[PACKET_PT_RET] == '0')	// I2C Result Code Check
+		if (gszudpRcvPacket[PACKET_PT_RET] == '0')
 		{
 			char szData[50];
 			memcpy(szData, &gszudpRcvPacket[PACKET_PT_DATA], 10);

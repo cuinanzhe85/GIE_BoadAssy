@@ -210,4 +210,13 @@ public:
 	CEdit m_edtOffSeqDelay12;
 	CEdit m_edtOffSeqDelay13;
 	CEdit m_edtOffSeqDelay14;
+	afx_msg void OnEnChangeEdtHActive();
+	afx_msg void OnEnChangeEdtHWidth();
+	afx_msg void OnEnChangeEdtHFrontPorch();
+	afx_msg void OnEnChangeEdtHBackPorch();
+	afx_msg void OnEnChangeEdtVActive();
+	afx_msg void OnEnChangeEdtVWidth();
+	afx_msg void OnEnChangeEdtVFrontPorch();
+	afx_msg void OnEnChangeEdtVBackPorch();
+	CEdit m_edtClockDelay;
 };

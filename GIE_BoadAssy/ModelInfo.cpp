@@ -89,7 +89,6 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_I2C_LEVEL, m_cmbI2cLevel);
 	DDX_Control(pDX, IDC_CMB_CABLE_OPEN, m_cmbCableOpenUse);
 	DDX_Control(pDX, IDC_CMB_SHORT_TEST, m_cmbShortTestUse);
-	DDX_Control(pDX, IDC_CMB_CLOCK_DELAY, m_cmbClockDelay);
 	DDX_Control(pDX, IDC_CMB_CLOCK_RISING, m_cmbClockRising);
 	DDX_Control(pDX, IDC_CMB_HSYNC_POLARITY, m_cmbHSyncPolarity);
 	DDX_Control(pDX, IDC_CMB_VSYNC_POLARITY, m_cmbVSyncPolarity);
@@ -150,6 +149,7 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_OFF_SEQ_DEL_12, m_edtOffSeqDelay12);
 	DDX_Control(pDX, IDC_EDT_OFF_SEQ_DEL_13, m_edtOffSeqDelay13);
 	DDX_Control(pDX, IDC_EDT_OFF_SEQ_DEL_14, m_edtOffSeqDelay14);
+	DDX_Control(pDX, IDC_EDT_CLOCK_DELAY, m_edtClockDelay);
 }
 
 
@@ -176,6 +176,14 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialog)
 	ON_BN_CLICKED(IDC_BTN_APPLY, &CModelInfo::OnBnClickedBtnApply)
 	ON_CBN_SELCHANGE(IDC_CMB_PTN_NAME, &CModelInfo::OnCbnSelchangeCmbPtnName)
 	ON_WM_DRAWITEM()
+	ON_EN_CHANGE(IDC_EDT_H_ACTIVE, &CModelInfo::OnEnChangeEdtHActive)
+	ON_EN_CHANGE(IDC_EDT_H_WIDTH, &CModelInfo::OnEnChangeEdtHWidth)
+	ON_EN_CHANGE(IDC_EDT_H_FRONT_PORCH, &CModelInfo::OnEnChangeEdtHFrontPorch)
+	ON_EN_CHANGE(IDC_EDT_H_BACK_PORCH, &CModelInfo::OnEnChangeEdtHBackPorch)
+	ON_EN_CHANGE(IDC_EDT_V_ACTIVE, &CModelInfo::OnEnChangeEdtVActive)
+	ON_EN_CHANGE(IDC_EDT_V_WIDTH, &CModelInfo::OnEnChangeEdtVWidth)
+	ON_EN_CHANGE(IDC_EDT_V_FRONT_PORCH, &CModelInfo::OnEnChangeEdtVFrontPorch)
+	ON_EN_CHANGE(IDC_EDT_V_BACK_PORCH, &CModelInfo::OnEnChangeEdtVBackPorch)
 END_MESSAGE_MAP()
 
 
@@ -343,8 +351,6 @@ void CModelInfo::Lf_loadModelData()
 
 	m_cboBitSwap.SetCurSel(lpModelInfo->m_nLcmInfoBitsSwap);
 	
-	m_cmbClockDelay.SetCurSel(lpModelInfo->m_nClockDelay);
-
 	m_cmbClockRising.SetCurSel(lpModelInfo->m_nClockRising);
 
 	m_cmbHSyncPolarity.SetCurSel(lpModelInfo->m_nHSyncPolarity);
@@ -352,6 +358,9 @@ void CModelInfo::Lf_loadModelData()
 	m_cmbVSyncPolarity.SetCurSel(lpModelInfo->m_nVSyncPolarity);
 
 	m_cmbOddEven.SetCurSel(lpModelInfo->m_nOddEven);
+
+	sdata.Format(_T("%d"), lpModelInfo->m_nClockDelay);
+	m_edtClockDelay.SetWindowTextW(sdata);
 
 	m_cmbOnSeqOp01.SetCurSel(lpModelInfo->m_nPowerOnSeqType01);
 	m_cmbOnSeqOp02.SetCurSel(lpModelInfo->m_nPowerOnSeqType02);
@@ -740,6 +749,9 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_nSignalType = m_cboSignalType.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_TYPE"),			lpModelInfo->m_nSignalType);	
 
+	lpModelInfo->m_nSignalBit = m_cboSignalBit.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("SIGNAL_BIT"),				lpModelInfo->m_nSignalBit);
+
 	lpModelInfo->m_nLGDISMSelect = m_cboLvdsSel.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("LG_DISM"),				lpModelInfo->m_nLGDISMSelect);
 
@@ -796,7 +808,8 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_nLcmInfoBitsSwap = m_cboBitSwap.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BITSWAP"),				lpModelInfo->m_nLcmInfoBitsSwap);
 
-	lpModelInfo->m_nClockDelay = m_cmbClockDelay.GetCurSel();
+	m_edtClockDelay.GetWindowTextW(sdata);
+	lpModelInfo->m_nClockDelay = (int)_ttoi(sdata);
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_DELAY"), lpModelInfo->m_nClockDelay);
 
 	lpModelInfo->m_nClockRising = m_cmbClockRising.GetCurSel();
@@ -1886,4 +1899,188 @@ void CModelInfo::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	
 	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
+}
+
+
+void CModelInfo::OnEnChangeEdtHActive()
+{
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strValue;
+	int nValue=0, nTotal=0;
+	m_edtHorActive.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorWidth.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorFrontPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorBackPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+
+	strValue.Format(_T("%d"), nTotal);
+	m_edtHorTotal.SetWindowTextW(strValue);
+}
+
+
+void CModelInfo::OnEnChangeEdtHWidth()
+{
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strValue;
+	int nValue = 0, nTotal = 0;
+	m_edtHorActive.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorWidth.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorFrontPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorBackPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+
+	strValue.Format(_T("%d"), nTotal);
+	m_edtHorTotal.SetWindowTextW(strValue);
+}
+
+
+void CModelInfo::OnEnChangeEdtHFrontPorch()
+{
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strValue;
+	int nValue = 0, nTotal = 0;
+	m_edtHorActive.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorWidth.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorFrontPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorBackPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+
+	strValue.Format(_T("%d"), nTotal);
+	m_edtHorTotal.SetWindowTextW(strValue);
+}
+
+
+void CModelInfo::OnEnChangeEdtHBackPorch()
+{
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strValue;
+	int nValue = 0, nTotal = 0;
+	m_edtHorActive.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorWidth.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorFrontPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtHorBackPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+
+	strValue.Format(_T("%d"), nTotal);
+	m_edtHorTotal.SetWindowTextW(strValue);
+}
+
+
+void CModelInfo::OnEnChangeEdtVActive()
+{
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strValue;
+	int nValue = 0, nTotal = 0;
+	m_edtVerActive.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerWidth.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerFrontPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerBackPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+
+	strValue.Format(_T("%d"), nTotal);
+	m_edtVerTotal.SetWindowTextW(strValue);
+}
+
+
+void CModelInfo::OnEnChangeEdtVWidth()
+{
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strValue;
+	int nValue = 0, nTotal = 0;
+	m_edtVerActive.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerWidth.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerFrontPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerBackPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+
+	strValue.Format(_T("%d"), nTotal);
+	m_edtVerTotal.SetWindowTextW(strValue);
+}
+
+
+void CModelInfo::OnEnChangeEdtVFrontPorch()
+{
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strValue;
+	int nValue = 0, nTotal = 0;
+	m_edtVerActive.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerWidth.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerFrontPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerBackPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+
+	strValue.Format(_T("%d"), nTotal);
+	m_edtVerTotal.SetWindowTextW(strValue);
+}
+
+
+void CModelInfo::OnEnChangeEdtVBackPorch()
+{
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strValue;
+	int nValue = 0, nTotal = 0;
+	m_edtVerActive.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerWidth.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerFrontPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+	m_edtVerBackPor.GetWindowTextW(strValue);
+	nValue = (int)_ttoi(strValue);
+	nTotal += nValue;
+
+	strValue.Format(_T("%d"), nTotal);
+	m_edtVerTotal.SetWindowTextW(strValue);
 }

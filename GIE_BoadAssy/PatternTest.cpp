@@ -57,6 +57,10 @@ BOOL CPatternTest::OnInitDialog()
 	Lf_insertListItem();
 	
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_ON);
+	if (Lf_CableOpenCheck() == FALSE)
+	{
+		return FALSE;
+	}
 	Lf_sendPatternBluData();
 
 	if (lpModelInfo->m_nGfd250 == ON)
@@ -65,7 +69,7 @@ BOOL CPatternTest::OnInitDialog()
 	SetTimer(1,200,NULL);	// EDID
 	SetTimer(2,1000,NULL);	// Power Measure
 	
-	//if(lpSystemInfo->m_nFastJudge == TRUE)
+	//if(lpSystemInfo->m_nFastDioJudge == TRUE)
 		SetTimer(3, 1000, NULL);  // OK,NG DIO Input Check
 
 	//SetTimer(4,100,NULL); 무슨 기능인지 모르겠음.
@@ -129,17 +133,8 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 		case VK_BACK:
 		case VK_END:
 			{
-				m_pApp->Gf_setPatEndCheckTime(m_nSelNum);
-				m_pApp->m_nPatTime[m_nSelNum] = (m_pApp->m_nEndCheckTime[m_nSelNum] - m_pApp->m_nStartCheckTime[m_nSelNum]);
-
-				int SetTime;
-				m_pApp->Gf_setEndPtnLockTime(m_nSelNum);
-				SetTime = _ttoi(lpModelInfo->m_sLbPtnTms[m_nSelNum])*1000;
-
-				if((m_pApp->m_nPtnLockTime[m_nSelNum] < SetTime) && (m_pApp->m_nPatLock[m_nSelNum]==FALSE))	
-					return TRUE;	
-				else
-					m_pApp->m_nPatLock[m_nSelNum] = TRUE;
+				if (Lf_PatternLockTimeCheck() != TRUE)
+					return TRUE;
 
 				Lf_excutePatternList(pMsg);
 
@@ -331,7 +326,7 @@ void CPatternTest::Lf_initVariable()
 	m_pApp->m_nOldVsync = 0;
 	m_pApp->pPtnIndex = &m_nSelNum;
 	lpWorkInfo->m_bEscDetect = false;
-	lpWorkInfo->m_nFastJudge = FAST_JUDGE_NONE;
+	lpWorkInfo->m_nFastDioJudge = FAST_JUDGE_NONE;
 	m_nInspStartTime = ::GetTickCount ();
 	memset(m_pApp->m_nPatLock, 0x00, sizeof(m_pApp->m_nPatLock));	
 
@@ -439,7 +434,7 @@ BOOL CPatternTest::Lf_sendBluData()
 	Lf_PtnTestEventView(strmsg);
 	if(m_pApp->m_pCommand->Gf_setBluDuty(nBluDuty) == FALSE)
 	{			
-		m_pApp->m_pCommand->Gf_ShowMessageBox(_T("BLU Communication Error"));//AfxMessageBox(_T("BLU Communication Error"));
+		m_pApp->Gf_ShowMessageBox(_T("BLU Communication Error"));//AfxMessageBox(_T("BLU Communication Error"));
 	}
 
 	return TRUE;
@@ -449,6 +444,10 @@ void CPatternTest::Lf_sendPatternBluData()
 {
 	Lf_sendPtnData();
 	Lf_sendBluData();
+	if (Lf_PatternCurrentCheck() == FALSE)
+	{
+		CDialog::OnCancel();
+	}
 }
 
 void CPatternTest::OnTimer(UINT_PTR nIDEvent)
@@ -473,13 +472,13 @@ void CPatternTest::OnTimer(UINT_PTR nIDEvent)
 		if (m_pApp->m_pDio7230->Gf_getDIOJudgeOK())
 		{
 			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("PATTERN TEST - JUDGE OK ON, FAST JUDGE"));
-			lpWorkInfo->m_nFastJudge = FAST_JUDGE_OK;
+			lpWorkInfo->m_nFastDioJudge = FAST_JUDGE_OK;
 			CDialog::OnCancel();
 		}
 		else if (m_pApp->m_pDio7230->Gf_getDIOJudgeNG())
 		{
 			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("PATTERN TEST - JUDGE NG ON, FAST JUDGE"));
-			lpWorkInfo->m_nFastJudge = FAST_JUDGE_NG;
+			lpWorkInfo->m_nFastDioJudge = FAST_JUDGE_NG;
 			CDialog::OnCancel();
 		}
 
@@ -532,42 +531,42 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VCC)
 			{
 				sdata.Format(_T("VCC Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVccMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VDD)
 			{
 				sdata.Format(_T("VDD Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
 				sdata.Format(_T("ICC Over Current (High Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
 				sdata.Format(_T("IDD Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
 			{
 				sdata.Format(_T("VGH Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVghMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGL)
 			{
 				sdata.Format(_T("VGL Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGH)
 			{
 				sdata.Format(_T("IGH Over Current (High Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIghMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGL)
 			{
 				sdata.Format(_T("IGL Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIglMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 
 			CDialog::OnCancel();
@@ -578,42 +577,42 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VCC)
 			{
 				sdata.Format(_T("VCC Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVccMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VDD)
 			{
 				sdata.Format(_T("VDD Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
 				sdata.Format(_T("ICC Low Current (Low Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
 				sdata.Format(_T("IDD Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
 			{
 				sdata.Format(_T("VGH Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVghMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGL)
 			{
 				sdata.Format(_T("VGL Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGH)
 			{
 				sdata.Format(_T("IGH Low Current (Low Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIghMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGL)
 			{
 				sdata.Format(_T("IGL Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIglMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			CDialog::OnCancel();
 			return FALSE;
@@ -656,10 +655,7 @@ void CPatternTest::Lf_excutePatternList(MSG* pMsg)
 			CDialog::OnOK();
 			return;
 		}
-
-		m_LCctrlPtnTestView.SetSelectionMark(++m_nSelNum); 
-		m_LCctrlPtnTestView.SetItemState(m_nSelNum, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
-		m_LCctrlPtnTestView.SetFocus();
+		m_nSelNum++;
 
 		break;
 	case VK_BACK:
@@ -667,9 +663,7 @@ void CPatternTest::Lf_excutePatternList(MSG* pMsg)
 		{ 
 			return;
 		}		
-		m_LCctrlPtnTestView.SetSelectionMark(--m_nSelNum); 
-		m_LCctrlPtnTestView.SetItemState(m_nSelNum, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
-		m_LCctrlPtnTestView.SetFocus();
+		m_nSelNum--;
 		break;
 
 	case VK_HOME:
@@ -682,6 +676,9 @@ void CPatternTest::Lf_excutePatternList(MSG* pMsg)
 		m_nSelNum = lpModelInfo->m_nLbCnt-1;
 		break;
 	}
+	m_LCctrlPtnTestView.SetSelectionMark(m_nSelNum);
+	m_LCctrlPtnTestView.SetItemState(m_nSelNum, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
+	m_LCctrlPtnTestView.SetFocus();
 
 	RemoveMessageFromQueue();
 	m_pApp->Gf_setPatStartCheckTime(m_nSelNum);
@@ -850,7 +847,7 @@ void CPatternTest::Lf_compareEEPRomData()
 				lpWorkInfo->Edid = 'F';
 	#endif
 				lpWorkInfo->m_bIsEdidFail = true;
-				m_pApp->m_pCommand->Gf_ShowMessageBox(_T("EDID Read Compare Fail!!!"));//AfxMessageBox(_T("EDID Read Compare Fail!!!"));
+				m_pApp->Gf_ShowMessageBox(_T("EDID Read Compare Fail!!!"));//AfxMessageBox(_T("EDID Read Compare Fail!!!"));
 				m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);	
 				CDialog::OnCancel();
 				return;
@@ -868,7 +865,7 @@ void CPatternTest::Lf_compareEEPRomData()
 		{
 			GetDlgItem(IDC_STT_TP_EDID_RESULT)->SetWindowTextW(_T("NG"));
 			lpWorkInfo->m_bIsEdidFail = true;
-			m_pApp->m_pCommand->Gf_ShowMessageBox(_T("EDID Read Communication Error!!!"));//AfxMessageBox(_T("EDID Read Communication Error!!!"));
+			m_pApp->Gf_ShowMessageBox(_T("EDID Read Communication Error!!!"));//AfxMessageBox(_T("EDID Read Communication Error!!!"));
 			m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
 		}	
 	}
@@ -1118,4 +1115,92 @@ void CPatternTest::Lf_getPatternGrayLevel(CString strPattern, int* r_level, int*
 		if (*g_level > gray)		*g_level = gray;
 		if (*b_level > gray)		*b_level = gray;
 	}
+}
+BOOL CPatternTest::Lf_PatternLockTimeCheck()
+{
+	m_pApp->Gf_setPatEndCheckTime(m_nSelNum);
+	m_pApp->m_nPatTime[m_nSelNum] = (m_pApp->m_nEndCheckTime[m_nSelNum] - m_pApp->m_nStartCheckTime[m_nSelNum]);
+
+	int SetTime;
+	m_pApp->Gf_setEndPtnLockTime(m_nSelNum);
+	SetTime = _ttoi(lpModelInfo->m_sLbPtnTms[m_nSelNum]) * 1000;
+
+	if ((m_pApp->m_nPtnLockTime[m_nSelNum] < SetTime) && (m_pApp->m_nPatLock[m_nSelNum] == FALSE))
+		return FALSE;
+	else
+		m_pApp->m_nPatLock[m_nSelNum] = TRUE;
+
+	return TRUE;
+}
+BOOL CPatternTest::Lf_PatternCurrentCheck()
+{
+	CString strmsg;
+	int nIccLow, nIccHigh, nIddLow, nIddHigh;
+	nIccLow = (int)_ttoi(lpModelInfo->m_sLbPtnIccLow[m_nSelNum]);
+	nIccHigh = (int)_ttoi(lpModelInfo->m_sLbPtnIccHigh[m_nSelNum]);
+	nIddLow = (int)_ttoi(lpModelInfo->m_sLbPtnIddLow[m_nSelNum]);
+	nIddHigh = (int)_ttoi(lpModelInfo->m_sLbPtnIddHigh[m_nSelNum]);
+
+	if (nIccLow > 0 || nIccHigh > 0 || nIddLow > 0 || nIddHigh > 0)
+	{
+		if (m_nSelNum == 0)
+		{
+			Lf_updateMeasureInfo();
+		}
+		delayMS(2000);
+	}
+	if (nIccLow > 0)
+	{
+		if (nIccLow < m_pApp->m_nLcmPInfo[PINFO_ICC])
+		{
+			m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
+			strmsg.Format(_T("Pattern ICC LOW Limit NG. (Setting:%dmA Measure:%dmA)"), nIccLow, m_pApp->m_nLcmPInfo[PINFO_ICC]);
+			m_pApp->Gf_ShowMessageBox(strmsg);
+			return FALSE;
+		}
+	}
+	if (nIccHigh > 0)
+	{
+		if (nIccHigh < m_pApp->m_nLcmPInfo[PINFO_ICC])
+		{
+			m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
+			strmsg.Format(_T("Pattern ICC HIGH Limit NG. (Setting:%dmA Measure:%dmA)"), nIccHigh, m_pApp->m_nLcmPInfo[PINFO_ICC]);
+			m_pApp->Gf_ShowMessageBox(strmsg);
+			return FALSE;
+		}
+	}
+	if (nIddLow > 0)
+	{
+		if (nIddLow < m_pApp->m_nLcmPInfo[PINFO_IDD])
+		{
+			m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
+			strmsg.Format(_T("Pattern IDD LOW Limit NG. (Setting:%dmA Measure:%dmA)"), nIccLow, m_pApp->m_nLcmPInfo[PINFO_IDD]);
+			m_pApp->Gf_ShowMessageBox(strmsg);
+			return FALSE;
+		}
+	}
+	if (nIddHigh > 0)
+	{
+		if (nIddHigh < m_pApp->m_nLcmPInfo[PINFO_IDD])
+		{
+			m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
+			strmsg.Format(_T("Pattern IDD HIGH Limit NG. (Setting:%dmA Measure:%dmA)"), nIccHigh, m_pApp->m_nLcmPInfo[PINFO_IDD]);
+			m_pApp->Gf_ShowMessageBox(strmsg);
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+BOOL CPatternTest::Lf_CableOpenCheck()
+{
+	if (lpModelInfo->m_nCableOpenUse == _ON_)
+	{
+		if (m_pApp->m_pCommand->Gf_CheckCableOpen() == FALSE)
+		{
+			m_pApp->Gf_ShowMessageBox(_T("Cable Open Check Fail"));
+			return FALSE;
+		}
+	}
+	
+	return TRUE;
 }

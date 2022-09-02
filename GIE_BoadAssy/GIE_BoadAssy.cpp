@@ -347,9 +347,6 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	}
 
 	lpWorkInfo->m_bPIDReadComplete = false;
-	lpWorkInfo->m_bDioDebugTestStart = false;
-	lpWorkInfo->m_bDioDebugJudgeOk = false;
-	lpWorkInfo->m_bDioDebugJudgeNg = false;
 
 	lpWorkInfo->m_bGieJudgeNg = false;
 	lpWorkInfo->m_bGieJudgeOk = false;
@@ -1424,29 +1421,18 @@ void CGIE_BoadAssyApp::Gf_setGMesGoodInfo()
 {
  	m_pCimNet->SetPF(_T("P"));
 	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
- 	//m_pCimNet->SetExpectedCode(lpWorkInfo->m_sExpectedCode.GetBuffer(0));
- 	//if(lpWorkInfo->m_sExpectedCode.GetLength() > 0)
- 	//{
- 	//	m_pCimNet->SetPatternInfo(_T("imsi"));//pUiPorc->pCimNet->SetPatternInfo(pUiPorc->comm.curData.strPtnTestInfo.GetBuffer(0));
- 	//}
 }
 
 void CGIE_BoadAssyApp::Gf_setGMesBGradeInfo()
 {
 	m_pCimNet->SetPF(_T("P"));
 	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
- //	m_pCimNet->SetExpectedCode(lpWorkInfo->m_sExpectedCode.GetBuffer(0));
-// 	pUiPorc->pCimNet->SetPatternInfo(pUiPorc->comm.curData.strPtnTestInfo.GetBuffer(0));
-// 	pUiPorc->pCimNet->SetDefectPattern(pUiPorc->comm.curData.strDefectPattern.GetBuffer(0));
 }
 
 void CGIE_BoadAssyApp::Gf_setGMesBadInfo()
 {
 	m_pCimNet->SetPF(_T("F"));
 	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
-//	m_pCimNet->SetExpectedCode(lpWorkInfo->m_sExpectedCode.GetBuffer(0));
- //	m_pCimNet->SetPatternInfo(pUiPorc->comm.curData.strPtnTestInfo.GetBuffer(0));
- //	m_pCimNet->SetDefectPattern(pUiPorc->comm.curData.strDefectPattern.GetBuffer(0));
 }
 
 void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
@@ -1669,4 +1655,12 @@ BOOL CGIE_BoadAssyApp::udp_procWaitRecvACK(int cmd, DWORD waitTime)
 		ProcessMessage();
 	}
 	return FALSE;
+}
+void CGIE_BoadAssyApp::Gf_ShowMessageBox(CString strMessage)
+{
+
+	CMessageError err_dlg;
+
+	err_dlg.m_strEMessage = strMessage;
+	err_dlg.DoModal();
 }

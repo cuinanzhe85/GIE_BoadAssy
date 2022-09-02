@@ -3,8 +3,6 @@
 
 #define DIO_CARD_NUM		0
 
-#define DIO_INIT			0x00
-
 #define JIG_ARRIVE			0x01
 #define TEST_START			0x02
 #define JUDGE_OK			0x08
@@ -22,8 +20,6 @@ public:
 	BOOL Dio_Initialize();
 	void Dio_DO_WritePort(U32 ulDOut);
 	U32 Dio_DI_ReadPort();
-
-	void Dio_DO_WriteSetBit(U32 ulDOut, BOOL bOnOff = TRUE);
 
 	void Gf_setDioWrite(U32 ulDOut);
 	bool Gf_getDIOJigArrive();

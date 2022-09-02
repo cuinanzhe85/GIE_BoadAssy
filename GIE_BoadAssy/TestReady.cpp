@@ -81,10 +81,10 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 	{
 		KillTimer(1);
 
-		if(m_pApp->m_pDio7230->Gf_getDIOJigArrive())
+		/*if(m_pApp->m_pDio7230->Gf_getDIOJigArrive())
 		{
 			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("JIG ARRIVED"));
-
+*/
 			if(m_pApp->m_pDio7230->Gf_getDIOTestStart())
 			{
 				GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST START SIGNAL ON"));
@@ -98,18 +98,18 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 			{
 				SetTimer(1,100,NULL);
 			}
-		}
+		/*}
 		else
 		{
 			SetTimer(1,100,NULL);
-		}		
+		}	*/	
 	}
 	else if(nIDEvent == TIMER_PID_CHECK)
 	{
 		KillTimer(TIMER_PID_CHECK);
 		if(lpWorkInfo->m_bPIDReadComplete==true)
 		{			
-			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_BCR_READ_OK);
+			//m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_BCR_READ_OK);
 			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> BCR READ OK"));
 			lpWorkInfo->m_bPIDReadComplete=false;
 		}
@@ -210,17 +210,14 @@ BOOL CTestReady::PreTranslateMessage(MSG* pMsg)
 
 		case '1':		
 			{
-				lpWorkInfo->m_bDioDebugTestStart = true;
 				return TRUE;
 			}
 		case '2':		
 			{
-				lpWorkInfo->m_bDioDebugJudgeOk = true;
 				return TRUE;
 			}
 		case '3':		
 			{
-				lpWorkInfo->m_bDioDebugJudgeNg = true;
 				return TRUE;
 			}
 		case VK_SPACE:		return 1;
@@ -273,7 +270,6 @@ void CTestReady::Lf_initFontSet()
 void CTestReady::Lf_initVariable()
 {
 	GetDlgItem(IDC_STT_MODEL_NAME)->SetWindowText(lpSystemInfo->m_sModelName);
-	lpWorkInfo->m_bDioDebugTestStart = false;
 }
 
 bool CTestReady::Lf_getControlBdReady()
@@ -315,7 +311,7 @@ void CTestReady::Lf_checkPanelId()
 	if(lpWorkInfo->m_sPID.GetLength() <= 9)
 	{
 		strlog.Format(_T("PANEL ID LENGTH ERROR] LESS 9 [%s]"), lpWorkInfo->m_sPID);
-		m_pApp->Gf_writeLogData(_T("<BCR>"), strlog);
+		m_pApp->Gf_ShowMessageBox(strlog);
 		CPanelID pidDlg;
 		pidDlg.DoModal();
 	}
@@ -327,7 +323,7 @@ void CTestReady::Lf_checkPanelId()
 		if(sdata == _T("ERROR") || sdata == _T("NOREAD"))
 		{ 
 			strlog.Format(_T("PANEL ID DATA ERROR [%s]"), lpWorkInfo->m_sPID);
-			m_pApp->Gf_writeLogData(_T("<BCR>"), strlog);
+			m_pApp->Gf_ShowMessageBox(strlog);
 			lpWorkInfo->m_sPID.Empty();
 			CPanelID pidDlg;
 			pidDlg.DoModal();
@@ -348,7 +344,7 @@ BOOL CTestReady::Lf_sendGMESData()
 
 	m_pApp->Gf_writeLogData(_T("<MES>"), _T("SEND DATA"));
 
-	if(lpWorkInfo->m_nFastJudge == FAST_JUDGE_OK)
+	if(lpWorkInfo->m_nFastDioJudge == FAST_JUDGE_OK)
 	{
  		lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
 		m_pApp->Gf_setGMesGoodInfo();
@@ -360,11 +356,11 @@ BOOL CTestReady::Lf_sendGMESData()
 		int defecetResult = 0;
 		BYTE readDio;
 
-		m_pApp->Gf_writeLogData(_T("<MES>"), _T("Bad Code Dialog Open"));
+		m_pApp->Gf_writeLogData(_T("<MES>"), _T("QualityCode Dialog Open"));
 		m_pApp->Gf_writeLogData(_T("<MES>"), lpWorkInfo->m_sBadCode);
 
 		defecetResult = ShowDefectResult(GetSafeOwner());
-		Sleep(50); //Dio Data가 들어오는 시점 관련하여 확인하기 위해서.
+		delayMS(50); //Dio Data가 들어오는 시점 관련하여 확인하기 위해서.
 		if(defecetResult == IDOK	
 		|| lpWorkInfo->m_bDioJudgeNg == true
 		|| lpWorkInfo->m_bDioJudgeOk == true 
@@ -372,10 +368,9 @@ BOOL CTestReady::Lf_sendGMESData()
 		|| lpWorkInfo->m_nPassOrFail == GMES_PNF_FAIL)
 		{
 			readDio = (BYTE)m_pApp->m_pDio7230->Dio_DI_ReadPort();
-			outLog.Format(_T("OK - %d, NG - %d, B - %d, PnF - %d, BAD DLG - %d, DIO - %d"), 
+			outLog.Format(_T("OK - %d, NG - %d, PnF - %d, BAD DLG - %d, DIO - %d"), 
 				lpWorkInfo->m_bDioJudgeOk, 
 				lpWorkInfo->m_bDioJudgeNg, 
-				lpWorkInfo->m_bDioPajuJudgeBGrade, 
 				lpWorkInfo->m_nPassOrFail, 
 				defecetResult, 
 				readDio);
@@ -401,7 +396,7 @@ BOOL CTestReady::Lf_sendGMESData()
 
 				//TEST OK 신호를 출력하여 JIG가 대기 위치로 이동 하도록 한다. 
 				//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다.
-				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);
+				//m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);
 				return TRUE;
 			}
 			else if(lpWorkInfo->m_bDioJudgeOk == true)
@@ -415,30 +410,9 @@ BOOL CTestReady::Lf_sendGMESData()
 			if ((lpWorkInfo->m_sBadCode.GetLength() == 0 && lpWorkInfo->m_bDioJudgeNg == false) 
 			 || (lpWorkInfo->m_sBadCode.GetLength() > 0 && lpWorkInfo->m_sExpectedCode.GetLength() > 0)
 			 || (lpWorkInfo->m_bDioJudgeOk == true)
-			 || (lpWorkInfo->m_bDioPajuJudgeBGrade == true)
 			 || (lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS))
 			{
-				//B급도 양품 처리한다.
-				//B급 버튼의 경우에는 BAD CODE와 B급 CODE는 정해진 CODE를 사용한다.
-				//지정된 BAD CODE와 B급 코드는 LGD에서 받은다.
-				if(lpWorkInfo->m_bDioPajuJudgeBGrade == true)   
-				{
-					m_pApp->Gf_writeLogData(_T("<MES>"), _T("SET B GRADE"));
-
-					if (lpWorkInfo->m_sBadCode.GetLength() == 0)
-					{																  
-						lpWorkInfo->m_sBadCode.Format(_T("A0G-B04----F04-G5G----------------------------"));
-					}
-					if (lpWorkInfo->m_sExpectedCode.GetLength() == 0)
-					{
-						lpWorkInfo->m_sExpectedCode.Format(_T("B11"));
-					}
-					m_pApp->Gf_setGMesBGradeInfo();
-				}
-				else
-				{
-					m_pApp->Gf_setGMesGoodInfo();
-				}
+				m_pApp->Gf_setGMesGoodInfo();
 				lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
 			}
 			else
@@ -448,15 +422,14 @@ BOOL CTestReady::Lf_sendGMESData()
 			}
 
 			sdata.Format(_T(""));
-			m_pApp->m_pCimNet->SetOverHaulFlag(sdata.GetBuffer(0));//pUiPorc->pCimNet->ResetOverHaulFlag(strTemp.GetBuffer(0));			
+			m_pApp->m_pCimNet->SetOverHaulFlag(sdata);//pUiPorc->pCimNet->ResetOverHaulFlag(strTemp.GetBuffer(0));			
 		}
 		else
 		{
 			readDio = (BYTE)m_pApp->m_pDio7230->Dio_DI_ReadPort();
-			outLog.Format(_T("[GMES BAD CODE] OK - %d, NG - %d, B - %d, PnF - %d, BAD DLG - %d, DIO - %d"), 
+			outLog.Format(_T("[GMES BAD CODE] OK - %d, NG - %d, PnF - %d, BAD DLG - %d, DIO - %d"), 
 				lpWorkInfo->m_bDioJudgeOk, 
-				lpWorkInfo->m_bDioJudgeNg, 
-				lpWorkInfo->m_bDioPajuJudgeBGrade, 
+				lpWorkInfo->m_bDioJudgeNg,  
 				lpWorkInfo->m_nPassOrFail, 
 				defecetResult, 
 				readDio);
@@ -471,7 +444,7 @@ BOOL CTestReady::Lf_sendGMESData()
 	{
 		//EDID 결과 NG인 경우, NG로만 배출이 가능 하도록 한다.
 		//작업자 OK 배출 시도 시에는 상위 통신을 못하도록 막는다.
-		m_pApp->m_pCommand->Gf_ShowMessageBox(_T("EDID Fail. Can not decide OK."));//AfxMessageBox(_T("EDID Fail. Can not decide OK."));
+		m_pApp->Gf_ShowMessageBox(_T("EDID Fail. Can not decide OK."));//AfxMessageBox(_T("EDID Fail. Can not decide OK."));
 		return FALSE;
 	}
 	GetForegroundWindow()->PostMessage (WM_KEYDOWN, VK_F12, 0);
@@ -481,8 +454,8 @@ BOOL CTestReady::Lf_sendGMESData()
 	//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다. 
 	//구미 장비 기술 안철민S 요청 사항.
 	//상위 결과를 받고서 NG LABEL 붙여야하는 이유로 JIG OUT 위치 변경. 위 내용 무시함.
-	m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> TEST OK - JIG OUT"));
-	m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);//(DIO_GUMI_M5_TEST_OK, 1);
+	//m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> TEST OK - JIG OUT"));
+	//m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);//(DIO_GUMI_M5_TEST_OK, 1);
 //imsi		pUiPorc->comm.curData.strUsePanelId = "";
 	return TRUE;
 }
@@ -490,66 +463,16 @@ BOOL CTestReady::Lf_sendGMESData()
 void CTestReady::Lf_openResult()
 {
 	m_pApp->Gf_writeLogData(_T("<WND>"), _T("Judge Start"));
-	if(m_pApp->m_bUserIdPM == true || m_pApp->m_bUserIdGieng == true)
+	
+	if(Lf_sendGMESData()==TRUE)
+	{
+		if(lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS) 
 		{
-		int boxResult = 0;
-		m_pApp->Gf_writeLogData(_T("<WND>"), _T("[TEST MODE] TECH or GIENG"));
-
-		if (lpWorkInfo->m_nFastJudge != FAST_JUDGE_OK && lpWorkInfo->m_nFastJudge != FAST_JUDGE_NG)
-		{
-			CGieJudge gieDlg;
-			gieDlg.DoModal();
-		}
-
-		if(lpWorkInfo->m_bGieJudgeNg == true || lpWorkInfo->m_nFastJudge == FAST_JUDGE_NG)
-		{
-			//TEST OK 신호를 출력하여 JIG가 대기 위치로 이동 하도록 한다. 
-			//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다.				
-			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);//Dio_OutPut(DIO_GUMI_M5_TEST_OK, 1);
-
-			Sleep(500); //PLC로 TEST OK, NG 신호를 동시에 들어가도 상관은 없으나 일단 안정적으로 FLOW를 가기 위해 Delay 줌. T/T 과 상관없음
-
-			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_JUDGE_NG);//Dio_OutPut(DIO_JUDGE_NG, 1);
-			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE NG"));
-			Lf_createCount(BAD_CNT); 
-		}
-		else if(lpWorkInfo->m_bGieJudgeOk == true || lpWorkInfo->m_nFastJudge == FAST_JUDGE_OK)
-		{
-			//TEST OK 신호를 출력하여 JIG가 대기 위치로 이동 하도록 한다. 
-			//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다.
-			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);//Dio_OutPut(DIO_GUMI_M5_TEST_OK, 1);	
-
-			Sleep(500);  //PLC로 TEST OK, NG 신호를 동시에 들어가도 상관은 없으나 일단 안정적으로 FLOW를 가기 위해 Delay 줌. T/T 과 상관없음
-
-			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_JUDGE_OK);//Dio_OutPut(DIO_JUDGE_OK, 1);	
-			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE OK"));
 			Lf_createCount(GOOD_CNT);
 		}
-		else
+		else if(lpWorkInfo->m_nPassOrFail == GMES_PNF_FAIL)
 		{
-			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_INIT);//Dio_OutPut(DIO_MAX, 1);
-			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> NO SIGNAL"));
-		}
-	}
-	else
-	{
-		if(Lf_sendGMESData()==TRUE)
-		{
-			if(lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS) 
-			{
-				Lf_createCount(GOOD_CNT);
-
-				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_JUDGE_OK);//Dio_OutPut(DIO_JUDGE_OK, 1);
-				m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE OK"));
-	
-			}
-			else if(lpWorkInfo->m_nPassOrFail == GMES_PNF_FAIL)
-			{
-				Lf_createCount(BAD_CNT);
-
-				m_pApp->m_pDio7230->Gf_setDioWrite(DIO_JUDGE_NG);//Dio_OutPut(DIO_JUDGE_NG, 1);
-				m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> JUDGE NG"));
-			}
+			Lf_createCount(BAD_CNT);
 		}
 	}
 }
@@ -583,18 +506,7 @@ bool CTestReady::Lf_startTest()
 	BYTE dioRd=0;
 	CPatternTest ptnDlg;
 
-	if (m_pApp->m_bUserIdGieng != true && m_pApp->m_bUserIdPM != true)
-	{
-		if(m_pApp->m_pDio7230->Gf_getDIOJigArrive())
-		{
-			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("[DIO PLC -> PC] JIG IN - START PATTERN TEST"));
-		}
-		else
-		{
-			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("[DIO PLC -> PC] JIG OUT - CAN NOT START PATTERN TEST"));
-			return false;
-		}
-	}
+	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("[DIO PLC -> PC] JIG IN - START PATTERN TEST"));
 
 	if(Lf_getControlBdReady() == false)
 	{
@@ -617,22 +529,8 @@ bool CTestReady::Lf_startTest()
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("Start Pattern Test"));
 	ptnDlg.DoModal();
 
-	if (m_pApp->m_bUserIdGieng != true && m_pApp->m_bUserIdPM != true)
-	{
-		delayMS(lpSystemInfo->m_nTestStartDelay);
-		m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_PRESS_NOMAL_UP);
-		m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> PRESS UP"));
-		if(lpWorkInfo->m_bIsEdidFail == true)
-		{
-			m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_EDID_NG);
-			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> EDID NG"));
-		}
-	}
 
-	//imsi	pUiPorc->comm.curData.iStartTest = SEQ_PTN_TEST_END;
 	Lf_openResult();
-	//imsi	CreateInfoUpdate();
-	//imsi	pUiPorc->comm.curData.iStartTest = SEQ_JUDGE_END;
 	m_btnTestStart.SetFocus();
 
 	m_pApp->Gf_writeLogData(_T("<TEST>"), _T("Pattern Test END"));

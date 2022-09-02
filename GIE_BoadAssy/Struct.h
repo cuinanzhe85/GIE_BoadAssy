@@ -357,15 +357,12 @@ typedef struct _ST_INSPWORKINFO_{
 	CString m_sUserID;
 	CString m_sUserName;
 
-	bool m_bDioDebugTestStart;
-	bool m_bDioDebugJudgeOk;
-	bool m_bDioDebugJudgeNg;
 
 	bool	m_bPIDReadComplete;
 	CString	m_sReceivePID;
 	CString	m_sPID;
 
-	int m_nFastJudge;
+	int m_nFastDioJudge;
 	
 	bool m_bGieJudgeOk;
 	bool m_bGieJudgeNg;

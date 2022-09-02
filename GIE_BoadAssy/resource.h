@@ -350,7 +350,6 @@
 #define IDC_STT_GRP_POWER               1134
 #define IDC_STT_VGH_VALUE               1134
 #define IDC_STT_GRP_OTHERS              1135
-#define IDC_STT_VDD_VALUE2              1135
 #define IDC_STT_VGL_VALUE               1135
 #define IDC_STT_GRP_CLOCK               1136
 #define IDC_CMB_OFF_SEQ_OP_3            1136
@@ -426,6 +425,8 @@
 #define IDC_STT_IGH_MEA_TIT             1172
 #define IDC_STT_GRP_POWER_SEQ           1172
 #define IDC_STT_BLU_TYPE                1173
+#define IDC_EDT_VGH_SET2                1173
+#define IDC_EDT_CLOCK_DELAY             1173
 #define IDC_STT_BLU_FREQ                1174
 #define IDC_STT_TEST_START_DELAY        1175
 #define IDC_STT_FAST_JUDGE              1176

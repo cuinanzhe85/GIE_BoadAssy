@@ -49,6 +49,9 @@ protected:
 	void Lf_initVariable();
 	void Lf_setPatternGrayLevel(int wParam);
 	void Lf_getPatternGrayLevel(CString strPattern, int* r_level, int* g_level, int* b_level);
+	BOOL Lf_PatternLockTimeCheck();
+	BOOL Lf_PatternCurrentCheck();
+	BOOL Lf_CableOpenCheck();
 
 	void Lf_PtnTestEventView(CString Event);
 public:

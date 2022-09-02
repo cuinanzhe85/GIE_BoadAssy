@@ -82,7 +82,7 @@ void CMaint::OnDestroy()
 {
 	CDialog::OnDestroy();
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF); 
-	m_pApp->m_pDio7230->Dio_DO_WriteSetBit(DIO_OUT_RESET);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(DIO_OUT_RESET);
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
 
@@ -177,7 +177,7 @@ void CMaint::OnBnClickedCheckDo01()
 		m_uDioOutBit |= DIO_OUT_01;
 	else
 		m_uDioOutBit &= ~DIO_OUT_01;
-	m_pApp->m_pDio7230->Dio_DO_WriteSetBit(m_uDioOutBit);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(m_uDioOutBit);
 }
 
 
@@ -188,7 +188,7 @@ void CMaint::OnBnClickedCheckDo02()
 		m_uDioOutBit |= DIO_OUT_02;
 	else
 		m_uDioOutBit &= ~DIO_OUT_02;
-	m_pApp->m_pDio7230->Dio_DO_WriteSetBit(m_uDioOutBit);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(m_uDioOutBit);
 }
 
 
@@ -199,7 +199,7 @@ void CMaint::OnBnClickedCheckDo03()
 		m_uDioOutBit |= DIO_OUT_03;
 	else
 		m_uDioOutBit &= ~DIO_OUT_03;
-	m_pApp->m_pDio7230->Dio_DO_WriteSetBit(m_uDioOutBit);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(m_uDioOutBit);
 }
 
 
@@ -210,7 +210,7 @@ void CMaint::OnBnClickedCheckDo04()
 		m_uDioOutBit |= DIO_OUT_04;
 	else
 		m_uDioOutBit &= ~DIO_OUT_04;
-	m_pApp->m_pDio7230->Dio_DO_WriteSetBit(m_uDioOutBit);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(m_uDioOutBit);
 }
 
 
@@ -221,7 +221,7 @@ void CMaint::OnBnClickedCheckDo05()
 		m_uDioOutBit |= DIO_OUT_05;
 	else
 		m_uDioOutBit &= ~DIO_OUT_05;
-	m_pApp->m_pDio7230->Dio_DO_WriteSetBit(m_uDioOutBit);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(m_uDioOutBit);
 }
 
 
@@ -232,7 +232,7 @@ void CMaint::OnBnClickedCheckDo06()
 		m_uDioOutBit |= DIO_OUT_06;
 	else
 		m_uDioOutBit &= ~DIO_OUT_06;
-	m_pApp->m_pDio7230->Dio_DO_WriteSetBit(m_uDioOutBit);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(m_uDioOutBit);
 }
 
 
@@ -243,7 +243,7 @@ void CMaint::OnBnClickedCheckDo07()
 		m_uDioOutBit |= DIO_OUT_07;
 	else
 		m_uDioOutBit &= ~DIO_OUT_07;
-	m_pApp->m_pDio7230->Dio_DO_WriteSetBit(m_uDioOutBit);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(m_uDioOutBit);
 }
 
 
@@ -254,7 +254,7 @@ void CMaint::OnBnClickedCheckDo08()
 		m_uDioOutBit |= DIO_OUT_08;
 	else
 		m_uDioOutBit &= ~DIO_OUT_08;
-	m_pApp->m_pDio7230->Dio_DO_WriteSetBit(m_uDioOutBit);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(m_uDioOutBit);
 }
 
 void CMaint::Lf_setCombPatternList()
@@ -339,37 +339,37 @@ BOOL CMaint::Lf_getPowerMeasureAll()
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VCC)
 			{
 				sdata.Format(_T("VCC Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVccMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VDD)
 			{
 				sdata.Format(_T("VDD Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
 				sdata.Format(_T("ICC Over Current (High Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
 				sdata.Format(_T("IDD Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE]/1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
 			{
 				sdata.Format(_T("VGH Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVghMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGL)
 			{
 				sdata.Format(_T("VGL Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGH)
 			{
 				sdata.Format(_T("IGH Over Current (High Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIghMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGL)
 			{
@@ -384,42 +384,42 @@ BOOL CMaint::Lf_getPowerMeasureAll()
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VCC)
 			{
 				sdata.Format(_T("VCC Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVccMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VDD)
 			{
 				sdata.Format(_T("VDD Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
 				sdata.Format(_T("ICC Low Current (Low Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
 				sdata.Format(_T("IDD Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
 			{
 				sdata.Format(_T("VGH Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVghMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGL)
 			{
 				sdata.Format(_T("VGL Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGH)
 			{
 				sdata.Format(_T("IGH Low Current (Low Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIghMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGL)
 			{
 				sdata.Format(_T("IGL Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIglMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			return FALSE;
 		}

@@ -39,7 +39,6 @@ public:
 	BOOL Gf_setBmpPtnDisplay(CString bmpname);
 	BOOL Gf_setZoneSel(int nZoneSel = 1);
 	BOOL Gf_setPowerVoltSet(float vcc, float vdd, float vgh, float vgl);
-	void Gf_ShowMessageBox(CString strMessage);
 	BOOL Gf_getEEPRomReadData();
 
 	BOOL Gf_CheckCableOpen();	// 2022-08-31 cnz

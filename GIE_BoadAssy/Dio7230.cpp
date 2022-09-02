@@ -22,7 +22,7 @@ BOOL CDIO7230::Dio_Initialize()
 
 	if(Register_Card(PCI_7230, DIO_CARD_NUM) == NoError)
 	{
-		DO_WritePort(DIO_CARD_NUM, 0, DIO_INIT);
+		DO_WritePort(DIO_CARD_NUM, 0, DIO_OUT_RESET);
 		return TRUE;
 	}
 
@@ -46,20 +46,12 @@ U32 CDIO7230::Dio_DI_ReadPort()
 	return ulDIn;
 }
 
-void CDIO7230::Dio_DO_WriteSetBit(U32 ulDOut, BOOL bOnOff)
-{
-	CString slog;
-
-	DO_WritePort(DIO_CARD_NUM, 0, ulDOut);
-	slog.Format(_T("OUT VALUE : 0x%04X"), ulDOut);
-	m_pApp->Gf_writeLogData(_T("<DIO>"), slog);
-}
 
 void CDIO7230::Gf_setDioWrite(U32 ulDOut)
 {
 	DO_WritePort(DIO_CARD_NUM, 0, ulDOut);
 	delayMS(500);
-	DO_WritePort(DIO_CARD_NUM, 0, DIO_INIT);
+	DO_WritePort(DIO_CARD_NUM, 0, DIO_OUT_RESET);
 }
 bool CDIO7230::Gf_getDIOJigArrive()
 {
@@ -83,9 +75,8 @@ bool CDIO7230::Gf_getDIOTestStart()
 
 	dio_in = Dio_DI_ReadPort();
 
-	if (lpWorkInfo->m_bDioDebugTestStart == true)
+	if (DEBUG_DIO_SKIP)
 	{
-		lpWorkInfo->m_bDioDebugTestStart = false;
 		return true;
 	}
 
@@ -102,9 +93,8 @@ bool CDIO7230::Gf_getDIOJudgeOK()
 
 	dio_in = Dio_DI_ReadPort();
 
-	if (lpWorkInfo->m_bDioDebugJudgeOk == true)
+	if (DEBUG_DIO_SKIP)
 	{
-		lpWorkInfo->m_bDioDebugJudgeOk = false;
 		return true;
 	}
 
@@ -121,9 +111,8 @@ bool CDIO7230::Gf_getDIOJudgeNG()
 
 	dio_in = Dio_DI_ReadPort();
 
-	if (lpWorkInfo->m_bDioDebugJudgeNg == true)
+	if (DEBUG_DIO_SKIP)
 	{
-		lpWorkInfo->m_bDioDebugJudgeNg = false;
 		return true;
 	}
 
@@ -172,7 +161,7 @@ void CDIO7230::Lf_setDioFlow(BYTE newReadVal)
 		if (lpWorkInfo->m_bDioJudgeOk == false && lpWorkInfo->m_bIsEdidFail == false)
 		{
 			//Pattern Test 진행 중에는 판정 OK, NG 버튼은 무시한다. Fast Judge의 경우 제외.
-//imsi			if (pUiPorc->comm.curData.iStartTest != SEQ_PTN_TEST_START || lpSystemInfo->m_nFastJudge == TRUE)
+//imsi			if (pUiPorc->comm.curData.iStartTest != SEQ_PTN_TEST_START || lpSystemInfo->m_nFastDioJudge == TRUE)
 			{
 				lpWorkInfo->m_bDioJudgeOk = true;
 			}
@@ -211,11 +200,7 @@ void CDIO7230::Lf_setDioFlow(BYTE newReadVal)
 	{
 		if (lpWorkInfo->m_bDioJudgeNg == false)
 		{
-			//Pattern Test 진행 중에는 판정 OK, NG 버튼은 무시한다. Fast Judge의 경우 제외.
-//imsi			if (pUiPorc->comm.curData.iStartTest != SEQ_PTN_TEST_START || lpSystemInfo->m_nFastJudge == TRUE)
-			{
-				lpWorkInfo->m_bDioJudgeNg = true;
-			}
+			lpWorkInfo->m_bDioJudgeNg = true;
 		}
 	}
 	else
