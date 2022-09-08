@@ -327,6 +327,16 @@ void CMaint::OnBnClickedBtnPowerOff()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	KillTimer(10);
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
+	CString sdata = _T("";)
+	GetDlgItem(IDC_STT_MT_VCC_MEASURE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_MT_VDD_MEASURE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_MT_VGH_MEASURE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_MT_VGL_MEASURE)->SetWindowText(sdata);
+
+	GetDlgItem(IDC_STT_MT_ICC_MEASURE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_MT_IDD_MEASURE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_MT_IGH_MEASURE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_MT_IGL_MEASURE)->SetWindowText(sdata);
 }
 BOOL CMaint::Lf_getPowerMeasureAll()
 {
@@ -374,7 +384,7 @@ BOOL CMaint::Lf_getPowerMeasureAll()
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGL)
 			{
 				sdata.Format(_T("IGL Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIglMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
-				m_pApp->m_pCommand->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 
 			return FALSE;
@@ -454,8 +464,8 @@ void CMaint::OnCbnSelchangeCmbPatternList()
 	m_cmbMtPatternList.GetWindowTextW(strPtnName);
 	strPtnName.MakeUpper();
 
-	if (lpModelInfo->m_nGfd250 == TRUE)
+	/*if (lpModelInfo->m_nGfd250 == TRUE)
 		m_pApp->m_pCommand->Gf_setPGInfoGFD250(strPtnName);
-	else
+	else*/
 		m_pApp->m_pCommand->Gf_setPGInfoPatternName(strPtnName);
 }

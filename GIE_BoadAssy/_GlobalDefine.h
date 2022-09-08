@@ -21,7 +21,7 @@
 // DebugMode
 #define DEBUG_DIO_SKIP				0
 /////////////////////////////////////////////////////////////////////////////
-#define UDP_MAIN_IP					_T("192.168.10.15")		// CString type define
+#define UDP_MAIN_IP					_T("192.168.10.3")		// CString type define
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -258,7 +258,7 @@ typedef enum _COLOR_IDX_{
 #define CMD_CTRL_FW_COMPLETE					0xF2
 #define CMD_CTRL_FW_GOTO_BOOT_DOWNLOAD			0xF3	// CTRL_Boot Daownload
 #define CMD_CTRL_FW_GOTO_BOOT_UPDATE			0xF4	// CTRL_Boot Update
-#define CMD_GFD250_FPGA_VER_READ				0xFC	// CTRL_Reset Control Board
+#define CMD_FPGA_VER_READ						0xFC	// CTRL_Reset Control Board
 #define CMD_CTRL_RESET_CTRLBOARD				0xFD	// CTRL_Reset Control Board
 #define CMD_CTRL_FW_VERSION						0xFE    // CTRL_Firmware Version check
 #define CMD_CTRL_COMMUNICATION_TIMEOUT			0xFF    // CTRL_Communication Timeout

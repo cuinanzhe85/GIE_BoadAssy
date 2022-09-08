@@ -1,0 +1,13 @@
+[12:53:35 341]	[FullDisp] : Defect Initialize START
+[12:53:35 343]	[FullDisp] : Variable Reset Complete
+[12:53:35 401]	[FullDisp] : Screen Reform Complete
+[12:53:35 405]	[FullDisp] : Color Button Attach Complete
+[12:53:35 409]	[FullDisp] : Defect Button Initialize Complete
+[12:53:35 491]	[FullDisp] : Defect Button Position Set Complete
+[12:53:35 494]	Favorite Set : Start
+[12:53:35 497]	Favorite Set : New Button Make Complete
+[12:53:35 501]	Favorite Set : Result Button Update Complete
+[12:53:35 616]	Favorite Set : Display Button Reset Complete
+[12:53:35 618]	[FullDisp] : User Button Info Set Complete
+[12:53:35 621]	[FullDisp] : Button Color Set Complete
+[12:53:35 623]	[FullDisp] : Defect Initialize END

@@ -284,8 +284,9 @@ bool CTestReady::Lf_getControlBdReady()
 
 	while(m_pApp->m_bAreYouReady==FALSE)
 	{
-		m_pApp->m_pCommand->Gf_getAreYouReady();
-		Sleep(20);
+		if (m_pApp->m_pCommand->Gf_getAreYouReady() == TRUE)
+			break;
+		delayMS(20);
 
 		if(nCnt > 3)
 		{

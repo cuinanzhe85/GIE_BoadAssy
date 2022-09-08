@@ -2,6 +2,17 @@
 #include "afxdialogex.h"
 
 
+typedef struct _ST_BMPDOWNINFO_
+{
+	int				m_nBmpIndex;		// BMP파일이 저장될 Nand Flash의 Index 번호.
+
+	CString			m_sBmpFileName;		// BMP파일 이름
+	CString			m_sBmpFilePath;		// BMP파일 Full Path & 파일이름
+	int				m_nBmpFileSize;		// BMP파일 Size
+	int				m_nLcmHActive;		// LCM의 Horizontal Active Size
+	int				m_nLcmVActive;		// LCM의 Vertical Active Size
+	CProgressCtrl* m_pProgress;		// Progress 상태Bar
+}BMPDOWNINFO, * LPBMPDOWNINFO;
 // CBmpDownload 대화 상자
 
 class CBmpDownload : public CDialog
@@ -24,6 +35,7 @@ protected:
 
 protected:
 	LPMODELSETINFO lpModelInfo;
+	LPINSPWORKINFO lpWorkInfo;
 
 	void Lf_InitBmpList();
 	void Lf_InitListCtrlStyle();
@@ -31,9 +43,10 @@ protected:
 	void Lf_InitItemFont();
 	void Lf_InitColorBrush();
 
-	BOOL sendBmpPtnInfo(int index, CString filename);
-	BOOL sendBmpRawData(int index, CString sfilepath);
-	BOOL sendBmpDownloadDone();
+	BOOL Lf_startDownloadBMP(LPBMPDOWNINFO pBmpInfo);
+	BOOL Lf_sendBmpHeadData(LPBMPDOWNINFO pBmpInfo);
+	BOOL Lf_sendBmpRawData(LPBMPDOWNINFO pBmpInfo);
+	BOOL Lf_getDoneCheck();
 
 	CFont m_Font[FONT_IDX_MAX];
 	CBrush m_brush[COLOR_IDX_MAX];

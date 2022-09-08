@@ -48,7 +48,8 @@ public:
 
 	CString Gf_makePGPatternString(CString strPtnName);
 
-	BOOL Gf_getFirmwareVersion();	
+	BOOL Gf_getFirmwareVersion();
+	BOOL Gf_getFpgaeVersion();
 	BOOL Gf_setGoToBootDownload();
 	BOOL Gf_setGoToBootUpdate();
 	BOOL Gf_setMainBoardReset();

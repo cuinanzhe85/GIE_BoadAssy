@@ -197,7 +197,7 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nDp501InitCode;
 
 	int m_nAgpOnOff;
-	int m_nGfd250;
+	int m_nGfd250;	// 사용 안함
 
 	int m_nI2cPullup;
 	int m_nI2cFreq;
@@ -389,6 +389,9 @@ typedef struct _ST_INSPWORKINFO_{
 	bool m_bEscDetect;
 
 	CString m_sFirmwareVersion;
+	CString m_sFpgaVersion;
+
+	BOOL m_bBmpDoneCheck;
 
 }INSPWORKINFO, *LPINSPWORKINFO;
 

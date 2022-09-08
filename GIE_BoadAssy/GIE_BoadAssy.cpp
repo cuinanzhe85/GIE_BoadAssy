@@ -182,6 +182,68 @@ void CGIE_BoadAssyApp::udp_processPacket(char* wParam, int lParam)
 	{
 	case CMD_CTRL_FUSING_SYSTEM:
 		break;
+	case CMD_ARE_YOU_READY:
+		switch (recvRet)
+		{
+		case '0':
+			m_bAreYouReady = true;
+			break;
+		}break;
+	case CMD_MEASURE_ALL_POWER :
+		Lf_parsingMeasureAllPower(char_To_wchar(wParam));
+		break;
+	case CMD_CTRL_FW_VERSION:
+	{
+		if (recvRet == '0')
+		{
+			int nEndIndex;
+			CString strAckData;
+			strAckData = char_To_wchar(wParam);
+			nEndIndex = strAckData.GetLength();
+			lpWorkInfo->m_sFirmwareVersion = strAckData.Mid(PACKET_PT_DATA, nEndIndex - PACKET_PT_DATA - 3);
+		}
+		else
+		{
+			lpWorkInfo->m_sFirmwareVersion.Empty();
+		}
+	}break;
+	case CMD_FPGA_VER_READ:
+	{
+		if (recvRet == '0')
+		{
+			int nEndIndex;
+			CString strAckData;
+			strAckData = char_To_wchar(wParam);
+			nEndIndex = strAckData.GetLength();
+			lpWorkInfo->m_sFpgaVersion = strAckData.Mid(PACKET_PT_DATA, nEndIndex - PACKET_PT_DATA - 3);
+		}
+		else
+		{
+			lpWorkInfo->m_sFpgaVersion.Empty();
+		}
+	}break;
+	case CMD_CTRL_FW_GOTO_BOOT_DOWNLOAD:
+	{
+		if (recvRet == '0')
+		{
+			m_nDownloadReadyAckCount++;
+		}
+		else
+		{
+			m_nDownloadReadyAckCount = 0;
+		}
+	}break;
+	case CMD_BMP_DOWNLOAD_DONE_CHECK:
+	{
+		if (recvRet == '0')
+		{
+			int nEndIndex;
+			CString strAckData;
+			strAckData = char_To_wchar(wParam);
+			nEndIndex = strAckData.GetLength();
+			lpWorkInfo->m_bBmpDoneCheck = (int)_ttoi(strAckData.Mid(PACKET_PT_DATA, nEndIndex - PACKET_PT_DATA - 3));
+		}
+	}break;
 	}
 
 	m_nAckCmd[recvCMD] = TRUE;
@@ -1058,27 +1120,6 @@ void CGIE_BoadAssyApp::Lf_parsingAckData(CString strAckData)
 
 	switch(recvCMD)
 	{
-	case CMD_CTRL_FUSING_SYSTEM:
-		{
-			switch(nResult)
-			{
-			case '0':
-				break;
-			}			
-		}break;
-	
-	case CMD_ARE_YOU_READY:
-		switch(nResult)
-		{
-		case '0':
-			m_bAreYouReady = true;
-			break;
-		}break;
-
-	case CMD_MEASURE_ALL_POWER:
-		{
-			Lf_parsingMeasureAllPower(strAckData);
-		}break;
 
 	case CMD_CTRL_FW_VERSION:
 		{
@@ -1584,7 +1625,7 @@ Send_RETRY:
 BOOL CGIE_BoadAssyApp::udp_sendPacket(CString ipAddress, int nTarget, int nCommand, int nLength, char* pData, int recvACK, int waitTime)
 {
 	char szlog[1024] = { 0, };
-	char szpacket[4096] = { 0, };
+	char szpacket[1024*16] = { 0, };
 	int  packetlen;
 	char lpbuff[20] = { 0, };
 	BYTE nChkSum = 0;
@@ -1658,7 +1699,6 @@ BOOL CGIE_BoadAssyApp::udp_procWaitRecvACK(int cmd, DWORD waitTime)
 }
 void CGIE_BoadAssyApp::Gf_ShowMessageBox(CString strMessage)
 {
-
 	CMessageError err_dlg;
 
 	err_dlg.m_strEMessage = strMessage;

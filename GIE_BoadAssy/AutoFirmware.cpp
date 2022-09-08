@@ -25,6 +25,7 @@ void CAutoFirmware::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_PROGRESS_DOWNLOAD, m_progDownload);
 	DDX_Control(pDX, IDC_CMB_TARGET_SELECT, m_cboTargetSel);
+	DDX_Control(pDX, IDC_CMB_FW_TYPE_SELECT, m_cmbFwType);
 }
 
 
@@ -139,6 +140,7 @@ void CAutoFirmware::Lf_initFontSet()
 	GetDlgItem(IDC_BTN_DOWNLOAD)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_TARGET_SEL)->SetFont(&m_Font[0]);	
 	GetDlgItem(IDC_CMB_TARGET_SELECT)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CMB_FW_TYPE_SELECT)->SetFont(&m_Font[0]);
 
 	m_Font[1].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
@@ -174,10 +176,49 @@ void CAutoFirmware::Lf_initVariable()
 	ZeroMemory(m_pFirmwareData, MAX_FILE_SIZE);						//Buff Memory 초기화
 
 	m_cboTargetSel.SetCurSel(0);
+	m_cmbFwType.SetCurSel(0);
 
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(_T("Ready"));		
 }
+void CAutoFirmware::Lf_loadFpgaFile()
+{
+	CString m_sFirmwarePath;
+	TCHAR szFilePath[1024] = { 0, };
 
+	GetCurrentDirectory(sizeof(szFilePath), szFilePath);
+	CFileDialog m_ldFile(TRUE, _T("hex|*"), NULL, OFN_READONLY, _T("FPGA RAW File(*.rpd)|*.rpd;*.a9|All File(*.*)|*.*|"));
+	if (m_ldFile.DoModal() == IDOK)
+	{
+		SetCurrentDirectory(szFilePath);
+
+		m_sFirmwarePath = m_ldFile.GetPathName();
+
+		GetDlgItem(IDC_STT_FILE_PATH)->SetWindowText(m_sFirmwarePath);
+		Lf_readFpgaFile(m_sFirmwarePath);
+
+		CString sdata;
+		sdata.Format(_T("Load File - %s"), m_sFirmwarePath);
+		m_pApp->Gf_writeLogData(_T("[FPGA Firmware File]"), sdata);
+	}
+}
+void CAutoFirmware::Lf_readFpgaFile(CString strFilePath)
+{
+	CFile mFile;
+
+	m_fpgaFileSize = 0;
+	memset(p_fpga_raw, 0, SIZE_OF_EPCQ16A);
+
+	if (mFile.Open(strFilePath, CFile::modeRead) == FALSE)
+	{
+		AfxMessageBox(_T("FPGA File read fail !!"));
+		return;
+	}
+
+	m_fpgaFileSize = (UINT)mFile.GetLength();
+	mFile.Read((void*)p_fpga_raw, m_fpgaFileSize);
+
+	mFile.Close();
+}
 void CAutoFirmware::Lf_loadFirmwareFile()
 {
 	CString m_sFirmwarePath;
@@ -302,8 +343,16 @@ BOOL CAutoFirmware::Lf_checkDownloadReady()
 		m_pApp->m_nDownloadCountUp = TRUE;
 		m_pApp->m_pCommand->Gf_setGoToBootDownload();
 		delayMS(200);
-
-		if (m_pApp->m_nDownloadReadyAckCount == 2)
+		if (m_pApp->m_nDownloadReadyAckCount == 5)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (m_pApp->m_pCommand->Gf_getAreYouReady() == TRUE)
+					break;
+				delayMS(500);
+			}
+		}
+		if (m_pApp->m_nDownloadReadyAckCount == 10)
 		{
 			return TRUE;
 		}
@@ -352,7 +401,7 @@ BOOL CAutoFirmware::Lf_sendFirmwareFile()
 
 		if (bRet == FALSE)
 		{
-			free(szParsingData);
+			//free(szParsingData);
 			return FALSE;
 		}
 
@@ -376,12 +425,12 @@ BOOL CAutoFirmware::Lf_sendFirmwareFile()
 
 		if (bRet == FALSE)
 		{
-			free(szParsingData);
+			//free(szParsingData);
 			return FALSE;
 		}
 	}
 
-	free(szParsingData);
+	//free(szParsingData);
 	return TRUE;
 }
 
@@ -393,10 +442,16 @@ BOOL CAutoFirmware::Lf_sendDownloadComplete()
 BOOL CAutoFirmware::Lf_firmwareDownloadStart()
 {
 	m_progDownload.SetPos(0);
-
+	int nRetryCount=0;
+TO_RETRY:
 	// Step1. Download Ready Check
 	if(Lf_checkDownloadReady()==FALSE)
 	{
+		if (nRetryCount == 0)
+		{
+			nRetryCount++;
+			goto TO_RETRY;
+		}
 		AfxMessageBox(_T("xxx   Firmware Download Fail - Ready Check   xxx"));
 		goto ERR_EXCEPT;
 	}
@@ -405,6 +460,11 @@ BOOL CAutoFirmware::Lf_firmwareDownloadStart()
 	delayMS(100);
 	if(Lf_sendFirmwareFile()==FALSE)
 	{
+		if (nRetryCount == 0)
+		{
+			nRetryCount++;
+			goto TO_RETRY;
+		}
 		AfxMessageBox(_T("xxx   Firmware Download Fail - Data Download   xxx"));
 		goto ERR_EXCEPT;
 	}
@@ -436,7 +496,14 @@ ERR_EXCEPT:
 void CAutoFirmware::OnBnClickedBtnFileSelect()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	Lf_loadFirmwareFile();
+	if (m_cmbFwType.GetCurSel() == 0)
+	{
+		Lf_loadFirmwareFile();
+	}
+	else
+	{
+		Lf_loadFpgaFile();
+	}
 }
 
 void CAutoFirmware::OnBnClickedBtnFwVersion()
@@ -446,14 +513,29 @@ void CAutoFirmware::OnBnClickedBtnFwVersion()
 	GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T(""));
 	if(m_cboTargetSel.GetCurSel()==0)
 	{
-		if(m_pApp->m_pCommand->Gf_getFirmwareVersion() == TRUE)
+		if (m_cmbFwType.GetCurSel() == 0)
 		{
-			GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(lpWorkInfo->m_sFirmwareVersion);		
+			if (m_pApp->m_pCommand->Gf_getFirmwareVersion() == TRUE)
+			{
+				GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(lpWorkInfo->m_sFirmwareVersion);
+			}
+			else
+			{
+				GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T("Fail"));
+			}
 		}
 		else
 		{
-			GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T("Fail"));	
+			if (m_pApp->m_pCommand->Gf_getFpgaeVersion() == TRUE)
+			{
+				GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(lpWorkInfo->m_sFpgaVersion);
+			}
+			else
+			{
+				GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T("Fail"));
+			}
 		}
+		
 	}
 	else
 	{
@@ -476,10 +558,186 @@ void CAutoFirmware::OnBnClickedBtnDownload()
 	GetDlgItem(IDC_BTN_DOWNLOAD)->EnableWindow(FALSE);
 	GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
 
-	Lf_firmwareDownloadStart();
+	if (m_cmbFwType.GetCurSel() == 0)
+	{
+		Lf_firmwareDownloadStart();
+	}
+	else
+	{
+		Lf_FpgaDownloadStart();
+	}
 
 	GetDlgItem(IDC_BTN_FILE_SELECT)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BTN_FW_VERSION)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BTN_DOWNLOAD)->EnableWindow(TRUE);
 	GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
+}
+BOOL CAutoFirmware::Lf_FpgaDownloadStart()
+{
+	CString sdata;
+
+	sdata.Format(_T("Firmware Downloading ..."));
+	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
+
+	// Progress 초기화
+	m_progDownload.SetPos(0);
+	sdata.Format(_T("Firmware Downloading ...(0%)"));
+	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
+
+	// Step1. Download Ready Check
+	if (Lf_checkDownloadReady1() == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(_T("xxx  Firmware Download Fail - Ready Check  xxx"));
+		goto ERR_EXCEPT;
+	}
+
+	// Step2. Download Ready Delay
+	delayMS(2000);
+
+	// Step3. Download Sequence Set
+	m_pApp->m_nDownloadReadyAckCount = 0;
+	Lf_checkDownloadReady2();
+
+	// Step4. Download Start - Send Raw Data
+	delayMS(300);
+	if (Lf_sendFpgaFile() == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(_T("xxx  Firmware Download Fail - Data Download  xxx"));
+		goto ERR_EXCEPT;
+	}
+
+	// Step5. Download Complete Check
+	delayMS(100);
+	if (Lf_sendDownloadComplete() == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(_T("xxx  Firmware Download Fail - Complete Check  xxx"));
+		goto ERR_EXCEPT;
+	}
+
+	// Step6. Download Initialize & Ready
+	Lf_readyInitialize();
+
+	sdata.Format(_T("Firmware Downloading ...(100%)"));
+	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
+	m_progDownload.SetPos(100);
+	return TRUE;
+
+ERR_EXCEPT:
+	// Error Exception. Initialize.
+	Lf_readyInitialize();
+	return FALSE;
+}
+
+BOOL CAutoFirmware::Lf_checkDownloadReady1()
+{
+	// App 영역에서 Boot 영역으로 진입하기 위한 Ready Command이다.
+	DWORD sTick, eTick;
+
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		m_pApp->m_nDownloadCountUp = TRUE;
+		m_pApp->m_pCommand->Gf_setGoToBootDownload();
+		delayMS(30);
+
+		if (m_pApp->m_nDownloadReadyAckCount > 10)
+		{
+			return TRUE;
+		}
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > 10000)
+			break;
+
+		ProcessMessage();
+	}
+
+	return FALSE;
+}
+
+BOOL CAutoFirmware::Lf_checkDownloadReady2()
+{
+	// Boot 영역에서 Download Sequence로 진입하기 위한 Ready Command이다.
+	DWORD sTick, eTick;
+
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		m_pApp->m_nDownloadCountUp = TRUE;
+
+		m_pApp->m_pCommand->Gf_setGoToBootDownload();
+		delayMS(30);
+
+		if (m_pApp->m_nDownloadReadyAckCount > 5)
+		{
+			return TRUE;
+		}
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > 3000)
+			break;
+
+		ProcessMessage();
+	}
+
+	return FALSE;
+}
+
+BOOL CAutoFirmware::Lf_sendFpgaFile()
+{
+	BOOL bRet = FALSE;
+	int startAddr = 0;
+	int packetLen = 0;
+	char szpacket[4096] = { 0, };
+
+	BOOL bFirstTime = TRUE;
+	while (1)
+	{
+		sprintf_s(szpacket, "%05X", startAddr);
+
+		// 2048 Byte 단위로 끊어서 Packet을 전송한다.
+		// 남은 Data가 2048보다 작을 경우 남은 갯수 만큼만 전송한다.
+		if ((startAddr + 2048) <= m_nFirmwareDataLen)
+		{
+			packetLen = 5 + 2048;
+			memcpy(&szpacket[5], (char*)&m_pFirmwareData[startAddr], 2048);
+			bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_DOWNLOAD, packetLen, szpacket);
+			if (bRet == FALSE)
+			{
+				return FALSE;
+			}
+		}
+		else
+		{
+			packetLen = 5 + (m_nFirmwareDataLen - startAddr);
+			memcpy(&szpacket[5], (char*)&m_pFirmwareData[startAddr], (m_nFirmwareDataLen - startAddr));
+			bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_DOWNLOAD, packetLen, szpacket);
+			break;
+		}
+
+		ZeroMemory(szpacket, sizeof(szpacket));
+		startAddr += 2048;
+
+		int nPos;
+		nPos = (startAddr * 100) / m_nFirmwareDataLen;
+		m_progDownload.SetPos(nPos);
+
+		CString sPer;
+		sPer.Format(_T("Firmware Downloading ...(%d%%)"), nPos);
+		GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sPer);
+
+		ProcessMessage();
+
+		if (bFirstTime == TRUE)
+		{
+			bFirstTime = FALSE;
+			delayMS(1000);
+		}
+		else
+		{
+			delayMS(100);
+		}
+	}
+
+	return TRUE;
 }

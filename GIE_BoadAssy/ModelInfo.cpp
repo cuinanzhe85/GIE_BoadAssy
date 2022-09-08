@@ -329,6 +329,7 @@ void CModelInfo::Lf_initFontSet()
 	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
 	m_Brush[COLOR_IDX_BLUISH].CreateSolidBrush(COLOR_BLUISH);
 	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush (COLOR_GRAY224);
+	m_Brush[COLOR_IDX_GREEN128].CreateSolidBrush(COLOR_GREEN128);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);
 	m_Brush[COLOR_IDX_LIGHT_YELLOW].CreateSolidBrush(COLOR_LIGHT_YELLOW);
 	m_Brush[COLOR_IDX_MAGENTA].CreateSolidBrush(COLOR_MAGENTA);
@@ -1683,7 +1684,7 @@ void CModelInfo::OnBnClickedBtnFusing()
 		return;
 	}
 
-	if(lpModelInfo->m_nGfd250 == TRUE)
+	/*if(lpModelInfo->m_nGfd250 == TRUE)
 	{
 		if(m_pApp->m_pCommand->Gf_setGFD250Timeing() == TRUE)
 		{
@@ -1704,7 +1705,8 @@ void CModelInfo::OnBnClickedBtnFusing()
 	{
 		m_bgfd250flag=true;
 		GetDlgItem(IDC_STT_GFD250_STATUS)->SetWindowText(_T("NONE"));
-	}
+	}*/
+	m_pApp->m_pCommand->Gf_setZoneSel();
 }
 
 HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)

@@ -78,7 +78,7 @@ public:
 	void Gf_showPanelIdNg();
 	BOOL Gf_sendGmesHost(int nHostCmd);
 
-	BOOL Gf_ShowMessageBox(CString strMessage)
+	void Gf_ShowMessageBox(CString strMessage);
 
 	void InitCreateUdpSocket();
 	void InitLocalHostIPAddress();

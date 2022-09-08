@@ -107,9 +107,9 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_SYSTEM_VALUE)
 		{
-			pDC->SetBkColor(COLOR_GREEN);
+			pDC->SetBkColor(COLOR_GREEN128);
 			pDC->SetTextColor(COLOR_WHITE);
-			return m_Brush[COLOR_IDX_GREEN];
+			return m_Brush[COLOR_IDX_GREEN128];
 		}
 		if(pWnd->GetDlgCtrlID()==IDC_STT_MODEL_VALUE)
 		{
@@ -121,9 +121,9 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_nStatus[ST_MOD] == TRUE)
 			{
-				pDC->SetBkColor(COLOR_GREEN);
+				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_GREEN];
+				return m_Brush[COLOR_IDX_GREEN128];
 			}
 			else
 			{
@@ -142,9 +142,9 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_nStatus[ST_PTN] == TRUE)
 			{
-				pDC->SetBkColor(COLOR_GREEN);
+				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_GREEN];
+				return m_Brush[COLOR_IDX_GREEN128];
 			}
 			else
 			{
@@ -163,9 +163,9 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_nStatus[ST_EDID] == TRUE)
 			{
-				pDC->SetBkColor(COLOR_GREEN);
+				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_GREEN];
+				return m_Brush[COLOR_IDX_GREEN128];
 			}
 			else
 			{
@@ -184,9 +184,9 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_nStatus[ST_PG] == TRUE)
 			{
-				pDC->SetBkColor(COLOR_GREEN);
+				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_GREEN];
+				return m_Brush[COLOR_IDX_GREEN128];
 			}
 			else
 			{
@@ -205,9 +205,9 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_nStatus[ST_BCR] == TRUE)
 			{
-				pDC->SetBkColor(COLOR_GREEN);
+				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_GREEN];
+				return m_Brush[COLOR_IDX_GREEN128];
 			}
 			else
 			{
@@ -226,9 +226,9 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_nStatus[ST_BCR] == TRUE)
 			{
-				pDC->SetBkColor(COLOR_GREEN);
+				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_GREEN];
+				return m_Brush[COLOR_IDX_GREEN128];
 			}
 			else
 			{
@@ -247,9 +247,9 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_nStatus[ST_GFD250] == TRUE)
 			{
-				pDC->SetBkColor(COLOR_GREEN);
+				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_GREEN];
+				return m_Brush[COLOR_IDX_GREEN128];
 			}
 			else
 			{
@@ -268,9 +268,9 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_nStatus[ST_LED_BLU] == TRUE)
 			{
-				pDC->SetBkColor(COLOR_GREEN);
+				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_GREEN];
+				return m_Brush[COLOR_IDX_GREEN128];
 			}
 			else
 			{
@@ -337,6 +337,7 @@ void CInitialize::Lf_initFontSet()
 	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush (COLOR_ORANGE);
 	m_Brush[COLOR_IDX_RED].CreateSolidBrush (COLOR_RED);
 	m_Brush[COLOR_IDX_GREEN].CreateSolidBrush(COLOR_GREEN);
+	m_Brush[COLOR_IDX_GREEN128].CreateSolidBrush(COLOR_GREEN128);
 	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
 	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush (COLOR_GRAY94);
 	m_Brush[COLOR_IDX_GRAY96].CreateSolidBrush(COLOR_GRAY96);
@@ -410,7 +411,7 @@ void CInitialize::Lf_loadData()
 	}
 	GetDlgItem(IDC_STT_EDID_VALUE)->Invalidate(FALSE);
 	//==================================================================================== SERIAL PORT
-	m_pApp->Gf_setSerialPort();
+	
 
 	if(m_pApp->m_pCommand->Gf_getAreYouReady() != TRUE)
 		m_nStatus[ST_PG] = FALSE;
@@ -420,15 +421,16 @@ void CInitialize::Lf_loadData()
 	//SetDlgItemText(IDC_STT_PG_VALUE, m_pApp->m_sSerialPort1);
 	GetDlgItem(IDC_STT_PG_VALUE)->Invalidate(FALSE);
 
-	if(!m_pApp->m_sSerialPort2.Compare(_T("GFD250 OK.")))
+	m_pApp->Gf_setSerialPort();
+#if 0
+	if (!m_pApp->m_sSerialPort2.Compare(_T("GFD250 OK.")))
 		m_nStatus[ST_GFD250] = TRUE;
 	else
 		m_nStatus[ST_GFD250] = FALSE;
 
 	//SetDlgItemText (IDC_STT_GFD250_VALUE, m_pApp->m_sSerialPort2);
 	GetDlgItem(IDC_STT_GFD250_VALUE)->Invalidate(FALSE);
-
-	if(!m_pApp->m_sSerialPort3.Compare(_T("Auto BCR OK.")))
+	if (!m_pApp->m_sSerialPort3.Compare(_T("Auto BCR OK.")))
 		m_nStatus[ST_BCR] = TRUE;
 	else
 		m_nStatus[ST_BCR] = FALSE;
@@ -436,13 +438,19 @@ void CInitialize::Lf_loadData()
 	//SetDlgItemText (IDC_STT_BCR_VALUE, m_pApp->m_sSerialPort3);
 	GetDlgItem(IDC_STT_BCR_VALUE)->Invalidate(FALSE);
 
-	if(!m_pApp->m_sSerialPort4.Compare(_T("LED BLU OK.")))
+	
+#else
+	m_nStatus[ST_GFD250] = TRUE;
+	m_nStatus[ST_BCR] = TRUE;
+#endif // 0
+	if (!m_pApp->m_sSerialPort4.Compare(_T("LED BLU OK.")))
 		m_nStatus[ST_LED_BLU] = TRUE;
 	else
 		m_nStatus[ST_LED_BLU] = FALSE;
 
 	//SetDlgItemText (IDC_STT_BLU_VALUE, m_pApp->m_sSerialPort4);
 	GetDlgItem(IDC_STT_BLU_VALUE)->Invalidate(FALSE);
+	
 
 	UpdateData(FALSE);
 

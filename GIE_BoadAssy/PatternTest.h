@@ -34,6 +34,8 @@ protected:
 	int m_nInspTackTime;
 	int m_nInspStartTime;
 
+	int m_nBluDutyOld;
+
 protected:
 	void RemoveMessageFromQueue();
 	void Lf_sendPtnData();

@@ -1,0 +1,14 @@
+[13:33:54 122]	[FullDisp] : Defect Initialize START
+[13:33:54 123]	[FullDisp] : Variable Reset Complete
+[13:33:54 156]	[FullDisp] : Screen Reform Complete
+[13:33:54 156]	[FullDisp] : Color Button Attach Complete
+[13:33:54 159]	[FullDisp] : Defect Button Initialize Complete
+[13:33:54 219]	[FullDisp] : Defect Button Position Set Complete
+[13:33:54 220]	Favorite Set : Start
+[13:33:54 221]	Favorite Set : New Button Make Complete
+[13:33:54 223]	Favorite Set : Result Button Update Complete
+[13:33:54 340]	Favorite Set : Display Button Reset Complete
+[13:33:54 340]	[FullDisp] : User Button Info Set Complete
+[13:33:54 342]	[FullDisp] : Button Color Set Complete
+[13:33:54 343]	[FullDisp] : Defect Initialize END
+[13:34:03 791]	GiMCode : DefectCodeSet Dialog Open

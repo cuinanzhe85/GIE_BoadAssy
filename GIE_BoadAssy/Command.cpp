@@ -170,17 +170,22 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorActive);						makePacket.Append(sdata);	// H Active
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerActive);						makePacket.Append(sdata);	// V Active
 
+	float fMclock = lpModelInfo->m_fTimingFreq;
+	if (lpModelInfo->m_nSignalType == 1)	// DP Type
+	{
+		fMclock = lpModelInfo->m_fTimingFreq / 2;
+	}
 	if(lpModelInfo->m_nPixelType == SINGLE)
 	{
-		sdata.Format(_T("%06.2f"), lpModelInfo->m_fTimingFreq);						makePacket.Append(sdata);	// M Clock
+		sdata.Format(_T("%06.2f"), fMclock);						makePacket.Append(sdata);	// M Clock
 	}
 	else if(lpModelInfo->m_nPixelType == DUAL)
 	{
-		sdata.Format(_T("%06.2f"), lpModelInfo->m_fTimingFreq / 2.f);				makePacket.Append(sdata);	// M Clock
+		sdata.Format(_T("%06.2f"), fMclock / 2.f);				makePacket.Append(sdata);	// M Clock
 	}
 	else if(lpModelInfo->m_nPixelType == QUAD)
 	{
-		sdata.Format(_T("%06.2f"), lpModelInfo->m_fTimingFreq / 4.f);				makePacket.Append(sdata);	// M Clock
+		sdata.Format(_T("%06.2f"), fMclock / 4.f);				makePacket.Append(sdata);	// M Clock
 	}
 
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorWidth);						makePacket.Append(sdata);	// H Width
@@ -198,33 +203,33 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%01d"), lpModelInfo->m_nClockRising);							makePacket.Append(sdata);	// Clock Rising
 	sdata.Format(_T("%04d"), lpModelInfo->m_nClockDelay);							makePacket.Append(sdata);	// Clock Delay
 
-	sdata.Format(_T("%05d"), lpModelInfo->m_fVoltVcc * 1000);						makePacket.Append(sdata);	// Vcc
-	sdata.Format(_T("%05d"), lpModelInfo->m_fVoltVdd * 1000);						makePacket.Append(sdata);	// Vdd
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVcc * 1000 + 0.5));						makePacket.Append(sdata);	// Vcc
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVdd * 1000 + 0.5));						makePacket.Append(sdata);	// Vdd
 	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbl
-	sdata.Format(_T("%05d"), lpModelInfo->m_fVoltVgh * 1000);						makePacket.Append(sdata);	// Vgh
-	sdata.Format(_T("%05d"), lpModelInfo->m_fVoltVgl * 1000);						makePacket.Append(sdata);	// Vgl
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVgh * 1000 + 0.5));						makePacket.Append(sdata);	// Vgh
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVgl * 1000 + 0.5));						makePacket.Append(sdata);	// Vgl
 	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbr
 
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVccMin * 1000);					makePacket.Append(sdata);	// Vcc low
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVccMax * 1000);					makePacket.Append(sdata);	// Vcc high
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVddMin * 1000);					makePacket.Append(sdata);	// Vdd low
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVddMax * 1000);					makePacket.Append(sdata);	// Vdd high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVccMin * 1000 + 0.5));					makePacket.Append(sdata);	// Vcc low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVccMax * 1000 + 0.5));					makePacket.Append(sdata);	// Vcc high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVddMin * 1000 + 0.5));					makePacket.Append(sdata);	// Vdd low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVddMax * 1000 + 0.5));					makePacket.Append(sdata);	// Vdd high
 	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbl low
 	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbl high
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVghMin * 1000);					makePacket.Append(sdata);	// Vgh low
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVghMax * 1000);					makePacket.Append(sdata);	// Vgh high
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVglMin * 1000);					makePacket.Append(sdata);	// Vgl low
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitVglMax * 1000);					makePacket.Append(sdata);	// Vgl high
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIccMin * 1000);					makePacket.Append(sdata);	// Icc low
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIccMax * 1000);					makePacket.Append(sdata);	// Icc high
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIddMin * 1000);					makePacket.Append(sdata);	// Idd low
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIddMax * 1000);					makePacket.Append(sdata);	// Idd high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVghMin * 1000 + 0.5));					makePacket.Append(sdata);	// Vgh low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVghMax * 1000 + 0.5));					makePacket.Append(sdata);	// Vgh high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVglMin * 1000 + 0.5));					makePacket.Append(sdata);	// Vgl low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVglMax * 1000 + 0.5));					makePacket.Append(sdata);	// Vgl high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIccMin * 1000 + 0.5));					makePacket.Append(sdata);	// Icc low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIccMax * 1000 + 0.5));					makePacket.Append(sdata);	// Icc high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIddMin * 1000 + 0.5));					makePacket.Append(sdata);	// Idd low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIddMax * 1000 + 0.5));					makePacket.Append(sdata);	// Idd high
 	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Ibl low
 	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Ibl high
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIghMin * 1000);					makePacket.Append(sdata);	// Igh low
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIghMax * 1000);					makePacket.Append(sdata);	// Igh high
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIglMin * 1000);					makePacket.Append(sdata);	// Igl low
-	sdata.Format(_T("%05d"), lpModelInfo->m_fLimitIglMax * 1000);					makePacket.Append(sdata);	// Igl high
+	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIghMin * 1000);					makePacket.Append(sdata);	// Igh low
+	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIghMax * 1000);					makePacket.Append(sdata);	// Igh high
+	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIglMin * 1000);					makePacket.Append(sdata);	// Igl low
+	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIglMax * 1000);					makePacket.Append(sdata);	// Igl high
 
 	// Power On Sequence
 	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType01);						makePacket.Append(sdata);	// Power On Seq Type 1
@@ -676,6 +681,14 @@ BOOL CCommand::Gf_getFirmwareVersion()
 
 	return bRtnCode;
 }
+BOOL CCommand::Gf_getFpgaeVersion()
+{
+	BOOL bRtnCode = FALSE;
+
+	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_FPGA_VER_READ, 0, NULL);
+
+	return bRtnCode;
+}
 
 
 BOOL CCommand::Gf_getPowerMeasure(int nID)
@@ -834,7 +847,7 @@ BOOL CCommand::Gf_CheckCableOpen()
 		{
 			char szData[50];
 			memcpy(szData, &gszudpRcvPacket[PACKET_PT_DATA], 10);
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 5; i++)
 			{
 				if (szData[i] != '0')
 				{
@@ -889,7 +902,7 @@ BOOL CCommand::Gf_getGfd250FpgaVersion()
 {
 	BOOL ret = FALSE;
 
-	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_GFD250_FPGA_VER_READ, 0, NULL);
+	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_FPGA_VER_READ, 0, NULL);
 	if (ret == TRUE)
 	{
 		char szData[50];

@@ -9,10 +9,10 @@
 #include "XImageInc/ximage.h"
 
 #define SIZE_OF_1PIXEL				3				// R/G/B/Dummy 4Byte
-#define NAMD_PAGE_SIZE				2048
+#define NAMD_PAGE_SIZE				2048	
 
 #define SEND_PAGE_SIZE				6//512(1MByte)				// 한번에 Send할 Nand Page수를 설정한다. (Min:1, Max:31)
-#define SEND_PACKET_SIZE			(NAMD_PAGE_SIZE*SEND_PAGE_SIZE)
+#define SEND_PACKET_SIZE			4096
 
 
 // CBmpDownload 대화 상자
@@ -59,6 +59,7 @@ BOOL CBmpDownload::OnInitDialog()
 	CDialog::OnInitDialog();
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	lpModelInfo = m_pApp->GetModelInfo();
+	lpWorkInfo = m_pApp->GetWorkInfo();
 
 	Lf_InitItemFont();
 	Lf_InitColorBrush();
@@ -332,6 +333,13 @@ void CBmpDownload::OnBnClickedBtnBmpDownloadStart()
 	GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("Ready"));
 	int nTotalCount = m_listBmpDownload.GetItemCount();
 	
+	BMPDOWNINFO		pBmpInfo;
+	BITMAPFILEHEADER bmpHeader;
+	int nHorResol, nVerResol;
+
+	nHorResol = lpModelInfo->m_nTimingHorActive;
+	nVerResol = lpModelInfo->m_nTimingVerActive;
+
 	CxImage* m_pImage;
 	m_pImage = new CxImage();
 	
@@ -346,24 +354,23 @@ void CBmpDownload::OnBnClickedBtnBmpDownloadStart()
 
 		status.Format(_T("%s - (%d / %d)"), sfilename, index + 1, nTotalCount);
 		GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(status);
-
+		sfilename.Append(_T(".bmp"));
+		sfilename.MakeUpper();
 		CString resizefilepath, filepath;
-		filepath.Format(_T(".\\Pattern\\BMP\\%s.bmp"), sfilename);
+		filepath.Format(_T(".\\Pattern\\BMP\\%s"), sfilename);
 
 		////////////////////////////////////////////////////////////////
 		// BMP를 해상도에 맞춰 사이즈 변경하고 새 파일로 저장한다.
 		DeleteFile(resizefilepath);	// 동일한 파일이 있으면 삭제한다.
 
-		resizefilepath.Format(_T(".\\Pattern\\BMP\\%s_%d_%d.~bmp"), sfilename, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+		resizefilepath.Format(_T(".\\Pattern\\BMP\\%s_%d_%d.~bmp"), sfilename, nHorResol, nVerResol);
 		
 		m_pImage->Load(filepath, CXIMAGE_FORMAT_BMP);
-		m_pImage->Resample(lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+		m_pImage->Resample(nHorResol, nVerResol);
 		m_pImage->Save(resizefilepath, CXIMAGE_FORMAT_BMP);
 		m_pImage->Destroy();
-		////////////////////////////////////////////////////////////////
-		// BMP File을 Read하여 Size를 가져온다.
-		/*BITMAPFILEHEADER bmpHeader;
 
+		// BMP File을 Read하여 Size를 가져온다.
 		HANDLE fd = CreateFile(resizefilepath, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (fd < 0)
 		{
@@ -371,40 +378,88 @@ void CBmpDownload::OnBnClickedBtnBmpDownloadStart()
 		}
 		DWORD len;
 		ReadFile(fd, (LPSTR)&bmpHeader, sizeof(bmpHeader), &len, NULL);
-		CloseHandle(fd);*/
-		if (sendBmpPtnInfo(index, sfilename) == FALSE)
+		CloseHandle(fd);
+
+		// BMP Download에 필요한 구제체 정보를 저장한다.
+		pBmpInfo.m_nBmpIndex = index;
+
+		pBmpInfo.m_sBmpFileName = sfilename;
+		pBmpInfo.m_sBmpFilePath = resizefilepath;
+		pBmpInfo.m_nBmpFileSize = bmpHeader.bfSize;
+
+		pBmpInfo.m_nLcmHActive = nHorResol;
+		pBmpInfo.m_nLcmVActive = nVerResol;
+
+		pBmpInfo.m_pProgress = &m_progBmpDownloadStatus;
+
+		if (Lf_startDownloadBMP(&pBmpInfo) == FALSE)
 		{
 			DeleteFile(resizefilepath);
-			GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Pattern Info Settting Fail"));
-			return;
-		}
-		if (sendBmpRawData(index,resizefilepath) == FALSE)
-		{
+			GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Download Fail"));
 			DeleteFile(resizefilepath);
-			GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Raw Data Download Fail"));
 			return;
 		}
 		DeleteFile(resizefilepath);
 	}
 	GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Download Complete"));
 }
-BOOL CBmpDownload::sendBmpPtnInfo(int index, CString filename)
+
+BOOL CBmpDownload::Lf_startDownloadBMP(LPBMPDOWNINFO pBmpInfo)
 {
-	char szFilename[20];
-	char szPacket[128];
-	int length;
-	filename.MakeUpper();
-	sprintf_s(szFilename, "%s.BMP", wchar_To_char(filename.GetBuffer(0)));
-	sprintf_s(szPacket, "%02d%04d%04d%03d%s", index, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive, filename.GetLength(), szFilename);
-	length = (int)strlen(szPacket);
-	
-	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DOWNLOAD_PTN_INFO, length, szPacket, TRUE, 2000);
+	if (Lf_sendBmpHeadData(pBmpInfo) == FALSE)
+	{
+		return FALSE;
+	}
+
+	if (Lf_sendBmpRawData(pBmpInfo) == FALSE)
+	{
+		return FALSE;
+	}
+
+	if (Lf_getDoneCheck() == FALSE)
+	{
+		return FALSE;
+	}
+
+	return TRUE;
 }
-BOOL CBmpDownload::sendBmpRawData(int index, CString sfilepath)
+BOOL CBmpDownload::Lf_sendBmpHeadData(LPBMPDOWNINFO pBmpInfo)
 {
+	BOOL bRet = FALSE;
+	CString sPacket;
+	char szName[256] = { 0, };
+	char szPacket[2048] = { 0, };
+	int nNameLen, nPacketLen;
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 0. BMP File NAME의 길이를 구한다.(한글/UNICODE 대응을 위하여char로 변환하여 길이를구한다.)
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// File Name이 255보다 크면 255까지 자른다.
+	if (pBmpInfo->m_sBmpFileName.GetLength() >= 255)
+	{
+		pBmpInfo->m_sBmpFileName = pBmpInfo->m_sBmpFileName.Left(255);
+	}
+
+	wchar_To_char(pBmpInfo->m_sBmpFileName.GetBuffer(0), szName);
+	nNameLen = (int)strlen(szName);
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 1. BMP File NAME을 먼저 전송한다.
+	sprintf_s(szPacket, "%02d%04d%04d%03d%s", pBmpInfo->m_nBmpIndex, pBmpInfo->m_nLcmHActive, pBmpInfo->m_nLcmVActive, nNameLen, szName);
+	nPacketLen = (int)strlen(szPacket);
+
+	bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DOWNLOAD_PTN_INFO, nPacketLen, szPacket, TRUE, 2000);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	return bRet;
+}
+BOOL CBmpDownload::Lf_sendBmpRawData(LPBMPDOWNINFO pBmpInfo)
+{
+	CString sdata;
+	int m_status;
 
 	BYTE tempStr[4096 * 3] = { 0, };
-	char sPacket[1024 * 64] = { 0, };
+	char sPacket[1024 * 8] = { 0, };
 	char stemp[20] = { 0, };
 
 	BITMAPFILEHEADER bmpHeader;
@@ -415,12 +470,10 @@ BOOL CBmpDownload::sendBmpRawData(int index, CString sfilepath)
 	BOOL ret = TRUE;
 	int	WidthRead, WidthCell, HeightCell;
 	int LineNo = 0, nandWriteAddr = 0;
+	int bmpIndex;
 	DWORD size, len;
 
-	int m_status = 0;
-
-	HANDLE fd = CreateFile(sfilepath, GENERIC_READ,
-		0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE fd = CreateFile(pBmpInfo->m_sBmpFilePath, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (fd < 0)
 	{
@@ -438,7 +491,7 @@ BOOL CBmpDownload::sendBmpRawData(int index, CString sfilepath)
 
 	size = bmpHeader.bfSize - sizeof(bmpHeader);
 	tDib = new char[size];
-	pRaw = new char[size];
+	pRaw = new char[size * 2];	// Dummy Pixel을 넣어야 하므로 실제 Size보다 크게 Buff를 잡는다.
 	if (!ReadFile(fd, tDib, size, &len, NULL))
 	{
 		CloseHandle(fd);
@@ -448,46 +501,57 @@ BOOL CBmpDownload::sendBmpRawData(int index, CString sfilepath)
 
 	pBitmapInfo = (LPBITMAPINFO)tDib;
 
-
-	//BMP 해상도
 	WidthCell = pBitmapInfo->bmiHeader.biWidth * 3;
 	HeightCell = pBitmapInfo->bmiHeader.biHeight;
 	WidthRead = WidthCell;
+
 	if (WidthCell % 4 != 0)
 		WidthRead += 4 - (WidthCell % 4);
 
-	//BMP Index
-	//bmpIndex = lpBmpDownInfo->m_nBmpIndex; // Protocol 확인후 사용 여부 결정.
+	bmpIndex = pBmpInfo->m_nBmpIndex;
 
-	m_progBmpDownloadStatus.SetPos(0);
+	if (pBmpInfo->m_pProgress != NULL)
+	{
+		pBmpInfo->m_pProgress->SetPos(0);
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 1. BMP 이미지를 반전하고 RGB의 순서를 변경한다.
-	int iptr = 0;
+	int iptr = 0, iptr_width = 0, hor = 0;
+
+	iptr_width = (pBitmapInfo->bmiHeader.biWidth * SIZE_OF_1PIXEL);
+
+	// point offset의 값을 256배수로 맞춘다.
+	while (1)
+	{
+		if ((iptr_width % 512) == 0)
+			break;
+		iptr_width++;
+	}
+
 	for (LineNo = 0; LineNo < pBitmapInfo->bmiHeader.biHeight; LineNo++)
 	{
 		// 1Line의 Pixel Data를 가져온다.(40은 BMP Header의 사이즈다.)
+		memset(tempStr, 0, sizeof(tempStr));
 		memcpy(tempStr, tDib + (WidthRead * (pBitmapInfo->bmiHeader.biHeight - 1 - LineNo)) + 40, WidthRead);
-		iptr = (pBitmapInfo->bmiHeader.biWidth * LineNo * SIZE_OF_1PIXEL);
+		iptr = (LineNo * iptr_width);
 
-		for (int hor = 0; hor < pBitmapInfo->bmiHeader.biWidth; hor++)
+		// BGR 순서를 RGB로 변경하고 Pixel Dummy를 추가한다.
+		for (hor = 0; hor < iptr_width; hor++)
 		{
-			// BGR 순서를 RGB로 변경한다.
-			pRaw[iptr + (hor * SIZE_OF_1PIXEL) + 0] = tempStr[(hor * SIZE_OF_1PIXEL) + 2];	// BGR to RGB : R
-			pRaw[iptr + (hor * SIZE_OF_1PIXEL) + 1] = tempStr[(hor * SIZE_OF_1PIXEL) + 1];	// BGR to RGB : G
-			pRaw[iptr + (hor * SIZE_OF_1PIXEL) + 2] = tempStr[(hor * SIZE_OF_1PIXEL) + 0];	// BGR to RGB : B
+			pRaw[iptr + (hor * SIZE_OF_1PIXEL) + 1] = tempStr[(hor * 3) + 0];	// BGR to RGB : R
+			pRaw[iptr + (hor * SIZE_OF_1PIXEL) + 0] = tempStr[(hor * 3) + 1];	// BGR to RGB : G
+			pRaw[iptr + (hor * SIZE_OF_1PIXEL) + 3] = tempStr[(hor * 3) + 2];	// BGR to RGB : B
+			pRaw[iptr + (hor * SIZE_OF_1PIXEL) + 2] = NULL;
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 2. BMP File RAW Data를 전송한다.
-	int nTotalPage = (pBitmapInfo->bmiHeader.biWidth * pBitmapInfo->bmiHeader.biHeight * SIZE_OF_1PIXEL) / SEND_PACKET_SIZE;
-	m_progBmpDownloadStatus.SetRange(0, nTotalPage);
-	int error_count = 0;
+	// 2. BMP File RAW Data를 전송한다.f
 	while (1)
 	{
 		// BMP write Packet 을 만든다.
-		sprintf_s(stemp, "%02d%08X", index, nandWriteAddr);			// BMP Index, NAND flash write address
+		sprintf_s(stemp, "%02d%08X", bmpIndex, nandWriteAddr);			// BMP Index, NAND flash write address
 		sPacket[0] = stemp[0];
 		sPacket[1] = stemp[1];
 		sPacket[2] = stemp[2];
@@ -499,37 +563,18 @@ BOOL CBmpDownload::sendBmpRawData(int index, CString sfilepath)
 		sPacket[8] = stemp[8];
 		sPacket[9] = stemp[9];
 
-		// BMP Packet의 마지막 나머지 Data 전송 부분인지 확인한다.
-		if ((nandWriteAddr + SEND_PACKET_SIZE) > (pBitmapInfo->bmiHeader.biWidth * pBitmapInfo->bmiHeader.biHeight * SIZE_OF_1PIXEL))
-		{
-			size = (pBitmapInfo->bmiHeader.biWidth * pBitmapInfo->bmiHeader.biHeight * SIZE_OF_1PIXEL) - nandWriteAddr;
-		}
-		else
-		{
-			size = SEND_PACKET_SIZE;
-		}
+		size = SEND_PACKET_SIZE;
 
 		// Packet size만큼 Data를 전송한다.
 		// +10은 Packet Head부분이다.
 		memcpy(&sPacket[10], &pRaw[nandWriteAddr], size);
 		size = size + (DWORD)strlen(stemp);
+		if (m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DOWNLOAD_RAW_DATA, size, sPacket,TRUE,2000) == FALSE)
+		{
+			ret = FALSE;
+			break;
+		}
 
-		if(m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DOWNLOAD_RAW_DATA, size, sPacket, TRUE, 20000) == FALSE)
-		{
-			// 3회연속 Packet Error 발생 시 Error Return 한다.
-			if (++error_count >= 3)
-			{
-				ret = FALSE;
-				break;
-			}
-			CString slog;
-			slog.Format(_T("BMP Download Error Count = %d"), ++error_count);
-			m_pApp->Gf_writeLogData(_T("<PG>"), slog);
-		}
-		else
-		{
-			error_count = 0;
-		}
 		// 다음에 Write할 NAND Address를 증가시킨다.
 		nandWriteAddr += SEND_PACKET_SIZE;
 
@@ -538,51 +583,44 @@ BOOL CBmpDownload::sendBmpRawData(int index, CString sfilepath)
 		ZeroMemory(stemp, sizeof(stemp));
 
 		// Progress Bar를 업데이트한다.
-// 		m_status = (nandWriteAddr*100) / (pBitmapInfo->bmiHeader.biWidth*pBitmapInfo->bmiHeader.biHeight*SIZE_OF_1PIXEL);
-// 		if(lpBmpDownInfo->m_pProgress != NULL)
-// 			lpBmpDownInfo->m_pProgress->SetPos(m_status);
-		m_progBmpDownloadStatus.SetPos(m_status++);
+		m_status = (nandWriteAddr * 100) / (iptr_width * pBitmapInfo->bmiHeader.biHeight);
+		if (pBmpInfo->m_pProgress != NULL)
+			pBmpInfo->m_pProgress->SetPos(m_status);
+
 
 		// 모든 Data를 전송했으면 Packet 전송을 종료한다.
-		if (nandWriteAddr >= (pBitmapInfo->bmiHeader.biWidth * pBitmapInfo->bmiHeader.biHeight * SIZE_OF_1PIXEL))
+		if (nandWriteAddr >= (iptr_width * pBitmapInfo->bmiHeader.biHeight))
 			break;
 
-		ProcessMessage();
+		//	ProcessMessage();
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 3. Progress
+	if (pBmpInfo->m_pProgress != NULL)
+	{
+		pBmpInfo->m_pProgress->SetPos(100);
+		pBmpInfo->m_pProgress = NULL;
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 5. Progress
-	m_progBmpDownloadStatus.SetPos(nTotalPage);
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 6. Release
+	// 4. Release
 	if (tDib)	delete tDib;
 	if (pRaw)	delete pRaw;
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 7. BMP File이 정상적으로 Download 되었을때 Done Check 한다.
-	if (ret == TRUE)
-	{
-		delayMS(100);
-		if (sendBmpDownloadDone() != TRUE)
-			return FALSE;
-	}
-
 	return ret;
 }
-BOOL CBmpDownload::sendBmpDownloadDone()
-{
 
-	if (m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DOWNLOAD_DONE_CHECK, 0, "", TRUE, 2000)==TRUE)
-	{
-		if (m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_RET] == '0')
-		{
-			if (m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA] == '1')
-			{
-				return TRUE;
-			}
-		}
-	}
-	return FALSE;
+BOOL CBmpDownload::Lf_getDoneCheck()
+{
+	int ma = 0, cnt = 0;
+
+	lpWorkInfo->m_bBmpDoneCheck = FALSE;
+
+	m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DOWNLOAD_DONE_CHECK, NULL, "");
+
+	if (lpWorkInfo->m_bBmpDoneCheck == TRUE)
+		return TRUE;
+	else
+		return FALSE;
 }

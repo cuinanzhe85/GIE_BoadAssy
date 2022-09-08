@@ -59,7 +59,7 @@ BOOL CPatternTest::OnInitDialog()
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_ON);
 	if (Lf_CableOpenCheck() == FALSE)
 	{
-		return FALSE;
+		CDialog::OnCancel();
 	}
 	Lf_sendPatternBluData();
 
@@ -322,6 +322,7 @@ HBRUSH CPatternTest::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 void CPatternTest::Lf_initVariable()
 {
+	m_nBluDutyOld = 0;
 	m_nSelNum=0;	
 	m_pApp->m_nOldVsync = 0;
 	m_pApp->pPtnIndex = &m_nSelNum;
@@ -428,7 +429,11 @@ BOOL CPatternTest::Lf_sendBluData()
 	if(lpSystemInfo->m_nLedBlPort == 0)
 		return TRUE;
 	int nBluDuty = (int)_ttoi(lpModelInfo->m_sLbPtnBlu[m_nSelNum]);
-
+	if (m_nBluDutyOld == nBluDuty)
+	{
+		return TRUE;
+	}
+	m_nBluDutyOld = nBluDuty;
 	CString strmsg;
 	strmsg.Format(_T("BLU Duty : %d"), nBluDuty);
 	Lf_PtnTestEventView(strmsg);
