@@ -36,7 +36,7 @@ protected:
 	void Lf_initVariable();
 	void Lf_updateCount();
 	bool Lf_getControlBdReady();
-	void Lf_checkPanelId();
+	BOOL Lf_checkPanelId();
 	bool Lf_startTest();
 	void Lf_openResult();
 	void Lf_createCount(int typ);

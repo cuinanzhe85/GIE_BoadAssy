@@ -111,6 +111,9 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nPowerOnSeqType12;
 	int m_nPowerOnSeqType13;
 	int m_nPowerOnSeqType14;
+	int m_nPowerOnSeqType15;
+	int m_nPowerOnSeqType16;
+	int m_nPowerOnSeqType17;
 	int m_nPowerOffSeqType01;
 	int m_nPowerOffSeqType02;
 	int m_nPowerOffSeqType03;
@@ -125,6 +128,9 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nPowerOffSeqType12;
 	int m_nPowerOffSeqType13;
 	int m_nPowerOffSeqType14;
+	int m_nPowerOffSeqType15;
+	int m_nPowerOffSeqType16;
+	int m_nPowerOffSeqType17;
 	int m_nPowerOnSeqDelay01;
 	int m_nPowerOnSeqDelay02;
 	int m_nPowerOnSeqDelay03;
@@ -139,6 +145,9 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nPowerOnSeqDelay12;
 	int m_nPowerOnSeqDelay13;
 	int m_nPowerOnSeqDelay14;
+	int m_nPowerOnSeqDelay15;
+	int m_nPowerOnSeqDelay16;
+	int m_nPowerOnSeqDelay17;
 	int m_nPowerOffSeqDelay01;
 	int m_nPowerOffSeqDelay02;
 	int m_nPowerOffSeqDelay03;
@@ -153,6 +162,9 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nPowerOffSeqDelay12;
 	int m_nPowerOffSeqDelay13;
 	int m_nPowerOffSeqDelay14;
+	int m_nPowerOffSeqDelay15;
+	int m_nPowerOffSeqDelay16;
+	int m_nPowerOffSeqDelay17;
 
 	float m_fTimingFreq;
 	int	m_nTimingHorActive;
@@ -170,6 +182,7 @@ typedef struct _ST_MODELSETINFO_{
 	float m_fVoltVdd;
 	float m_fVoltVgh;
 	float m_fVoltVgl;
+	float m_fVoltVbr;
 	float m_fLimitVccMax;
 	float m_fLimitVccMin;
 	float m_fLimitVddMax;
@@ -187,6 +200,10 @@ typedef struct _ST_MODELSETINFO_{
 	float m_fLimitIglMax;
 	float m_fLimitIglMin;
 	int	  m_nIccCheck;
+
+	float m_fVoltVcom1;
+	float m_fVoltVcom2;
+	float m_fVoltGamma[32];
 
 	BYTE gucFGColor;
 	BYTE gucLineColor;

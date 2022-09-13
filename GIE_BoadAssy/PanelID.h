@@ -25,10 +25,13 @@ protected:
 	LPSYSTEMINFO	lpSystemInfo;
 	LPINSPWORKINFO	lpWorkInfo;
 
+	void Lf_InitFont();
+
 public:
 	afx_msg void OnBnClickedOk();
 	CEdit m_edtPanelId;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
+	afx_msg void OnBnClickedCancel();
 };

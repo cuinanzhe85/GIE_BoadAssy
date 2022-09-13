@@ -449,6 +449,10 @@ void CPatternTest::Lf_sendPatternBluData()
 {
 	Lf_sendPtnData();
 	Lf_sendBluData();
+	if (Lf_PatternVoltageSetting() == FALSE)
+	{
+		CDialog::OnCancel();
+	}
 	if (Lf_PatternCurrentCheck() == FALSE)
 	{
 		CDialog::OnCancel();
@@ -1135,6 +1139,28 @@ BOOL CPatternTest::Lf_PatternLockTimeCheck()
 	else
 		m_pApp->m_nPatLock[m_nSelNum] = TRUE;
 
+	return TRUE;
+}
+BOOL CPatternTest::Lf_PatternVoltageSetting()
+{
+	float fVcc, fVdd;
+	fVcc = (float)_ttof(lpModelInfo->m_sLbPtnVcc[m_nSelNum]);
+	fVdd = (float)_ttof(lpModelInfo->m_sLbPtnVdd[m_nSelNum]);
+	if ((m_fPatternVccOld != fVcc) || (m_fPatternVddOld != fVdd))
+	{
+		m_fPatternVccOld = fVcc;
+		m_fPatternVddOld = fVdd;
+
+		char szPacket[128];
+		int length;
+		sprintf_s(szPacket, "%05d%05d%05d%05d%05d", fVcc, fVdd, 0, (int)(lpModelInfo->m_fVoltVgh * 1000 + 0.5), (int)(lpModelInfo->m_fVoltVgl * 1000 + 0.5));
+		length = (int)strlen(szPacket);
+		if (m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_VOLTAGE_SET, length, szPacket) == FALSE)
+		{
+			m_pApp->Gf_ShowMessageBox(_T("Pattern Voltage Setting Fail"));
+			return FALSE;
+		}
+	}
 	return TRUE;
 }
 BOOL CPatternTest::Lf_PatternCurrentCheck()

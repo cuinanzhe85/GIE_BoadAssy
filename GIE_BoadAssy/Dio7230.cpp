@@ -50,10 +50,10 @@ U32 CDIO7230::Dio_DI_ReadPort()
 void CDIO7230::Gf_setDioWrite(U32 ulDOut)
 {
 	DO_WritePort(DIO_CARD_NUM, 0, ulDOut);
-	delayMS(500);
+	delayMS(1000);
 	DO_WritePort(DIO_CARD_NUM, 0, DIO_OUT_RESET);
 }
-bool CDIO7230::Gf_getDIOJigArrive()
+bool CDIO7230::Gf_getDIOJigTilting()
 {
 	U32 dio_in;
 
@@ -62,7 +62,7 @@ bool CDIO7230::Gf_getDIOJigArrive()
 	if (DEBUG_PALLET_ARRIVE == 1)
 		return true;
 
-	if (dio_in & JIG_ARRIVE)
+	if (dio_in & DI_START_READY)
 	{
 		return true;
 	}
@@ -80,7 +80,7 @@ bool CDIO7230::Gf_getDIOTestStart()
 		return true;
 	}
 
-	if (dio_in & TEST_START)
+	if ((dio_in & DI_TEST_SWITCH1) && (dio_in & DI_TEST_SWITCH2))
 	{
 		return true;
 	}

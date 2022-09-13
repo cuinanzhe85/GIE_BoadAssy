@@ -22,7 +22,7 @@ public:
 	U32 Dio_DI_ReadPort();
 
 	void Gf_setDioWrite(U32 ulDOut);
-	bool Gf_getDIOJigArrive();
+	bool Gf_getDIOJigTilting();
 	bool Gf_getDIOTestStart();
 	bool Gf_getDIOJudgeOK();
 	bool Gf_getDIOJudgeNG();

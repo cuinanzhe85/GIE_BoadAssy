@@ -35,6 +35,8 @@ protected:
 	int m_nInspStartTime;
 
 	int m_nBluDutyOld;
+	float m_fPatternVccOld;
+	float m_fPatternVddOld;
 
 protected:
 	void RemoveMessageFromQueue();
@@ -53,6 +55,7 @@ protected:
 	void Lf_getPatternGrayLevel(CString strPattern, int* r_level, int* g_level, int* b_level);
 	BOOL Lf_PatternLockTimeCheck();
 	BOOL Lf_PatternCurrentCheck();
+	BOOL Lf_PatternVoltageSetting();
 	BOOL Lf_CableOpenCheck();
 
 	void Lf_PtnTestEventView(CString Event);

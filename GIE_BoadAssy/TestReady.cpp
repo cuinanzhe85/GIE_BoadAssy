@@ -81,39 +81,33 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 	{
 		KillTimer(1);
 
-		/*if(m_pApp->m_pDio7230->Gf_getDIOJigArrive())
+		if (m_pApp->m_pDio7230->Gf_getDIOJigTilting() == TRUE)
 		{
-			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("JIG ARRIVED"));
-*/
-			if(m_pApp->m_pDio7230->Gf_getDIOTestStart())
+			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("PANEL TILTING ON"));
+			if (m_pApp->m_pDio7230->Gf_getDIOTestStart())
 			{
 				GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST START SIGNAL ON"));
 
 				Lf_startTest();
-
-				SetTimer(1,100,NULL);
-
 			}
-			else
-			{
-				SetTimer(1,100,NULL);
-			}
-		/*}
-		else
-		{
-			SetTimer(1,100,NULL);
-		}	*/	
+		}
+		SetTimer(1, 100, NULL);
+		
 	}
 	else if(nIDEvent == TIMER_PID_CHECK)
 	{
-		KillTimer(TIMER_PID_CHECK);
-		if(lpWorkInfo->m_bPIDReadComplete==true)
-		{			
-			//m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_BCR_READ_OK);
-			m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> BCR READ OK"));
+		
+		/*if(lpWorkInfo->m_bPIDReadComplete==true)
+		{	
 			lpWorkInfo->m_bPIDReadComplete=false;
+		}*/
+		if (m_pApp->m_pDio7230->Dio_DI_ReadPort() & DI_BCR_READ_DONE)
+		{
+			KillTimer(TIMER_PID_CHECK);
+			if (Lf_checkPanelId() == FALSE)
+				SetTimer(TIMER_PID_CHECK, 100, NULL);
 		}
-		SetTimer(TIMER_PID_CHECK, 100, NULL);
+		
 	}
 
 	CDialog::OnTimer(nIDEvent);
@@ -301,7 +295,7 @@ bool CTestReady::Lf_getControlBdReady()
 	return TRUE;
 }
 
-void CTestReady::Lf_checkPanelId()
+BOOL CTestReady::Lf_checkPanelId()
 {
 	CString sdata=_T(""), strlog;
 	strlog.Format(_T("SEEK BCR [%s]"), lpWorkInfo->m_sReceivePID);
@@ -314,7 +308,8 @@ void CTestReady::Lf_checkPanelId()
 		strlog.Format(_T("PANEL ID LENGTH ERROR] LESS 9 [%s]"), lpWorkInfo->m_sPID);
 		m_pApp->Gf_ShowMessageBox(strlog);
 		CPanelID pidDlg;
-		pidDlg.DoModal();
+		if (pidDlg.DoModal() == IDCANCEL)
+			return FALSE;
 	}
 	else
 	{		
@@ -327,13 +322,15 @@ void CTestReady::Lf_checkPanelId()
 			m_pApp->Gf_ShowMessageBox(strlog);
 			lpWorkInfo->m_sPID.Empty();
 			CPanelID pidDlg;
-			pidDlg.DoModal();
+			if (pidDlg.DoModal() == IDCANCEL)
+				return FALSE;
 		}
 	}
 
 	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);	
 	m_pApp->m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);//pUiPorc->pCimNet->SetPanelId (pUiPorc->comm.curData.strUsePanelId.GetBuffer(0));
 	m_pApp->Gf_writeLogData(_T("<MES>"), lpWorkInfo->m_sPID);
+	return TRUE;
 }
 
 /*****************************************************************************************************************/
@@ -505,8 +502,7 @@ void CTestReady::Lf_createCount(int typ)
 bool CTestReady::Lf_startTest()
 {
 	BYTE dioRd=0;
-	CPatternTest ptnDlg;
-
+	
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("[DIO PLC -> PC] JIG IN - START PATTERN TEST"));
 
 	if(Lf_getControlBdReady() == false)
@@ -520,14 +516,15 @@ bool CTestReady::Lf_startTest()
 	// 	pUiPorc->comm.curData.iStartTest = SEQ_PTN_TEST_START;
 	// 	pUiPorc->comm.curData.strPtnTestInfo = "";
 	// 
-	if (m_pApp->m_bUserIdGieng != true && m_pApp->m_bUserIdPM != true)
+	/*if (m_pApp->m_bUserIdGieng != true && m_pApp->m_bUserIdPM != true)
 	{
 		Lf_checkPanelId();
-	}
+	}*/
 
 	delayMS(lpSystemInfo->m_nTestStartDelay);
 
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("Start Pattern Test"));
+	CPatternTest ptnDlg;
 	ptnDlg.DoModal();
 
 
@@ -539,6 +536,7 @@ bool CTestReady::Lf_startTest()
 	/*********************************************************************************************************************/
 	// after test initialize
 	Lf_setVariableAfter();
+	SetTimer(TIMER_PID_CHECK, 100, NULL);
 
 	return true;
 }

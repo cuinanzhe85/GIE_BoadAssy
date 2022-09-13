@@ -617,6 +617,9 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_12"), &lpModelInfo->m_nPowerOnSeqType12);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_13"), &lpModelInfo->m_nPowerOnSeqType13);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_14"), &lpModelInfo->m_nPowerOnSeqType14);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_15"), &lpModelInfo->m_nPowerOnSeqType15);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_16"), &lpModelInfo->m_nPowerOnSeqType16);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_17"), &lpModelInfo->m_nPowerOnSeqType17);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_01"), &lpModelInfo->m_nPowerOffSeqType01);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_02"), &lpModelInfo->m_nPowerOffSeqType02);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_03"), &lpModelInfo->m_nPowerOffSeqType03);
@@ -631,6 +634,9 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_12"), &lpModelInfo->m_nPowerOffSeqType12);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_13"), &lpModelInfo->m_nPowerOffSeqType13);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_14"), &lpModelInfo->m_nPowerOffSeqType14);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_15"), &lpModelInfo->m_nPowerOffSeqType15);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_16"), &lpModelInfo->m_nPowerOffSeqType16);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_OP_17"), &lpModelInfo->m_nPowerOffSeqType17);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_01"), &lpModelInfo->m_nPowerOnSeqDelay01);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_02"), &lpModelInfo->m_nPowerOnSeqDelay02);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_03"), &lpModelInfo->m_nPowerOnSeqDelay03);
@@ -645,6 +651,9 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_12"), &lpModelInfo->m_nPowerOnSeqDelay12);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_13"), &lpModelInfo->m_nPowerOnSeqDelay13);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_14"), &lpModelInfo->m_nPowerOnSeqDelay14);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_15"), &lpModelInfo->m_nPowerOnSeqDelay15);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_16"), &lpModelInfo->m_nPowerOnSeqDelay16);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_DELAY_17"), &lpModelInfo->m_nPowerOnSeqDelay17);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_01"), &lpModelInfo->m_nPowerOffSeqDelay01);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_02"), &lpModelInfo->m_nPowerOffSeqDelay02);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_03"), &lpModelInfo->m_nPowerOffSeqDelay03);
@@ -659,10 +668,25 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_12"), &lpModelInfo->m_nPowerOffSeqDelay12);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_13"), &lpModelInfo->m_nPowerOffSeqDelay13);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_14"), &lpModelInfo->m_nPowerOffSeqDelay14);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_15"), &lpModelInfo->m_nPowerOffSeqDelay15);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_16"), &lpModelInfo->m_nPowerOffSeqDelay16);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_17"), &lpModelInfo->m_nPowerOffSeqDelay17);
 
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_PULLUP"), &lpModelInfo->m_nI2cPullup);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_FREQ"), &lpModelInfo->m_nI2cFreq);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_LEVEL"), &lpModelInfo->m_nI2cLevel);
+
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VBR"), &lpModelInfo->m_fVoltVbr);
+
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VCOM1"), &lpModelInfo->m_fVoltVcom1);
+
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VCOM2"), &lpModelInfo->m_fVoltVcom2);
+
+	for (int i = 0; i < 32; i++)
+	{
+		strKey.Format(_T("GAMMA_CH%02d"), i + 1);
+		Read_ModelFile(modelName, _T("MODEL_INFO"), strKey, &lpModelInfo->m_fVoltGamma[i]);
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////// Pattern File 
 	lpModelInfo->m_nLbCnt = 0;

@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(CPanelID, CDialog)
 	ON_BN_CLICKED(IDOK, &CPanelID::OnBnClickedOk)
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDCANCEL, &CPanelID::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -45,7 +46,8 @@ BOOL CPanelID::OnInitDialog()
 	lpModelInfo		= m_pApp->GetModelInfo();
 	lpWorkInfo		= m_pApp->GetWorkInfo();
 
-	SetTimer(1, 100, NULL);
+	Lf_InitFont();
+	SetTimer(1, 100, NULL);	// EDIT Foucs set
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -56,7 +58,14 @@ void CPanelID::OnDestroy()
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
-
+void CPanelID::Lf_InitFont()
+{
+	CFont m_Font[2];
+	m_Font[0].CreateFont(24, 11, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	GetDlgItem(IDC_EDT_PID)->SetFont(&m_Font[0]);
+	GetDlgItem(IDOK)->SetFont(&m_Font[0]);
+	GetDlgItem(IDCANCEL)->SetFont(&m_Font[0]);
+}
 void CPanelID::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -73,7 +82,7 @@ void CPanelID::OnBnClickedOk()
 		return;
 	}
 
-	m_pApp->Gf_writeLogData(_T("<BCR>"), strPanelId.GetBuffer(0));
+	m_pApp->Gf_writeLogData(_T("<PID INPUT>"), strPanelId.GetBuffer(0));
 	wchar_To_char(strPanelId.GetBuffer(0), cbuff);
 	len = (int)strlen(cbuff);
 	for(i=0; i<len; i++)
@@ -110,4 +119,11 @@ void CPanelID::OnTimer(UINT_PTR nIDEvent)
 		m_edtPanelId.SetFocus();
 	}
 	CDialog::OnTimer(nIDEvent);
+}
+
+
+void CPanelID::OnBnClickedCancel()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CDialog::OnCancel();
 }
