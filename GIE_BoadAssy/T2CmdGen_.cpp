@@ -3,9 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-//#include "BoardAssySW.h"
 #include "T2CmdGen.h"
-
+#include "GIE_BoadAssy.h"
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -35,33 +34,18 @@ CT2CmdGen::~CT2CmdGen()
 	
 }
 
-int CT2CmdGen::isPatternType(CStringArray* sArray)
-{
-	int ret=PTN_NORMAL;
-	CString stmp;
-
-	stmp = sArray->GetAt(sArray->GetSize()-2);
-	if(stmp == _T("0"))
-	{
-		ret = PTN_UPGRADE;
-	}
-
-	// 0:T2  1:T2Upgrade
-	return ret;
-}
-
 CString CT2CmdGen::makeT2dataStrFromFile(CString pbdFilePath)
 {
 	CFile mFile;
 	CString strPatternPath;
 
-	strPatternPath.Format(_T(".\\Pattern\\%s.pdb"), pbdFilePath);
+	strPatternPath.Format(_T("%s.pdb"), pbdFilePath);
 
 	if( mFile.Open(strPatternPath, CFile::modeRead) == FALSE )
 	{
 		return _T("");
 	}
-
+	
 	WCHAR tmpBuff[4096] = {0};
 	mFile.Read((void*)tmpBuff, sizeof(tmpBuff));
 	CString tmpStr(tmpBuff);
@@ -70,7 +54,7 @@ CString CT2CmdGen::makeT2dataStrFromFile(CString pbdFilePath)
 }
 
 
-CString CT2CmdGen::makeT2PatternStr(CString dataStr, int width, int height)
+CString CT2CmdGen::makeT2PatternStr(int nPixelType, CString dataStr, int width, int height)
 {
 	CT2CmdGen* pObj = NULL;
 	pObj = new CT2CmdGen(width, height);
@@ -79,7 +63,7 @@ CString CT2CmdGen::makeT2PatternStr(CString dataStr, int width, int height)
 	int cnt = pObj->makeStringArray(dataStr);
 	if( cnt > 0 )
 	{
-		retStr = pObj->makeObjStr(dataStr);
+		retStr = pObj->makeObjStr(nPixelType, dataStr);
 	}
 
 	delete pObj;
@@ -87,7 +71,7 @@ CString CT2CmdGen::makeT2PatternStr(CString dataStr, int width, int height)
 	return retStr;
 }
 
-CString CT2CmdGen::makeObjStr(CString dataStr)
+CString CT2CmdGen::makeObjStr(int nPixelType, CString dataStr)
 {
 	CString retStr=_T("");
 
@@ -96,13 +80,13 @@ CString CT2CmdGen::makeObjStr(CString dataStr)
 	{
 		CString tmpStr("");
 		tmpStr = pbdData.GetAt(i);
-		retStr += makeSubStr(tmpStr, i);
+		retStr += makeSubStr(nPixelType, tmpStr, i);
 	}
 
 	return retStr;
 }
 
-CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
+CString CT2CmdGen::makeSubStr(int nPixelType, CString dataStr, int idx)
 {
 	CString retStr("");
 	CStringArray dStrAry;
@@ -117,7 +101,7 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		i = dataStr.Find(_T(","), i) + 1;
 		if( i == 0 )
 		{
-			if( dataStr.GetLength() >= oldI )
+			if( dataStr.GetLength() > oldI )
 			{
 				tmpStr = dataStr.Mid(oldI, dataStr.GetLength()-oldI);
 				dStrAry.Add(tmpStr);
@@ -203,14 +187,13 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 	////////////////////////////////////////////////////////////////////////// TA
 	else if( tmpStr == "TA" )	// CDrawCanvasY
 	{
-		CString strCode("");
-		CString str("");
-		CString strBuf("");
+		CString strCode=_T("");
+		CString str=_T("");
+		CString strBuf=_T("");
 
 		// Reading
-		int nPTNType=PTN_NORMAL;
 		int nCurPos = 1;
-		int nTotal  = (int)dStrAry.GetSize();
+		int nTotal = (int)dStrAry.GetSize();
 
 		int m_yindex = 0;
 		int m_xindex = 0;
@@ -218,11 +201,7 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		int endX = 0;
 		int nColorOpt = 0;
 		int m_Clr2 = 0;
-		CString Gradation("");
-		CString BitCtrl;
-
-
-		nPTNType = isPatternType(&dStrAry);
+		CString Gradation=_T("");
 
 		while(nCurPos < nTotal)
 		{
@@ -230,11 +209,10 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 				break;
 
 			tmpStr = dStrAry.GetAt(nCurPos++);
-			m_yindex = _tcstol(tmpStr, 0, 16);
+			m_yindex = wcstoul(tmpStr, 0, 16);
 
 			tmpStr = dStrAry.GetAt(nCurPos++);
-			m_xindex = _tcstol(tmpStr, 0, 16);
-
+			m_xindex = wcstoul(tmpStr, 0, 16);
 
 			if( m_xindex == 0 )
 			{
@@ -249,34 +227,49 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				endX = (int)String2Float(tmpStr, hResol);
 
+				if((endX % 4) != 0)
+				{
+					for(int i=0; i<16; i++)
+					{
+						endX += 1;
+						if( (endX % 4) == 0 )	break;
+					}
+				}
+
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				nColorOpt = _ttoi(tmpStr);
 
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				m_Clr2 = _tcstol(tmpStr, 0, 16);
-
-				//////////////////////////////////
-				//8k  확장 알고리즘
 				m_Clr2 &= 0xFFF0;
 				m_Clr2 |= nColorOpt&0x0F;
-				////////////////////////////////
 
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				Gradation = tmpStr;
 
-				if(nPTNType==PTN_UPGRADE)
-				{
-					tmpStr= dStrAry.GetAt(nCurPos++);
-					BitCtrl = tmpStr;
+				if(nPixelType==0)
+				{// Quad Model이고
+					if(endX != hResol)
+					{// CanvasX 마지막 좌표값이 아닐 경우.
+						while(endX%4)	endX--;
+					}
+				}
+				else if( (nPixelType==1) || (nPixelType==2) )
+				{// Dual Model
+					if(endX != hResol)
+					{// CanvasX 마지막 좌표값이 아닐 경우.
+						while(endX%2)	endX--;
+					}
 				}
 
+				// Store
+				//endX |= ((nColorOpt&0x0F) << 12);
 				str.Format(_T("%04X%04X%s"),
-							endX,
-							m_Clr2,
-							Gradation);
+					endX,
+					m_Clr2,
+					Gradation);
 
 				strBuf += str;
-
 			}
 			else if( m_xindex > 0 )
 			{
@@ -289,34 +282,49 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				endX = (int)String2Float(tmpStr, hResol);
 
+				if((endX % 4) != 0)
+				{
+					for(int i=0; i<16; i++)
+					{
+						endX += 1;
+						if( (endX % 4) == 0 )	break;
+					}
+				}
+
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				nColorOpt = _ttoi(tmpStr);
 
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				m_Clr2 = _tcstol(tmpStr, 0, 16);
-
-				//////////////////////////////////
-				//8k  확장 알고리즘
 				m_Clr2 &= 0xFFF0;
 				m_Clr2 |= nColorOpt&0x0F;
-				////////////////////////////////
 
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				Gradation = tmpStr;
 
-				if(nPTNType==PTN_UPGRADE)
-				{
-					tmpStr= dStrAry.GetAt(nCurPos++);
-					BitCtrl = tmpStr;
+				if(nPixelType==0)
+				{// Quad Model이고
+					if(endX != hResol)
+					{// CanvasX 마지막 좌표값이 아닐 경우.
+						while(endX%4)	endX--;
+					}
+				}
+				else if( (nPixelType==1) || (nPixelType==2) )
+				{// Dual
+					if(endX != hResol)
+					{// CanvasX 마지막 좌표값이 아닐 경우.
+						while(endX%2)	endX--;
+					}
 				}
 
 				// Store
+				//endX |= ((nColorOpt&0x0F) << 12);
 				str.Format(_T("%1X%02X%04X%04X%s"),
-							m_yindex,m_xindex,
-							endX,
-							m_Clr2,
-							Gradation);
-	
+					m_yindex,m_xindex,
+					endX,
+					m_Clr2,
+					Gradation);
+
 				strBuf += str;
 			}
 		}
@@ -326,15 +334,6 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 
 		retStr = strCode;
 	}
-	////////////////////////////////////////////////////////////////////////// BD
-	else if( tmpStr == "BD")
-	{
-		CString str=_T("");
-
-		str.Format(_T("BD%03d%s%s%s%s%s%s"), 21, dStrAry.GetAt(1), dStrAry.GetAt(2), dStrAry.GetAt(3), dStrAry.GetAt(4), dStrAry.GetAt(5), dStrAry.GetAt(6));
-		retStr = str;
-	}
-
 	////////////////////////////////////////////////////////////////////////// TD
 	else if( tmpStr == "TD" )	// CDrawChess
 	{
@@ -555,17 +554,9 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 
 		tmpStr = dStrAry.GetAt(2);
 		int x1 = (int)String2Float(tmpStr, hResol);
-
+		
 		tmpStr = dStrAry.GetAt(3);
 		int x2 = (int)String2Float(tmpStr, hResol);
-
-#if 1
-		// BMP Maker에서는 아래의 조건 사용.
-		if(y1 > vResol)		y1 = vResol;
-#else
-		// T2 PG의 Firmware에 전달할 경우 아래의 조건 사용.
-		if(y1 >= vResol)	y1 = vResol-1;
-#endif
 
 		str.Format(_T("LH%03d%04d%04d%04d"),17,y1,x1,x2);
 
@@ -580,17 +571,9 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 
 		tmpStr = dStrAry.GetAt(2);
 		int x1 = (int)String2Float(tmpStr, hResol);
-
+		
 		tmpStr = dStrAry.GetAt(3);
 		int y2 = (int)String2Float(tmpStr, vResol);
-
-#if 1
-		// BMP Maker에서는 아래의 조건 사용.
-		if(x1 > hResol)		x1 = hResol;
-#else
-		// T2 PG의 Firmware에 전달할 경우 아래의 조건 사용.
-		if(x1 >= hResol)	x1 = hResol-1;
-#endif
 
 		tmpStr = dStrAry.GetAt(4);
 		int m_FillType = _ttoi(tmpStr);
@@ -605,29 +588,23 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		CString str("");
 		tmpStr = dStrAry.GetAt(1);
 		int y1 = (int)String2Float(tmpStr, vResol);
+		if(y1 >= vResol)
+			y1 = vResol-1;
 
 		tmpStr = dStrAry.GetAt(2);
 		int x1 = (int)String2Float(tmpStr, hResol);
+		if(x1 >= hResol)
+			x1 = hResol-1;
 		
 		tmpStr = dStrAry.GetAt(3);
 		int y2 = (int)String2Float(tmpStr, vResol);
+		if(y2 >= vResol)
+			y2 = vResol-1;
 
 		tmpStr = dStrAry.GetAt(4);
 		int x2 = (int)String2Float(tmpStr, hResol);
-
-#if 1
-		// BMP Maker에서는 아래의 조건 사용.
-		if(y1 > vResol)		y1 = vResol;
-		if(x1 > hResol)		x1 = hResol;
-		if(y2 > vResol)		y2 = vResol;
-		if(x2 > hResol)		x2 = hResol;
-#else
-		// T2 PG의 Firmware에 전달할 경우 아래의 조건 사용.
-		if(y1 >= vResol)	y1 = vResol-1;
-		if(x1 >= hResol)	x1 = hResol-1;
-		if(y2 >= vResol)	y2 = vResol-1;
-		if(x2 >= hResol)	x2 = hResol-1;
-#endif
+		if(x2 >= hResol)
+			x2 = hResol-1;
 
 		tmpStr = dStrAry.GetAt(5);
 		int m_FillType = _ttoi(tmpStr);
@@ -685,30 +662,23 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		CString str("");
 		tmpStr = dStrAry.GetAt(1);
 		int y1 = (int)String2Float(tmpStr, vResol);
+		if(y1 >= vResol)
+			y1 = vResol-1;
 
 		tmpStr = dStrAry.GetAt(2);
 		int x1 = (int)String2Float(tmpStr, hResol);
+		if(x1 >= hResol)
+			x1 = hResol-1;
 		
 		tmpStr = dStrAry.GetAt(3);
 		int y2 = (int)String2Float(tmpStr, vResol);
+		if(y2 >= vResol)
+			y2 = vResol-1;
 
 		tmpStr = dStrAry.GetAt(4);
 		int x2 = (int)String2Float(tmpStr, hResol);
-
-#if 1
-		// BMP Maker에서는 아래의 조건 사용.
-		if(y1 > vResol)		y1 = vResol;
-		if(x1 > hResol)		x1 = hResol;
-		if(y2 > vResol)		y2 = vResol;
-		if(x2 > hResol)		x2 = hResol;
-#else
-		// T2 PG의 Firmware에 전달할 경우 아래의 조건 사용.
-		if(y1 >= vResol)	y1 = vResol-1;
-		if(x1 >= hResol)	x1 = hResol-1;
-		if(y2 >= vResol)	y2 = vResol-1;
-		if(x2 >= hResol)	x2 = hResol-1;
-#endif
-
+		if(x2 >= hResol)
+			x2 = hResol-1;
 
 		tmpStr = dStrAry.GetAt(5);
 		int m_fillopt = _ttoi(tmpStr);
@@ -721,8 +691,6 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 	else if( tmpStr == "LW" )	// CLine Window
 	{
 		CString str("");
-		int m_opt=0;
-
 		tmpStr = dStrAry.GetAt(1);
 		int x1 = (int)String2Float(tmpStr, hResol);
 		if(x1 >= hResol)
@@ -743,15 +711,35 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		if(y2 >= vResol)
 			y2 = vResol-1;
 
-		if(dStrAry.GetCount()==6)
-		{
-			tmpStr = dStrAry.GetAt(5);
-			m_opt = _ttoi(tmpStr);
-		}
+		tmpStr = dStrAry.GetAt(5);
+		int m_opt = _ttoi(tmpStr);
 
 		str.Format(_T("LW%03d%04d%04d%04d%04d%01d"),22,x1,y1,x2,y2,m_opt);
 
 		retStr = str;
+	}
+	////////////////////////////////////////////////////////////////////////// BS
+	else if( tmpStr == "BS" )	// CDrawMyString
+	{
+		CString str("");
+		tmpStr = dStrAry.GetAt(1);
+		int y1 = (int)String2Float(tmpStr, vResol);
+
+		tmpStr = dStrAry.GetAt(2);
+		int x1 = (int)String2Float(tmpStr, hResol);
+		
+		tmpStr = dStrAry.GetAt(3);
+		int y2 = (int)String2Float(tmpStr, vResol);
+
+		tmpStr = dStrAry.GetAt(4);
+		int x2 = (int)String2Float(tmpStr, hResol);
+
+		tmpStr = dStrAry.GetAt(6);
+
+		str.Format(_T("%04d%04d%04d%04d%s"),y1,x1,y2,x2,tmpStr);
+		tmpStr.Format(_T("BS%03d%s"), str.GetLength()+5, str);
+
+		retStr = tmpStr;
 	}
 	////////////////////////////////////////////////////////////////////////// RV
 	else if( tmpStr == "RV" )	// CDrawVRepeat
@@ -791,29 +779,7 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		tmpStr.Format(_T("BM%03d%s"), str.GetLength()+5, str);
 
 		retStr = tmpStr;
-	}
-	////////////////////////////////////////////////////////////////////////// BS
-	else if( tmpStr == "BS" )	// CDrawMyString
-	{
-		CString str("");
-		tmpStr = dStrAry.GetAt(1);
-		int y1 = (int)String2Float(tmpStr, vResol);
-
-		tmpStr = dStrAry.GetAt(2);
-		int x1 = (int)String2Float(tmpStr, hResol);
-
-		tmpStr = dStrAry.GetAt(3);
-		int y2 = (int)String2Float(tmpStr, vResol);
-
-		tmpStr = dStrAry.GetAt(4);
-		int x2 = (int)String2Float(tmpStr, hResol);
-
-		tmpStr = dStrAry.GetAt(6);
-
-		str.Format(_T("%04d%04d%04d%04d%s"),y1,x1,y2,x2,tmpStr);
-		tmpStr.Format(_T("BS%03d%s"), str.GetLength()+5, str);
-
-		retStr = tmpStr;
+		m_pApp->m_nBMtoggle = 'M';
 	}
 	////////////////////////////////////////////////////////////////////////// EV (Expand VLine)
 	else if( tmpStr == "EV" )	// CDrawVLine
@@ -821,18 +787,24 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		CString str("");
 		tmpStr = dStrAry.GetAt(1);
 		int y1 = (int)String2Float(tmpStr, vResol);
-		if(y1 > vResol)		y1 = vResol;
-		else if(y1 < 0)		y1 = 0;
+		if(y1 >= vResol)
+			y1 = vResol-1;
+		else if(y1 < 0)
+			y1 = 0;
 		
 		tmpStr = dStrAry.GetAt(2);
 		int x1 = (int)String2Float(tmpStr, hResol);
-		if(x1 > hResol)		x1 = hResol-1;
-		else if(x1 < 0)		x1 = 0;
+		if(x1 >= hResol)
+			x1 = hResol-1;
+		else if(x1 < 0)
+			x1 = 0;
 		
 		tmpStr = dStrAry.GetAt(3);
 		int y2 = (int)String2Float(tmpStr, vResol);
-		if(y2 > vResol)		y2 = vResol;
-		else if(y2 < 0)		y2 = 0;
+		if(y2 >= vResol)
+			y2 = vResol-1;
+		else if(y2 < 0)
+			y2 = 0;
 		
 		tmpStr = dStrAry.GetAt(4);
 		int m_FillType = _ttoi(tmpStr);
@@ -849,19 +821,25 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		CString str("");
 		tmpStr = dStrAry.GetAt(1);
 		int y1 = (int)String2Float(tmpStr, vResol);
-		if(y1 > vResol)		y1 = vResol;
-		else if(y1 < 0)		y1 = 0;
+		if(y1 >= vResol)
+			y1 = vResol-1;
+		else if(y1 < 0)
+			y1 = 0;
 		
 		tmpStr = dStrAry.GetAt(2);
 		int x1 = (int)String2Float(tmpStr, hResol);
-		if(x1 > hResol)		x1 = hResol;
-		else if(x1 < 0)		x1 = 0;
+		if(x1 >= hResol)
+			x1 = hResol-1;
+		else if(x1 < 0)
+			x1 = 0;
 		
 		tmpStr = dStrAry.GetAt(3);
 		int x2 = (int)String2Float(tmpStr, hResol);
-		if(x2 > hResol)		x2 = hResol-1;
-		else if(x2 < 0)		x2 = 0;
-
+		if(x2 >= hResol)
+			x2 = hResol-1;
+		else if(x2 < 0)
+			x2 = 0;
+		
 		str.Format(_T("%04d%04d%04d%s%s%s"),y1,x1,x2,dStrAry.GetAt(4),dStrAry.GetAt(5),dStrAry.GetAt(6));
 		tmpStr.Format(_T("EH%03d%s"), str.GetLength()+5, str);
 		
@@ -897,103 +875,6 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		str.Format(_T("%04d%04d%04d%04d%01d%s%s%s"),y1,x1,y2,x2,m_fillopt,dStrAry.GetAt(6),dStrAry.GetAt(7),dStrAry.GetAt(8));
 		tmpStr.Format(_T("ER%03d%s"), str.GetLength()+5, str);
 		
-		retStr = tmpStr;
-	}
-	////////////////////////////////////////////////////////////////////////// CI (Calibration Pattern, AMI+CIC)
-	else if( tmpStr == "CI" )	// Calibration Information, AMI+CIC
-	{
-		CString str("");
-
-		if(dStrAry.GetCount() < 14)	return _T("");
-
-		tmpStr = dStrAry.GetAt(1);
-		WORD y0_start	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(2);
-		WORD y0_end		= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(3);
-		WORD y1_start	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(4);
-		WORD y1_end		= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(5);
-		WORD y2_start	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(6);
-		WORD y2_end		= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(7);
-		WORD y3_start	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(8);
-		WORD y3_end		= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(9);
-		WORD x_start	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(10);
-		WORD x_end		= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(11);
-		WORD box_width	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(12);
-		WORD box_height	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(13);
-		WORD x_gap		= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(14);
-		WORD y_gap		= _ttoi(tmpStr);
-
-
-		str.Format(_T("%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X%04X"), y0_start, y1_start, y2_start, y3_start, y0_end, y1_end, y2_end, y3_end, x_start, x_end, box_width, box_height, x_gap, y_gap);
-		tmpStr.Format(_T("CI%03d%s"), str.GetLength()+5, str);
-
-		retStr = tmpStr;
-	}
-	////////////////////////////////////////////////////////////////////////// CV (Calibration Vertical Line Pattern, AMI+CIC)
-	else if( tmpStr == "CV" )	// Calibration Vertical Line Draw, AMI+CIC
-	{
-		CString str("");
-		tmpStr = dStrAry.GetAt(1);
-		int x_start	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(2);
-		int y_start	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(3);
-		int y_end	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(4);
-		int width	= _ttoi(tmpStr);
-
-		str.Format(_T("%04d%04d%04d%04d"), x_start, y_start, y_end, width);
-		tmpStr.Format(_T("CV%03d%s"), str.GetLength()+5, str);
-
-		retStr = tmpStr;
-	}
-	////////////////////////////////////////////////////////////////////////// CV (Calibration Horizontal Line Pattern, AMI+CIC)
-	else if( tmpStr == "CH" )	// Calibration Horizontal Line Draw, AMI+CIC
-	{
-		CString str("");
-		tmpStr = dStrAry.GetAt(1);
-		int x_start	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(2);
-		int y_start	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(3);
-		int x_end	= _ttoi(tmpStr);
-
-		tmpStr = dStrAry.GetAt(4);
-		int width	= _ttoi(tmpStr);
-
-		str.Format(_T("%04d%04d%04d%04d"), x_start, y_start, x_end, width);
-		tmpStr.Format(_T("CH%03d%s"), str.GetLength()+5, str);
-
 		retStr = tmpStr;
 	}
 	////////////////////////////////////////////////////////////////////////// BM
@@ -1044,110 +925,7 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		str.Format(_T("CBG%s%s%s"), dStrAry.GetAt(1), dStrAry.GetAt(2), dStrAry.GetAt(3));
 		retStr = str;
 	}
-	else if( tmpStr == "SH" )	// H Scroll
-	{
-		CString str("");
-		int nstep1=0,nDirction=0,nResolution=0,interval=0, mode=0, step=1, surfacePosition=0, tmp=0;
 
-		nstep1=(int)_ttoi(dStrAry.GetAt(1));
-
-		nDirction=(int)_ttoi(dStrAry.GetAt(2));
-
-		tmpStr = dStrAry.GetAt(3);
-		nResolution = (int)String2Float(tmpStr, hResol);
-
-		interval=(int)_ttoi(dStrAry.GetAt(4));
-
-		mode=(int)_ttoi(dStrAry.GetAt(5));
-
-		step=(int)_ttoi(dStrAry.GetAt(6));
-		if(step < 1)		step = 1;
-		else if(step > 255)	step = 255;
-
-		tmpStr = dStrAry.GetAt(7);
-		tmp = _ttoi(tmpStr.Left(tmpStr.GetLength()-1));
-		if(tmp == 0)		tmpStr.Format(_T("1%%"));
-		else if(tmp > 50)	tmpStr.Format(_T("50%%"));
-
-		if(nDirction == 0)
-		{
-			surfacePosition = (int)String2Float(tmpStr, hResol);
-		}
-		else
-		{	
-			int position = _ttoi(tmpStr.Left(tmpStr.GetLength()-1));
-			tmpStr.Format(_T("%d%%"), (100-position));
-			surfacePosition = (int)String2Float(tmpStr, hResol);
-		}
-
-		if(mode == 1)// full line이면 shape도 면으로 된 패턴 파일이라도 line으로 바까준다.
-		{
-			if(nstep1 == 0)	nstep1=1;
-		}
-		str.Format(_T("SH%01d%01d%04d%03d%01d%03d%04d"),nstep1,nDirction, nResolution,interval, mode, step, surfacePosition);//면이냐 라인이냐, 좌에서우냐 우에서 좌냐, active영역, interval
-		retStr=str;
-	}
-	else if( tmpStr == "SV" )	// V Scroll
-	{
-		CString str("");
-		int nstep1=0,nDirction=0,nResolution=0,interval=0, mode=0, step=1, surfacePosition=0, tmp=0;
-
-		nstep1=(int)_ttoi(dStrAry.GetAt(1));
-
-		nDirction=(int)_ttoi(dStrAry.GetAt(2));
-
-		tmpStr = dStrAry.GetAt(3);
-		nResolution = (int)String2Float(tmpStr, vResol);
-
-		interval=(int)_ttoi(dStrAry.GetAt(4));
-
-		mode=(int)_ttoi(dStrAry.GetAt(5));
-
-		step=(int)_ttoi(dStrAry.GetAt(6));
-
-		if(step < 1)		step = 1;
-		else if(step > 255)	step = 255;
-
-		tmpStr = dStrAry.GetAt(7);
-		tmp = _ttoi(tmpStr.Left(tmpStr.GetLength()-1));
-		if(tmp == 0)		tmpStr.Format(_T("1%%"));
-		else if(tmp > 50)	tmpStr.Format(_T("50%%"));
-
-		if(nDirction == 0)
-		{
-			surfacePosition = (int)String2Float(tmpStr, vResol);
-		}
-		else
-		{	
-			int position = _ttoi(tmpStr.Left(tmpStr.GetLength()-1));
-			tmpStr.Format(_T("%d%%"), (100-position));
-			surfacePosition = (int)String2Float(tmpStr, vResol);
-		}
-
-		if(mode == 1)// full line이면 shape도 면으로 된 패턴 파일이라도 line으로 바까준다.
-		{
-			if(nstep1 == 0)	nstep1=1;
-		}
-
-		str.Format(_T("SV%01d%01d%04d%03d%01d%03d%04d"),nstep1,nDirction, nResolution,interval, mode, step, surfacePosition);//면이냐 라인이냐, 상에서하냐 하에서 상이냐, active영역, interval
-		retStr=str;
-	}
-	else if (tmpStr == "CP")	//AMI Calibration Defect Position drawing
-	{
-		CString str("");
-
-		int figure = (int)_ttoi(dStrAry.GetAt(1));
-
-		int fontUse = (int)_ttoi(dStrAry.GetAt(2));
-
-		int hor = (int)_ttoi(dStrAry.GetAt(3));
-
-		int ver = (int)_ttoi(dStrAry.GetAt(4));
-
-		str.Format(_T("CP%03d%02d%01d%04d%04d%s%s%s"), 28, figure, fontUse, hor, ver, dStrAry.GetAt(5), dStrAry.GetAt(6), dStrAry.GetAt(7));
-
-		retStr = str;
-	}
 	return retStr;
 }
 

@@ -155,23 +155,23 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 
 	int nInterface = 0;
 	int nMode = 0;
-	int nBitsSwap = lpModelInfo->m_nLcmInfoBitsSwap << 4;
-	int nHsyncPolarity = lpModelInfo->m_nHSyncPolarity;
+	int nBitsSwap = lpModelInfo->m_nLcmInfoBitsSwap << 5;
+	int nHsyncPolarity = lpModelInfo->m_nHSyncPolarity<<1;
 	int nVsyncPolarity = lpModelInfo->m_nVSyncPolarity;
 
 	sdata.Format(_T("INFO"));														makePacket.Append(sdata);
 
-	if(lpModelInfo->m_nPixelType == SINGLE)			nInterface=3;
-	else if(lpModelInfo->m_nPixelType == DUAL)		nInterface=2;
-	else if(lpModelInfo->m_nPixelType == QUAD)		nInterface=0;
+	if(lpModelInfo->m_nPixelType == SINGLE)			nInterface=0;
+	else if(lpModelInfo->m_nPixelType == DUAL)		nInterface=1;
+	else if(lpModelInfo->m_nPixelType == QUAD)		nInterface=2;
 
-	sdata.Format(_T("%02X"), (nInterface | nMode | nBitsSwap));						makePacket.Append(sdata);	// MODE
+	sdata.Format(_T("%02X"), (nInterface | nBitsSwap));						makePacket.Append(sdata);	// MODE
 	sdata.Format(_T("%01X"), (nHsyncPolarity | nVsyncPolarity));					makePacket.Append(sdata);	// Polarity
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorActive);						makePacket.Append(sdata);	// H Active
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerActive);						makePacket.Append(sdata);	// V Active
 
 	float fMclock = lpModelInfo->m_fTimingFreq;
-	if (lpModelInfo->m_nSignalType == 1)	// DP Type
+	if (lpModelInfo->m_nSignalType == 1)	// DP Type ÀÏ¶§ MCLOCK/2
 	{
 		fMclock = lpModelInfo->m_fTimingFreq / 2;
 	}
@@ -205,7 +205,7 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVcc * 1000 + 0.5));			makePacket.Append(sdata);	// Vcc
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVdd * 1000 + 0.5));			makePacket.Append(sdata);	// Vdd
-	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbl
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVbl * 1000 + 0.5));			makePacket.Append(sdata);	// Vbl
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVgh * 1000 + 0.5));			makePacket.Append(sdata);	// Vgh
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVgl * 1000 + 0.5));			makePacket.Append(sdata);	// Vgl
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fVoltVbr * 1000 + 0.5));			makePacket.Append(sdata);	// Vbr
@@ -222,8 +222,8 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVccMax * 1000 + 0.5));		makePacket.Append(sdata);	// Vcc high
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVddMin * 1000 + 0.5));		makePacket.Append(sdata);	// Vdd low
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVddMax * 1000 + 0.5));		makePacket.Append(sdata);	// Vdd high
-	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbl low
-	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Vbl high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVblMin * 1000 + 0.5));		makePacket.Append(sdata);	// Vbl low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVblMax * 1000 + 0.5));		makePacket.Append(sdata);	// Vbl high
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVghMin * 1000 + 0.5));		makePacket.Append(sdata);	// Vgh low
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVghMax * 1000 + 0.5));		makePacket.Append(sdata);	// Vgh high
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitVglMin * 1000 + 0.5));		makePacket.Append(sdata);	// Vgl low
@@ -232,12 +232,12 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIccMax * 1000 + 0.5));		makePacket.Append(sdata);	// Icc high
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIddMin * 1000 + 0.5));		makePacket.Append(sdata);	// Idd low
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIddMax * 1000 + 0.5));		makePacket.Append(sdata);	// Idd high
-	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Ibl low
-	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// Ibl high
-	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIghMin * 1000);				makePacket.Append(sdata);	// Igh low
-	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIghMax * 1000);				makePacket.Append(sdata);	// Igh high
-	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIglMin * 1000);				makePacket.Append(sdata);	// Igl low
-	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIglMax * 1000);				makePacket.Append(sdata);	// Igl high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIblMin * 1000 + 0.5));		makePacket.Append(sdata);	// Ibl low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIblMax * 1000 + 0.5));		makePacket.Append(sdata);	// Ibl high
+	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIghMin * 1000 + 0.5);		makePacket.Append(sdata);	// Igh low
+	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIghMax * 1000 + 0.5);		makePacket.Append(sdata);	// Igh high
+	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIglMin * 1000 + 0.5);		makePacket.Append(sdata);	// Igl low
+	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIglMax * 1000 + 0.5);		makePacket.Append(sdata);	// Igl high
 
 	// Power On Sequence
 	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType01);						makePacket.Append(sdata);	// Power On Seq Type 1
@@ -375,9 +375,8 @@ CString CCommand::MakeT2PtnDataGFD250(CString strPtnName, BOOL bHotKeyFlags, BOO
 	strTmp.Empty();
 	strFG.Empty();
 
-	strTmp.Format(_T(".\\PATTERN\\%s"), strPtnName);
-	strTmp = CT2CmdGen::makeT2dataStrFromFile(strTmp);
-	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nPixelType, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+	strTmp = CT2CmdGen::makeT2dataStrFromFile(strPtnName);
+	strTmp = CT2CmdGen::makeT2PatternStr(strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 
 	lpData = strTmp;
 #if 0
@@ -432,9 +431,8 @@ CString CCommand::MakeT2PtnFusingData(CString strPtnName, BOOL bHotKeyFlags, BOO
 	strTmp.Empty();
 	strFG.Empty();
 
-	strTmp.Format(_T(".\\PATTERN\\%s"), strPtnName);
-	strTmp = CT2CmdGen::makeT2dataStrFromFile(strTmp);
-	strTmp = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nPixelType, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+	strTmp = CT2CmdGen::makeT2dataStrFromFile(strPtnName);
+	strTmp = CT2CmdGen::makeT2PatternStr(strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 
 	lpData = strTmp;
 #if 0
@@ -618,9 +616,8 @@ CString CCommand::Lf_ModifyPtn_RGB(CString strPtnName, CString lpData, int nPtnI
 CString CCommand::Gf_makePGPatternString(CString strPtnName)
 {
 	CString strTmp, retString;
-	strTmp.Format(_T(".\\PATTERN\\%s"), strPtnName);
-	strTmp = CT2CmdGen::makeT2dataStrFromFile(strTmp);
-	retString = CT2CmdGen::makeT2PatternStr(lpModelInfo->m_nPixelType, strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+	strTmp = CT2CmdGen::makeT2dataStrFromFile(strPtnName);
+	retString = CT2CmdGen::makeT2PatternStr(strTmp, lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
 	return retString;
 }
 BOOL CCommand::Gf_setPGInfoPatternName(CString strPtnName, BOOL bHotKeyFlags, BOOL bHkeyFlags)
@@ -646,7 +643,7 @@ BOOL CCommand::Gf_setBmpPtnDisplay(CString bmpname)
 {
 	char szPacket[50];
 	int length;
-	wchar_To_char(bmpname.GetBuffer(0), szPacket);
+	sprintf_s(szPacket, "%03d%s", bmpname.GetLength(), wchar_To_char(bmpname.GetBuffer(0)));
 	length = (int)strlen(szPacket);
 	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_BMP_DISPLAY, length, szPacket);
 }

@@ -308,7 +308,6 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpSystemInfo->m_nI2CClock=0;
 	lpSystemInfo->m_nPGSystemType=0;
 	lpSystemInfo->m_nPgPort=0;
-	lpSystemInfo->m_nGfd250Port=0;
 	lpSystemInfo->m_nAutoBcrPort=0;
 	lpSystemInfo->m_nLedBlPort=0;
 	lpSystemInfo->m_sModelDnPath=_T("");
@@ -337,7 +336,6 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpSystemInfo->sEasLocalSubject.Empty();
 	lpSystemInfo->sEasRemoteSubject.Empty();
 
-	lpModelInfo->m_nGfd250 = 0;
 	lpModelInfo->m_nEdidUse=0;
 	lpModelInfo->m_nEdidAddr=0;
 	lpModelInfo->m_nEdidLine=0;
@@ -483,7 +481,6 @@ void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 	Read_SysIniFile(_T("SYSTEM"),		_T("I2C_FREQ"),						&lpSystemInfo->m_nI2CClock);
 	Read_SysIniFile(_T("SYSTEM"),		_T("PG_TYPE"),						&lpSystemInfo->m_nPGSystemType);
 	Read_SysIniFile(_T("SYSTEM"),		_T("IRDA_PORT"),					&lpSystemInfo->m_nPgPort);
-	Read_SysIniFile(_T("SYSTEM"),		_T("GFD250_PORT"),					&lpSystemInfo->m_nGfd250Port);
 	Read_SysIniFile(_T("SYSTEM"),		_T("AUTO_BCR_PORT"),				&lpSystemInfo->m_nAutoBcrPort);
 	Read_SysIniFile(_T("SYSTEM"),		_T("LED_BL_PORT"),					&lpSystemInfo->m_nLedBlPort);
 	Read_SysIniFile(_T("SYSTEM"),		_T("MODEL_FILE_PATH"),				&lpSystemInfo->m_sModelDnPath);
@@ -565,7 +562,6 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SPI_MODE"),				&lpModelInfo->m_nSpiMode);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SPI_LEVEL"),			&lpModelInfo->m_nSpiLevel);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BLU_MIN"),				&lpModelInfo->m_nBluMin);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("GFD250"),				&lpModelInfo->m_nGfd250);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("CABLE_OPEN_USE"),		&lpModelInfo->m_nCableOpenUse);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SHORT_TEST_USE"),		&lpModelInfo->m_nShortTestUse);
 	
@@ -589,14 +585,16 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGL_LOW_LIMIT"),		&lpModelInfo->m_fLimitIglMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIghMax);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_LOW_LIMIT"),		&lpModelInfo->m_fLimitIghMin);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("IBL_HIGH_LIMIT"), &lpModelInfo->m_fLimitIblMax);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("IBL_LOW_LIMIT"), &lpModelInfo->m_fLimitIblMin);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VBL_HIGH_LIMIT"), &lpModelInfo->m_fLimitVblMax);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VBL_LOW_LIMIT"), &lpModelInfo->m_fLimitVblMin);
 
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_TYPE"),			&lpModelInfo->m_nSignalType);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_BIT"),			&lpModelInfo->m_nSignalBit);
-	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("LG_DISM"),				&lpModelInfo->m_nLGDISMSelect);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BIT_SELECT"),			&lpModelInfo->m_nBitSel);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("PIXEL_TYPE"), &lpModelInfo->m_nPixelType);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("BITSWAP"), &lpModelInfo->m_nLcmInfoBitsSwap);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_DELAY"), &lpModelInfo->m_nLcmInfoBitsSwap);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_DELAY"), &lpModelInfo->m_nClockDelay);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_RISING"), &lpModelInfo->m_nClockRising);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("HSYNC_POLARITY"), &lpModelInfo->m_nHSyncPolarity);
@@ -677,6 +675,7 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_LEVEL"), &lpModelInfo->m_nI2cLevel);
 
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VBR"), &lpModelInfo->m_fVoltVbr);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VBL"), &lpModelInfo->m_fVoltVbl);
 
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VCOM1"), &lpModelInfo->m_fVoltVcom1);
 
@@ -796,47 +795,109 @@ BOOL CGIE_BoadAssyApp::Gf_loadPatternFile()
 	int nLoof=1;	
 	int i=0;
 
-	strDatafolder.Format(_T(".\\Pattern\\*.pdb"));
-	hSearch = FindFirstFile(strDatafolder, &wfd);
+	CString strError = _T("");
+	CString sLogcal[200], sBmp[200];
+	int nLogcalIndex=0, nBmpIndex = 0;
 
-	if (hSearch != INVALID_HANDLE_VALUE)
-	{		
-		if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+	for (i = 0; !lpModelInfo->m_sLbPtnName[i].IsEmpty(); i++)
+	{
+		if (lpModelInfo->m_sLbPtnName[i].Find(_T(".BMP")) != -1)
 		{
-			for(i=0; !lpModelInfo->m_sLbPtnName[i].IsEmpty(); i++)
-			{	
-				strFileName.Format(_T("%s.PDB"), lpModelInfo->m_sLbPtnName[i]);
-				while(nLoof)
-				{					
-					strNFileName.Format(_T("%s"), wfd.cFileName);	strNFileName.MakeUpper();
-					if(strFileName.Compare(strNFileName))
+			sBmp[nBmpIndex] = lpModelInfo->m_sLbPtnName[i];
+			nBmpIndex++;
+		}
+		else
+		{
+			sLogcal[nLogcalIndex] = lpModelInfo->m_sLbPtnName[i];
+			nLogcalIndex++;
+		}
+	}
+	if (nLogcalIndex > 0)
+	{
+		strDatafolder.Format(_T(".\\Pattern\\*.pdb"));
+		hSearch = FindFirstFile(strDatafolder, &wfd);
+
+		if (hSearch != INVALID_HANDLE_VALUE)
+		{
+			if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+			{
+				for (i = 0; !sLogcal[i].IsEmpty(); i++)
+				{
+					strFileName.Format(_T("%s.PDB"), sLogcal[i]);
+					while (nLoof)
 					{
-						nLoof = FindNextFile (hSearch, &wfd);
-						if(nLoof==0) // end of Folder
+						strNFileName.Format(_T("%s"), wfd.cFileName);	strNFileName.MakeUpper();
+						if (strFileName.Compare(strNFileName))
 						{
-							m_sPtnFile.Format(_T("%s"), _T("Pattern file load NG!!!"));
+							nLoof = FindNextFile(hSearch, &wfd);
+							if (nLoof == 0) // end of Folder
+							{
+								strError.Append(strFileName);
+								strError.Append(_T(" "));
+								hSearch = FindFirstFile(strDatafolder, &wfd);
+								FindClose(hSearch);
+								return FALSE;
+							}
+						}
+						else if (!strFileName.Compare(strNFileName))
+						{
 							hSearch = FindFirstFile(strDatafolder, &wfd);
-							FindClose (hSearch);
-							return FALSE;
+							break;
 						}
 					}
-					else if(!strFileName.Compare(strNFileName))
-					{
-						m_sPtnFile.Format(_T("%s"),_T("Pattern file load OK!!!"));
-						hSearch = FindFirstFile(strDatafolder, &wfd);
-						break;
-					}
+					if (nLoof == 0) break;
 				}
-				if(nLoof==0) break;
+			}
+		}
+	}
+	if (nBmpIndex > 0)
+	{
+		strDatafolder.Format(_T(".\\Pattern\\BMP\\*.BMP"));
+		hSearch = FindFirstFile(strDatafolder, &wfd);
+
+		if (hSearch != INVALID_HANDLE_VALUE)
+		{
+			if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+			{
+				for (i = 0; !sBmp[i].IsEmpty(); i++)
+				{
+					strFileName.Format(_T("%s"), sBmp[i]);
+					while (nLoof)
+					{
+						strNFileName.Format(_T("%s"), wfd.cFileName);	strNFileName.MakeUpper();
+						if (strFileName.Compare(strNFileName))
+						{
+							nLoof = FindNextFile(hSearch, &wfd);
+							if (nLoof == 0) // end of Folder
+							{
+								strError.Append(strFileName);
+								strError.Append(_T(" "));
+								hSearch = FindFirstFile(strDatafolder, &wfd);
+								FindClose(hSearch);
+								return FALSE;
+							}
+						}
+						else if (!strFileName.Compare(strNFileName))
+						{
+							hSearch = FindFirstFile(strDatafolder, &wfd);
+							break;
+						}
+					}
+					if (nLoof == 0) break;
+				}
 			}
 		}
 	}
 
-	if( (hSearch == INVALID_HANDLE_VALUE) || ( lpModelInfo->m_sLbPtnName[0].IsEmpty() ) )
+	if( (strError.IsEmpty()==FALSE) || ( lpModelInfo->m_sLbPtnName[0].IsEmpty() ) )
 	{
 		m_sPtnFile.Format(_T("%s"),_T("Pattern file load NG!!!"));
 		//AfxMessageBox(_T("Error Pattern File"), MB_ICONSTOP);
 		return FALSE;
+	}
+	else
+	{
+		m_sPtnFile.Format(_T("%s"), _T("Pattern file load OK!!!"));
 	}
 	return TRUE;
 }
@@ -853,17 +914,6 @@ void CGIE_BoadAssyApp::Gf_setSerialPort()
 	m_pPort->ClosePort6();
 
 	delayMS(100);
-
-	if(lpSystemInfo->m_nGfd250Port)
-	{
-		strPort.Format(_T("COM%d"), lpSystemInfo->m_nGfd250Port);
-		if(!(m_pPort->OpenPort2(strPort, (DWORD) 115200, NULL)))	m_sSerialPort2.Format(_T("%s"),_T("GFD250 NG."));
-		else														m_sSerialPort2.Format(_T("%s"),_T("GFD250 OK."));	
-	}
-	else
-	{
-		m_sSerialPort2.Format(_T("%s"),_T("Unuse"));
-	}
 
 	if(lpSystemInfo->m_nAutoBcrPort)
 	{
@@ -1078,7 +1128,9 @@ void CGIE_BoadAssyApp::Lf_parsingMeasureAllPower(CString strAckData)
 		nstartLength += 5;
 		m_nLcmPInfo[PINFO_IDD] = (int)_ttoi(strAckData.Mid(nstartLength, 5));
 		nstartLength += 5; // VBL
+		m_nLcmPInfo[PINFO_VBL] = (int)_ttoi(strAckData.Mid(nstartLength, 5));
 		nstartLength += 5; // IBL
+		m_nLcmPInfo[PINFO_IBL] = (int)_ttoi(strAckData.Mid(nstartLength, 5));
 		nstartLength += 5;
 		m_nLcmPInfo[PINFO_VGH] = (int)_ttoi(strAckData.Mid(nstartLength, 5));
 		nstartLength += 5;

@@ -213,6 +213,7 @@
     <ClCompile Include="MessageError.cpp" />
     <ClCompile Include="MessageQuestion.cpp" />
     <ClCompile Include="ModelChange.cpp" />
+    <ClCompile Include="ModelGamma.cpp" />
     <ClCompile Include="ModelInfo.cpp" />
     <ClCompile Include="PanelID.cpp" />
     <ClCompile Include="PatternTest.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="GIE_BoadAssy.h" />
     <ClInclude Include="GIE_BoadAssyDlg.h" />
     <ClInclude Include="Maint.h" />
+    <ClInclude Include="ModelGamma.h" />
     <ClInclude Include="SocketUDP.h" />
     <ClInclude Include="XImageInc\ximage.h" />
     <ClInclude Include="_GlobalDefine.h" />

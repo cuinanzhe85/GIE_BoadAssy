@@ -58,6 +58,7 @@ BEGIN_MESSAGE_MAP(CMaint, CDialog)
 	ON_BN_CLICKED(IDC_BTN_POWER_ON, &CMaint::OnBnClickedBtnPowerOn)
 	ON_BN_CLICKED(IDC_BTN_POWER_OFF, &CMaint::OnBnClickedBtnPowerOff)
 	ON_CBN_SELCHANGE(IDC_CMB_PATTERN_LIST, &CMaint::OnCbnSelchangeCmbPatternList)
+	ON_BN_CLICKED(IDC_BTN_CLOSE, &CMaint::OnBnClickedBtnClose)
 END_MESSAGE_MAP()
 
 
@@ -81,8 +82,7 @@ BOOL CMaint::OnInitDialog()
 void CMaint::OnDestroy()
 {
 	CDialog::OnDestroy();
-	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF); 
-	m_pApp->m_pDio7230->Dio_DO_WritePort(DIO_OUT_RESET);
+	
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
 
@@ -164,7 +164,9 @@ void CMaint::OnTimer(UINT_PTR nIDEvent)
 	}
 	if (nIDEvent == 10)
 	{
+		KillTimer(10);
 		Lf_getPowerMeasureAll();
+		SetTimer(10, 1000, NULL);
 	}
 	CDialog::OnTimer(nIDEvent);
 }
@@ -327,7 +329,7 @@ void CMaint::OnBnClickedBtnPowerOff()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	KillTimer(10);
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
-	CString sdata = _T("";)
+	CString sdata = _T("");
 	GetDlgItem(IDC_STT_MT_VCC_MEASURE)->SetWindowText(sdata);
 	GetDlgItem(IDC_STT_MT_VDD_MEASURE)->SetWindowText(sdata);
 	GetDlgItem(IDC_STT_MT_VGH_MEASURE)->SetWindowText(sdata);
@@ -356,6 +358,11 @@ BOOL CMaint::Lf_getPowerMeasureAll()
 				sdata.Format(_T("VDD Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
+			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VBL)
+			{
+				sdata.Format(_T("VBL Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVblMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
 				sdata.Format(_T("ICC Over Current (High Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
@@ -364,6 +371,11 @@ BOOL CMaint::Lf_getPowerMeasureAll()
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
 				sdata.Format(_T("IDD Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE]/1000.f);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+			}
+			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IBL)
+			{
+				sdata.Format(_T("IBL Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIblMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
@@ -401,6 +413,11 @@ BOOL CMaint::Lf_getPowerMeasureAll()
 				sdata.Format(_T("VDD Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
+			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VBL)
+			{
+				sdata.Format(_T("VBL Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVblMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
 				sdata.Format(_T("ICC Low Current (Low Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
@@ -409,6 +426,11 @@ BOOL CMaint::Lf_getPowerMeasureAll()
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
 				sdata.Format(_T("IDD Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+			}
+			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IBL)
+			{
+				sdata.Format(_T("IBL Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIblMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
@@ -433,25 +455,28 @@ BOOL CMaint::Lf_getPowerMeasureAll()
 			}
 			return FALSE;
 		}
+		sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VCC] / 1000.f));
+		GetDlgItem(IDC_STT_MT_VCC_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VDD] / 1000.f));
+		GetDlgItem(IDC_STT_MT_VDD_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VBL] / 1000.f));
+		GetDlgItem(IDC_STT_MT_VBL_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VGH] / 1000.f));
+		GetDlgItem(IDC_STT_MT_VGH_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VGL] / 1000.f));
+		GetDlgItem(IDC_STT_MT_VGL_MEASURE)->SetWindowText(sdata);
+
+		sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_ICC] / 1000.f));
+		GetDlgItem(IDC_STT_MT_ICC_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IDD] / 1000.f));
+		GetDlgItem(IDC_STT_MT_IDD_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IBL] / 1000.f));
+		GetDlgItem(IDC_STT_MT_IBL_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGH] / 1000.f));
+		GetDlgItem(IDC_STT_MT_IGH_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGL] / 1000.f));
+		GetDlgItem(IDC_STT_MT_IGL_MEASURE)->SetWindowText(sdata);
 	}
-
-	sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VCC] /1000.f));
-	GetDlgItem(IDC_STT_MT_VCC_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VDD] / 1000.f));
-	GetDlgItem(IDC_STT_MT_VDD_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VGH] / 1000.f));
-	GetDlgItem(IDC_STT_MT_VGH_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VGL] / 1000.f));
-	GetDlgItem(IDC_STT_MT_VGL_MEASURE)->SetWindowText(sdata);
-
-	sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_ICC] / 1000.f));
-	GetDlgItem(IDC_STT_MT_ICC_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IDD] / 1000.f));
-	GetDlgItem(IDC_STT_MT_IDD_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGH] / 1000.f));
-	GetDlgItem(IDC_STT_MT_IGH_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGL] / 1000.f));
-	GetDlgItem(IDC_STT_MT_IGL_MEASURE)->SetWindowText(sdata);
 
 
 	return TRUE;
@@ -462,10 +487,18 @@ void CMaint::OnCbnSelchangeCmbPatternList()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString strPtnName;
 	m_cmbMtPatternList.GetWindowTextW(strPtnName);
+	
 	strPtnName.MakeUpper();
+	
+	m_pApp->m_pCommand->Gf_setPGInfoPatternName(strPtnName);
+}
 
-	/*if (lpModelInfo->m_nGfd250 == TRUE)
-		m_pApp->m_pCommand->Gf_setPGInfoGFD250(strPtnName);
-	else*/
-		m_pApp->m_pCommand->Gf_setPGInfoPatternName(strPtnName);
+
+void CMaint::OnBnClickedBtnClose()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	GetDlgItem(IDC_BTN_CLOSE)->EnableWindow(FALSE);
+	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
+	m_pApp->m_pDio7230->Dio_DO_WritePort(DIO_OUT_RESET);
+	CDialog::OnOK();
 }

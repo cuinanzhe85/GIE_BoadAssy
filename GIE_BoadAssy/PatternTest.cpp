@@ -50,21 +50,19 @@ BOOL CPatternTest::OnInitDialog()
 	lpWorkInfo		= m_pApp->GetWorkInfo();
 
 	m_pApp->Gf_writeLogData(_T("<WND>"), _T("PatternTest Dialog OPEN"));
-
+	
 	Lf_initVariable();
 	Lf_initFontSet();
 	Lf_insertListColum();
 	Lf_insertListItem();
 	
+	m_pApp->m_pCommand->Gf_setPGInfoPatternName(_T("BLACK"));
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_ON);
 	if (Lf_CableOpenCheck() == FALSE)
 	{
 		CDialog::OnCancel();
 	}
 	Lf_sendPatternBluData();
-
-	if (lpModelInfo->m_nGfd250 == ON)
-		m_pApp->m_pCommand->Gf_serGfd250SignalOnOff(ON);
 
 	SetTimer(1,200,NULL);	// EDID
 	SetTimer(2,1000,NULL);	// Power Measure
@@ -104,8 +102,6 @@ void CPatternTest::OnDestroy()
 		m_Font[i].DeleteObject();
 	}
 	m_pApp->m_pCommand->Gf_setBluDuty(lpModelInfo->m_nBluMin);
-	if (lpModelInfo->m_nGfd250 == ON)
-		m_pApp->m_pCommand->Gf_serGfd250SignalOnOff(ON);
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
 }
 
@@ -239,6 +235,8 @@ HBRUSH CPatternTest::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_ICC_MEA_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_VDD_MEA_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_IDD_MEA_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_VBL_MEA_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_IBL_MEA_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGH_MEA_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGL_MEA_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_IGH_MEA_TIT)
@@ -253,6 +251,8 @@ HBRUSH CPatternTest::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_VDD_MEASURE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_ICC_MEASURE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_IDD_MEASURE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_VBL_MEASURE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_IBL_MEASURE)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGH_MEASURE)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGL_MEASURE)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_IGH_MEASURE)
@@ -345,6 +345,8 @@ void CPatternTest::Lf_initFontSet()
 	GetDlgItem(IDC_STT_ICC_MEA_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VDD_MEA_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_IDD_MEA_TIT)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_VBL_MEA_TIT)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_IBL_MEA_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VGH_MEA_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VGL_MEA_TIT)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_IGH_MEA_TIT)->SetFont(&m_Font[1]);
@@ -354,6 +356,8 @@ void CPatternTest::Lf_initFontSet()
 	GetDlgItem(IDC_STT_ICC_MEASURE)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VDD_MEASURE)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_IDD_MEASURE)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_VBL_MEASURE)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_IBL_MEASURE)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VGH_MEASURE)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_VGL_MEASURE)->SetFont(&m_Font[1]);
 	GetDlgItem(IDC_STT_IGH_MEASURE)->SetFont(&m_Font[1]);
@@ -418,10 +422,7 @@ void CPatternTest::Lf_sendPtnData()
 		, lpModelInfo->m_sLbPtnVsync[m_nSelNum].GetBuffer(0) );
 
 	Lf_PtnTestEventView(sdata);
-	if(lpModelInfo->m_nGfd250 == TRUE)
-		m_pApp->m_pCommand->Gf_setPGInfoGFD250(lpModelInfo->m_sLbPtnName[m_nSelNum]);
-	else
-		m_pApp->m_pCommand->Gf_setPGInfoPatternName(lpModelInfo->m_sLbPtnName[m_nSelNum]);
+	m_pApp->m_pCommand->Gf_setPGInfoPatternName(lpModelInfo->m_sLbPtnName[m_nSelNum]);
 }
 
 BOOL CPatternTest::Lf_sendBluData()
@@ -547,6 +548,11 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 				sdata.Format(_T("VDD Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
+			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VBL)
+			{
+				sdata.Format(_T("VBL Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVblMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
 				sdata.Format(_T("ICC Over Current (High Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
@@ -555,6 +561,11 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
 				sdata.Format(_T("IDD Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+			}
+			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IBL)
+			{
+				sdata.Format(_T("IBL Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIblMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
@@ -593,6 +604,11 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 				sdata.Format(_T("VDD Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
+			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VBL)
+			{
+				sdata.Format(_T("VBL Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVblMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
 				sdata.Format(_T("ICC Low Current (Low Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
@@ -601,6 +617,11 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
 				sdata.Format(_T("IDD Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
+			}
+			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IBL)
+			{
+				sdata.Format(_T("IBL Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIblMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
@@ -626,26 +647,28 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 			CDialog::OnCancel();
 			return FALSE;
 		}
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_VCC] / 1000.f));
+		GetDlgItem(IDC_STT_VCC_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_VDD] / 1000.f));
+		GetDlgItem(IDC_STT_VDD_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_VBL] / 1000.f));
+		GetDlgItem(IDC_STT_VBL_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_VGH] / 1000.f));
+		GetDlgItem(IDC_STT_VGH_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_VGL] / 1000.f));
+		GetDlgItem(IDC_STT_VGL_MEASURE)->SetWindowText(sdata);
+
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_ICC] / 1000.f));
+		GetDlgItem(IDC_STT_ICC_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_IDD] / 1000.f));
+		GetDlgItem(IDC_STT_IDD_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_IBL] / 1000.f));
+		GetDlgItem(IDC_STT_IBL_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGH] / 1000.f));
+		GetDlgItem(IDC_STT_IGH_MEASURE)->SetWindowText(sdata);
+		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGL] / 1000.f));
+		GetDlgItem(IDC_STT_IGL_MEASURE)->SetWindowText(sdata);
 	}
-	
-	sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VCC]/1000.f));
-	GetDlgItem(IDC_STT_VCC_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VDD] / 1000.f));
-	GetDlgItem(IDC_STT_VDD_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VGH] / 1000.f));
-	GetDlgItem(IDC_STT_VGH_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VGL] / 1000.f));
-	GetDlgItem(IDC_STT_VGL_MEASURE)->SetWindowText(sdata);
-
-	sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_ICC] / 1000.f));
-	GetDlgItem(IDC_STT_ICC_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IDD] / 1000.f));
-	GetDlgItem(IDC_STT_IDD_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGH] / 1000.f));
-	GetDlgItem(IDC_STT_IGH_MEASURE)->SetWindowText(sdata);
-	sdata.Format(_T("%.3f A"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGL] / 1000.f));
-	GetDlgItem(IDC_STT_IGL_MEASURE)->SetWindowText(sdata);
-
 	return TRUE;
 }
 
@@ -799,10 +822,7 @@ BOOL CPatternTest::Lf_cmpEdidData()
 	else								
 		size = 256;
 
-	if(lpModelInfo->m_nGfd250 == TRUE)
-		m_bRtnCode = m_pApp->m_pCommand->Gf_getGfd250I2CReadPacketSend(0, size, 1/*I2C_CMD_EDID_READ*/);
-	else
-		m_bRtnCode = m_pApp->m_pCommand->Gf_getEEPRomReadData();
+	m_bRtnCode = m_pApp->m_pCommand->Gf_getEEPRomReadData();
 
 	return m_bRtnCode;
 }
@@ -1052,14 +1072,7 @@ void CPatternTest::Lf_setPatternGrayLevel(int wParam)
 	strPacket.Format(_T("CFG%04X%04X%04X"), R_Val, G_Val, B_Val);
 
 	BOOL ret;
-	if (lpModelInfo->m_nGfd250 == TRUE)
-	{
-		ret = m_pApp->m_pCommand->Gf_setGFD250InfoPatternString(strPacket, FALSE);
-	}
-	else
-	{
-		ret = m_pApp->m_pCommand->Gf_setPGInfoPatternString(strPacket, FALSE);
-	}
+	ret = m_pApp->m_pCommand->Gf_setPGInfoPatternString(strPacket, FALSE);
 	// 7. Pattern Data를 PG에 전송한다.
 	if (ret == TRUE)
 	{
@@ -1153,7 +1166,7 @@ BOOL CPatternTest::Lf_PatternVoltageSetting()
 
 		char szPacket[128];
 		int length;
-		sprintf_s(szPacket, "%05d%05d%05d%05d%05d", fVcc, fVdd, 0, (int)(lpModelInfo->m_fVoltVgh * 1000 + 0.5), (int)(lpModelInfo->m_fVoltVgl * 1000 + 0.5));
+		sprintf_s(szPacket, "%05d%05d%05d%05d%05d", (int)(fVcc * 1000 + 0.5), (int)(fVdd * 1000 + 0.5), (int)(lpModelInfo->m_fVoltVbl * 1000 + 0.5), (int)(lpModelInfo->m_fVoltVgh * 1000 + 0.5), (int)(lpModelInfo->m_fVoltVgl * 1000 + 0.5));
 		length = (int)strlen(szPacket);
 		if (m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_VOLTAGE_SET, length, szPacket) == FALSE)
 		{

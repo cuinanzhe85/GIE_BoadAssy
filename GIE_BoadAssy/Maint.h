@@ -61,4 +61,5 @@ public:
 	afx_msg void OnBnClickedBtnPowerOff();
 	afx_msg void OnCbnSelchangeCmbPatternList();
 	CComboBox m_cmbMtPatternList;
+	afx_msg void OnBnClickedBtnClose();
 };

@@ -261,6 +261,7 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_SIGNALBIT_VALUE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_VCC_VALUE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_VDD_VALUE)
+		|| (pWnd->GetDlgCtrlID() == IDC_STT_VBL_VALUE)
 		|| (pWnd->GetDlgCtrlID() == IDC_STT_VGH_VALUE)
 		|| (pWnd->GetDlgCtrlID() == IDC_STT_VGL_VALUE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_ICC_VALUE)
@@ -286,6 +287,7 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		if ((pWnd->GetDlgCtrlID() == IDC_STT_VCC_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_VDD_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_VBL_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGH_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_VGL_TIT))
 		{
@@ -432,23 +434,21 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	else if (lpModelInfo->m_nSignalBit == SIG_12BIT)
 		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("12 Bit"));
 
-	sdata.Format(_T("%.3fV"), lpModelInfo->m_fVoltVcc);
+	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVcc);
 	GetDlgItem(IDC_STT_VCC_VALUE)->SetWindowText(sdata);
 	
-	sdata.Format(_T("%.3fV"), lpModelInfo->m_fVoltVdd);
+	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVdd);
 	GetDlgItem(IDC_STT_VDD_VALUE)->SetWindowText(sdata);
 
-	sdata.Format(_T("%.3fV"), lpModelInfo->m_fVoltVgh);
+	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVbl);
+	GetDlgItem(IDC_STT_VBL_VALUE)->SetWindowText(sdata);
+
+	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVgh);
 	GetDlgItem(IDC_STT_VGH_VALUE)->SetWindowText(sdata);
 
-	sdata.Format(_T("-%.3fV"), lpModelInfo->m_fVoltVgl);
+	sdata.Format(_T("-%.3f"), lpModelInfo->m_fVoltVgl);
 	GetDlgItem(IDC_STT_VGL_VALUE)->SetWindowText(sdata);
 
-	sdata.Format(_T("%.2fA"), lpModelInfo->m_fLimitIccMax);
-	GetDlgItem(IDC_STT_ICC_VALUE)->SetWindowText(sdata);
-
-	sdata.Format(_T("%.2fA"), lpModelInfo->m_fLimitIddMax);
-	GetDlgItem(IDC_STT_IDD_VALUE)->SetWindowText(sdata);
 
 	GetDlgItem(IDC_STT_MAIN_FW_VERSION_VIEW)->SetWindowText(char_To_wchar(m_pApp->m_szMainFwVersion));
 
@@ -508,8 +508,10 @@ void CGIE_BoadAssyDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_CURR_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VCC_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VDD_TIT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_VBL_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VCC_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VDD_VALUE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_VBL_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_ICC_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_IDD_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VGH_TIT)->SetFont(&m_Font[4]);

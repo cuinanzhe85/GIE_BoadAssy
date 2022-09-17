@@ -12,6 +12,7 @@ typedef struct _ST_BMPDOWNINFO_
 	int				m_nLcmHActive;		// LCM의 Horizontal Active Size
 	int				m_nLcmVActive;		// LCM의 Vertical Active Size
 	CProgressCtrl* m_pProgress;		// Progress 상태Bar
+	CStatic* m_pSttMessage;
 }BMPDOWNINFO, * LPBMPDOWNINFO;
 // CBmpDownload 대화 상자
 
@@ -61,6 +62,7 @@ public:
 	CListBox m_listBmpTotal;
 	afx_msg void OnBnClickedBtnBmpDelete();
 	CProgressCtrl m_progBmpDownloadStatus;
+	CStatic m_sttBmpMessage;
 	afx_msg void OnBnClickedBtnBmpDownloadStart();
 	CStatic m_Image;
 	afx_msg void OnLbnSelchangeListBmpTotal();

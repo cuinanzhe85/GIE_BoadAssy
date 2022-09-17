@@ -351,6 +351,7 @@ void CInitialize::Lf_loadData()
 	int i=0;
 
 	memset(m_nStatus, -1, sizeof(m_nStatus));
+	Invalidate(FALSE);
 	GetDlgItem(IDC_BTN_RETRY)->EnableWindow(FALSE);
 	GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
 
@@ -429,19 +430,11 @@ void CInitialize::Lf_loadData()
 		m_nStatus[ST_GFD250] = FALSE;
 
 	//SetDlgItemText (IDC_STT_GFD250_VALUE, m_pApp->m_sSerialPort2);
-	GetDlgItem(IDC_STT_GFD250_VALUE)->Invalidate(FALSE);
-	if (!m_pApp->m_sSerialPort3.Compare(_T("Auto BCR OK.")))
-		m_nStatus[ST_BCR] = TRUE;
-	else
-		m_nStatus[ST_BCR] = FALSE;
-
-	//SetDlgItemText (IDC_STT_BCR_VALUE, m_pApp->m_sSerialPort3);
-	GetDlgItem(IDC_STT_BCR_VALUE)->Invalidate(FALSE);
+	
 
 	
 #else
 	m_nStatus[ST_GFD250] = TRUE;
-	m_nStatus[ST_BCR] = TRUE;
 #endif // 0
 	if (!m_pApp->m_sSerialPort4.Compare(_T("LED BLU OK.")))
 		m_nStatus[ST_LED_BLU] = TRUE;
@@ -451,6 +444,14 @@ void CInitialize::Lf_loadData()
 	//SetDlgItemText (IDC_STT_BLU_VALUE, m_pApp->m_sSerialPort4);
 	GetDlgItem(IDC_STT_BLU_VALUE)->Invalidate(FALSE);
 	
+	GetDlgItem(IDC_STT_GFD250_VALUE)->Invalidate(FALSE);
+	if (!m_pApp->m_sSerialPort3.Compare(_T("Auto BCR OK.")))
+		m_nStatus[ST_BCR] = TRUE;
+	else
+		m_nStatus[ST_BCR] = FALSE;
+
+	//SetDlgItemText (IDC_STT_BCR_VALUE, m_pApp->m_sSerialPort3);
+	GetDlgItem(IDC_STT_BCR_VALUE)->Invalidate(FALSE);
 
 	UpdateData(FALSE);
 
@@ -488,14 +489,5 @@ void CInitialize::Lf_loadData()
 void CInitialize::OnBnClickedBtnRetry()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	SetDlgItemText(IDC_STT_SYSTEM_VALUE, _T(""));
-	SetDlgItemText(IDC_STT_MODEL_VALUE, _T(""));
-	SetDlgItemText(IDC_STT_PTNFILE_VALUE, _T(""));
-	SetDlgItemText(IDC_STT_EDID_VALUE, _T(""));
-	SetDlgItemText(IDC_STT_PG_VALUE, _T(""));
-	SetDlgItemText(IDC_STT_BCR_VALUE, _T(""));
-	SetDlgItemText(IDC_STT_GFD250_VALUE, _T(""));
-	SetDlgItemText(IDC_STT_BLU_VALUE, _T(""));
-
 	SetTimer(1,20,NULL);
 }

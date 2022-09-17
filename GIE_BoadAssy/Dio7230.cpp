@@ -53,6 +53,18 @@ void CDIO7230::Gf_setDioWrite(U32 ulDOut)
 	delayMS(1000);
 	DO_WritePort(DIO_CARD_NUM, 0, DIO_OUT_RESET);
 }
+void CDIO7230::Gf_setDioOutOK()
+{
+	Gf_setDioWrite(DO_TEST_JUDGE_OK);
+}
+void CDIO7230::Gf_setDioOutNG()
+{
+	Gf_setDioWrite(DO_TEST_JUDGE_NG);
+}
+void CDIO7230::Gf_setDioOutTesting()
+{
+	DO_WritePort(DIO_CARD_NUM, 0, DO_TEST_TESTING);
+}
 bool CDIO7230::Gf_getDIOJigTilting()
 {
 	U32 dio_in;
@@ -98,7 +110,7 @@ bool CDIO7230::Gf_getDIOJudgeOK()
 		return true;
 	}
 
-	if (dio_in & JUDGE_OK)
+	if (dio_in & DI_PANEL_OUT_OK)
 	{
 		return true;
 	}
@@ -116,7 +128,7 @@ bool CDIO7230::Gf_getDIOJudgeNG()
 		return true;
 	}
 
-	if (dio_in & JUDGE_NG)
+	if (dio_in & DI_PANEL_OUT_NG)
 	{
 		return true;
 	}

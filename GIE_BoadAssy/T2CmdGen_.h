@@ -7,9 +7,6 @@
 
 //#include "MLT2.h" // Test
 
-#define PTN_NORMAL		0
-#define PTN_UPGRADE		1
-
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -23,15 +20,14 @@ public:
 
 public:
 	static CString makeT2dataStrFromFile(CString pbdFilePath);
-	static CString makeT2PatternStr(CString dataStr, int width, int height);
+	static CString makeT2PatternStr(int nPixelType, CString dataStr, int width, int height);
 	static CString makeT2FileStr(CString dataStr);
 
 private:
-	CString makeObjStr(CString dataStr);
-	CString makeSubStr(CString dataStr, int idx);
+	CString makeObjStr(int nPixelType, CString dataStr);
+	CString makeSubStr(int nPixelType, CString dataStr, int idx);
 	int makeStringArray(CString dataStr);
 	double String2Float(LPCTSTR pStrNum,int base);
-	int isPatternType(CStringArray* sArray);
 
 
 	CString Chess2AsciiHex(CString& szBits,int x, int y);

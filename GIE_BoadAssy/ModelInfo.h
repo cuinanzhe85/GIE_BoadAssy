@@ -25,8 +25,6 @@ public:
 	afx_msg void OnDestroy();
 	CComboBox m_cboSignalType;
 	CComboBox m_cboSignalBit;
-	CComboBox m_cboLvdsSel;
-	CComboBox m_cboBitSel;
 	CComboBox m_cboPixelType;
 	CComboBox m_cboBitSwap;
 	CEdit m_edtHorTotal;
@@ -46,7 +44,6 @@ public:
 	CEdit m_edtVddHighLimitSet;
 	CEdit m_edtIccHighLimitSet;
 	CEdit m_edtIddHighLimitSet;
-	CEdit m_edtIccCheck;
 	CComboBox m_cboPowerSeqSel;
 	CEdit m_edtPwrSeqDelay;
 	CComboBox m_cboEdidOnOff;
@@ -60,11 +57,7 @@ public:
 	CEdit m_edtVcomMax;
 	CEdit m_edtVcomDrop;
 	CEdit m_edtVcomDefault;
-	CComboBox m_cboGfd100OnOff;
-	CComboBox m_cboInitCode;
 	CEdit m_edtBluMin;
-	CComboBox m_cboSpiOnOff;
-	CComboBox m_cboSpiLevel;
 
 protected:
 	void Lf_initItemValue();
@@ -84,7 +77,7 @@ protected:
 
 	int m_nSelClkFlags;
 	int m_nChangeFont;
-	bool m_bfusingflag,m_bgfd250flag;
+	int m_bfusingflag;
 public:
 	CEdit m_edtClkDelay;
 	CListCtrl m_lcPtnSetList;
@@ -113,14 +106,12 @@ public:
 	afx_msg void OnStnClickedSttTmsClk();
 	afx_msg void OnStnClickedSttVsyncClk();
 	afx_msg void OnBnClickedBtnCancel();
-	afx_msg void OnBnClickedBtnFusing();
 	afx_msg void OnStnClickedSttBluClk();
 	CEdit m_edtPtnBlu;
 	CComboBox m_cboEepAddr;
 	CStatic m_sttMicroPtnPath;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
-	CComboBox m_cboGfd250Use;
 	afx_msg void OnBnClickedBtnBluOnoff();
 	afx_msg void OnBnClickedBtnApply();
 	CStatic m_picPatternPreview;
@@ -133,6 +124,7 @@ public:
 	CEdit m_edtVghSet;
 	CEdit m_edtVglSet;
 	CEdit m_edtVbrSet;
+	CEdit m_edtVblSet;
 	CEdit m_edtVccLowLimitSet;
 	CEdit m_edtVddLowLimitSet;
 	CEdit m_edtVghHighLimitSet;
@@ -145,6 +137,10 @@ public:
 	CEdit m_edtIghLowLimitSet;
 	CEdit m_edtIglHighLimitSet;
 	CEdit m_edtIglLowLimitSet;
+	CEdit m_edtVblHighLimitSet;
+	CEdit m_edtVblLowLimitSet;
+	CEdit m_edtIblHighLimitSet;
+	CEdit m_edtIblLowLimitSet;
 	CComboBox m_cmbI2cPullUp;
 	CComboBox m_cmbI2cFreq;
 	CComboBox m_cmbI2cLevel;
@@ -225,38 +221,7 @@ public:
 	CEdit m_edtOffSeqDelay17;
 	CEdit m_edtPowerVcom1;
 	CEdit m_edtPowerVcom2;
-	CEdit m_edtPowerGammaCh01;
-	CEdit m_edtPowerGammaCh02;
-	CEdit m_edtPowerGammaCh03;
-	CEdit m_edtPowerGammaCh04;
-	CEdit m_edtPowerGammaCh05;
-	CEdit m_edtPowerGammaCh06;
-	CEdit m_edtPowerGammaCh07;
-	CEdit m_edtPowerGammaCh08;
-	CEdit m_edtPowerGammaCh09;
-	CEdit m_edtPowerGammaCh10;
-	CEdit m_edtPowerGammaCh11;
-	CEdit m_edtPowerGammaCh12;
-	CEdit m_edtPowerGammaCh13;
-	CEdit m_edtPowerGammaCh14;
-	CEdit m_edtPowerGammaCh15;
-	CEdit m_edtPowerGammaCh16;
-	CEdit m_edtPowerGammaCh17;
-	CEdit m_edtPowerGammaCh18;
-	CEdit m_edtPowerGammaCh19;
-	CEdit m_edtPowerGammaCh20;
-	CEdit m_edtPowerGammaCh21;
-	CEdit m_edtPowerGammaCh22;
-	CEdit m_edtPowerGammaCh23;
-	CEdit m_edtPowerGammaCh24;
-	CEdit m_edtPowerGammaCh25;
-	CEdit m_edtPowerGammaCh26;
-	CEdit m_edtPowerGammaCh27;
-	CEdit m_edtPowerGammaCh28;
-	CEdit m_edtPowerGammaCh29;
-	CEdit m_edtPowerGammaCh30;
-	CEdit m_edtPowerGammaCh31;
-	CEdit m_edtPowerGammaCh32;
+	
 	afx_msg void OnEnChangeEdtHActive();
 	afx_msg void OnEnChangeEdtHWidth();
 	afx_msg void OnEnChangeEdtHFrontPorch();
@@ -267,4 +232,6 @@ public:
 	afx_msg void OnEnChangeEdtVBackPorch();
 	CEdit m_edtClockDelay;
 	
+	afx_msg void OnBnClickedBtnGammaVoltageSet();
+	afx_msg void OnStnClickedSttFusing();
 };

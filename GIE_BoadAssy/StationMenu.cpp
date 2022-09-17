@@ -276,8 +276,6 @@ void CStationMenu::Lf_initControls()
 
 	m_cboBcrComPort.SetCurSel(lpSystemInfo->m_nAutoBcrPort);
 
-	m_cboGfd250ComPort.SetCurSel(lpSystemInfo->m_nGfd250Port);
-
 	m_cboBluComPort.SetCurSel(lpSystemInfo->m_nLedBlPort);
 
 	m_edtMesServicePort.SetWindowText(lpSystemInfo->sMesServicePort);
@@ -319,9 +317,6 @@ void CStationMenu::Lf_saveSystemInfo()
 
 	lpSystemInfo->m_nPgPort = m_cboPgComPort.GetCurSel();
 	Write_SysIniFile(_T("SYSTEM"), _T("IRDA_PORT"), lpSystemInfo->m_nPgPort);
-
-	lpSystemInfo->m_nGfd250Port = m_cboGfd250ComPort.GetCurSel();
-	Write_SysIniFile(_T("SYSTEM"), _T("GFD250_PORT"), lpSystemInfo->m_nGfd250Port);
 
 	lpSystemInfo->m_nAutoBcrPort = m_cboBcrComPort.GetCurSel();
 	Write_SysIniFile(_T("SYSTEM"), _T("AUTO_BCR_PORT"), lpSystemInfo->m_nAutoBcrPort);

@@ -183,10 +183,13 @@ typedef struct _ST_MODELSETINFO_{
 	float m_fVoltVgh;
 	float m_fVoltVgl;
 	float m_fVoltVbr;
+	float m_fVoltVbl;
 	float m_fLimitVccMax;
 	float m_fLimitVccMin;
 	float m_fLimitVddMax;
 	float m_fLimitVddMin;
+	float m_fLimitVblMax;
+	float m_fLimitVblMin;
 	float m_fLimitIccMax;
 	float m_fLimitIccMin;
 	float m_fLimitIddMax;
@@ -199,6 +202,8 @@ typedef struct _ST_MODELSETINFO_{
 	float m_fLimitIghMin;
 	float m_fLimitIglMax;
 	float m_fLimitIglMin;
+	float m_fLimitIblMax;
+	float m_fLimitIblMin;
 	int	  m_nIccCheck;
 
 	float m_fVoltVcom1;
@@ -214,7 +219,6 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nDp501InitCode;
 
 	int m_nAgpOnOff;
-	int m_nGfd250;	// 사용 안함
 
 	int m_nI2cPullup;
 	int m_nI2cFreq;
@@ -253,7 +257,6 @@ typedef struct _ST_SYSTEMINFO_{
 
 	int		m_nPgPort;
 	int		m_nAutoBcrPort;	
-	int		m_nGfd250Port;
 	int		m_nLedBlPort;
 
 	CString m_sModelDnPath;

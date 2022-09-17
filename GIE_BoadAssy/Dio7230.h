@@ -27,6 +27,9 @@ public:
 	bool Gf_getDIOJudgeOK();
 	bool Gf_getDIOJudgeNG();
 	void Gf_getDioGetInput();
+	void Gf_setDioOutOK();
+	void Gf_setDioOutNG();
+	void Gf_setDioOutTesting();
 
 
 protected:

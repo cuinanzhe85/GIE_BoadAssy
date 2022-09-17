@@ -6,6 +6,8 @@
 #include "ModelInfo.h"
 #include "Initialize.h"
 
+#include "ModelGamma.h"
+
 // CModelInfo 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CModelInfo, CDialog)
@@ -25,10 +27,8 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CMB_SIGNAL_TYPE, m_cboSignalType);
 	DDX_Control(pDX, IDC_CMB_SIGNAL_BIT, m_cboSignalBit);
-	DDX_Control(pDX, IDC_CMB_LVDS_SEL, m_cboLvdsSel);
-	DDX_Control(pDX, IDC_CMB_BIT_SEL, m_cboBitSel);
 	DDX_Control(pDX, IDC_CMB_INTERFACE, m_cboPixelType);
-	DDX_Control(pDX, IDC_CMB_BIT_SWAP, m_cboBitSwap);
+	DDX_Control(pDX, IDC_CMB_LVDS_SEL, m_cboBitSwap);
 	DDX_Control(pDX, IDC_EDT_H_TOTAL, m_edtHorTotal);
 	DDX_Control(pDX, IDC_EDT_H_ACTIVE, m_edtHorActive);
 	DDX_Control(pDX, IDC_EDT_H_WIDTH, m_edtHorWidth);
@@ -46,16 +46,11 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_VDD_HIGH_LIMIT, m_edtVddHighLimitSet);
 	DDX_Control(pDX, IDC_EDT_ICC_HIGH_LIMIT, m_edtIccHighLimitSet);
 	DDX_Control(pDX, IDC_EDT_IDD_HIGH_LIMIT, m_edtIddHighLimitSet);
-	DDX_Control(pDX, IDC_EDT_ICC_CHECK, m_edtIccCheck);
 	DDX_Control(pDX, IDC_CMB_EDID_ONOFF, m_cboEdidOnOff);
 	DDX_Control(pDX, IDC_CMB_EDID_SIZE, m_cboEdidSize);
 	DDX_Control(pDX, IDC_CMB_EDID_LINE, m_cboEdidLine);
 	DDX_Control(pDX, IDC_CMB_EEPROM_TYPE, m_cboEepType);
-	DDX_Control(pDX, IDC_CMB_GFD100, m_cboGfd100OnOff);
-	DDX_Control(pDX, IDC_CMB_EDP_INITCODE, m_cboInitCode);
 	DDX_Control(pDX, IDC_EDT_BLU_MIN, m_edtBluMin);
-	DDX_Control(pDX, IDC_CMB_SPI_MODE, m_cboSpiOnOff);
-	DDX_Control(pDX, IDC_CMB_SPI_LEVEL, m_cboSpiLevel);
 	DDX_Control(pDX, IDC_LIST_PATTERNSET, m_lcPtnSetList);
 	DDX_Control(pDX, IDC_CMB_PTN_NAME, m_cboPtnName);
 	DDX_Control(pDX, IDC_EDT_PTN_VCC, m_edtPtnVCC);
@@ -64,7 +59,6 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_PTN_VSYNC, m_edtPtnVSync);
 	DDX_Control(pDX, IDC_EDT_PTN_BLU, m_edtPtnBlu);
 	DDX_Control(pDX, IDC_CMB_EEPROM_ADDR, m_cboEepAddr);
-	DDX_Control(pDX, IDC_CMB_GFD250_ONOFF, m_cboGfd250Use);
 	DDX_Control(pDX, IDC_PIC_MD_PTN_PREVIEW, m_picPatternPreview);
 	DDX_Control(pDX, IDC_EDT_PTN_ICC_LOW, m_edtPtnIccLow);
 	DDX_Control(pDX, IDC_EDT_PTN_ICC_HIGH, m_edtPtnIccHigh);
@@ -73,8 +67,13 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_VGH_SET, m_edtVghSet);
 	DDX_Control(pDX, IDC_EDT_VGL_SET, m_edtVglSet);
 	DDX_Control(pDX, IDC_EDT_VBR_SET, m_edtVbrSet);
+	DDX_Control(pDX, IDC_EDT_VBL_SET, m_edtVblSet);
 	DDX_Control(pDX, IDC_EDT_VCC_LOW_LIMIT, m_edtVccLowLimitSet);
 	DDX_Control(pDX, IDC_EDT_VDD_LOW_LIMIT, m_edtVddLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_VBL_LOW_LIMIT, m_edtVblLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_VBL_HIGH_LIMIT, m_edtVblHighLimitSet);
+	DDX_Control(pDX, IDC_EDT_IBL_LOW_LIMIT, m_edtIblLowLimitSet);
+	DDX_Control(pDX, IDC_EDT_IBL_HIGH_LIMIT, m_edtIblHighLimitSet);
 	DDX_Control(pDX, IDC_EDT_VGH_HIGH_LIMIT, m_edtVghHighLimitSet);
 	DDX_Control(pDX, IDC_EDT_VGH_LOW_LIMIT, m_edtVghLowLimitSet);
 	DDX_Control(pDX, IDC_EDT_VGL_HIGH_LIMIT, m_edtVglHighLimitSet);
@@ -166,38 +165,7 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Control(pDX, IDC_EDT_VCOM1, m_edtPowerVcom1);
 	DDX_Control(pDX, IDC_EDT_VCOM2, m_edtPowerVcom2);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH1, m_edtPowerGammaCh01);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH2, m_edtPowerGammaCh02);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH3, m_edtPowerGammaCh03);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH4, m_edtPowerGammaCh04);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH5, m_edtPowerGammaCh05);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH6, m_edtPowerGammaCh06);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH7, m_edtPowerGammaCh07);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH8, m_edtPowerGammaCh08);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH9, m_edtPowerGammaCh09);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH10, m_edtPowerGammaCh10);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH11, m_edtPowerGammaCh11);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH12, m_edtPowerGammaCh12);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH13, m_edtPowerGammaCh13);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH14, m_edtPowerGammaCh14);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH15, m_edtPowerGammaCh15);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH16, m_edtPowerGammaCh16);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH17, m_edtPowerGammaCh17);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH18, m_edtPowerGammaCh18);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH19, m_edtPowerGammaCh19);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH20, m_edtPowerGammaCh20);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH21, m_edtPowerGammaCh21);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH22, m_edtPowerGammaCh22);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH23, m_edtPowerGammaCh23);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH24, m_edtPowerGammaCh24);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH25, m_edtPowerGammaCh25);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH26, m_edtPowerGammaCh26);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH27, m_edtPowerGammaCh27);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH28, m_edtPowerGammaCh28);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH29, m_edtPowerGammaCh29);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH30, m_edtPowerGammaCh30);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH31, m_edtPowerGammaCh31);
-	DDX_Control(pDX, IDC_EDT_GAMMA_CH32, m_edtPowerGammaCh32);
+	
 	
 }
 
@@ -217,7 +185,6 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialog)
 	ON_STN_CLICKED(IDC_STT_TMS_CLK, &CModelInfo::OnStnClickedSttTmsClk)
 	ON_STN_CLICKED(IDC_STT_VSYNC_CLK, &CModelInfo::OnStnClickedSttVsyncClk)
 	ON_BN_CLICKED(IDC_BTN_CANCEL, &CModelInfo::OnBnClickedBtnCancel)
-	ON_BN_CLICKED(IDC_BTN_FUSING, &CModelInfo::OnBnClickedBtnFusing)
 	ON_STN_CLICKED(IDC_STT_BLU_CLK, &CModelInfo::OnStnClickedSttBluClk)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
@@ -233,6 +200,8 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialog)
 	ON_EN_CHANGE(IDC_EDT_V_WIDTH, &CModelInfo::OnEnChangeEdtVWidth)
 	ON_EN_CHANGE(IDC_EDT_V_FRONT_PORCH, &CModelInfo::OnEnChangeEdtVFrontPorch)
 	ON_EN_CHANGE(IDC_EDT_V_BACK_PORCH, &CModelInfo::OnEnChangeEdtVBackPorch)
+	ON_BN_CLICKED(IDC_BTN_GAMMA_VOLTAGE_SET, &CModelInfo::OnBnClickedBtnGammaVoltageSet)
+	ON_STN_CLICKED(IDC_STT_FUSING, &CModelInfo::OnStnClickedSttFusing)
 END_MESSAGE_MAP()
 
 
@@ -277,6 +246,8 @@ void CModelInfo::OnDestroy()
 }
 void CModelInfo::Lf_initItemValue()
 {
+	m_bfusingflag = 0;
+
 	// 제품의 해상도 설정
 	CRect rcLCD, rcFrame;
 
@@ -304,7 +275,6 @@ void CModelInfo::Lf_initItemValue()
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_PATTERN)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_I2C_OPTION)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_POWER_VCOM)->m_hWnd, _T(""), _T(""));
-	SetWindowTheme(GetDlgItem(IDC_STT_GRP_POWER_GAMMA)->m_hWnd, _T(""), _T(""));
 	HICON hIcon;
 	CButton* pBtn;
 	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_ADD);
@@ -350,7 +320,6 @@ void CModelInfo::Lf_initFontSet()
 	GetDlgItem(IDC_STT_GRP_EDID)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_I2C_OPTION)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_POWER_VCOM)->SetFont(&m_Font[0]);
-	GetDlgItem(IDC_STT_GRP_POWER_GAMMA)->SetFont(&m_Font[0]);
 
 	m_Font[1].CreateFont( 15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
@@ -366,13 +335,10 @@ void CModelInfo::Lf_initFontSet()
 	GetDlgItem(IDC_STT_MODELINFODLG_TIT)->SetFont(&m_Font[4]);
 
 	m_Font[5].CreateFont(24, 11, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
-	GetDlgItem(IDC_STT_SYSTEM_STATUS_TIT)->SetFont(&m_Font[5]);
-	GetDlgItem(IDC_STT_SYSTEM_STATUS)->SetFont(&m_Font[5]);
-	GetDlgItem(IDC_STT_GFD250_STATUS_TIT)->SetFont(&m_Font[5]);
-	GetDlgItem(IDC_STT_GFD250_STATUS)->SetFont(&m_Font[5]);
-	GetDlgItem(IDC_BTN_FUSING)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_FUSING)->SetFont(&m_Font[5]);
 	GetDlgItem(IDC_BTN_SAVE)->SetFont(&m_Font[5]);
 	GetDlgItem(IDC_BTN_CANCEL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_BTN_GAMMA_VOLTAGE_SET)->SetFont(&m_Font[5]);
 
 	/*******************************************************************************************************************/
 	// Brush set
@@ -380,9 +346,11 @@ void CModelInfo::Lf_initFontSet()
 	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush (COLOR_ORANGE);
 	m_Brush[COLOR_IDX_GRAY240].CreateSolidBrush (COLOR_GRAY240);
 	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
+	m_Brush[COLOR_IDX_GRAY96].CreateSolidBrush(COLOR_GRAY96);
 	m_Brush[COLOR_IDX_BLUISH].CreateSolidBrush(COLOR_BLUISH);
 	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush (COLOR_GRAY224);
 	m_Brush[COLOR_IDX_GREEN128].CreateSolidBrush(COLOR_GREEN128);
+	m_Brush[COLOR_IDX_RED128].CreateSolidBrush(COLOR_RED128);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);
 	m_Brush[COLOR_IDX_LIGHT_YELLOW].CreateSolidBrush(COLOR_LIGHT_YELLOW);
 	m_Brush[COLOR_IDX_MAGENTA].CreateSolidBrush(COLOR_MAGENTA);
@@ -396,10 +364,6 @@ void CModelInfo::Lf_loadModelData()
 	m_cboSignalType.SetCurSel(lpModelInfo->m_nSignalType);
 
 	m_cboSignalBit.SetCurSel(lpModelInfo->m_nSignalBit);
-
-	m_cboLvdsSel.SetCurSel(lpModelInfo->m_nLGDISMSelect);
-
-	m_cboBitSel.SetCurSel(lpModelInfo->m_nBitSel);
 
 	m_cboPixelType.SetCurSel(lpModelInfo->m_nPixelType);
 
@@ -554,17 +518,9 @@ void CModelInfo::Lf_loadModelData()
 	sdata.Format(_T("%d"),lpModelInfo->m_nTimingVerBack_P);
 	m_edtVerBackPor.SetWindowText(sdata);
 
-	m_cboGfd100OnOff.SetCurSel(lpModelInfo->m_nGfd100Use);
-
-
-	m_cboInitCode.SetCurSel(lpModelInfo->m_nDp501InitCode);
 
 	sdata.Format(_T("%d"),lpModelInfo->m_nBluMin);
 	m_edtBluMin.SetWindowText(sdata);
-
-	m_cboSpiOnOff.SetCurSel(lpModelInfo->m_nSpiMode);
-
-	m_cboSpiLevel.SetCurSel(lpModelInfo->m_nSpiLevel);
 
 	m_cmbCableOpenUse.SetCurSel(lpModelInfo->m_nCableOpenUse);
 
@@ -604,6 +560,12 @@ void CModelInfo::Lf_loadModelData()
 	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVddMin);
 	m_edtVddLowLimitSet.SetWindowText(sdata);
 
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVblMax);
+	m_edtVblHighLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVblMin);
+	m_edtVblLowLimitSet.SetWindowText(sdata);
+
 	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIccMax);
 	m_edtIccHighLimitSet.SetWindowText(sdata);
 
@@ -615,6 +577,12 @@ void CModelInfo::Lf_loadModelData()
 
 	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIddMin);
 	m_edtIddLowLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIblMax);
+	m_edtIblHighLimitSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIblMin);
+	m_edtIblLowLimitSet.SetWindowText(sdata);
 
 	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitVghMax);
 	m_edtVghHighLimitSet.SetWindowText(sdata);
@@ -640,25 +608,17 @@ void CModelInfo::Lf_loadModelData()
 	sdata.Format(_T("%.2f"), lpModelInfo->m_fLimitIglMin);
 	m_edtIglLowLimitSet.SetWindowText(sdata);
 
-	sdata.Format(_T("%d"), lpModelInfo->m_nIccCheck);	
-	m_edtIccCheck.SetWindowText(sdata);
-
 	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVbr);
 	m_edtVbrSet.SetWindowText(sdata);
+
+	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVbl);
+	m_edtVblSet.SetWindowText(sdata);
 
 	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVcom1);
 	m_edtPowerVcom1.SetWindowText(sdata);
 
 	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVcom2);
 	m_edtPowerVcom2.SetWindowText(sdata);
-
-	for (int i = 0; i < 32; i++)
-	{
-		sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltGamma[i]);
-		GetDlgItem(IDC_EDT_GAMMA_CH1 + i)->SetWindowTextW(sdata);
-	}
-
-	m_cboGfd250Use.SetCurSel(lpModelInfo->m_nGfd250);
 
 	m_cmbI2cPullUp.SetCurSel(lpModelInfo->m_nI2cPullup);
 	m_cmbI2cFreq.SetCurSel(lpModelInfo->m_nI2cFreq);
@@ -838,12 +798,6 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 
 	lpModelInfo->m_nSignalBit = m_cboSignalBit.GetCurSel();
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("SIGNAL_BIT"),				lpModelInfo->m_nSignalBit);
-
-	lpModelInfo->m_nLGDISMSelect = m_cboLvdsSel.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("LG_DISM"),				lpModelInfo->m_nLGDISMSelect);
-
-	lpModelInfo->m_nBitSel = m_cboBitSel.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BIT_SELECT"),			lpModelInfo->m_nBitSel);
 
 	m_edtFreq.GetWindowText(sdata);
 	lpModelInfo->m_fTimingFreq = (float)_tstof(sdata);
@@ -1197,6 +1151,22 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_fLimitIddMin = (float)_tstof(sdata);
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("IDD_LOW_LIMIT"), lpModelInfo->m_fLimitIddMin);
 
+	m_edtIblHighLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitIblMax = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("IBL_HIGH_LIMIT"), lpModelInfo->m_fLimitIblMax);
+
+	m_edtIblLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitIblMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("IBL_LOW_LIMIT"), lpModelInfo->m_fLimitIblMin);
+
+	m_edtVblHighLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitVblMax = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VBL_HIGH_LIMIT"), lpModelInfo->m_fLimitVblMax);
+
+	m_edtVblLowLimitSet.GetWindowText(sdata);
+	lpModelInfo->m_fLimitVblMin = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VBL_LOW_LIMIT"), lpModelInfo->m_fLimitVblMin);
+
 	m_edtVglHighLimitSet.GetWindowText(sdata);
 	lpModelInfo->m_fLimitVglMax = (float)_tstof(sdata);
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VGL_HIGH_LIMIT"), lpModelInfo->m_fLimitVglMax);
@@ -1244,30 +1214,15 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_nEdidSize = m_cboEdidSize.GetCurSel();
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("EDID_SIZE"),			lpModelInfo->m_nEdidSize);
 
-	lpModelInfo->m_nGfd100Use = m_cboGfd100OnOff.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("GFD100_USE"),			lpModelInfo->m_nGfd100Use);
-
-	lpModelInfo->m_nDp501InitCode = m_cboInitCode.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("DP501_INIT_CODE"),		lpModelInfo->m_nDp501InitCode);
-
-	lpModelInfo->m_nSpiMode = m_cboSpiOnOff.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SPI_MODE"),				lpModelInfo->m_nSpiMode);
-
 	lpModelInfo->m_nCableOpenUse = m_cmbCableOpenUse.GetCurSel();
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("CABLE_OPEN_USE"), lpModelInfo->m_nCableOpenUse);
 
 	lpModelInfo->m_nShortTestUse = m_cmbShortTestUse.GetCurSel();
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("SHORT_TEST_USE"), lpModelInfo->m_nShortTestUse);
 
-	lpModelInfo->m_nSpiLevel = m_cboSpiLevel.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SPI_LEVEL"),			lpModelInfo->m_nSpiLevel);
-
 	m_edtBluMin.GetWindowText(sdata);
 	lpModelInfo->m_nBluMin = _ttoi(sdata);
 	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BLU_MIN"),				lpModelInfo->m_nBluMin);
-	
-	lpModelInfo->m_nGfd250 = m_cboGfd250Use.GetCurSel();
-	Write_ModelFile(modelName,	_T("MODEL_INFO"),	_T("GFD250"),				lpModelInfo->m_nGfd250);
 
 	lpModelInfo->m_nI2cPullup = m_cmbI2cPullUp.GetCurSel();
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_PULLUP"), lpModelInfo->m_nI2cPullup);
@@ -1282,6 +1237,10 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_fVoltVbr = (float)_tstof(sdata);
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VBR"), lpModelInfo->m_fVoltVbr);
 
+	m_edtVblSet.GetWindowText(sdata);
+	lpModelInfo->m_fVoltVbl = (float)_tstof(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VBL"), lpModelInfo->m_fVoltVbl);
+
 	m_edtPowerVcom1.GetWindowText(sdata);
 	lpModelInfo->m_fVoltVcom1 = (float)_tstof(sdata);
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VCOM1"), lpModelInfo->m_fVoltVcom1);
@@ -1291,13 +1250,7 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VCOM2"), lpModelInfo->m_fVoltVcom2);
 
 	CString strKey = _T("");
-	for (int i = 0; i < 32; i++)
-	{
-		strKey.Format(_T("GAMMA_CH%02d"), i + 1);
-		GetDlgItem(IDC_EDT_GAMMA_CH1 + i)->GetWindowTextW(sdata);
-		lpModelInfo->m_fVoltGamma[i] = (float)_tstof(sdata);
-		Write_ModelFile(modelName, _T("MODEL_INFO"), strKey, lpModelInfo->m_fVoltGamma[i]);
-	}
+	
 
 	int i=0,nLbItemCnt=0;
 	CString strPtnInfo = _T(""), strTemp = _T("");
@@ -1312,7 +1265,7 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 		{
 			strKey.Format(_T("PTN%2d"), i);
 
-			Write_ModelFile(modelName,	_T("PATTERN_INFO"),	strKey.GetBuffer(0),	strTemp.GetBuffer(0));//Write_ModFile(_T("PATTERN"), strKey.GetBuffer(0)/*szKey*/, NULL, m_strModelNamde.GetBuffer(0));
+			Write_ModelFile(modelName,	_T("PATTERN_INFO"),	strKey,	strTemp);//Write_ModFile(_T("PATTERN"), strKey.GetBuffer(0)/*szKey*/, NULL, m_strModelNamde.GetBuffer(0));
 		}
 		lpModelInfo->m_nLbCnt = nLbItemCnt;
 	}
@@ -1366,9 +1319,9 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 
 		strKey.Format(_T("PTN%2d"), i);
 
-		Write_ModelFile(modelName,	_T("PATTERN_INFO"),	strKey.GetBuffer(0),	NULL);//Write_ModFile(_T("PATTERN"), strKey.GetBuffer(0), NULL, m_strModelNamde.GetBuffer(0));
+		Write_ModelFile(modelName,	_T("PATTERN_INFO"),	strKey,	NULL);//Write_ModFile(_T("PATTERN"), strKey.GetBuffer(0), NULL, m_strModelNamde.GetBuffer(0));
 
-		Write_ModelFile(modelName,	_T("PATTERN_INFO"),	strKey.GetBuffer(0),	strPtnInfo.GetBuffer(0));//Write_ModFile(_T("PATTERN"), strKey.GetBuffer(0), strPtnInfo.GetBuffer(0), m_strModelNamde.GetBuffer(0));
+		Write_ModelFile(modelName,	_T("PATTERN_INFO"),	strKey,	strPtnInfo);//Write_ModFile(_T("PATTERN"), strKey.GetBuffer(0), strPtnInfo.GetBuffer(0), m_strModelNamde.GetBuffer(0));
 	}
 }
 
@@ -1392,13 +1345,13 @@ void CModelInfo::OnBnClickedBtnSave()
 
 		Write_SysIniFile(_T("SYSTEM"),		_T("LAST_MODELNAME"),			strSaveModel);
 
-		m_pApp->Gf_loadModelData();
 	}
 	else
 	{
 		Lf_saveCtrlData(lpSystemInfo->m_sModelName);
+		
 	}
-
+	m_pApp->Gf_loadModelData();
 	/*CInitialize initDlg;
 	initDlg.DoModal();*/
 	UpdateData(FALSE);
@@ -1812,52 +1765,6 @@ void CModelInfo::OnBnClickedBtnCancel()
 	CDialog::OnOK();
 }
 
-void CModelInfo::OnBnClickedBtnFusing()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->Gf_writeLogData("<TEST>","MANUAL Fusing Start");
-	GetDlgItem(IDC_BTN_FUSING)->EnableWindow(FALSE);
-	GetDlgItem(IDC_STT_SYSTEM_STATUS)->SetWindowText(_T(""));
-	GetDlgItem(IDC_STT_GFD250_STATUS)->SetWindowText(_T(""));
-
-	if(m_pApp->m_pCommand->Gf_setFusingSystemInfo() == TRUE)
-	{
-		m_bfusingflag = true;
-		GetDlgItem(IDC_STT_SYSTEM_STATUS)->SetWindowText(_T("OK"));
-	}
-	else
-	{
-		m_bfusingflag = false;
-		GetDlgItem(IDC_STT_SYSTEM_STATUS)->SetWindowText(_T("NG"));
-		GetDlgItem(IDC_BTN_FUSING)->EnableWindow(TRUE);
-		return;
-	}
-
-	/*if(lpModelInfo->m_nGfd250 == TRUE)
-	{
-		if(m_pApp->m_pCommand->Gf_setGFD250Timeing() == TRUE)
-		{
-			if(m_pApp->m_pCommand->Gf_serGfd250SignalSelect(0) == TRUE)
-			{
-				m_bgfd250flag=true;
-				GetDlgItem(IDC_STT_GFD250_STATUS)->SetWindowText(_T("OK"));
-			}
-		}
-		else
-		{
-			m_bgfd250flag=false;
-			GetDlgItem(IDC_STT_GFD250_STATUS)->SetWindowText(_T("NG"));
-			return;		
-		}
-	}
-	else
-	{
-		m_bgfd250flag=true;
-		GetDlgItem(IDC_STT_GFD250_STATUS)->SetWindowText(_T("NONE"));
-	}*/
-	m_pApp->m_pCommand->Gf_setZoneSel();
-	GetDlgItem(IDC_BTN_FUSING)->EnableWindow(TRUE);
-}
 
 HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
@@ -1883,34 +1790,25 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetTextColor(COLOR_WHITE);
 			return m_Brush[COLOR_IDX_DEEP_BLUE];
 		}
-		if(pWnd->GetDlgCtrlID()==IDC_STT_SYSTEM_STATUS)
+		if(pWnd->GetDlgCtrlID()== IDC_STT_FUSING)
 		{
-			if(m_bfusingflag==false)
+			if(m_bfusingflag==1)
 			{
-				pDC->SetBkColor(COLOR_WHITE);
-				pDC->SetTextColor(COLOR_RED);
-				return m_Brush[COLOR_IDX_WHITE];
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
+			}
+			else if (m_bfusingflag == 2)
+			{
+				pDC->SetBkColor(COLOR_RED128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_RED128];
 			}
 			else
 			{
-				pDC->SetBkColor(COLOR_WHITE);
-				pDC->SetTextColor(COLOR_GREEN);
-				return m_Brush[COLOR_IDX_WHITE];
-			}
-		}
-		if(pWnd->GetDlgCtrlID()==IDC_STT_GFD250_STATUS)
-		{
-			if(m_bgfd250flag==false)
-			{
-				pDC->SetBkColor(COLOR_WHITE);
-				pDC->SetTextColor(COLOR_RED);
-				return m_Brush[COLOR_IDX_WHITE];
-			}
-			else
-			{
-				pDC->SetBkColor(COLOR_WHITE);
-				pDC->SetTextColor(COLOR_GREEN);
-				return m_Brush[COLOR_IDX_WHITE];
+				pDC->SetBkColor(COLOR_GRAY96);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
 		if((pWnd->GetDlgCtrlID()==IDC_STT_CUR_MODELNAME_TIT)
@@ -1943,9 +1841,7 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetTextColor(COLOR_WHITE);
 			return m_Brush[COLOR_IDX_BLUISH];
 		}
-		if ((pWnd->GetDlgCtrlID() == IDC_STT_SYSTEM_STATUS_TIT)
-			|| (pWnd->GetDlgCtrlID() == IDC_STT_GFD250_STATUS_TIT)
-			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_SIGNAL)
+		if ((pWnd->GetDlgCtrlID() == IDC_STT_GRP_SIGNAL)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_TIMING)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_POWER)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_POWER_SEQ)
@@ -1955,7 +1851,6 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_PATTERN)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_I2C_OPTION)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_POWER_VCOM)
-			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_POWER_GAMMA)
 			)
 		{
 			pDC->SetBkColor(COLOR_WHITE);
@@ -2252,4 +2147,34 @@ void CModelInfo::OnEnChangeEdtVBackPorch()
 
 	strValue.Format(_T("%d"), nTotal);
 	m_edtVerTotal.SetWindowTextW(strValue);
+}
+
+
+void CModelInfo::OnBnClickedBtnGammaVoltageSet()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CModelGamma gammadlg;
+	gammadlg.DoModal();
+}
+
+
+void CModelInfo::OnStnClickedSttFusing()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->Gf_writeLogData("<TEST>", "MANUAL Fusing Start");
+	GetDlgItem(IDC_STT_FUSING)->EnableWindow(FALSE);
+	m_bfusingflag = 0;
+	m_pApp->m_pCommand->Gf_setZoneSel();
+	if (m_pApp->m_pCommand->Gf_setFusingSystemInfo() == TRUE)
+	{
+		m_bfusingflag = 1;
+	}
+	else
+	{
+		m_bfusingflag = 2;
+		GetDlgItem(IDC_STT_FUSING)->EnableWindow(TRUE);
+		return;
+	}
+
+	GetDlgItem(IDC_STT_FUSING)->EnableWindow(TRUE);
 }

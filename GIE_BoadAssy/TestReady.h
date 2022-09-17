@@ -47,6 +47,8 @@ protected:
 	LPSYSTEMINFO	lpSystemInfo;
 	LPINSPWORKINFO	lpWorkInfo;
 
+	unsigned short m_dioInputBit;
+
 private:
 	CFont m_Font[FONT_IDX_MAX];
 	CBrush m_Brush[COLOR_IDX_MAX];

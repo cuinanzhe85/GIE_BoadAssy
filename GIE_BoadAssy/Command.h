@@ -33,7 +33,7 @@ public:
 	int makeI2cClock(int index);
 
 
-	BOOL Gf_setPowerSeqOnOff(int nOnOff , int nCh = 1);	// 0: ch1, 1: ch2, 2: All
+	BOOL Gf_setPowerSeqOnOff(int nOnOff , int nCh = 0);	// 0: ch1, 1: ch2, 2: All
 
 	BOOL Gf_setPGInfoPatternName(CString strPtnName, BOOL bHotKeyFlags=FALSE, BOOL bHkeyFlags=FALSE);
 	BOOL Gf_setBmpPtnDisplay(CString bmpname);

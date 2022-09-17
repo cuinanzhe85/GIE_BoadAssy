@@ -8,7 +8,7 @@
 
 #include "XImageInc/ximage.h"
 
-#define SIZE_OF_1PIXEL				3				// R/G/B/Dummy 4Byte
+#define SIZE_OF_1PIXEL				4				// R/G/B/Dummy 4Byte
 #define NAMD_PAGE_SIZE				2048	
 
 #define SEND_PAGE_SIZE				6//512(1MByte)				// 한번에 Send할 Nand Page수를 설정한다. (Min:1, Max:31)
@@ -35,6 +35,7 @@ void CBmpDownload::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_BMP_DOWNLOAD, m_listBmpDownload);
 	DDX_Control(pDX, IDC_LIST_BMP_TOTAL, m_listBmpTotal);
 	DDX_Control(pDX, IDC_PROG_BMP_DOWNLOAD_STATUS, m_progBmpDownloadStatus);
+	DDX_Control(pDX, IDC_STT_DOWNLOAD_STATUS, m_sttBmpMessage);
 	DDX_Control(pDX, IDC_PICTURE_IMAGE, m_Image);
 }
 
@@ -103,11 +104,19 @@ HBRUSH CBmpDownload::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		if (pWnd->GetDlgCtrlID() == IDC_STT_DOWNLOAD_STATUS)
 		{
 			CString str;
-			GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->GetWindowTextW(str);
-			if (str.Find(_T("Fail")) != -1)		pDC->SetTextColor(COLOR_RED);
-			else								pDC->SetTextColor(COLOR_WHITE);
+			m_sttBmpMessage.GetWindowTextW(str);
+			if (str.Find(_T("Fail")) != -1)				pDC->SetTextColor(COLOR_RED);
+			else if (str.Find(_T("Complete")) != -1)	pDC->SetTextColor(COLOR_GREEN);
+			else	pDC->SetTextColor(COLOR_CYAN);
 			pDC->SetBkColor(COLOR_GRAY64);
 			
+			return m_brush[COLOR_IDX_GRAY64];
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_BMP_STATUS_COUNT)
+		{
+			pDC->SetTextColor(COLOR_WHITE);
+			pDC->SetBkColor(COLOR_GRAY64);
+
 			return m_brush[COLOR_IDX_GRAY64];
 		}
 	}
@@ -148,6 +157,7 @@ void CBmpDownload::Lf_InitItemFont()
 	m_Font[0].CreateFont(15, 6, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
 	GetDlgItem(IDC_LIST_BMP_TOTAL)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_LIST_BMP_DOWNLOAD)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetFont(&m_Font[0]);
 
 	m_Font[1].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
 
@@ -330,7 +340,7 @@ void CBmpDownload::OnBnClickedBtnBmpDelete()
 void CBmpDownload::OnBnClickedBtnBmpDownloadStart()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("Ready"));
+	m_sttBmpMessage.SetWindowTextW(_T("Ready"));
 	int nTotalCount = m_listBmpDownload.GetItemCount();
 	
 	BMPDOWNINFO		pBmpInfo;
@@ -352,8 +362,9 @@ void CBmpDownload::OnBnClickedBtnBmpDownloadStart()
 		m_listBmpDownload.SetItemState(index, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
 		m_listBmpDownload.SetFocus();
 
-		status.Format(_T("%s - (%d / %d)"), sfilename, index + 1, nTotalCount);
-		GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(status);
+		status.Format(_T("(%d/%d)"), index + 1, nTotalCount);
+		GetDlgItem(IDC_STT_BMP_STATUS_COUNT)->SetWindowTextW(status);
+
 		sfilename.Append(_T(".bmp"));
 		sfilename.MakeUpper();
 		CString resizefilepath, filepath;
@@ -391,17 +402,18 @@ void CBmpDownload::OnBnClickedBtnBmpDownloadStart()
 		pBmpInfo.m_nLcmVActive = nVerResol;
 
 		pBmpInfo.m_pProgress = &m_progBmpDownloadStatus;
+		pBmpInfo.m_pSttMessage = &m_sttBmpMessage;
 
 		if (Lf_startDownloadBMP(&pBmpInfo) == FALSE)
 		{
 			DeleteFile(resizefilepath);
-			GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Download Fail"));
+			m_sttBmpMessage.SetWindowTextW(_T("BMP Download Fail"));
 			DeleteFile(resizefilepath);
 			return;
 		}
 		DeleteFile(resizefilepath);
 	}
-	GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetWindowTextW(_T("BMP Download Complete"));
+	m_sttBmpMessage.SetWindowTextW(_T("BMP Download Complete"));
 }
 
 BOOL CBmpDownload::Lf_startDownloadBMP(LPBMPDOWNINFO pBmpInfo)
@@ -587,7 +599,9 @@ BOOL CBmpDownload::Lf_sendBmpRawData(LPBMPDOWNINFO pBmpInfo)
 		if (pBmpInfo->m_pProgress != NULL)
 			pBmpInfo->m_pProgress->SetPos(m_status);
 
-
+		CString status;
+		status.Format(_T("BMP Download ... (%d%%)"), m_status);
+		pBmpInfo->m_pSttMessage->SetWindowTextW(status);
 		// 모든 Data를 전송했으면 Packet 전송을 종료한다.
 		if (nandWriteAddr >= (iptr_width * pBitmapInfo->bmiHeader.biHeight))
 			break;

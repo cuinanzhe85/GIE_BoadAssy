@@ -55,6 +55,7 @@
 #define IDB_BITMAP_SYSTEM_P             190
 #define IDB_BITMAP_TEST                 191
 #define IDB_BITMAP_TEST_P               192
+#define IDD_MODEL_GAMMA                 194
 #define IDC_BTN_USERID                  1000
 #define IDC_BTN_MODELINFO               1001
 #define IDC_BTN_FUSING                  1001
@@ -91,7 +92,6 @@
 #define IDC_CMB_EDP_INITCODE            1023
 #define IDC_CMB_INTERFACE               1024
 #define IDC_CMB_DCLK_INVERSE            1025
-#define IDC_CMB_CLOCK_DELAY             1025
 #define IDC_CMB_BIT_SWAP                1026
 #define IDC_CMB_VSYNC_POLALITY          1027
 #define IDC_CMB_CLOCK_RISING            1027
@@ -108,6 +108,7 @@
 #define IDC_EDT_ICC_HIGH_LIMIT          1035
 #define IDC_EDT_IDD_HIGH_LIMIT          1036
 #define IDC_EDT_ICC_CHECK               1037
+#define IDC_EDT_VBL_HIGH_LIMIT          1037
 #define IDC_CMB_PWR_SEQ_SEL             1038
 #define IDC_EDT_VCOM1                   1038
 #define IDC_EDT_PWR_SEQ_DELAY           1039
@@ -140,9 +141,11 @@
 #define IDC_CMB_PTN_NAME                1057
 #define IDC_CMB_SPI_MODE                1058
 #define IDC_STT_PG_VALUE                1058
+#define IDC_EDT_IBL_HIGH_LIMIT          1058
 #define IDC_CMB_SPI_LEVEL               1059
 #define IDC_EDT_EQP_NAME                1059
 #define IDC_STT_BCR_TIT                 1059
+#define IDC_EDT_VBL_LOW_LIMIT           1059
 #define IDC_EDT_MICRO_PTN_CNT           1060
 #define IDC_CBO_PG_COMPORT              1060
 #define IDC_STT_BCR_VALUE               1060
@@ -239,8 +242,10 @@
 #define IDC_STT_IGH_MEASURE             1088
 #define IDC_STT_GOOD_CNT_VALUE          1089
 #define IDC_STT_PTN_ICC                 1089
+#define IDC_STT_VBL_MEASURE             1089
 #define IDC_STT_BAD_CNT_VALUE           1090
 #define IDC_STT_PTN_IDD                 1090
+#define IDC_STT_IBL_MEASURE             1090
 #define IDC_STT_STATUS_MSG              1091
 #define IDC_EDT_ON_SEQ_DEL_1            1091
 #define IDC_LIST__PTN_VIEW              1092
@@ -252,6 +257,7 @@
 #define IDC_STT_PTN_NAME                1094
 #define IDC_EDT_PID                     1094
 #define IDC_EDT_VGH_LOW_LIMIT           1094
+#define IDC_STT_DIO_INPUT_TITLE         1094
 #define IDC_STT_VCC                     1095
 #define IDC_BTN_RETRY                   1095
 #define IDC_EDT_VGL_LOW_LIMIT           1095
@@ -355,12 +361,15 @@
 #define IDC_STT_VGL_VALUE               1135
 #define IDC_STT_GRP_CLOCK               1136
 #define IDC_CMB_OFF_SEQ_OP_3            1136
+#define IDC_STT_VBL_TIT                 1136
 #define IDC_STT_GRP_EDID                1137
+#define IDC_STT_VBL_VALUE               1137
 #define IDC_STT_GRP_VCOM                1138
 #define IDC_STT_GRP_POWER_LIMIT         1138
 #define IDC_STT_GRP_PATTERN             1139
 #define IDC_STT_USERID_TIT              1140
 #define IDC_STT_GRP_OTHERS2             1140
+#define IDC_EDT_IBL_LOW_LIMIT           1140
 #define IDC_STT_USERDLG_TIT             1141
 #define IDC_STT_GRP_I2C_OPTION          1141
 #define IDC_STT_MCDLG_TIT               1142
@@ -429,10 +438,11 @@
 #define IDC_STT_GRP_POWER_SEQ           1172
 #define IDC_STT_BLU_TYPE                1173
 #define IDC_EDT_CLOCK_DELAY             1173
+#define IDC_STT_VBL_MEA_TIT             1173
 #define IDC_STT_BLU_FREQ                1174
 #define IDC_STT_GRP_POWER_VCOM          1174
+#define IDC_STT_IBL_MEA_TIT             1174
 #define IDC_STT_TEST_START_DELAY        1175
-#define IDC_STT_GRP_POWER_GAMMA         1175
 #define IDC_STT_FAST_JUDGE              1176
 #define IDC_EDT_GAMMA_CH1               1176
 #define IDC_STT_PANELID_NG              1177
@@ -523,14 +533,15 @@
 #define IDC_CHECK_DI_03                 1219
 #define IDC_EDT_OFF_SEQ_DEL_17          1219
 #define IDC_CHECK_DI_04                 1220
-#define IDC_EDT_VGH_SET2                1220
 #define IDC_EDT_VBR_SET                 1220
 #define IDC_CHECK_DI_05                 1221
+#define IDC_EDT_VBL_SET                 1221
 #define IDC_CHECK_DI_06                 1222
 #define IDC_CHECK_DI_07                 1223
 #define IDC_CHECK_DI_08                 1224
 #define IDC_BTN_POWER_ON                1225
 #define IDC_BTN_POWER_OFF               1226
+#define IDC_BTN_CLOSE                   1227
 #define IDC_STT_MT_VCC_MEASURE          1228
 #define IDC_STT_MT_ICC_MEASURE          1229
 #define IDC_STT_MT_VDD_MEASURE          1230
@@ -545,14 +556,23 @@
 #define IDC_STT_MT_VGL_MEASURE          1234
 #define IDC_STT_MT_IGL_MEASURE          1235
 #define IDC_STT_PTN_IMAGE_SIZE          1235
+#define IDC_STT_MT_VBL_MEASURE          1236
+#define IDC_BTN_GAMMA_VOLTAGE_SET       1237
+#define IDC_STT_MT_IDD_MEASURE2         1237
+#define IDC_STT_MT_IBL_MEASURE          1237
+#define IDC_STT_FUSING                  1238
+#define IDC_STT_BMP_STATUS_COUNT        1239
+#define IDC_STT_DIO_INPUT_1             1240
+#define IDC_STT_DIO_INPUT_2             1241
+#define IDC_STT_DIO_INPUT_3             1242
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        194
+#define _APS_NEXT_RESOURCE_VALUE        196
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1236
+#define _APS_NEXT_CONTROL_VALUE         1241
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

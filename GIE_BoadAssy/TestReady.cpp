@@ -83,30 +83,38 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 
 		if (m_pApp->m_pDio7230->Gf_getDIOJigTilting() == TRUE)
 		{
+			m_dioInputBit |= DI_START_READY;
 			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("PANEL TILTING ON"));
 			if (m_pApp->m_pDio7230->Gf_getDIOTestStart())
 			{
+				m_dioInputBit |= DI_TEST_SWITCH1;
 				GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST START SIGNAL ON"));
 
 				Lf_startTest();
 			}
+			else
+			{
+				m_dioInputBit &= ~DI_TEST_SWITCH1;
+			}
+		}
+		else
+		{
+			m_dioInputBit &= ~ DI_START_READY;
 		}
 		SetTimer(1, 100, NULL);
 		
 	}
 	else if(nIDEvent == TIMER_PID_CHECK)
 	{
-		
-		/*if(lpWorkInfo->m_bPIDReadComplete==true)
-		{	
-			lpWorkInfo->m_bPIDReadComplete=false;
-		}*/
 		if (m_pApp->m_pDio7230->Dio_DI_ReadPort() & DI_BCR_READ_DONE)
 		{
+			m_dioInputBit |= DI_BCR_READ_DONE;
 			KillTimer(TIMER_PID_CHECK);
 			if (Lf_checkPanelId() == FALSE)
 				SetTimer(TIMER_PID_CHECK, 100, NULL);
 		}
+		else
+			m_dioInputBit &= ~DI_BCR_READ_DONE;
 		
 	}
 
@@ -154,6 +162,7 @@ HBRUSH CTestReady::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| pWnd->GetDlgCtrlID() == IDC_STT_TOTAL_CNT_TIT
 			|| pWnd->GetDlgCtrlID() == IDC_STT_GOOD_CNT_TIT
 			|| pWnd->GetDlgCtrlID() == IDC_STT_BAD_CNT_TIT
+			|| pWnd->GetDlgCtrlID() == IDC_STT_DIO_INPUT_TITLE
 			)
 		{
 			pDC->SetBkColor(COLOR_LIGHT_YELLOW);
@@ -183,6 +192,52 @@ HBRUSH CTestReady::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetBkColor(COLOR_WHITE);
 			pDC->SetTextColor(COLOR_RED);
 			return m_Brush[COLOR_IDX_WHITE];
+		}
+
+		if (pWnd->GetDlgCtrlID() == IDC_STT_DIO_INPUT_1)
+		{
+			if (m_dioInputBit & DI_BCR_READ_DONE)
+			{
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_BLACK);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_BLACK];
+			}
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_DIO_INPUT_2)
+		{
+			if (m_dioInputBit & DI_START_READY)
+			{
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_BLACK);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_BLACK];
+			}
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_DIO_INPUT_3)
+		{
+			if (m_dioInputBit & DI_TEST_SWITCH1)
+			{
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_BLACK);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_BLACK];
+			}
 		}
 		break;
 	}
@@ -230,6 +285,11 @@ void CTestReady::Lf_initFontSet()
 	GetDlgItem(IDC_STT_GOOD_CNT_TIT)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_BAD_CNT_TIT)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_DIO_INPUT_TITLE)->SetFont(&m_Font[0]);
+
+	GetDlgItem(IDC_STT_DIO_INPUT_1)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_DIO_INPUT_2)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_DIO_INPUT_3)->SetFont(&m_Font[0]);
 
 	m_Font[1].CreateFont( 15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
@@ -241,6 +301,7 @@ void CTestReady::Lf_initFontSet()
 	GetDlgItem(IDC_STT_GOOD_CNT_VALUE)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_BAD_CNT_VALUE)->SetFont(&m_Font[3]);
 
+	
 	GetDlgItem(IDC_BTN_TEST_START)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
@@ -253,6 +314,8 @@ void CTestReady::Lf_initFontSet()
 	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush (COLOR_ORANGE);
 	m_Brush[COLOR_IDX_RED].CreateSolidBrush(COLOR_RED);
 	m_Brush[COLOR_IDX_GREEN].CreateSolidBrush(COLOR_GREEN);
+	m_Brush[COLOR_IDX_GREEN128].CreateSolidBrush(COLOR_GREEN128);
+	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
 	m_Brush[COLOR_IDX_GRAY240].CreateSolidBrush (COLOR_GRAY240);
 	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
 	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush (COLOR_GRAY94);
@@ -264,6 +327,8 @@ void CTestReady::Lf_initFontSet()
 void CTestReady::Lf_initVariable()
 {
 	GetDlgItem(IDC_STT_MODEL_NAME)->SetWindowText(lpSystemInfo->m_sModelName);
+
+	m_dioInputBit = 0x0000;
 }
 
 bool CTestReady::Lf_getControlBdReady()
@@ -344,117 +409,53 @@ BOOL CTestReady::Lf_sendGMESData()
 
 	if(lpWorkInfo->m_nFastDioJudge == FAST_JUDGE_OK)
 	{
+		if (lpWorkInfo->m_bIsEdidFail == true && lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS)
+		{
+			//EDID 결과 NG인 경우, NG로만 배출이 가능 하도록 한다.
+			//작업자 OK 배출 시도 시에는 상위 통신을 못하도록 막는다.
+			m_pApp->Gf_ShowMessageBox(_T("EDID Fail. Can not decide OK."));//AfxMessageBox(_T("EDID Fail. Can not decide OK."));
+			return FALSE;
+		}
  		lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
 		m_pApp->Gf_setGMesGoodInfo();
- 		sdata.Format(_T(""));
-		m_pApp->m_pCimNet->SetOverHaulFlag(sdata.GetBuffer(0));
 	}
 	else
 	{
 		int defecetResult = 0;
-		BYTE readDio;
 
 		m_pApp->Gf_writeLogData(_T("<MES>"), _T("QualityCode Dialog Open"));
 		m_pApp->Gf_writeLogData(_T("<MES>"), lpWorkInfo->m_sBadCode);
 
 		defecetResult = ShowDefectResult(GetSafeOwner());
-		delayMS(50); //Dio Data가 들어오는 시점 관련하여 확인하기 위해서.
-		if(defecetResult == IDOK	
-		|| lpWorkInfo->m_bDioJudgeNg == true
-		|| lpWorkInfo->m_bDioJudgeOk == true 
-		|| lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS 
-		|| lpWorkInfo->m_nPassOrFail == GMES_PNF_FAIL)
+		lpWorkInfo->m_sBadCode = GetRWK_CD();
+		if (defecetResult == IDOK && lpWorkInfo->m_sBadCode.IsEmpty()!=FALSE)
 		{
-			readDio = (BYTE)m_pApp->m_pDio7230->Dio_DI_ReadPort();
-			outLog.Format(_T("OK - %d, NG - %d, PnF - %d, BAD DLG - %d, DIO - %d"), 
-				lpWorkInfo->m_bDioJudgeOk, 
-				lpWorkInfo->m_bDioJudgeNg, 
-				lpWorkInfo->m_nPassOrFail, 
-				defecetResult, 
-				readDio);
-
+			m_pApp->Gf_setGMesGoodInfo();
+			lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
+		}
+		else if(lpWorkInfo->m_sBadCode.IsEmpty()==FALSE || lpWorkInfo->m_bDioJudgeNg == true)
+		{
 			m_pApp->Gf_writeLogData(_T("<MES>"), outLog.GetBuffer(0));
 
-			lpWorkInfo->m_sBadCode = GetRWK_CD();
 			lpWorkInfo->m_sExpectedCode = GetExpected_RWK();
 
-			outLog.Format(_T("RWKs- %s, EXPECTED_RWK - %s"), lpWorkInfo->m_sBadCode, lpWorkInfo->m_sExpectedCode);
+			outLog.Format(_T("RWK- %s, EXPECTED_RWK - %s"), lpWorkInfo->m_sBadCode, lpWorkInfo->m_sExpectedCode);
 			m_pApp->Gf_writeLogData(_T("<MES>"), outLog);
 
-			UpdateData(FALSE);
-
-			// NG 버튼을 눌렀을 경우는 무조건 NG 처리 함. BAD CODE가 입력 된 상태에서도 NG 버튼 신호 입력 시 NG 배출.
-			if(lpWorkInfo->m_bDioJudgeNg == true)
-			{
-				//구미의 경우 작업자가 JUDGE NG 버튼으로 판정 시 BAD 코드가 없는 경우 상위 보고를 하지 아니하고 NG 배출한다.
-				lpWorkInfo->m_sPID.Empty();
-//imsi				pUiPorc->comm.curData.iPatternEndESC = 0;
-				lpWorkInfo->m_nPassOrFail = GMES_PNF_FAIL;
-				m_pApp->Gf_writeLogData(_T("<MES>"), _T("DO NOT SEND EICR"));
-
-				//TEST OK 신호를 출력하여 JIG가 대기 위치로 이동 하도록 한다. 
-				//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다.
-				//m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);
-				return TRUE;
-			}
-			else if(lpWorkInfo->m_bDioJudgeOk == true)
-			{
-				m_pApp->m_pCimNet->SetRwkCode(_T(""));//pUiPorc->pCimNet->ResetRwkCode();
-				//m_pApp->m_pCimNet->SetExpectedCode(_T(""));
-				lpWorkInfo->m_sBadCode.Empty();
-				lpWorkInfo->m_sExpectedCode.Empty();
-			}
-
-			if ((lpWorkInfo->m_sBadCode.GetLength() == 0 && lpWorkInfo->m_bDioJudgeNg == false) 
-			 || (lpWorkInfo->m_sBadCode.GetLength() > 0 && lpWorkInfo->m_sExpectedCode.GetLength() > 0)
-			 || (lpWorkInfo->m_bDioJudgeOk == true)
-			 || (lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS))
-			{
-				m_pApp->Gf_setGMesGoodInfo();
-				lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
-			}
-			else
-			{	
-				lpWorkInfo->m_nPassOrFail = GMES_PNF_FAIL;
-				m_pApp->Gf_setGMesBadInfo();
-			}
-
-			sdata.Format(_T(""));
-			m_pApp->m_pCimNet->SetOverHaulFlag(sdata);//pUiPorc->pCimNet->ResetOverHaulFlag(strTemp.GetBuffer(0));			
+			lpWorkInfo->m_nPassOrFail = GMES_PNF_FAIL;
+			m_pApp->Gf_setGMesBadInfo();
+				
 		}
 		else
 		{
-			readDio = (BYTE)m_pApp->m_pDio7230->Dio_DI_ReadPort();
-			outLog.Format(_T("[GMES BAD CODE] OK - %d, NG - %d, PnF - %d, BAD DLG - %d, DIO - %d"), 
-				lpWorkInfo->m_bDioJudgeOk, 
-				lpWorkInfo->m_bDioJudgeNg,  
-				lpWorkInfo->m_nPassOrFail, 
-				defecetResult, 
-				readDio);
-			m_pApp->Gf_writeLogData(_T("<MES>"), outLog);
-
 			m_pApp->Gf_writeLogData(_T("MES"), _T("CANCEL"));
 			return FALSE;
 		}
 	}
 
-	if (lpWorkInfo->m_bIsEdidFail == true && lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS)
-	{
-		//EDID 결과 NG인 경우, NG로만 배출이 가능 하도록 한다.
-		//작업자 OK 배출 시도 시에는 상위 통신을 못하도록 막는다.
-		m_pApp->Gf_ShowMessageBox(_T("EDID Fail. Can not decide OK."));//AfxMessageBox(_T("EDID Fail. Can not decide OK."));
-		return FALSE;
-	}
+	
 	GetForegroundWindow()->PostMessage (WM_KEYDOWN, VK_F12, 0);
 	m_pApp->Gf_sendGmesHost(HOST_EICR);
-
-	//TEST OK 신호를 출력하여 JIG가 대기 위치로 이동 하도록 한다. 
-	//이후 OK, NG 신호를 PLC로 전달하여 OUT 이제기가 배출 하도록 한다. 
-	//구미 장비 기술 안철민S 요청 사항.
-	//상위 결과를 받고서 NG LABEL 붙여야하는 이유로 JIG OUT 위치 변경. 위 내용 무시함.
-	//m_pApp->Gf_writeLogData(_T("<DIO>"), _T("OUT -> TEST OK - JIG OUT"));
-	//m_pApp->m_pDio7230->Gf_setDioWrite(DIO_GUMI_M5_TEST_OK);//(DIO_GUMI_M5_TEST_OK, 1);
-//imsi		pUiPorc->comm.curData.strUsePanelId = "";
 	return TRUE;
 }
 
@@ -466,10 +467,12 @@ void CTestReady::Lf_openResult()
 	{
 		if(lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS) 
 		{
+			m_pApp->m_pDio7230->Gf_setDioOutOK();
 			Lf_createCount(GOOD_CNT);
 		}
 		else if(lpWorkInfo->m_nPassOrFail == GMES_PNF_FAIL)
 		{
+			m_pApp->m_pDio7230->Gf_setDioOutNG();
 			Lf_createCount(BAD_CNT);
 		}
 	}
@@ -511,15 +514,11 @@ bool CTestReady::Lf_startTest()
 	}
 
 	lpWorkInfo->m_nPassOrFail = GMES_PNF_NONE;
+	lpWorkInfo->m_sBadCode.Empty();
+	GetDlgItem(IDC_BTN_TEST_START)->EnableWindow(FALSE);
 
-	// 	pUiPorc->comm.curData.strErrorMessage = "";
-	// 	pUiPorc->comm.curData.iStartTest = SEQ_PTN_TEST_START;
-	// 	pUiPorc->comm.curData.strPtnTestInfo = "";
-	// 
-	/*if (m_pApp->m_bUserIdGieng != true && m_pApp->m_bUserIdPM != true)
-	{
-		Lf_checkPanelId();
-	}*/
+	// 검사 시작하면 배출할때까지 TESTING DIO 신호 살린다.
+	m_pApp->m_pDio7230->Gf_setDioOutTesting();
 
 	delayMS(lpSystemInfo->m_nTestStartDelay);
 
@@ -537,7 +536,7 @@ bool CTestReady::Lf_startTest()
 	// after test initialize
 	Lf_setVariableAfter();
 	SetTimer(TIMER_PID_CHECK, 100, NULL);
-
+	GetDlgItem(IDC_BTN_TEST_START)->EnableWindow(TRUE);
 	return true;
 }
 
@@ -547,6 +546,8 @@ void CTestReady::Lf_setVariableAfter()
 	ZeroMemory(m_pApp->m_nEndCheckTime, sizeof(m_pApp->m_nEndCheckTime));
 	ZeroMemory(m_pApp->m_nPatTime, sizeof(m_pApp->m_nPatTime));
 	lpWorkInfo->m_bIsEdidFail = false;
+
+	m_dioInputBit = 0x0000;
 }
 
 void CTestReady::OnPaint()
