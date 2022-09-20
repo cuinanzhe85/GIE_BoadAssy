@@ -100,13 +100,7 @@
 #define	HOST_EICR					6
 #define	HOST_AGN_INSP				7
 #define	HOST_EQCC					8
-#define	HOST_APDR_YB				9
-#define	HOST_APDR_GB				10
-#define	HOST_APDR_CB				11
-#define HOST_APDR_LD				12
-#define	HOST_APDR_ADDLD				13
-#define HOST_WDCR					14
-#define HOST_APDR_ADPD				15
+#define	HOST_APDR					9
 
 
 #define SERVER_MES					0

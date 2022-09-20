@@ -143,6 +143,7 @@ protected:
 
 	CString Lf_getPatternData();
 	void Lf_setGmesValueEICR();
+	void Lf_setGmesValuePCHK();
 
 protected:
 	LPFUSINGINFO			lpFusingInfo;

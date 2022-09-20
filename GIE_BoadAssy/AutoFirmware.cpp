@@ -47,6 +47,7 @@ BOOL CAutoFirmware::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	lpWorkInfo		= m_pApp->GetWorkInfo();
+	lpModelInfo = m_pApp->GetModelInfo();
 
 	Lf_initFontSet();
 	Lf_initVariable();
@@ -576,18 +577,23 @@ BOOL CAutoFirmware::Lf_FpgaDownloadStart()
 {
 	CString sdata;
 
-	sdata.Format(_T("Firmware Downloading ..."));
+	sdata.Format(_T("FPGA Downloading ..."));
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
 
 	// Progress 초기화
 	m_progDownload.SetPos(0);
-	sdata.Format(_T("Firmware Downloading ...(0%)"));
+	sdata.Format(_T("FPGA Downloading ...(0%)"));
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
 
+	if (m_pApp->m_pCommand->Gf_setSRunnerControl(lpModelInfo->m_nSignalType, _ENABLE_) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - SRunner Enable  xxx"));
+		return FALSE;
+	}
 	// Step1. Download Ready Check
 	if (Lf_checkDownloadReady1() == FALSE)
 	{
-		m_pApp->Gf_ShowMessageBox(_T("xxx  Firmware Download Fail - Ready Check  xxx"));
+		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - Ready Check  xxx"));
 		goto ERR_EXCEPT;
 	}
 
@@ -602,7 +608,7 @@ BOOL CAutoFirmware::Lf_FpgaDownloadStart()
 	delayMS(300);
 	if (Lf_sendFpgaFile() == FALSE)
 	{
-		m_pApp->Gf_ShowMessageBox(_T("xxx  Firmware Download Fail - Data Download  xxx"));
+		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - Data Download  xxx"));
 		goto ERR_EXCEPT;
 	}
 
@@ -610,16 +616,22 @@ BOOL CAutoFirmware::Lf_FpgaDownloadStart()
 	delayMS(100);
 	if (Lf_sendDownloadComplete() == FALSE)
 	{
-		m_pApp->Gf_ShowMessageBox(_T("xxx  Firmware Download Fail - Complete Check  xxx"));
+		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - Complete Check  xxx"));
 		goto ERR_EXCEPT;
 	}
 
 	// Step6. Download Initialize & Ready
 	Lf_readyInitialize();
 
-	sdata.Format(_T("Firmware Downloading ...(100%)"));
+	sdata.Format(_T("FPGA Downloading ...(100%)"));
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
 	m_progDownload.SetPos(100);
+
+	if (m_pApp->m_pCommand->Gf_setSRunnerControl(lpModelInfo->m_nSignalType, _DISABLE_) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - SRunner Disable  xxx"));
+		return FALSE;
+	}
 	return TRUE;
 
 ERR_EXCEPT:

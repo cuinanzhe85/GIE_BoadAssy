@@ -1551,7 +1551,16 @@ void CGIE_BoadAssyApp::Gf_setGMesBadInfo()
 	m_pCimNet->SetPF(_T("F"));
 	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
 }
+void CGIE_BoadAssyApp::Lf_setGmesValuePCHK()
+{
+	// 2009-03-05 PDH. PCHK 진행하지 않고 불량으로 Key In하는 경우 Panel ID 및
+	// Pallet ID 없음으로 인하여 EICR 보고시에도 Panel ID, Pallet Update 하도록 수정.
+	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);
+	m_pCimNet->SetBLID(_T(""));
+	m_pCimNet->SetSerialNumber(_T(""));
+	m_pCimNet->SetPalletID(_T(""));
 
+}
 void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 {
 	// 2009-03-05 PDH. PCHK 진행하지 않고 불량으로 Key In하는 경우 Panel ID 및
@@ -1650,7 +1659,17 @@ Send_RETRY:
 	else if(nHostCmd==HOST_EDTI)
 	{
 		nRtnCD = m_pCimNet->EDTI();
-	}	
+	}
+	else if (nHostCmd == HOST_PCHK)
+	{
+		Lf_setGmesValuePCHK();
+		nRtnCD = m_pCimNet->PCHK();
+
+		CString sLog;
+		m_pCimNet->GetFieldData(&strBuff, _T("RTN_PID"));
+		sLog.Format(_T("RTN_PID : %s"), strBuff);
+		Gf_writeLogData(_T("<MES>"),sLog);
+	}
 	else if(nHostCmd==HOST_EICR)
 	{
 		Lf_setGmesValueEICR();

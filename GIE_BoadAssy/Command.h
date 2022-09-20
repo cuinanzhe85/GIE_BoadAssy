@@ -44,7 +44,7 @@ public:
 	BOOL Gf_CheckCableOpen();	// 2022-08-31 cnz
 	BOOL Gf_setSignalOnOff(int nCh, int OnOff);	// 0: ch1, 1: ch2, 2: All
 	BOOL Gf_setPwmOnOff(int OnOff, int duty, int freq);
-	BOOL Gf_setSRunnerControl(int EnableDisable);
+	BOOL Gf_setSRunnerControl(int nTarget,int EnableDisable);
 
 	CString Gf_makePGPatternString(CString strPtnName);
 

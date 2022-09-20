@@ -61,6 +61,7 @@ protected:
 
 protected:
 	LPINSPWORKINFO	lpWorkInfo;
+	LPMODELSETINFO lpModelInfo;
 
 	int		m_nFirmwareDataLen;
 	BYTE*	m_pFirmwareData;

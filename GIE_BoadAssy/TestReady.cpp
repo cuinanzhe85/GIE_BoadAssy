@@ -515,6 +515,11 @@ bool CTestReady::Lf_startTest()
 
 	lpWorkInfo->m_nPassOrFail = GMES_PNF_NONE;
 	lpWorkInfo->m_sBadCode.Empty();
+	
+	if (m_pApp->Gf_sendGmesHost(HOST_PCHK) == FALSE)
+	{
+		return false;
+	}
 	GetDlgItem(IDC_BTN_TEST_START)->EnableWindow(FALSE);
 
 	// 검사 시작하면 배출할때까지 TESTING DIO 신호 살린다.

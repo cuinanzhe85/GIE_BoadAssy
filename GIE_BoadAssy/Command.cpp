@@ -885,13 +885,15 @@ BOOL CCommand::Gf_setPowerVoltSet(float vcc, float vdd, float vgh, float vgl)
 
 	return ret;
 }
-BOOL CCommand::Gf_setSRunnerControl(int EnableDisable)
+BOOL CCommand::Gf_setSRunnerControl(int nTarget, int EnableDisable)
 {
 	BOOL ret = FALSE;
 	char szpacket[50];
 	int length;
 
-	sprintf_s(szpacket, "%01d", EnableDisable);
+	// Target 0: LVDS PG 1:DP Module
+	// Enable 0: Disable 1: Enable
+	sprintf_s(szpacket, "%01d%01d", nTarget, EnableDisable);
 	length = (int)strlen(szpacket);
 
 	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_SRUNNER_CONTROL, length, szpacket);
