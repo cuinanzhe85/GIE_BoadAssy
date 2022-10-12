@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP(CBmpDownload, CDialog)
 	ON_BN_CLICKED(IDC_BTN_BMP_DOWNLOAD_START, &CBmpDownload::OnBnClickedBtnBmpDownloadStart)
 	ON_LBN_SELCHANGE(IDC_LIST_BMP_TOTAL, &CBmpDownload::OnLbnSelchangeListBmpTotal)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_BMP_DOWNLOAD, &CBmpDownload::OnLvnItemchangedListBmpDownload)
+	ON_BN_CLICKED(IDC_BTN_BMP_ADD, &CBmpDownload::OnBnClickedBtnBmpAdd)
 END_MESSAGE_MAP()
 
 
@@ -59,6 +60,8 @@ BOOL CBmpDownload::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	m_pApp->Gf_writeLogData("<WND>", "BMP Download Dialog Open");
+
 	lpModelInfo = m_pApp->GetModelInfo();
 	lpWorkInfo = m_pApp->GetWorkInfo();
 
@@ -69,8 +72,12 @@ BOOL CBmpDownload::OnInitDialog()
 
 	HICON hIcon;
 	CButton* pBtn;
-	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_DELETE2);
+	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_LEFT);
 	pBtn = (CButton*)GetDlgItem(IDC_BTN_BMP_DELETE);
+	pBtn->SetIcon(hIcon);
+
+	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_RIGHT);
+	pBtn = (CButton*)GetDlgItem(IDC_BTN_BMP_ADD);
 	pBtn->SetIcon(hIcon);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -151,24 +158,33 @@ void CBmpDownload::OnDestroy()
 	CDialog::OnDestroy();
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	for (int i = 0; i < COLOR_IDX_MAX; i++)
+	{
+		m_brush[i].DeleteObject();
+	}
+
+	for (int i = 0; i < FONT_IDX_MAX; i++)
+	{
+		m_Font[i].DeleteObject();
+	}
 }
 void CBmpDownload::Lf_InitItemFont()
 {
-	m_Font[0].CreateFont(15, 6, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[0].CreateFont(15, 6, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_LIST_BMP_TOTAL)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_LIST_BMP_DOWNLOAD)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_DOWNLOAD_STATUS)->SetFont(&m_Font[0]);
 
-	m_Font[1].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[1].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
-	m_Font[2].CreateFont(15, 8, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[2].CreateFont(15, 8, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
-	m_Font[3].CreateFont(34, 14, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[3].CreateFont(34, 14, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
-	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_STT_BMP_TITLE)->SetFont(&m_Font[4]);
 
-	m_Font[5].CreateFont(24, 11, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[5].CreateFont(24, 11, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_BTN_BMP_DELETE)->SetFont(&m_Font[5]);
 	GetDlgItem(IDC_BTN_BMP_DOWNLOAD_START)->SetFont(&m_Font[5]);
 }
@@ -637,4 +653,31 @@ BOOL CBmpDownload::Lf_getDoneCheck()
 		return TRUE;
 	else
 		return FALSE;
+}
+
+void CBmpDownload::OnBnClickedBtnBmpAdd()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_listBmpTotal.GetCurSel() == -1)
+		return;
+
+	CString strBmpName;
+	m_listBmpTotal.GetText(m_listBmpTotal.GetCurSel(), strBmpName);
+
+	int nbmpcount = m_listBmpDownload.GetItemCount();
+	for (int i = 0; i < nbmpcount; i++)
+	{
+		if (m_listBmpDownload.GetItemText(i, 1) == strBmpName)
+		{
+			return;
+		}
+	}
+	CString strNomber;
+	strNomber.Format(_T("%d"), nbmpcount + 1);
+	m_listBmpDownload.InsertItem(nbmpcount, strNomber);
+	m_listBmpDownload.SetItemText(nbmpcount, 1, strBmpName);
+
+	m_listBmpDownload.SetSelectionMark(nbmpcount + 1); // Item Select & Focus
+	m_listBmpDownload.SetItemState(nbmpcount + 1, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
+	m_listBmpDownload.SetFocus();
 }

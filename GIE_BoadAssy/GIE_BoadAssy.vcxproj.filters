@@ -96,6 +96,15 @@
     <ClCompile Include="ModelGamma.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SocketTCPApp.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketTCP.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlcCtrl.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoFirmware.h">
@@ -191,6 +200,15 @@
     <ClInclude Include="ModelGamma.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SocketTCP.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketTCPApp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlcCtrl.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\GIE_BoadAssy.ico">
@@ -284,6 +302,12 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\Test_Push.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Left.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Right.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

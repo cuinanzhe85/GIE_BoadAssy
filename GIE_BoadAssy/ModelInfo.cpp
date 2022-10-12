@@ -212,6 +212,7 @@ BOOL CModelInfo::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	m_pApp->Gf_writeLogData("<WND>", "Model Info Dialog Open");
 	lpModelInfo	= m_pApp->GetModelInfo();
 	lpSystemInfo = m_pApp->GetSystemInfo();
 	m_pCmbPatternListName = (CComboBox* ) GetDlgItem(IDC_CMB_PTN_NAME);
@@ -262,7 +263,7 @@ void CModelInfo::Lf_initItemValue()
 
 	// Preview 영역 초기화
 	m_pApp->m_pPatternView->InitPatternRect(GetDC(), rcLCD, rcFrame);
-	m_pApp->m_pPatternView->InitPatternPath(_T(".\\Pattern"));
+	m_pApp->m_pPatternView->InitPatternPath(_T(""));
 	m_pApp->m_pPatternView->InitBmpPatternPath(_T(""));
 
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_SIGNAL)->m_hWnd, _T(""), _T(""));
@@ -331,7 +332,7 @@ void CModelInfo::Lf_initFontSet()
 	GetDlgItem(IDC_STT_CREATE_MODEL_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_EDT_CREATE_MODEL)->SetFont(&m_Font[3]);
 
-	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_STT_MODELINFODLG_TIT)->SetFont(&m_Font[4]);
 
 	m_Font[5].CreateFont(24, 11, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
@@ -1800,7 +1801,7 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_bfusingflag == 2)
 			{
-				pDC->SetBkColor(COLOR_RED128);
+				pDC->SetBkColor(COLOR_RED);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED128];
 			}
@@ -2168,13 +2169,14 @@ void CModelInfo::OnStnClickedSttFusing()
 	if (m_pApp->m_pCommand->Gf_setFusingSystemInfo() == TRUE)
 	{
 		m_bfusingflag = 1;
+		GetDlgItem(IDC_STT_FUSING)->SetWindowTextW(_T("FUSING OK"));
 	}
 	else
 	{
 		m_bfusingflag = 2;
-		GetDlgItem(IDC_STT_FUSING)->EnableWindow(TRUE);
-		return;
+		GetDlgItem(IDC_STT_FUSING)->SetWindowTextW(_T("FUSING NG"));
 	}
 
 	GetDlgItem(IDC_STT_FUSING)->EnableWindow(TRUE);
+	GetDlgItem(IDC_STT_FUSING)->Invalidate(FALSE);
 }

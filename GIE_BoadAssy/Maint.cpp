@@ -59,6 +59,12 @@ BEGIN_MESSAGE_MAP(CMaint, CDialog)
 	ON_BN_CLICKED(IDC_BTN_POWER_OFF, &CMaint::OnBnClickedBtnPowerOff)
 	ON_CBN_SELCHANGE(IDC_CMB_PATTERN_LIST, &CMaint::OnCbnSelchangeCmbPatternList)
 	ON_BN_CLICKED(IDC_BTN_CLOSE, &CMaint::OnBnClickedBtnClose)
+	ON_BN_CLICKED(IDC_BTN_BLU_DUTY_SET, &CMaint::OnBnClickedBtnBluDutySet)
+	ON_BN_CLICKED(IDC_BTN_BLU_ON, &CMaint::OnBnClickedBtnBluOn)
+	ON_BN_CLICKED(IDC_BTN_BLU_OFF, &CMaint::OnBnClickedBtnBluOff)
+	ON_BN_CLICKED(IDC_BTN_BCR_READ, &CMaint::OnBnClickedBtnBcrRead)
+	ON_WM_CTLCOLOR()
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -70,9 +76,13 @@ BOOL CMaint::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	m_pApp->Gf_writeLogData("<WND>", "Maint Dialog Open");
 	lpModelInfo = m_pApp->GetModelInfo();
+	lpWorkInfo = m_pApp->GetWorkInfo();
 
-	m_uDioOutBit = 0;
+	Lf_InitItemValue();
+	Lf_initFontSet();
+	Lf_InitBrush();
 	Lf_setCombPatternList();
 
 	SetTimer(1, 500, NULL);
@@ -332,11 +342,13 @@ void CMaint::OnBnClickedBtnPowerOff()
 	CString sdata = _T("");
 	GetDlgItem(IDC_STT_MT_VCC_MEASURE)->SetWindowText(sdata);
 	GetDlgItem(IDC_STT_MT_VDD_MEASURE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_MT_VBL_MEASURE)->SetWindowText(sdata);
 	GetDlgItem(IDC_STT_MT_VGH_MEASURE)->SetWindowText(sdata);
 	GetDlgItem(IDC_STT_MT_VGL_MEASURE)->SetWindowText(sdata);
 
 	GetDlgItem(IDC_STT_MT_ICC_MEASURE)->SetWindowText(sdata);
 	GetDlgItem(IDC_STT_MT_IDD_MEASURE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_MT_IBL_MEASURE)->SetWindowText(sdata);
 	GetDlgItem(IDC_STT_MT_IGH_MEASURE)->SetWindowText(sdata);
 	GetDlgItem(IDC_STT_MT_IGL_MEASURE)->SetWindowText(sdata);
 }
@@ -501,4 +513,147 @@ void CMaint::OnBnClickedBtnClose()
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
 	m_pApp->m_pDio7230->Dio_DO_WritePort(DIO_OUT_RESET);
 	CDialog::OnOK();
+}
+
+
+void CMaint::OnBnClickedBtnBluDutySet()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int nDuty;
+	CString strDuty;
+	GetDlgItem(IDC_EDT_BLU_DUTY)->GetWindowTextW(strDuty);
+	nDuty = (int)_ttoi(strDuty);
+	if (nDuty > 0 && nDuty < 100)
+		m_pApp->m_pCommand->Gf_setBluDuty(nDuty);
+}
+
+
+void CMaint::OnBnClickedBtnBluOn()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->m_pCommand->Gf_setBluOnOff(_ON_);
+}
+
+
+void CMaint::OnBnClickedBtnBluOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->m_pCommand->Gf_setBluOnOff(_OFF_);
+}
+
+
+void CMaint::OnBnClickedBtnBcrRead()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
+	if (lpWorkInfo->m_sPID.IsEmpty() == FALSE)
+		GetDlgItem(IDC_EDT_BCR_PID)->SetWindowTextW(lpWorkInfo->m_sPID);
+	else
+		GetDlgItem(IDC_EDT_BCR_PID)->SetWindowTextW(_T(""));
+}
+void CMaint::Lf_initFontSet()
+{
+	/*******************************************************************************************************************/
+	// Fonts set
+	m_Font[0].CreateFont(15, 8, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	GetDlgItem(IDC_BTN_POWER_ON)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_BTN_POWER_OFF)->SetFont(&m_Font[0]);
+
+	GetDlgItem(IDC_GRO_DIO)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_GRO_PG_TEST)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_PRO_BLU)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_PRO_BCR)->SetFont(&m_Font[0]);
+
+	m_Font[1].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+
+	m_Font[2].CreateFont(15, 8, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+
+	m_Font[3].CreateFont(34, 14, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+
+	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	GetDlgItem(IDC_STT_MAINT_TIT)->SetFont(&m_Font[4]);
+
+	m_Font[5].CreateFont(24, 9, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	GetDlgItem(IDC_BTN_CLOSE)->SetFont(&m_Font[5]);
+
+}
+void CMaint::Lf_InitItemValue()
+{
+	m_uDioOutBit = 0;
+
+	SetWindowTheme(GetDlgItem(IDC_GRO_DIO)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_GRO_PG_TEST)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_PRO_BLU)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_PRO_BCR)->m_hWnd, _T(""), _T(""));
+}
+void CMaint::Lf_InitBrush()
+{
+	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
+	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush(COLOR_ORANGE);
+	m_Brush[COLOR_IDX_GRAY240].CreateSolidBrush(COLOR_GRAY240);
+	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush(COLOR_GRAY64);
+	m_Brush[COLOR_IDX_BLUISH].CreateSolidBrush(COLOR_BLUISH);
+	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush(COLOR_GRAY224);
+	m_Brush[COLOR_IDX_GREEN128].CreateSolidBrush(COLOR_GREEN128);
+	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush(COLOR_DEEP_BLUE);
+	m_Brush[COLOR_IDX_LIGHT_YELLOW].CreateSolidBrush(COLOR_LIGHT_YELLOW);
+	m_Brush[COLOR_IDX_MAGENTA].CreateSolidBrush(COLOR_MAGENTA);
+}
+
+HBRUSH CMaint::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  여기서 DC의 특성을 변경합니다.
+	switch (nCtlColor)
+	{
+	case CTLCOLOR_MSGBOX:
+		break;
+	case CTLCOLOR_EDIT:
+		break;
+	case CTLCOLOR_LISTBOX:
+		break;
+	case CTLCOLOR_SCROLLBAR:
+		break;
+	case CTLCOLOR_BTN:
+		break;
+	case CTLCOLOR_STATIC:
+		if (pWnd->GetDlgCtrlID() == IDC_STATIC
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MAINT_TIT)
+		{
+			pDC->SetBkColor(COLOR_DEEP_BLUE);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_DEEP_BLUE];
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_MT_VCC_MEASURE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MT_VDD_MEASURE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MT_VBL_MEASURE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MT_VGH_MEASURE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MT_VGL_MEASURE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MT_ICC_MEASURE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MT_IDD_MEASURE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MT_IBL_MEASURE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MT_IGH_MEASURE
+			|| pWnd->GetDlgCtrlID() == IDC_STT_MT_IGL_MEASURE)
+		{
+			pDC->SetBkColor(COLOR_WHITE);
+			pDC->SetTextColor(COLOR_BLACK);
+			return m_Brush[COLOR_IDX_WHITE];
+		}
+	}
+	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
+	return hbr;
+}
+
+
+void CMaint::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialog::OnPaint()을(를) 호출하지 마십시오.
+	CRect rect;
+
+	GetClientRect(&rect);
+	rect.bottom = 90;
+	dc.FillSolidRect(rect, COLOR_DEEP_BLUE);
 }

@@ -59,6 +59,7 @@ protected:
 	BOOL Lf_CableOpenCheck();
 
 	void Lf_PtnTestEventView(CString Event);
+	void Lf_setPatternImageView(CString strPtnName);
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CListCtrl m_LCctrlPtnTestView;
@@ -72,4 +73,5 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
 	CListBox m_listPtnTestEvent;
+	CStatic m_picPtnImageView;
 };

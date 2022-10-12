@@ -26,6 +26,10 @@ protected:
 	LPINSPWORKINFO	lpWorkInfo;
 
 	void Lf_InitFont();
+	void Lf_InitBrush();
+
+	CBrush m_Brush[COLOR_IDX_MAX];
+	CFont m_Font[FONT_IDX_MAX];
 
 public:
 	afx_msg void OnBnClickedOk();
@@ -34,4 +38,7 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCancel();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnPaint();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

@@ -43,6 +43,7 @@ BOOL CInitialize::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	m_pApp->Gf_writeLogData("<WND>", "Test Ready Dialog Open");
 	lpModelInfo		= m_pApp->GetModelInfo();
 	
 	Lf_initFontSet();
@@ -216,15 +217,15 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
-		if(pWnd->GetDlgCtrlID()==IDC_STT_BCR_VALUE)
+		if(pWnd->GetDlgCtrlID()== IDC_STT_DIO_VALUE)
 		{
-			if(m_nStatus[ST_BCR] == FALSE)
+			if(m_nStatus[ST_DIO] == FALSE)
 			{
 				pDC->SetBkColor(COLOR_RED);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else if (m_nStatus[ST_BCR] == TRUE)
+			else if (m_nStatus[ST_DIO] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
@@ -318,6 +319,7 @@ void CInitialize::Lf_initFontSet()
 	GetDlgItem(IDC_STT_BCR_VALUE)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GFD250_VALUE)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_BLU_VALUE)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_DIO_VALUE)->SetFont(&m_Font[0]);
 
 	m_Font[1].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
@@ -453,6 +455,22 @@ void CInitialize::Lf_loadData()
 	//SetDlgItemText (IDC_STT_BCR_VALUE, m_pApp->m_sSerialPort3);
 	GetDlgItem(IDC_STT_BCR_VALUE)->Invalidate(FALSE);
 
+	if (m_pApp->m_pDio7230->Dio_Initialize() == TRUE)
+	{
+		m_nStatus[ST_DIO] = TRUE;
+	}
+	else
+	{
+		m_nStatus[ST_DIO] = FALSE;
+	}
+	m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
+	delayMS(500);
+	if (m_pApp->m_pPlcCtrl->plc_tcpConnection() == TRUE)
+	{
+		m_nStatus[ST_DIO] = FALSE;
+	}
+	GetDlgItem(IDC_STT_DIO_VALUE)->Invalidate(FALSE);
+
 	UpdateData(FALSE);
 
 	if(m_nStatus[ST_PG] == TRUE)
@@ -470,7 +488,7 @@ void CInitialize::Lf_loadData()
 			m_pApp->Gf_writeLogData(_T("<PG>"), strlog);
 		}
 	}	
-
+	
 	for(int i=0;i<20;i++)
 	{
 		if(m_nStatus[i] == FALSE)

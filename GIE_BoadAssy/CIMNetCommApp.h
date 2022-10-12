@@ -92,9 +92,9 @@ public:
 	BOOL MSET ();
 
 	BOOL EICR_Abnormal ();
-	BOOL APDR ();			// 2011-08-18 PDH. APDR Message 추가.
-	BOOL MILT ();			// 2013.03.28. KSM. MILT Message 추가.
-	BOOL WDCR ();			// 2014-11-20 PDH. WDCR Message 추가.
+	BOOL APDR ();
+	BOOL MILT ();
+	BOOL WDCR ();
 
 	BOOL FLDR ();
 

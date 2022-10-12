@@ -41,7 +41,7 @@ public:
 
 protected:
 	void Lf_initFontSet();
-	void Lf_initVariable();
+	void Lf_initValue();
 	void Lf_loadFirmwareFile();
 	void Lf_readFirmwareFile(CString strFilePath);
 	void Lf_parseDataRecord(CString strRecord, BYTE* pData);
@@ -57,6 +57,8 @@ protected:
 	BOOL Lf_checkDownloadReady1();
 	BOOL Lf_checkDownloadReady2();
 	BOOL Lf_sendFpgaFile();
+
+	BOOL Lf_SrunnerTypeSelect();
 
 
 protected:

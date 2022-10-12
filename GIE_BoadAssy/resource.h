@@ -56,6 +56,8 @@
 #define IDB_BITMAP_TEST                 191
 #define IDB_BITMAP_TEST_P               192
 #define IDD_MODEL_GAMMA                 194
+#define IDI_ICON_LEFT                   196
+#define IDI_ICON_RIGHT                  197
 #define IDC_BTN_USERID                  1000
 #define IDC_BTN_MODELINFO               1001
 #define IDC_BTN_FUSING                  1001
@@ -155,6 +157,7 @@
 #define IDC_EDT_PTN_FG                  1061
 #define IDC_STT_GFD250_TIT              1061
 #define IDC_CMB_SHORT_TEST              1061
+#define IDC_STT_DIO_VALUE               1061
 #define IDC_CBO_GFD100_COMPORT          1062
 #define IDC_STT_GFD100_VALUE            1062
 #define IDC_EDT_PTN_BG                  1062
@@ -305,6 +308,7 @@
 #define IDC_EDT_ON_SEQ_DEL_4            1107
 #define IDC_STT_EQP_NAME_VALUE          1108
 #define IDC_CMB_ON_SEQ_OP_5             1108
+#define IDC_STT_PTN_IMAGE_TITLE         1108
 #define IDC_STT_OP_MODE_VALUE           1109
 #define IDC_EDT_ON_SEQ_DEL_5            1109
 #define IDC_STT_USER_ID_VALUE           1110
@@ -366,21 +370,28 @@
 #define IDC_STT_VBL_VALUE               1137
 #define IDC_STT_GRP_VCOM                1138
 #define IDC_STT_GRP_POWER_LIMIT         1138
+#define IDC_STT_FW_VERSION_TIT          1138
 #define IDC_STT_GRP_PATTERN             1139
+#define IDC_STT_MAIN_APP_TIT            1139
 #define IDC_STT_USERID_TIT              1140
 #define IDC_STT_GRP_OTHERS2             1140
 #define IDC_EDT_IBL_LOW_LIMIT           1140
+#define IDC_STT_MAIN_APP_VALUE          1140
 #define IDC_STT_USERDLG_TIT             1141
 #define IDC_STT_GRP_I2C_OPTION          1141
+#define IDC_STT_MAIN_FPGA_TIT           1141
 #define IDC_STT_MCDLG_TIT               1142
 #define IDC_EDT_OFF_SEQ_DEL_3           1142
+#define IDC_STT_MAIN_FPGA_VALUE         1142
 #define IDC_STT_MODELINFODLG_TIT        1143
 #define IDC_STT_INITDLG_TIT             1144
 #define IDC_CMB_OFF_SEQ_OP_4            1144
 #define IDC_STT_STATIONDLG_TIT          1145
 #define IDC_EDT_OFF_SEQ_DEL_4           1145
+#define IDC_STT_DP_FPGA_TIT             1145
 #define IDC_STT_AUTOFWDLG_TIT           1146
 #define IDC_CMB_OFF_SEQ_OP_5            1146
+#define IDC_STT_DP_FPGA_VALUE           1146
 #define IDC_STT_FILE_PATH               1147
 #define IDC_EDT_OFF_SEQ_DEL_5           1147
 #define IDC_STT_FW_VERSION              1148
@@ -498,6 +509,7 @@
 #define IDC_EDT_GAMMA_CH26              1201
 #define IDC_PIC_BMP_IMAGE               1202
 #define IDC_EDT_GAMMA_CH27              1202
+#define IDC_BTN_BMP_ADD                 1202
 #define IDC_STT_TOTAL_LIST_TITLE        1203
 #define IDC_EDT_GAMMA_CH28              1203
 #define IDC_STT_DOWNLOAD_LIST_TITLE     1204
@@ -558,21 +570,34 @@
 #define IDC_STT_PTN_IMAGE_SIZE          1235
 #define IDC_STT_MT_VBL_MEASURE          1236
 #define IDC_BTN_GAMMA_VOLTAGE_SET       1237
-#define IDC_STT_MT_IDD_MEASURE2         1237
 #define IDC_STT_MT_IBL_MEASURE          1237
 #define IDC_STT_FUSING                  1238
 #define IDC_STT_BMP_STATUS_COUNT        1239
 #define IDC_STT_DIO_INPUT_1             1240
 #define IDC_STT_DIO_INPUT_2             1241
+#define IDC_EDT_BLU_DUTY                1241
 #define IDC_STT_DIO_INPUT_3             1242
+#define IDC_BTN_BLU_DUTY_SET            1242
+#define IDC_BTN_BLU_ON                  1243
+#define IDC_STT_PID_INPUT_TITLE         1243
+#define IDC_BTN_BLU_OFF                 1244
+#define IDC_STT_PTN_IMAGE_VIEW_SIZE     1244
+#define IDC_EDT_BCR_PID                 1245
+#define IDC_PIC_PTN_IMAGE_VIEW          1245
+#define IDC_BTN_BCR_READ                1246
+#define IDC_STT_MAINT_TIT               1247
+#define IDC_GRO_DIO                     1248
+#define IDC_GRO_PG_TEST                 1249
+#define IDC_PRO_BLU                     1250
+#define IDC_PRO_BCR                     1251
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        196
+#define _APS_NEXT_RESOURCE_VALUE        198
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1241
+#define _APS_NEXT_CONTROL_VALUE         1252
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

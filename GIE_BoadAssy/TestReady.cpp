@@ -84,22 +84,42 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 		if (m_pApp->m_pDio7230->Gf_getDIOJigTilting() == TRUE)
 		{
 			m_dioInputBit |= DI_START_READY;
+			GetDlgItem(IDC_STT_DIO_INPUT_2)->Invalidate(FALSE);
 			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("PANEL TILTING ON"));
-			if (m_pApp->m_pDio7230->Gf_getDIOTestStart())
+			if (lpWorkInfo->m_sPID.IsEmpty() == FALSE)
 			{
-				m_dioInputBit |= DI_TEST_SWITCH1;
-				GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST START SIGNAL ON"));
+				if (m_pApp->m_pDio7230->Gf_getDIOTestStart())
+				{
+					m_dioInputBit |= DI_TEST_SWITCH1;
+					GetDlgItem(IDC_STT_DIO_INPUT_3)->Invalidate(FALSE);
+					GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST START SIGNAL ON"));
 
-				Lf_startTest();
+					Lf_startTest();
+				}
+				else
+				{
+					m_dioInputBit &= ~DI_TEST_SWITCH1;
+					GetDlgItem(IDC_STT_DIO_INPUT_3)->Invalidate(FALSE);
+				}
 			}
 			else
 			{
-				m_dioInputBit &= ~DI_TEST_SWITCH1;
+				CPanelID piddlg;
+				if (piddlg.DoModal() == IDOK)
+				{
+					if (lpWorkInfo->m_sPID.IsEmpty()==FALSE)
+					{
+						GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);
+					}
+				}
+
 			}
+			
 		}
 		else
 		{
 			m_dioInputBit &= ~ DI_START_READY;
+			GetDlgItem(IDC_STT_DIO_INPUT_2)->Invalidate(FALSE);
 		}
 		SetTimer(1, 100, NULL);
 		
@@ -109,12 +129,17 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 		if (m_pApp->m_pDio7230->Dio_DI_ReadPort() & DI_BCR_READ_DONE)
 		{
 			m_dioInputBit |= DI_BCR_READ_DONE;
+			GetDlgItem(IDC_STT_DIO_INPUT_1)->Invalidate(FALSE);
 			KillTimer(TIMER_PID_CHECK);
 			if (Lf_checkPanelId() == FALSE)
 				SetTimer(TIMER_PID_CHECK, 100, NULL);
 		}
 		else
+		{
 			m_dioInputBit &= ~DI_BCR_READ_DONE;
+			GetDlgItem(IDC_STT_DIO_INPUT_1)->Invalidate(FALSE);
+		}
+			
 		
 	}
 
@@ -125,7 +150,19 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 void CTestReady::OnBnClickedBtnTestStart()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	Lf_startTest();
+	if (lpWorkInfo->m_sPID.IsEmpty() == FALSE)
+	{
+		Lf_startTest();
+	}
+	else
+	{
+		CPanelID piddlg;
+		if (piddlg.DoModal() == IDOK)
+		{
+			GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);
+			Lf_startTest();
+		}
+	}
 }
 
 HBRUSH CTestReady::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
@@ -284,7 +321,6 @@ void CTestReady::Lf_initFontSet()
 	GetDlgItem(IDC_STT_TOTAL_CNT_TIT)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GOOD_CNT_TIT)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_BAD_CNT_TIT)->SetFont(&m_Font[0]);
-	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_DIO_INPUT_TITLE)->SetFont(&m_Font[0]);
 
 	GetDlgItem(IDC_STT_DIO_INPUT_1)->SetFont(&m_Font[0]);
@@ -300,12 +336,12 @@ void CTestReady::Lf_initFontSet()
 	GetDlgItem(IDC_STT_TOTAL_CNT_VALUE)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_GOOD_CNT_VALUE)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_BAD_CNT_VALUE)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetFont(&m_Font[3]);
 
-	
-	GetDlgItem(IDC_BTN_TEST_START)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_STT_MODEL_NAME)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_BTN_TEST_START)->SetFont(&m_Font[4]);
 
 	m_Font[5].CreateFont( 150, 70, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
 
@@ -363,7 +399,7 @@ bool CTestReady::Lf_getControlBdReady()
 BOOL CTestReady::Lf_checkPanelId()
 {
 	CString sdata=_T(""), strlog;
-	strlog.Format(_T("SEEK BCR [%s]"), lpWorkInfo->m_sReceivePID);
+	strlog.Format(_T("BCR [%s]"), lpWorkInfo->m_sReceivePID);
 	m_pApp->Gf_writeLogData(_T("<BCR>"), strlog);
 
 	lpWorkInfo->m_sPID = lpWorkInfo->m_sReceivePID;
@@ -409,7 +445,7 @@ BOOL CTestReady::Lf_sendGMESData()
 
 	if(lpWorkInfo->m_nFastDioJudge == FAST_JUDGE_OK)
 	{
-		if (lpWorkInfo->m_bIsEdidFail == true && lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS)
+		if (lpWorkInfo->m_bIsEdidFail == true)
 		{
 			//EDID 결과 NG인 경우, NG로만 배출이 가능 하도록 한다.
 			//작업자 OK 배출 시도 시에는 상위 통신을 못하도록 막는다.
@@ -417,33 +453,33 @@ BOOL CTestReady::Lf_sendGMESData()
 			return FALSE;
 		}
  		lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
-		m_pApp->Gf_setGMesGoodInfo();
+		//m_pApp->Gf_setGMesGoodInfo();
 	}
 	else
 	{
 		int defecetResult = 0;
 
 		m_pApp->Gf_writeLogData(_T("<MES>"), _T("QualityCode Dialog Open"));
-		m_pApp->Gf_writeLogData(_T("<MES>"), lpWorkInfo->m_sBadCode);
+		m_pApp->Gf_writeLogData(_T("<MES>"), lpWorkInfo->m_sRwkCD);
 
 		defecetResult = ShowDefectResult(GetSafeOwner());
-		lpWorkInfo->m_sBadCode = GetRWK_CD();
-		if (defecetResult == IDOK && lpWorkInfo->m_sBadCode.IsEmpty()!=FALSE)
+		lpWorkInfo->m_sRwkCD = GetRWK_CD();
+		if (defecetResult == IDOK && lpWorkInfo->m_sRwkCD.IsEmpty()!=FALSE)
 		{
-			m_pApp->Gf_setGMesGoodInfo();
+			//m_pApp->Gf_setGMesGoodInfo();
 			lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
 		}
-		else if(lpWorkInfo->m_sBadCode.IsEmpty()==FALSE || lpWorkInfo->m_bDioJudgeNg == true)
+		else if(lpWorkInfo->m_sRwkCD.IsEmpty()==FALSE || lpWorkInfo->m_bDioJudgeNg == true)
 		{
 			m_pApp->Gf_writeLogData(_T("<MES>"), outLog.GetBuffer(0));
 
-			lpWorkInfo->m_sExpectedCode = GetExpected_RWK();
+			//lpWorkInfo->m_sExpectedCode = GetExpected_RWK();
 
-			outLog.Format(_T("RWK- %s, EXPECTED_RWK - %s"), lpWorkInfo->m_sBadCode, lpWorkInfo->m_sExpectedCode);
+			outLog.Format(_T("RWK- %s"), lpWorkInfo->m_sRwkCD);
 			m_pApp->Gf_writeLogData(_T("<MES>"), outLog);
 
 			lpWorkInfo->m_nPassOrFail = GMES_PNF_FAIL;
-			m_pApp->Gf_setGMesBadInfo();
+			//m_pApp->Gf_setGMesBadInfo();
 				
 		}
 		else
@@ -474,8 +510,12 @@ void CTestReady::Lf_openResult()
 		{
 			m_pApp->m_pDio7230->Gf_setDioOutNG();
 			Lf_createCount(BAD_CNT);
+			
 		}
 	}
+	// 검사 함번할때마다 PID 다시 입력하도록 수정.(최종검수때 요청) 2022-10-04 CNZ
+	lpWorkInfo->m_sPID.Empty();
+	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(_T(""));
 }
 
 void CTestReady::Lf_updateCount()
@@ -514,7 +554,7 @@ bool CTestReady::Lf_startTest()
 	}
 
 	lpWorkInfo->m_nPassOrFail = GMES_PNF_NONE;
-	lpWorkInfo->m_sBadCode.Empty();
+	lpWorkInfo->m_sRwkCD.Empty();
 	
 	if (m_pApp->Gf_sendGmesHost(HOST_PCHK) == FALSE)
 	{
@@ -540,7 +580,7 @@ bool CTestReady::Lf_startTest()
 	/*********************************************************************************************************************/
 	// after test initialize
 	Lf_setVariableAfter();
-	SetTimer(TIMER_PID_CHECK, 100, NULL);
+	
 	GetDlgItem(IDC_BTN_TEST_START)->EnableWindow(TRUE);
 	return true;
 }
@@ -553,6 +593,8 @@ void CTestReady::Lf_setVariableAfter()
 	lpWorkInfo->m_bIsEdidFail = false;
 
 	m_dioInputBit = 0x0000;
+	SetTimer(TIMER_PID_CHECK, 100, NULL);
+
 }
 
 void CTestReady::OnPaint()

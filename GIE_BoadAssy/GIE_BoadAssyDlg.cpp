@@ -77,7 +77,7 @@ CGIE_BoadAssyDlg::CGIE_BoadAssyDlg(CWnd* pParent /*=NULL*/)
 void CGIE_BoadAssyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_STT_MAIN_FW_VERSION_VIEW, m_sttMainFwVerView);
+	DDX_Control(pDX, IDC_STT_MAIN_FW_VERSION_VIEW, m_sttMainMlogView);
 	DDX_Control(pDX, IDC_BTN_USERID, m_btnMainUserID);
 	DDX_Control(pDX, IDC_BTN_MODEL_CHANGE, m_btnMainMC);
 	DDX_Control(pDX, IDC_BTN_MODELINFO, m_btnMainModel);
@@ -152,8 +152,10 @@ BOOL CGIE_BoadAssyDlg::OnInitDialog()
 	lpModelInfo	= m_pApp->GetModelInfo();
 	lpWorkInfo = m_pApp->GetWorkInfo();
 
+	InitProgramTitle();
 	Lf_InitItemValue();
 	Lf_InitFontSet();
+	Lf_InitColorBrush();
 
 	AfxBeginThread(ThreadDioRead, this);
 	SetTimer(1, 200, NULL);
@@ -162,8 +164,8 @@ BOOL CGIE_BoadAssyDlg::OnInitDialog()
 
 	CRect rect;
 	GetClientRect(rect);
-	rect.top = rect.bottom - 20;
-	m_sttMainFwVerView.MoveWindow(rect);
+	rect.top = rect.bottom - 30;
+	m_sttMainMlogView.MoveWindow(rect);
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -246,7 +248,8 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		break;
 	case CTLCOLOR_STATIC:
 		if((pWnd->GetDlgCtrlID()==IDC_STT_STATION_INFO_TIT)
-		|| (pWnd->GetDlgCtrlID()==IDC_STT_MODEL_INFO_TIT))
+		|| (pWnd->GetDlgCtrlID()==IDC_STT_MODEL_INFO_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_FW_VERSION_TIT))
 		{
 			pDC->SetBkColor(COLOR_DEEP_BLUE);
 			pDC->SetTextColor(COLOR_WHITE);
@@ -265,7 +268,10 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		|| (pWnd->GetDlgCtrlID() == IDC_STT_VGH_VALUE)
 		|| (pWnd->GetDlgCtrlID() == IDC_STT_VGL_VALUE)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_ICC_VALUE)
-		|| (pWnd->GetDlgCtrlID()==IDC_STT_IDD_VALUE))
+		|| (pWnd->GetDlgCtrlID()==IDC_STT_IDD_VALUE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_APP_VALUE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FPGA_VALUE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_DP_FPGA_VALUE))
 		{
 			pDC->SetBkColor(COLOR_WHITE);
 			pDC->SetTextColor(COLOR_BLACK);
@@ -279,7 +285,10 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_RESOLUTION_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_SIGNALBIT_TIT)
 		|| (pWnd->GetDlgCtrlID()==IDC_STT_VOLT_TIT)
-		|| (pWnd->GetDlgCtrlID()==IDC_STT_CURR_TIT))		
+		|| (pWnd->GetDlgCtrlID()==IDC_STT_CURR_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_APP_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FPGA_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_DP_FPGA_TIT))
 		{
 			pDC->SetBkColor(COLOR_LIGHT_YELLOW);
 			pDC->SetTextColor(COLOR_BLACK);
@@ -294,6 +303,12 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetBkColor(COLOR_LIGHT_BLUE);
 			pDC->SetTextColor(COLOR_BLACK);
 			return m_Brush[COLOR_IDX_LIGHT_BLUE];
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FW_VERSION_VIEW)
+		{
+			pDC->SetBkColor(COLOR_BLACK);
+			pDC->SetTextColor(COLOR_CYAN);
+			return m_Brush[COLOR_IDX_BLACK];
 		}
 		break;
 	}
@@ -348,8 +363,11 @@ void CGIE_BoadAssyDlg::OnBnClickedBtnAutofirmware()
 void CGIE_BoadAssyDlg::OnBnClickedBtnInitialize()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	KillTimer(99);
 	CInitialize initDlg;
 	initDlg.DoModal();
+
+	SetTimer(99, 1000, NULL);
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnExit()
@@ -392,6 +410,24 @@ void CGIE_BoadAssyDlg::OnTimer(UINT_PTR nIDEvent)
 
 		CInitialize initDlg;
 		initDlg.DoModal();
+
+		SetTimer(99, 1000, NULL);
+	}
+	if (nIDEvent == 99)
+	{
+		KillTimer(99);
+
+		if (m_pApp->m_pSocketTCPApp->tcp_plc_GetReconnectFlag() == TRUE)
+		{
+			m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
+			delayMS(500);
+			if (m_pApp->m_pPlcCtrl->plc_tcpConnection() == TRUE)
+			{
+				m_pApp->Gf_writeLogData(_T("<PC>"), _T("PLC PC LAN Auto Connected Success."));
+			}
+		}
+
+		SetTimer(99, 1000, NULL);
 	}
 	CDialog::OnTimer(nIDEvent);
 }
@@ -449,10 +485,71 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	sdata.Format(_T("-%.3f"), lpModelInfo->m_fVoltVgl);
 	GetDlgItem(IDC_STT_VGL_VALUE)->SetWindowText(sdata);
 
+	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(_T(""));
+	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(_T(""));
+	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(_T(""));
 
-	GetDlgItem(IDC_STT_MAIN_FW_VERSION_VIEW)->SetWindowText(char_To_wchar(m_pApp->m_szMainFwVersion));
+	int npos = 0;
+	if (m_pApp->m_pCommand->Gf_getFirmwareVersion() == TRUE)
+	{
+		npos = lpWorkInfo->m_sFirmwareVersion.Find(_T(" "));
+		sdata = lpWorkInfo->m_sFirmwareVersion.Left(npos);
+		GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(lpWorkInfo->m_sFirmwareVersion);
+	}
+	// LVDS FPGA Version
+	m_pApp->m_pCommand->Gf_setSRunerTypeSelect(0);
+	if (m_pApp->m_pCommand->Gf_getFpgaeVersion() == TRUE)
+	{
+		npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
+		sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
+		GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(sdata);
+		GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
+	}
+	// DP FPGA Version
+	m_pApp->m_pCommand->Gf_setSRunerTypeSelect(1);
+	if (m_pApp->m_pCommand->Gf_getFpgaeVersion() == TRUE)
+	{
+		npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
+		sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
+		GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
+	}
+	
 
 	return (0);
+}
+void CGIE_BoadAssyDlg::InitProgramTitle()
+{
+	// Main Form Title Set
+	CString strPGMTitle;
+	char D_String[15] = { 0, };
+	char Date_String[15] = { 0, };
+	char* Date[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+	sprintf_s(D_String, "%s", __DATE__);
+	for (int i = 12; i; i--)
+	{
+		for (int j = 3; j; j--)
+		{
+			if (D_String[j - 1] != *(Date[i - 1] + (j - 1)))
+				break;
+			if (j == 1)
+			{
+				if (D_String[4] == 0x20)	D_String[4] = 0x30;
+				sprintf_s(Date_String, "%c%c%c%c/%02d/%c%c", D_String[7], D_String[8], D_String[9], D_String[10], i, D_String[4], D_String[5]);
+				i = 1; j = 1;
+				break;
+			}
+		}
+	}
+	CString m_sSoftwareVersion;
+	m_sSoftwareVersion.Format(_T("%s - %s"), char_To_wchar(Date_String), PGM_VERSION);
+	strPGMTitle.Format(_T("VH NK BA ( %s )"), m_sSoftwareVersion);
+
+	m_pApp->Gf_writeLogData(_T("Program Version"), m_sSoftwareVersion);
+
+	// Window Title Update
+	SetWindowText(strPGMTitle);
+	//m_sttMainMlogView.SetWindowText(strPGMTitle);
 }
 void CGIE_BoadAssyDlg::Lf_InitItemValue()
 {
@@ -477,6 +574,7 @@ void CGIE_BoadAssyDlg::Lf_InitItemValue()
 	m_btnMainExit.LoadBitmaps(IDB_BITMAP_EXIT, IDB_BITMAP_EXIT_P, IDB_BITMAP_EXIT, IDB_BITMAP_EXIT);
 	m_btnMainExit.SizeToContent();
 
+	m_pApp->m_pStaticMainLog = (CStatic*)GetDlgItem(IDC_STT_MAIN_FW_VERSION_VIEW);
 }
 void CGIE_BoadAssyDlg::Lf_InitFontSet()
 {
@@ -484,12 +582,15 @@ void CGIE_BoadAssyDlg::Lf_InitFontSet()
 	// Font Set
 	m_Font[0].CreateFont( 150, 70, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
 	m_Font[1].CreateFont( 60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
-	m_Font[2].CreateFont( 60, 18, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
-	m_Font[3].CreateFont( 32, 13, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[2].CreateFont( 18, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	GetDlgItem(IDC_STT_MAIN_FW_VERSION_VIEW)->SetFont(&m_Font[2]);
+
+	m_Font[3].CreateFont( 32, 13, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_STT_STATION_INFO_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_MODEL_INFO_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_FW_VERSION_TIT)->SetFont(&m_Font[3]);
 
-	m_Font[4].CreateFont( 21, 8, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("System"));
+	m_Font[4].CreateFont( 21, 8, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_STT_EQP_NAME_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_EQP_NAME_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_OP_MODE_TIT)->SetFont(&m_Font[4]);
@@ -519,21 +620,33 @@ void CGIE_BoadAssyDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_VGH_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VGL_VALUE)->SetFont(&m_Font[4]);
 
+	GetDlgItem(IDC_STT_MAIN_APP_TIT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MAIN_FPGA_TIT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_DP_FPGA_TIT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetFont(&m_Font[4]);
+
+	
+}
+void CGIE_BoadAssyDlg::Lf_InitColorBrush()
+{
 	/*************************************************************************************************/
 	// Brush Set
-	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush (COLOR_ORANGE);
-	m_Brush[COLOR_IDX_RED].CreateSolidBrush (COLOR_RED);
-	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush (COLOR_GRAY64);
-	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush (COLOR_GRAY94);
-	m_Brush[COLOR_IDX_LIGHT_GREEN].CreateSolidBrush (COLOR_LIGHT_GREEN);
-	m_Brush[COLOR_IDX_GRAY192].CreateSolidBrush (COLOR_GRAY192);
-	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush (COLOR_GRAY224);
-	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush (COLOR_WHITE);
-	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush (COLOR_DEEP_BLUE);	
+	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
+	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush(COLOR_ORANGE);
+	m_Brush[COLOR_IDX_RED].CreateSolidBrush(COLOR_RED);
+	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush(COLOR_GRAY64);
+	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush(COLOR_GRAY94);
+	m_Brush[COLOR_IDX_LIGHT_GREEN].CreateSolidBrush(COLOR_LIGHT_GREEN);
+	m_Brush[COLOR_IDX_GRAY192].CreateSolidBrush(COLOR_GRAY192);
+	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush(COLOR_GRAY224);
+	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush(COLOR_WHITE);
+	m_Brush[COLOR_IDX_CYAN].CreateSolidBrush(COLOR_CYAN);
+	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush(COLOR_DEEP_BLUE);
 	m_Brush[COLOR_IDX_LIGHT_YELLOW].CreateSolidBrush(COLOR_LIGHT_YELLOW);
 	m_Brush[COLOR_IDX_LIGHT_BLUE].CreateSolidBrush(COLOR_LIGHT_BLUE);
 }
-
 void CGIE_BoadAssyDlg::OnDestroy()
 {
 	CDialog::OnDestroy();

@@ -14,6 +14,8 @@
 #include "Command.h"
 #include "CIMNetCommApp.h"
 #include "SocketUDP.h"
+#include "SocketTCPApp.h"
+#include "PlcCtrl.h"
 // CGIE_BoadAssyApp:
 // 이 클래스의 구현에 대해서는 GIE_BoadAssy.cpp을 참조하십시오.
 //
@@ -38,6 +40,9 @@ public:
 	CCimNetCommApi*		m_pCimNet;
 	CPatternView* m_pPatternView;
 	CSocketUDP* m_pSocketUDP;
+	CSocketTcpApp* m_pSocketTCPApp;
+	CPLCCtrl* m_pPlcCtrl;
+	
 
 	LPFUSINGINFO		GetFusingInfo();
 	LPSYSTEMINFO		GetSystemInfo();
@@ -84,11 +89,13 @@ public:
 	void InitLocalHostIPAddress();
 	void udp_processPacket(char* wParam, int lParam);
 
+
 	BOOL udp_sendPacket(CString ipAddress, int nTarget, int nCommand, int nLength, char* pData, int recvACK=TRUE, int waitTime=2000);
 	BOOL udp_procWaitRecvACK(int cmd, DWORD waitTime);
 	int m_nAckCmd[255];
 	char m_szMainFwVersion[256];
 public:
+	CStatic* m_pStaticMainLog;
 	CString m_sModelFile;
 	CString m_sSysIniFile;
 	CString m_sPtnFile;

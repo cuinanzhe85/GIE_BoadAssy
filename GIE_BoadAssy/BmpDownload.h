@@ -67,4 +67,5 @@ public:
 	CStatic m_Image;
 	afx_msg void OnLbnSelchangeListBmpTotal();
 	afx_msg void OnLvnItemchangedListBmpDownload(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedBtnBmpAdd();
 };

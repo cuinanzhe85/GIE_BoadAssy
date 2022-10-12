@@ -218,7 +218,10 @@
     <ClCompile Include="PanelID.cpp" />
     <ClCompile Include="PatternTest.cpp" />
     <ClCompile Include="PatternView.cpp" />
+    <ClCompile Include="PlcCtrl.cpp" />
     <ClCompile Include="PortController.cpp" />
+    <ClCompile Include="SocketTCP.cpp" />
+    <ClCompile Include="SocketTCPApp.cpp" />
     <ClCompile Include="SocketUDP.cpp" />
     <ClCompile Include="StationMenu.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -242,6 +245,9 @@
     <ClInclude Include="GIE_BoadAssyDlg.h" />
     <ClInclude Include="Maint.h" />
     <ClInclude Include="ModelGamma.h" />
+    <ClInclude Include="PlcCtrl.h" />
+    <ClInclude Include="SocketTCP.h" />
+    <ClInclude Include="SocketTCPApp.h" />
     <ClInclude Include="SocketUDP.h" />
     <ClInclude Include="XImageInc\ximage.h" />
     <ClInclude Include="_GlobalDefine.h" />
@@ -283,12 +289,14 @@
     <Image Include="res\icon_rel.ico" />
     <Image Include="res\Initial.bmp" />
     <Image Include="res\Initial_Push.bmp" />
+    <Image Include="res\Left.ico" />
     <Image Include="res\Maint.bmp" />
     <Image Include="res\Maint_Push.bmp" />
     <Image Include="res\MC.bmp" />
     <Image Include="res\MC_Push.bmp" />
     <Image Include="res\Model.bmp" />
     <Image Include="res\Model_Push.bmp" />
+    <Image Include="res\Right.ico" />
     <Image Include="res\Save.ico" />
     <Image Include="res\System.bmp" />
     <Image Include="res\System_Push.bmp" />

@@ -45,6 +45,8 @@ public:
 	BOOL Gf_setSignalOnOff(int nCh, int OnOff);	// 0: ch1, 1: ch2, 2: All
 	BOOL Gf_setPwmOnOff(int OnOff, int duty, int freq);
 	BOOL Gf_setSRunnerControl(int nTarget,int EnableDisable);
+	BOOL Gf_setSRunerComplete();
+	BOOL Gf_setSRunerTypeSelect(int nType);
 
 	CString Gf_makePGPatternString(CString strPtnName);
 
@@ -53,7 +55,6 @@ public:
 	BOOL Gf_setGoToBootDownload();
 	BOOL Gf_setGoToBootUpdate();
 	BOOL Gf_setMainBoardReset();
-	BOOL Gf_getGfd250FpgaVersion();
 
 	BOOL Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE nCmd, int nLength, char* pData, BOOL Ack = TRUE);
 	BOOL Gf_setPGInfoGFD250(CString strPtnName, BOOL bHotKeyFlags = FALSE, BOOL bHkeyFlags = FALSE);
@@ -66,8 +67,15 @@ public:
 	BOOL Gf_serGfd250GoToBootSection();
 	BOOL Gf_getGfd250I2CReadPacketSend(int nStartReg, int ReadNum, int Cmd);
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// PLC Function
+	//////////////////////////////////////////////////////////////////////////////////////////
+	BOOL plc_Connection();
+	BOOL plc_DisConnection();
+	BOOL plc_sendQuery(char* data, int nDataLen);
+	BOOL plc_getReceivePacket(char* m_szRcvPacket);
 
-
+	char gszplcRcvPacket[4096];
 	char gszudpRcvPacket[4096];
 protected:
 	LPMODELSETINFO	lpModelInfo;

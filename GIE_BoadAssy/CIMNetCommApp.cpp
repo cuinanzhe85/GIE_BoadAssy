@@ -227,7 +227,8 @@ BOOL CCimNetCommApi::Init(int nServerType)
 		
 		m_strLocalSubjectMesF.Format(_T("%s.%s"), m_strLocalSubject, m_strLocalSubjectIP);
 
-
+		// MES Test Mode일때 필요. CNZ
+		//m_strLocalSubjectMesF = (_T("EQP.TEST"));
 		HRESULT mesHr = CoCreateInstance(CLSID_DllGmes, NULL, CLSCTX_INPROC_SERVER, IID_ICallGmesClass, reinterpret_cast<void**>(&gmes));
 		
 		if (SUCCEEDED(mesHr)){
@@ -830,17 +831,7 @@ CString CCimNetCommApi::GetComment()
 }
 void CCimNetCommApi::SetComment (CString strBuff)
 {
-	// 2020-12-10 PDH. LGD한규호선임 요청사항
-	// Comment의 길이는 MES에 최대 250자까지 등록 가능하도록되어있다.
-	// Comment의 길이가 250자 넘으면 250자 이후는 자른다.
-	if (strBuff.GetLength() > 249)
-	{
-		m_strComment.Format(_T("%s"), strBuff.Left(249));
-	}
-	else
-	{
-		m_strComment.Format(_T("%s"), strBuff);
-	}
+	m_strComment.Format(_T("%s"), strBuff);
 }
 
 void CCimNetCommApi::SetRemark (CString strBuff)
@@ -1212,8 +1203,6 @@ BOOL CCimNetCommApi::EICR ()
 //	정밀검사 default: N, 정밀검사 사용시 Y
 	MakeClientTimeString ();
 
-	if (m_strEdidStatus.GetLength() <= 0)
-		m_strEdidStatus.Format (_T("N"));
 	if (m_strPF.GetLength() <= 0)
 	{
 		if (m_strRwkCode.GetLength() <= 0)
@@ -1221,7 +1210,7 @@ BOOL CCimNetCommApi::EICR ()
 		else
 			m_strPF.Format(_T("F"));	// ng
 	}
-	m_strEICR.Format(_T ("EICR ADDR=%s,%s EQP=%s PID=%s SERIAL_NO=%s BLID=[%s] PF=%s RWK_CD=%s PPALLET=%s EXPECTED_RWK=%s PATTERN_INFO=[%s] DEFECT_PATTERN=%s EDID=%s PVCOM_ADJUST_VALUE=%s PVCOM_ADJUST_DROP_VALUE=%s OVERHAUL_FLAG=%s DEFECT_COMMENT_CODE=%s MODE=AUTO CLIENT_DATE=%s USER_ID=%s COMMENT=[%s] BA_EXI_FLAG=%s MATERIAL_INFO=[] BUYER_SERIAL_NO=%s CGID= VTH_VALUE=%s BD_INFO=[%s] WDR_INFO=[%s] WDR_END=%s REMARK=[%s] NG_PORT_OUT=%s TACT=%s %s"),
+	m_strEICR.Format(_T ("EICR ADDR=%s,%s EQP=%s PID=%s SERIAL_NO=%s BLID=[%s] PF=%s RWK_CD=%s PPALLET=%s EXPECTED_RWK=%s PATTERN_INFO=[%s] DEFECT_PATTERN=%s EDID=%s PVCOM_ADJUST_VALUE=%s PVCOM_ADJUST_DROP_VALUE=%s OVERHAUL_FLAG=%s DEFECT_COMMENT_CODE=%s MODE=AUTO CLIENT_DATE=%s USER_ID=%s COMMENT=[%s] BA_EXI_FLAG=%s MATERIAL_INFO=[] BUYER_SERIAL_NO=%s CGID= VTH_VALUE=%s BD_INFO=[%s] WDR_INFO=[%s] WDR_END=%s REMARK=[%s] NG_PORT_OUT=%s TACT=%s"),
 						  m_strLocalSubjectMesF,
 						  m_strLocalSubjectMesF,
 						  m_strMachineName,
@@ -1250,8 +1239,7 @@ BOOL CCimNetCommApi::EICR ()
 						  m_strWDREnd,
 						  m_strRemark,//REMARK
 						  m_strNGPortOut,
-						  m_strTactTime,
-						  m_strAgingLevelInfo		// 2022-03-16 PDH. ★중요★ m_strAgingLevelInfo 변수는 Field 이름도 같이 포함되어 있는 변수이다.
+						  m_strTactTime
 	);
 
 

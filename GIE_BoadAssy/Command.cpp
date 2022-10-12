@@ -900,7 +900,16 @@ BOOL CCommand::Gf_setSRunnerControl(int nTarget, int EnableDisable)
 
 	return ret;
 }
-
+BOOL CCommand::Gf_setSRunerComplete()
+{
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_SRUNNER_COPLETE, 0, NULL);
+}
+BOOL CCommand::Gf_setSRunerTypeSelect(int nType)
+{
+	char szpacket[10];
+	sprintf_s(szpacket, "%01d", nType);
+	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_SRUNNER_TYPE_SELECT, 1, szpacket);
+}
 BOOL CCommand::Gf_setGoToBootDownload()
 {
 	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_GOTO_BOOT_DOWNLOAD, 0, NULL);
@@ -912,20 +921,6 @@ BOOL CCommand::Gf_setGoToBootUpdate()
 BOOL CCommand::Gf_setMainBoardReset()
 {
 	return m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_RESET_CTRLBOARD, 0, NULL);
-}
-BOOL CCommand::Gf_getGfd250FpgaVersion()
-{
-	BOOL ret = FALSE;
-
-	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_FPGA_VER_READ, 0, NULL);
-	if (ret == TRUE)
-	{
-		char szData[50];
-		int length;
-		sscanf_s(&gszudpRcvPacket[PACKET_PT_LEN], "%04X", &length);
-		memcpy(szData, &gszudpRcvPacket[PACKET_PT_DATA], length);
-	}
-	return ret;
 }
 
 BOOL CCommand::Gf_getEEPRomReadData()
@@ -1132,4 +1127,56 @@ BOOL CCommand::Gf_getGfd250I2CReadPacketSend(int nStartReg, int ReadNum, int Cmd
 	bRtnCode = Gf_setPacketSendGfd250(TARGET_GFD250, NIOS_CMD, 0, CMD_NIOS_I2C_READ, m_PacketLength, m_szPacket);
 
 	return bRtnCode;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// PLC Control
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CCommand::plc_Connection()
+{
+	int nPort = 50001;
+
+	return m_pApp->m_pSocketTCPApp->tcp_plc_Connection(nPort);
+}
+
+BOOL CCommand::plc_DisConnection()
+{
+	return m_pApp->m_pSocketTCPApp->tcp_plc_DisConnection();
+}
+
+BOOL CCommand::plc_sendQuery(char* data, int nDataLen)
+{
+	int ret;
+
+	ret = m_pApp->m_pSocketTCPApp->tcp_plc_SendQuery(data, nDataLen);
+
+	memset(gszplcRcvPacket, 0x00, sizeof(gszplcRcvPacket));
+
+	if (m_pApp->m_pPlcCtrl->plc_tcpIsConnection() == TRUE)
+		return plc_getReceivePacket(gszplcRcvPacket);
+	else
+		return FALSE;
+}
+
+BOOL CCommand::plc_getReceivePacket(char* m_szRcvPacket)
+{
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+
+	while (1)
+	{
+		if (m_pApp->m_pSocketTCPApp->tcp_plc_GetReceivePacketSize() != NULL)
+		{
+			m_pApp->m_pSocketTCPApp->tcp_plc_GetReceivePacketData(m_szRcvPacket);
+			return TRUE;
+		}
+
+		// Ack를 기다린다. Wait Time안에 Ack가 들어오지 않으면 False를 Return한다.
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > ETH_ACK_NOR_WAIT_TIME)
+			break;
+
+		ProcessMessage();
+	}
+
+	return FALSE;
 }

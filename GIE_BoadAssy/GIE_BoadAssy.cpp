@@ -37,6 +37,8 @@ CGIE_BoadAssyApp::CGIE_BoadAssyApp()
 	m_pCimNet		= new CCimNetCommApi;
 	m_pPatternView = new CPatternView();
 	m_pSocketUDP = new CSocketUDP();
+	m_pSocketTCPApp = new CSocketTcpApp();
+	m_pPlcCtrl = new CPLCCtrl();
 }
 
 
@@ -107,7 +109,6 @@ BOOL CGIE_BoadAssyApp::InitInstance()
 		// TODO: 여기에 [취소]를 클릭하여 대화 상자가 없어질 때 처리할
 		//  코드를 배치합니다.
 	}
-
 	// 대화 상자가 닫혔으므로 응용 프로그램의 메시지 펌프를 시작하지 않고  응용 프로그램을 끝낼 수 있도록 FALSE를
 	// 반환합니다.
 	return FALSE;
@@ -289,6 +290,11 @@ void CGIE_BoadAssyApp::Gf_writeLogData(CString Event, CString Data)
 		file.SeekToEnd();
 		file.Write(strLog, (strLog.GetLength() * 2));
 		file.Close();
+
+		/*CGIE_BoadAssyDlg* pView = (CGIE_BoadAssyDlg*)(AfxGetApp()->m_pMainWnd)->GetActiveView();
+		if (strLog.GetLength() > 300)	strLog = strLog.Left(300);*/
+		if (m_pApp->m_pStaticMainLog != NULL)
+			m_pStaticMainLog->SetWindowText(strLog);
 	}
 }
 
@@ -426,6 +432,8 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpWorkInfo->m_nGoodCnt=0;
 	lpWorkInfo->m_nBadCnt=0;
 	lpWorkInfo->m_sBadPattern.Empty();
+
+	Gf_writeLogData(_T("*****************************"), _T("*****************************"));
 }
 
 void CGIE_BoadAssyApp::Lf_readGmesInfo()
@@ -918,7 +926,7 @@ void CGIE_BoadAssyApp::Gf_setSerialPort()
 	if(lpSystemInfo->m_nAutoBcrPort)
 	{
 		strPort.Format(_T("COM%d"), lpSystemInfo->m_nAutoBcrPort);
-		if(!(m_pPort->OpenPort3(strPort, (DWORD) 9600, NULL)))	m_sSerialPort3.Format(_T("%s"),_T("Auto BCR NG."));
+		if(!(m_pPort->OpenPort3(strPort, (DWORD) 115200, NULL)))	m_sSerialPort3.Format(_T("%s"),_T("Auto BCR NG."));
 		else													m_sSerialPort3.Format(_T("%s"),_T("Auto BCR OK."));	
 	}
 	else
@@ -1038,6 +1046,9 @@ void CGIE_BoadAssyApp::Gf_receivedBCRAckInfo(BYTE* aByte)
 {
 	CString sdata=_T(""),sAckData=_T("");
 	
+	sAckData = char_To_wchar((char*)aByte);
+	sAckData.Replace(_T("\r"), _T(""));
+	sAckData.Replace(_T("\n"), _T(""));
 	sdata.Format(_T("Receive : %s"), char_To_wchar((char*)aByte));
 	Gf_writeLogData(_T("<BCR>"), sdata);
 	Lf_parseAutoBcr(aByte);
@@ -1095,15 +1106,22 @@ void CGIE_BoadAssyApp::Lf_parseAutoBcr(BYTE* aByte)
 
 	for(i=0; i<len;i++)
 	{
-		if((('0' <= aByte[i]) && (aByte[i] <= '9')) 
-		|| (('a' <= aByte[i]) && (aByte[i] <= 'z'))
-		|| (('A' <= aByte[i]) && (aByte[i] <= 'Z')))
+		if (aByte[i] == 0x0d || aByte[i] == 0x0a)
 		{
+			aByte[i] = 0x00;
 		}
 		else
 		{
-			bError = false;
-			break;
+			if ((('0' <= aByte[i]) && (aByte[i] <= '9'))
+				|| (('a' <= aByte[i]) && (aByte[i] <= 'z'))
+				|| (('A' <= aByte[i]) && (aByte[i] <= 'Z')))
+			{
+			}
+			else
+			{
+				bError = false;
+				break;
+			}
 		}
 	}
 
@@ -1521,7 +1539,7 @@ BOOL CGIE_BoadAssyApp::Gf_gmesInitServer(BOOL nServerType)
 	{
 		m_pCimNet->SetLocalTest(nServerType);
 	}
-	else if (nServerType == SERVER_EAS)
+	else if ((DEBUG_GMES_TEST_SERVER == TRUE) && (nServerType == SERVER_EAS))
 	{
 		m_pCimNet->SetLocalTest(nServerType);
 	}
@@ -1537,34 +1555,28 @@ BOOL CGIE_BoadAssyApp::Gf_gmesInitServer(BOOL nServerType)
 void CGIE_BoadAssyApp::Gf_setGMesGoodInfo()
 {
  	m_pCimNet->SetPF(_T("P"));
-	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
+	m_pCimNet->SetRwkCode(lpWorkInfo->m_sRwkCD);
 }
 
 void CGIE_BoadAssyApp::Gf_setGMesBGradeInfo()
 {
 	m_pCimNet->SetPF(_T("P"));
-	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
+	m_pCimNet->SetRwkCode(lpWorkInfo->m_sRwkCD);
 }
 
 void CGIE_BoadAssyApp::Gf_setGMesBadInfo()
 {
 	m_pCimNet->SetPF(_T("F"));
-	m_pCimNet->SetRwkCode(lpWorkInfo->m_sBadCode.GetBuffer(0));
+	m_pCimNet->SetRwkCode(lpWorkInfo->m_sRwkCD);
 }
 void CGIE_BoadAssyApp::Lf_setGmesValuePCHK()
 {
-	// 2009-03-05 PDH. PCHK 진행하지 않고 불량으로 Key In하는 경우 Panel ID 및
-	// Pallet ID 없음으로 인하여 EICR 보고시에도 Panel ID, Pallet Update 하도록 수정.
 	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);
-	m_pCimNet->SetBLID(_T(""));
-	m_pCimNet->SetSerialNumber(_T(""));
-	m_pCimNet->SetPalletID(_T(""));
+	m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 
 }
 void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 {
-	// 2009-03-05 PDH. PCHK 진행하지 않고 불량으로 Key In하는 경우 Panel ID 및
-	// Pallet ID 없음으로 인하여 EICR 보고시에도 Panel ID, Pallet Update 하도록 수정.
 	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);	
 	m_pCimNet->SetBLID(_T(""));
 	m_pCimNet->SetSerialNumber(_T(""));

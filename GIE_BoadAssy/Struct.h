@@ -349,12 +349,11 @@ typedef struct _ST_INSPWORKINFO_{
 	//= Variable for Abnormal Insp =//
 	char strAbnormal_BeforePanelID[20];
 	char strAbnormal_Defect_Code[50];
-	char strAbnormal_NowPanelID[20];			//2009.09.09 add KSM.
+	char strAbnormal_NowPanelID[20];
 	BOOL bAbnormal_ESC;
 	CString strAbnormal_LogTT[20];
 	//==============================//
 
-	// 2011-01-04 PDH. Work Log 변경 관련 Variable 추가
 	int logT1PalletIn;
 	int logT1PowerOn;
 	BOOL logMKey;
@@ -401,7 +400,7 @@ typedef struct _ST_INSPWORKINFO_{
 
 	bool m_bIsEdidFail;
 
-	CString m_sBadCode;
+	CString m_sRwkCD;
 	CString m_sExpectedCode;
 	CString m_sBadPattern;
 	int m_nPassOrFail;

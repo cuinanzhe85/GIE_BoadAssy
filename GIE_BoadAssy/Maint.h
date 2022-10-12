@@ -24,11 +24,18 @@ protected:
 
 protected:
 	LPMODELSETINFO lpModelInfo;
+	LPINSPWORKINFO lpWorkInfo;
 
 	unsigned int m_uDioOutBit;
 
+	void Lf_InitItemValue();
+	void Lf_initFontSet();
+	void Lf_InitBrush();
 	void Lf_setCombPatternList();
 	BOOL Lf_getPowerMeasureAll();
+
+	CFont m_Font[FONT_IDX_MAX];
+	CBrush m_Brush[COLOR_IDX_MAX];
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -62,4 +69,10 @@ public:
 	afx_msg void OnCbnSelchangeCmbPatternList();
 	CComboBox m_cmbMtPatternList;
 	afx_msg void OnBnClickedBtnClose();
+	afx_msg void OnBnClickedBtnBluDutySet();
+	afx_msg void OnBnClickedBtnBluOn();
+	afx_msg void OnBnClickedBtnBluOff();
+	afx_msg void OnBnClickedBtnBcrRead();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnPaint();
 };

@@ -46,11 +46,12 @@ BOOL CAutoFirmware::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	m_pApp->Gf_writeLogData("<WND>", "Auto Firmware Dialog Open");
 	lpWorkInfo		= m_pApp->GetWorkInfo();
 	lpModelInfo = m_pApp->GetModelInfo();
 
 	Lf_initFontSet();
-	Lf_initVariable();
+	Lf_initValue();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -61,6 +62,16 @@ void CAutoFirmware::OnDestroy()
 	CDialog::OnDestroy();
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	for (int i = 0; i < COLOR_IDX_MAX; i++)
+	{
+		m_Brush[i].DeleteObject();
+	}
+
+	for (int i = 0; i < FONT_IDX_MAX; i++)
+	{
+		m_Font[i].DeleteObject();
+	}
+	delete p_fpga_raw;
 }
 
 HBRUSH CAutoFirmware::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
@@ -169,7 +180,7 @@ void CAutoFirmware::Lf_initFontSet()
 	m_Brush[COLOR_IDX_BLUISH].CreateSolidBrush(COLOR_BLUISH);
 }
 
-void CAutoFirmware::Lf_initVariable()
+void CAutoFirmware::Lf_initValue()
 {
 	m_pApp->m_nDownloadReadyAckCount	= 0;						//Firmware Download ACK Receive Count 초기화.	
 	m_nFirmwareDataLen					= 0;						//Firmware File Length 초기화
@@ -180,6 +191,8 @@ void CAutoFirmware::Lf_initVariable()
 	m_cmbFwType.SetCurSel(0);
 
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(_T("Ready"));		
+
+	p_fpga_raw = new BYTE[SIZE_OF_EPCQ16A];
 }
 void CAutoFirmware::Lf_loadFpgaFile()
 {
@@ -512,20 +525,21 @@ void CAutoFirmware::OnBnClickedBtnFwVersion()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	lpWorkInfo->m_sFirmwareVersion.Empty();
 	GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T(""));
-	if(m_cboTargetSel.GetCurSel()==0)
+	
+	if (m_cmbFwType.GetCurSel() == 0)
 	{
-		if (m_cmbFwType.GetCurSel() == 0)
+		if (m_pApp->m_pCommand->Gf_getFirmwareVersion() == TRUE)
 		{
-			if (m_pApp->m_pCommand->Gf_getFirmwareVersion() == TRUE)
-			{
-				GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(lpWorkInfo->m_sFirmwareVersion);
-			}
-			else
-			{
-				GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T("Fail"));
-			}
+			GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(lpWorkInfo->m_sFirmwareVersion);
 		}
 		else
+		{
+			GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T("Fail"));
+		}
+	}
+	else
+	{
+		if (Lf_SrunnerTypeSelect() == TRUE)
 		{
 			if (m_pApp->m_pCommand->Gf_getFpgaeVersion() == TRUE)
 			{
@@ -536,18 +550,6 @@ void CAutoFirmware::OnBnClickedBtnFwVersion()
 				GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T("Fail"));
 			}
 		}
-		
-	}
-	else
-	{
-		if(m_pApp->m_pCommand->Gf_serGfd250FirmwareVersion() == TRUE)
-		{
-			GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(lpWorkInfo->m_sFirmwareVersion);		
-		}
-		else
-		{
-			GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T("Fail"));	
-		}		
 	}
 }
 
@@ -565,7 +567,10 @@ void CAutoFirmware::OnBnClickedBtnDownload()
 	}
 	else
 	{
-		Lf_FpgaDownloadStart();
+		if (Lf_SrunnerTypeSelect() == TRUE)
+		{
+			Lf_FpgaDownloadStart();
+		}
 	}
 
 	GetDlgItem(IDC_BTN_FILE_SELECT)->EnableWindow(TRUE);
@@ -582,7 +587,7 @@ BOOL CAutoFirmware::Lf_FpgaDownloadStart()
 
 	// Progress 초기화
 	m_progDownload.SetPos(0);
-	sdata.Format(_T("FPGA Downloading ...(0%)"));
+	sdata.Format(_T("FPGA Downloading ...(0%%)"));
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
 
 	if (m_pApp->m_pCommand->Gf_setSRunnerControl(lpModelInfo->m_nSignalType, _ENABLE_) == FALSE)
@@ -591,52 +596,45 @@ BOOL CAutoFirmware::Lf_FpgaDownloadStart()
 		return FALSE;
 	}
 	// Step1. Download Ready Check
-	if (Lf_checkDownloadReady1() == FALSE)
-	{
-		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - Ready Check  xxx"));
-		goto ERR_EXCEPT;
-	}
+	//if (Lf_checkDownloadReady1() == FALSE)
+	//{
+	//	m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - Ready Check  xxx"));
+	//	goto ERR_EXCEPT;
+	//}
 
-	// Step2. Download Ready Delay
-	delayMS(2000);
+	//// Step2. Download Ready Delay
+	//delayMS(2000);
 
-	// Step3. Download Sequence Set
-	m_pApp->m_nDownloadReadyAckCount = 0;
-	Lf_checkDownloadReady2();
+	//// Step3. Download Sequence Set
+	//m_pApp->m_nDownloadReadyAckCount = 0;
+	//Lf_checkDownloadReady2();
 
 	// Step4. Download Start - Send Raw Data
-	delayMS(300);
+	//delayMS(300);
 	if (Lf_sendFpgaFile() == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - Data Download  xxx"));
 		goto ERR_EXCEPT;
 	}
 
-	// Step5. Download Complete Check
-	delayMS(100);
-	if (Lf_sendDownloadComplete() == FALSE)
-	{
-		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - Complete Check  xxx"));
-		goto ERR_EXCEPT;
-	}
 
 	// Step6. Download Initialize & Ready
-	Lf_readyInitialize();
+	//Lf_readyInitialize();
 
-	sdata.Format(_T("FPGA Downloading ...(100%)"));
+	sdata.Format(_T("FPGA Downloading ...(100%%)"));
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
 	m_progDownload.SetPos(100);
 
-	if (m_pApp->m_pCommand->Gf_setSRunnerControl(lpModelInfo->m_nSignalType, _DISABLE_) == FALSE)
+	if (m_pApp->m_pCommand->Gf_setSRunerComplete() == FALSE)
 	{
-		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - SRunner Disable  xxx"));
+		m_pApp->Gf_ShowMessageBox(_T("xxx  FPGA Download Fail - SRunner Complete  xxx"));
 		return FALSE;
 	}
 	return TRUE;
 
 ERR_EXCEPT:
 	// Error Exception. Initialize.
-	Lf_readyInitialize();
+	//Lf_readyInitialize();
 	return FALSE;
 }
 
@@ -698,22 +696,24 @@ BOOL CAutoFirmware::Lf_checkDownloadReady2()
 BOOL CAutoFirmware::Lf_sendFpgaFile()
 {
 	BOOL bRet = FALSE;
-	int startAddr = 0;
-	int packetLen = 0;
+	UINT startAddr = 0;
+	UINT packetLen = 0;
+	UINT headSize = 0;
 	char szpacket[4096] = { 0, };
 
 	BOOL bFirstTime = TRUE;
 	while (1)
 	{
-		sprintf_s(szpacket, "%05X", startAddr);
-
 		// 2048 Byte 단위로 끊어서 Packet을 전송한다.
 		// 남은 Data가 2048보다 작을 경우 남은 갯수 만큼만 전송한다.
-		if ((startAddr + 2048) <= m_nFirmwareDataLen)
+		if ((startAddr + SIZE_OF_WRITE_PACKET) <= m_fpgaFileSize)
 		{
-			packetLen = 5 + 2048;
-			memcpy(&szpacket[5], (char*)&m_pFirmwareData[startAddr], 2048);
-			bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_DOWNLOAD, packetLen, szpacket);
+			sprintf_s(szpacket, "%04d%04d%08X%04X", EPCQ16A_BYTE_PER_PAGE, EPCQ16A_PAGE_WR_DELAY, startAddr, SIZE_OF_WRITE_PACKET);
+			headSize = (UINT)strlen(szpacket);
+			packetLen = headSize + SIZE_OF_WRITE_PACKET;
+			memcpy(&szpacket[headSize], (char*)&p_fpga_raw[startAddr], SIZE_OF_WRITE_PACKET);
+	
+			bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_SRUNNER_DATA_WRITE, packetLen, szpacket);
 			if (bRet == FALSE)
 			{
 				return FALSE;
@@ -721,21 +721,27 @@ BOOL CAutoFirmware::Lf_sendFpgaFile()
 		}
 		else
 		{
-			packetLen = 5 + (m_nFirmwareDataLen - startAddr);
-			memcpy(&szpacket[5], (char*)&m_pFirmwareData[startAddr], (m_nFirmwareDataLen - startAddr));
-			bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_FW_DOWNLOAD, packetLen, szpacket);
+			//남은 Data가 있을 경우 나머지를 Send한다.
+			if ((m_fpgaFileSize - startAddr) != 0)
+			{
+				sprintf_s(szpacket, "%04d%04d%08X%04X", EPCQ16A_BYTE_PER_PAGE, EPCQ16A_PAGE_WR_DELAY, startAddr, (m_fpgaFileSize - startAddr));
+				headSize = (UINT)strlen(szpacket);
+				packetLen = headSize + (m_fpgaFileSize - startAddr);
+				memcpy(&szpacket[5], (char*)&p_fpga_raw[startAddr], (m_fpgaFileSize - startAddr));
+				bRet = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_SRUNNER_DATA_WRITE, packetLen, szpacket);
+			}
 			break;
 		}
 
 		ZeroMemory(szpacket, sizeof(szpacket));
-		startAddr += 2048;
+		startAddr += SIZE_OF_WRITE_PACKET;
 
 		int nPos;
-		nPos = (startAddr * 100) / m_nFirmwareDataLen;
+		nPos = (int)(((float)(startAddr * 100) / (float)m_fpgaFileSize) + 0.5);
 		m_progDownload.SetPos(nPos);
 
 		CString sPer;
-		sPer.Format(_T("Firmware Downloading ...(%d%%)"), nPos);
+		sPer.Format(_T("FPGA Downloading ...(%d%%)"), nPos);
 		GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sPer);
 
 		ProcessMessage();
@@ -747,9 +753,19 @@ BOOL CAutoFirmware::Lf_sendFpgaFile()
 		}
 		else
 		{
-			delayMS(100);
+			//delayMS(100);
 		}
 	}
 
+	return TRUE;
+}
+BOOL CAutoFirmware::Lf_SrunnerTypeSelect()
+{
+	int nType = m_cmbFwType.GetCurSel() - 1;
+	if (m_pApp->m_pCommand->Gf_setSRunerTypeSelect(nType) != TRUE)
+	{
+		m_pApp->Gf_ShowMessageBox(_T("LVDS/DP FPGA Select Fail"));
+		return FALSE;
+	}
 	return TRUE;
 }

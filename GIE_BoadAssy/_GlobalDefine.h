@@ -6,12 +6,11 @@
 
 /////////////////////////////////////////////////////////////////////////////
 #define _STR_DEFAULTMODEL			"DEFAULT_MODEL"
-#define PGM_VERSION					_T("1.1.2")
+#define PGM_VERSION					_T("1.0.0")
 /////////////////////////////////////////////////////////////////////////////
 #define MLOG_MAX_LENGTH				16*1024
 
 /////////////////////////////////////////////////////////////////////////////
-#define	APG_LIST_COUNT_MAX			300
 #define	DEBUG_GMES_TEST_SERVER		0
 #define DEBUG_232RECEIVE_OK			0
 #define DEBUG_RS232C_LOG			0
@@ -22,6 +21,7 @@
 #define DEBUG_DIO_SKIP				0
 /////////////////////////////////////////////////////////////////////////////
 #define UDP_MAIN_IP					_T("192.168.10.3")		// CString type define
+#define TCP_PLC_IP					"192.168.0.3"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -57,8 +57,27 @@
 #define OFF_LINE					0
 #define IN_LINE						1
 
+
 /////////////////////////////////////////////////////////////////////////////
-//DIO 
+// PLC Interface define
+/////////////////////////////////////////////////////////////////////////////
+#define MELSEC_SUB_HEAD				0x5000		// 서브 머리글
+#define MELSEC_NETWORK_NO			0x00		// 네트워크 번호
+#define MELSEC_PLC_NO				0xFF		// PLC 번호
+#define MELSEC_MODULE_IO_NO			0x03FF		// 요구 상대 모듈 I/O 번호
+#define MELSEC_MODULE_COUNTRY_NO	0x00		// 요구 상대 모듈 국 번호
+#define MELSEC_CPU_TIMER			0x000A		// CPU 감시 TIMER
+
+#define MELSEC_CMD_WRITE			0x1401		// Write Command
+#define MELSEC_CMD_READ				0x0401		// Read Command
+#define MELSEC_SUBCMD_WORD			0x0000		// 서브 커맨드 (WORD 단위 R/W)
+#define MELSEC_CMD_DEVICE_CODE		0xA8		// 디바이스 코드
+
+#define PLC_PID_WRITE_START_ADDR			0X0000		// Panel ID Write Address (확인 후 정의 필요)
+#define PLC_PID_WRITE_COMPLETE_ADDR			0X0000		// Panel ID Write Address (확인 후 정의 필요)
+/////////////////////////////////////////////////////////////////////////////
+//DIO
+/////////////////////////////////////////////////////////////////////////////
 #define DIO_OUT_RESET	0x0000
 
 #define DIO_OUT_01		(1<<0)
@@ -83,8 +102,8 @@
 #define DI_BCR_READ_DONE	DIO_IN_02
 #define DI_PANEL_OUT_OK		DIO_IN_03
 #define DI_PANEL_OUT_NG		DIO_IN_04
-#define DI_TEST_SWITCH1		DIO_IN_07
-#define DI_TEST_SWITCH2		DIO_IN_08
+#define DI_TEST_SWITCH1		DIO_IN_05
+#define DI_TEST_SWITCH2		DIO_IN_06
 
 #define DO_TEST_JUDGE_OK	DIO_OUT_01
 #define DO_TEST_JUDGE_NG	DIO_OUT_02
@@ -127,7 +146,7 @@
 #define COLOR_GRAY224				RGB(224,224,224)
 #define COLOR_GRAY240				RGB(240,240,240)
 #define COLOR_GREEN128				RGB(0,128,0)
-#define COLOR_RED128				RGB(0,128,0)
+#define COLOR_RED128				RGB(128,0,0)
 #define COLOR_PINK					RGB(255,192,192)
 #define COLOR_MAGENTA				RGB(224,0,224)
 #define COLOR_DARK_RED				RGB(255,63,63)
@@ -263,6 +282,7 @@ typedef enum _COLOR_IDX_{
 #define CMD_CTRL_SRUNNER_STATUS_READ			0x42
 #define CMD_CTRL_SRUNNER_DATA_WRITE				0x43
 #define CMD_CTRL_SRUNNER_COPLETE				0x45
+#define CMD_CTRL_SRUNNER_TYPE_SELECT			0x46
 //----------------------------------------------------------------------------
 // LED B/L 점등기 제어 Command
 

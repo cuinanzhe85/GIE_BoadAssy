@@ -56,14 +56,17 @@ void CDIO7230::Gf_setDioWrite(U32 ulDOut)
 void CDIO7230::Gf_setDioOutOK()
 {
 	Gf_setDioWrite(DO_TEST_JUDGE_OK);
+	m_pApp->Gf_writeLogData("<DIO>", "Out OK");
 }
 void CDIO7230::Gf_setDioOutNG()
 {
 	Gf_setDioWrite(DO_TEST_JUDGE_NG);
+	m_pApp->Gf_writeLogData("<DIO>", "Out NG");
 }
 void CDIO7230::Gf_setDioOutTesting()
 {
 	DO_WritePort(DIO_CARD_NUM, 0, DO_TEST_TESTING);
+	m_pApp->Gf_writeLogData("<DIO>", "Out Testing");
 }
 bool CDIO7230::Gf_getDIOJigTilting()
 {
@@ -76,6 +79,7 @@ bool CDIO7230::Gf_getDIOJigTilting()
 
 	if (dio_in & DI_START_READY)
 	{
+		m_pApp->Gf_writeLogData("<DIO>", "Input Tilting ON");
 		return true;
 	}
 	return false;
@@ -94,6 +98,7 @@ bool CDIO7230::Gf_getDIOTestStart()
 
 	if ((dio_in & DI_TEST_SWITCH1) && (dio_in & DI_TEST_SWITCH2))
 	{
+		m_pApp->Gf_writeLogData("<DIO>", "Input Start Switch 1,2 ON");
 		return true;
 	}
 	return false;
@@ -112,6 +117,7 @@ bool CDIO7230::Gf_getDIOJudgeOK()
 
 	if (dio_in & DI_PANEL_OUT_OK)
 	{
+		m_pApp->Gf_writeLogData("<DIO>", "Input OK Button ON");
 		return true;
 	}
 	return false;
@@ -130,6 +136,7 @@ bool CDIO7230::Gf_getDIOJudgeNG()
 
 	if (dio_in & DI_PANEL_OUT_NG)
 	{
+		m_pApp->Gf_writeLogData("<DIO>", "Input NG Button ON");
 		return true;
 	}
 	return false;

@@ -10,6 +10,7 @@
 #define ST_GFD250	5
 #define ST_BCR		6
 #define ST_LED_BLU	7
+#define ST_DIO		8
 
 
 class CInitialize : public CDialog
