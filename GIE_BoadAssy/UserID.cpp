@@ -119,6 +119,17 @@ void CUserID::OnBnClickedOk()
 					m_pApp->Gf_writeLogData("<MES>", "Connection Fail");
 				}
 			}
+			if (lpSystemInfo->bEasUse == _ON_)
+			{
+				if (m_pApp->m_bIsEasConnect == FALSE)
+				{
+					if (m_pApp->Gf_gmesConnect(SERVER_EAS) == FALSE)
+					{
+						//AfxMessageBox(_T("MES CONNECTION FAIL - MES can not be connected."), MB_ICONERROR);
+						m_pApp->Gf_writeLogData("<EAS>", "Connection Fail");
+					}
+				}
+			}
 			
 			if(m_sUserId.GetLength() > 4)
 			{

@@ -91,6 +91,10 @@ BOOL CGIE_BoadAssyApp::InitInstance()
 	{
 		AfxMessageBox(_T("TIB Driver Init Fail.\r\nPlease check whether you have installed the TibDriver and registered the MES DLL."), MB_ICONERROR);
 	}
+	if (Gf_gmesInitServer(SERVER_EAS) == FALSE)
+	{
+		AfxMessageBox(_T("TIB Driver Init Fail.\r\nPlease check whether you have installed the TibDriver and registered the MES DLL."), MB_ICONERROR);
+	}
 	
 	CUserID idDlg;
 	if(idDlg.DoModal() == IDCANCEL)
@@ -444,6 +448,13 @@ void CGIE_BoadAssyApp::Lf_readGmesInfo()
 	Read_SysIniFile(_T("GMES"), _T("LOCAL_SUBJECT"), &lpSystemInfo->sMesLocalSubject);
 	Read_SysIniFile(_T("GMES"), _T("REMOTE_SUBJECT"), &lpSystemInfo->sMesRemoteSubject);
 	Read_SysIniFile(_T("GMES"), _T("LOCAL_IP"), &lpSystemInfo->sLocalIP);
+
+	Read_SysIniFile(_T("EAS"), _T("EAS_USE"), &lpSystemInfo->bEasUse);
+	Read_SysIniFile(_T("EAS"), _T("EAS_SERVICE"), &lpSystemInfo->sEasServicePort);
+	Read_SysIniFile(_T("EAS"), _T("EAS_NETWORK"), &lpSystemInfo->sEasNetWork);
+	Read_SysIniFile(_T("EAS"), _T("EAS_DAEMON_PORT"), &lpSystemInfo->sEasDaemonPort);
+	Read_SysIniFile(_T("EAS"), _T("EAS_LOCAL_SUBJECT"), &lpSystemInfo->sEasLocalSubject);
+	Read_SysIniFile(_T("EAS"), _T("EAS_REMOTE_SUBJECT"), &lpSystemInfo->sEasRemoteSubject);
 }
 
 void CGIE_BoadAssyApp::Lf_parsingModFileData(CString szData, TCHAR (*szParseData)[255])
@@ -1575,6 +1586,16 @@ void CGIE_BoadAssyApp::Lf_setGmesValuePCHK()
 	m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 
 }
+void CGIE_BoadAssyApp::Lf_setEasValueAPDR()
+{
+	CString sAPDInfo;
+	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);
+	m_pCimNet->SetBLID(_T(""));
+	m_pCimNet->SetSerialNumber(_T(""));
+	m_pCimNet->SetPalletID(_T(""));
+
+	m_pCimNet->SetAPDInfo(sAPDInfo);
+}
 void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 {
 	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);	
@@ -1687,7 +1708,11 @@ Send_RETRY:
 		Lf_setGmesValueEICR();
 		nRtnCD = m_pCimNet->EICR();
 	}
-
+	else if (nHostCmd == HOST_APDR)
+	{
+		Lf_setEasValueAPDR();
+		nRtnCD = m_pCimNet->APDR();
+	}
 	Gf_writeLogData(_T("[HOST_R]"), m_pCimNet->GetHostRecvMessage());
 
 	if(nRtnCD==RTN_OK)

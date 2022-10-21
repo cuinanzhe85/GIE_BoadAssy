@@ -39,11 +39,8 @@ protected:
 
 public:	
 	CEdit m_edtEqpName;
-	CComboBox m_cboBluType;
 	CEdit m_edtTestStartDelay;
-	CComboBox m_cboPgComPort;
 	CComboBox m_cboBcrComPort;
-	CComboBox m_cboGfd250ComPort;
 	CComboBox m_cboBluComPort;
 	CEdit m_edtMesServicePort;
 	CEdit m_edtMesNetwork;
@@ -51,13 +48,17 @@ public:
 	CEdit m_edtMesLocalSubject;
 	CEdit m_edtMesRemoteSubject;
 	CIPAddressCtrl m_ipaMesLocalIp;
+	CEdit m_edtEasServicePort;
+	CEdit m_edtEasNetwork;
+	CEdit m_edtEasDaemonPort;
+	CEdit m_edtEasLocalSubject;
+	CEdit m_edtEasRemoteSubject;
 
 private:
 	CFont m_Font[FONT_IDX_MAX];
 	CBrush m_Brush[COLOR_IDX_MAX];
 public:
 	afx_msg void OnBnClickedBtnCancel();
-	CEdit m_edtBluFreq;
 
 	CEdit m_edtModFilePath;
 	CEdit m_edtPtnFilePath;
@@ -65,4 +66,5 @@ public:
 	afx_msg void OnBnClickedBtnModFilePath();
 	afx_msg void OnBnClickedBtnPtnFilePath();
 	afx_msg void OnBnClickedBtnEdidFilePath();
+	CComboBox m_cmbEasUse;
 };

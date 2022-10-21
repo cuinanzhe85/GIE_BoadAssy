@@ -150,6 +150,7 @@ protected:
 
 	CString Lf_getPatternData();
 	void Lf_setGmesValueEICR();
+	void Lf_setEasValueAPDR();
 	void Lf_setGmesValuePCHK();
 
 protected:

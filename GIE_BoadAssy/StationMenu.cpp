@@ -23,14 +23,10 @@ CStationMenu::~CStationMenu()
 void CStationMenu::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_CBO_PG_COMPORT, m_cboPgComPort);
 	DDX_Control(pDX, IDC_CBO_AUTO_BCR_COMPORT, m_cboBcrComPort);
-	DDX_Control(pDX, IDC_CBO_GFD250_COMPORT, m_cboGfd250ComPort);
 	DDX_Control(pDX, IDC_CBO_BLU_COMPORT, m_cboBluComPort);
 	DDX_Control(pDX, IDC_EDT_EQP_NAME, m_edtEqpName);
-	DDX_Control(pDX, IDC_CMB_BLU_TYPE, m_cboBluType);
 	DDX_Control(pDX, IDC_EDT_TEST_START_DELAY, m_edtTestStartDelay);
-	DDX_Control(pDX, IDC_EDT_BLU_FREQ, m_edtBluFreq);
 	DDX_Control(pDX, IDC_EDIT_MES_SERVICEPORT, m_edtMesServicePort);
 	DDX_Control(pDX, IDC_EDIT_MES_NETWORK, m_edtMesNetwork);
 	DDX_Control(pDX, IDC_EDIT_MES_DEMONPORT, m_edtMesDaemonPort);
@@ -40,6 +36,12 @@ void CStationMenu::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_MOD_FILE_PATH, m_edtModFilePath);
 	DDX_Control(pDX, IDC_EDT_PTN_FILE_PATH, m_edtPtnFilePath);
 	DDX_Control(pDX, IDC_EDT_EDID_FILE_PATH, m_edtEdidFilePath);
+	DDX_Control(pDX, IDC_CBO_EAS_USE, m_cmbEasUse);
+	DDX_Control(pDX, IDC_EDIT_EAS_SERVICEPORT, m_edtEasServicePort);
+	DDX_Control(pDX, IDC_EDIT_EAS_NETWORK, m_edtEasNetwork);
+	DDX_Control(pDX, IDC_EDIT_EAS_DEMONPORT, m_edtEasDaemonPort);
+	DDX_Control(pDX, IDC_EDIT_EAS_LOCALSUBJECT, m_edtEasLocalSubject);
+	DDX_Control(pDX, IDC_EDIT_EAS_REMOTESUBJECT, m_edtEasRemoteSubject);
 }
 
 
@@ -123,8 +125,11 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetTextColor(COLOR_WHITE);
 			return m_Brush[COLOR_IDX_DEEP_BLUE];
 		}
-		if((pWnd->GetDlgCtrlID()==IDC_STT_SYS_TIT) || (pWnd->GetDlgCtrlID()==IDC_STT_PORT_TIT) || (pWnd->GetDlgCtrlID()==IDC_STT_MES_TIT)
-		|| (pWnd->GetDlgCtrlID()==IDC_STT_PATH_TIT)
+		if((pWnd->GetDlgCtrlID()==IDC_STT_SYS_TIT)
+			|| (pWnd->GetDlgCtrlID()==IDC_STT_PORT_TIT)
+			|| (pWnd->GetDlgCtrlID()==IDC_STT_MES_TIT)
+			|| (pWnd->GetDlgCtrlID()==IDC_STT_PATH_TIT)
+			| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_TIT)
 			)
 		{
 			pDC->SetBkColor(COLOR_LIGHT_BLUE);
@@ -132,11 +137,7 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			return m_Brush[COLOR_IDX_LIGHT_BLUE];
 		}
 		if (pWnd->GetDlgCtrlID() == IDC_STT_EQP_NAME
-			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_TYPE
-			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_FREQ
 			|| pWnd->GetDlgCtrlID() == IDC_STT_TEST_START_DELAY
-			|| pWnd->GetDlgCtrlID() == IDC_STT_PG_PORT
-			|| pWnd->GetDlgCtrlID() == IDC_STT_GFD250_PORT
 			|| pWnd->GetDlgCtrlID() == IDC_STT_AUTO_BCR_PORT
 			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_PORT
 			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_SERV_PORT
@@ -148,6 +149,12 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| pWnd->GetDlgCtrlID() == IDC_STT_MODEL_PATH
 			|| pWnd->GetDlgCtrlID() == IDC_STT_PATTERN_PATH
 			|| pWnd->GetDlgCtrlID() == IDC_STT_EDID_FILE_PATH
+			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_SERV_PORT
+			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_NETWORK
+			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_DEAMON
+			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_LOCAL_SUBJ
+			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_REMOTE_SUBJ
+			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_USE
 			)
 		{
 			pDC->SetBkColor(COLOR_BLUISH);
@@ -198,16 +205,13 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_STT_SYS_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_PORT_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_MES_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_EAS_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_PATH_TIT)->SetFont(&m_Font[3]);
 	
 	m_Font[4].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_EDT_EQP_NAME)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_CMB_BLU_TYPE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_EDT_BLU_FREQ)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_EDT_TEST_START_DELAY)->SetFont(&m_Font[4]);
 
-	GetDlgItem(IDC_CBO_PG_COMPORT)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_CBO_GFD250_COMPORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CBO_AUTO_BCR_COMPORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CBO_BLU_COMPORT)->SetFont(&m_Font[4]);
 
@@ -225,11 +229,7 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_EDT_EDID_FILE_PATH)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_STT_EQP_NAME)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_BLU_TYPE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_BLU_FREQ)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_TEST_START_DELAY)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_PG_PORT)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_GFD250_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_AUTO_BCR_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_BLU_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MES_SERV_PORT)->SetFont(&m_Font[4]);
@@ -242,6 +242,18 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_STT_PATTERN_PATH)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_EDID_FILE_PATH)->SetFont(&m_Font[4]);
 
+	GetDlgItem(IDC_STT_EAS_USE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_EAS_SERV_PORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_EAS_NETWORK)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_EAS_DEAMON)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_EAS_LOCAL_SUBJ)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_EAS_REMOTE_SUBJ)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDIT_EAS_SERVICEPORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDIT_EAS_NETWORK)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDIT_EAS_DEMONPORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDIT_EAS_LOCALSUBJECT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDIT_EAS_REMOTESUBJECT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CBO_EAS_USE)->SetFont(&m_Font[4]);
 
 	m_Font[5].CreateFont(150, 70, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
 
@@ -264,15 +276,9 @@ void CStationMenu::Lf_initControls()
 
 	m_edtEqpName.SetWindowText(lpSystemInfo->m_sMachinName);
 
-	m_cboBluType.SetCurSel(lpSystemInfo->m_nBluType);
-
-	sdata.Format(_T("%d"), lpSystemInfo->m_nBluFreq);
-	m_edtBluFreq.SetWindowText(sdata);
-
 	sdata.Format(_T("%d"), lpSystemInfo->m_nTestStartDelay);
 	m_edtTestStartDelay.SetWindowText(sdata);
 
-	m_cboPgComPort.SetCurSel(lpSystemInfo->m_nPgPort);
 
 	m_cboBcrComPort.SetCurSel(lpSystemInfo->m_nAutoBcrPort);
 
@@ -284,6 +290,13 @@ void CStationMenu::Lf_initControls()
 	m_edtMesLocalSubject.SetWindowText(lpSystemInfo->sMesLocalSubject);
 	m_edtMesRemoteSubject.SetWindowText(lpSystemInfo->sMesRemoteSubject);
 	m_ipaMesLocalIp.SetWindowText(lpSystemInfo->sLocalIP);
+
+	m_cmbEasUse.SetCurSel(lpSystemInfo->bEasUse);
+	m_edtEasServicePort.SetWindowText(lpSystemInfo->sEasServicePort);
+	m_edtEasNetwork.SetWindowText(lpSystemInfo->sEasNetWork);
+	m_edtEasDaemonPort.SetWindowText(lpSystemInfo->sEasDaemonPort);
+	m_edtEasLocalSubject.SetWindowText(lpSystemInfo->sEasLocalSubject);
+	m_edtEasRemoteSubject.SetWindowText(lpSystemInfo->sEasRemoteSubject);
 
 	m_edtModFilePath.SetWindowText(lpSystemInfo->m_sModelDnPath);
 	m_edtPtnFilePath.SetWindowText(lpSystemInfo->m_sPatternPath);
@@ -304,19 +317,9 @@ void CStationMenu::Lf_saveSystemInfo()
 	lpSystemInfo->m_sMachinName.Format(_T("%s"),sdata);
 	Write_SysIniFile(_T("SYSTEM"), _T("MACHIN_NAME"), lpSystemInfo->m_sMachinName);
 
-	lpSystemInfo->m_nBluType = m_cboBluType.GetCurSel();
-	Write_SysIniFile(_T("SYSTEM"), _T("BLU_TYPE"), lpSystemInfo->m_nBluType);
-
-	m_edtBluFreq.GetWindowText(sdata);
-	lpSystemInfo->m_nBluFreq = _ttoi(sdata);
-	Write_SysIniFile(_T("SYSTEM"), _T("BLU_FREQ"), lpSystemInfo->m_nBluFreq);
-
 	m_edtTestStartDelay.GetWindowText(sdata);
 	lpSystemInfo->m_nTestStartDelay = _ttoi(sdata);
 	Write_SysIniFile(_T("SYSTEM"), _T("TEST_START_DELAY"), lpSystemInfo->m_nTestStartDelay);
-
-	lpSystemInfo->m_nPgPort = m_cboPgComPort.GetCurSel();
-	Write_SysIniFile(_T("SYSTEM"), _T("IRDA_PORT"), lpSystemInfo->m_nPgPort);
 
 	lpSystemInfo->m_nAutoBcrPort = m_cboBcrComPort.GetCurSel();
 	Write_SysIniFile(_T("SYSTEM"), _T("AUTO_BCR_PORT"), lpSystemInfo->m_nAutoBcrPort);
@@ -341,6 +344,24 @@ void CStationMenu::Lf_saveSystemInfo()
 
 	m_ipaMesLocalIp.GetWindowText(lpSystemInfo->sLocalIP);
 	Write_SysIniFile(_T("GMES"), _T("LOCAL_IP"),								lpSystemInfo->sLocalIP);
+
+	lpSystemInfo->bEasUse = m_cmbEasUse.GetCurSel();
+	Write_SysIniFile(_T("EAS"), _T("EAS_USE"), lpSystemInfo->bEasUse);
+
+	m_edtEasServicePort.GetWindowText(lpSystemInfo->sEasServicePort);
+	Write_SysIniFile(_T("EAS"), _T("EAS_SERVICE"), lpSystemInfo->sEasServicePort);
+
+	m_edtEasNetwork.GetWindowText(lpSystemInfo->sEasNetWork);
+	Write_SysIniFile(_T("EAS"), _T("EAS_NETWORK"), lpSystemInfo->sEasNetWork);
+
+	m_edtEasDaemonPort.GetWindowText(lpSystemInfo->sEasDaemonPort);
+	Write_SysIniFile(_T("EAS"), _T("EAS_DAEMON_PORT"), lpSystemInfo->sEasDaemonPort);
+
+	m_edtEasLocalSubject.GetWindowText(lpSystemInfo->sEasLocalSubject);
+	Write_SysIniFile(_T("EAS"), _T("EAS_LOCAL_SUBJECT"), lpSystemInfo->sEasLocalSubject);
+
+	m_edtMesRemoteSubject.GetWindowText(lpSystemInfo->sEasRemoteSubject);
+	Write_SysIniFile(_T("EAS"), _T("EAS_REMOTE_SUBJECT"), lpSystemInfo->sEasRemoteSubject);
 
  	m_edtModFilePath.GetWindowText(lpSystemInfo->m_sModelDnPath);
  	Write_SysIniFile(_T("SYSTEM"), _T("MODEL_FILE_PATH"), lpSystemInfo->m_sModelDnPath);

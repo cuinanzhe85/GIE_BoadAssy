@@ -319,6 +319,7 @@ typedef struct _ST_SYSTEMINFO_{
 	CString		sMesRemoteSubject;
 	CString		sLocalIP;
 
+	BOOL		bEasUse;
 	CString		sEasServicePort;
 	CString		sEasNetWork;
 	CString		sEasDaemonPort;
