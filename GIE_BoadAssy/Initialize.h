@@ -7,10 +7,10 @@
 #define ST_PTN		2
 #define ST_EDID		3
 #define ST_PG		4
-#define ST_GFD250	5
-#define ST_BCR		6
-#define ST_LED_BLU	7
-#define ST_DIO		8
+#define ST_BCR		5
+#define ST_LED_BLU	6
+#define ST_DIO		7
+#define ST_PLC		8
 
 
 class CInitialize : public CDialog
@@ -40,7 +40,6 @@ protected:
 protected:
 	LPMODELSETINFO	lpModelInfo;
 
-	int m_nChkPoint;
 	int m_nStatus[20];
 public:
 	afx_msg void OnBnClickedBtnRetry();

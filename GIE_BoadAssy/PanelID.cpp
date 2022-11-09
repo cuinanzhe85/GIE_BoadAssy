@@ -100,7 +100,7 @@ void CPanelID::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString strPanelId=_T("");
-	BOOL isDataOK = FALSE;
+	BOOL isDataOK = TRUE;
 	char cbuff[128]={0,};
 	int i=0,len=0;
 	WORD wPID[20];
@@ -124,8 +124,6 @@ void CPanelID::OnBnClickedOk()
 		|| (('a' <= cbuff[i]) && (cbuff[i] <= 'z'))
 		|| (('A' <= cbuff[i]) && (cbuff[i] <= 'Z')) )
 		{
-			//isDataOK = TRUE;
-			wPID[i] = cbuff[i];
 		}
 		else
 		{
@@ -140,17 +138,29 @@ void CPanelID::OnBnClickedOk()
 		m_edtPanelId.SetSel(0, strPanelId.GetLength());
 		return;
 	}
-	if (m_pApp->m_pPlcCtrl->plc_sendInputPID(wPID, len) == TRUE)
+
+	if (m_pApp->m_pPlcCtrl->m_bPlcTcpConnect == TRUE)
 	{
-		m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC Panel ID Write Success"));
-		if (m_pApp->m_pPlcCtrl->plc_sendPidWriteComplete() == TRUE)
+		memset(wPID, 0x00, sizeof(wPID));
+		memcpy(wPID, cbuff, strlen(cbuff));
+		if (m_pApp->m_pPlcCtrl->plc_sendInputPID(lpSystemInfo->m_nPlcDeviceNum, wPID, len) == TRUE)
 		{
-			m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC Panel ID Write Complete Bit ON"));
-			lpWorkInfo->m_sPID = strPanelId;
-			CDialog::OnOK();
+			m_pApp->Gf_writeLogData(_T("<PLC>"), _T("PLC Panel ID Write Success"));
+			if (m_pApp->m_pPlcCtrl->plc_sendPidWriteComplete(lpSystemInfo->m_nPlcDeviceNum) == TRUE)
+			{
+				m_pApp->Gf_writeLogData(_T("<PLC>"), _T("PLC Panel ID Write Complete Bit ON"));
+				lpWorkInfo->m_sPID = strPanelId;
+				CDialog::OnOK();
+
+				return;
+			}
 		}
+		m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC Panel ID Write Fail"));
 	}
-	m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC Panel ID Write Fail"));
+	else
+	{
+		m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC PID Write Skip. PLC TCP/IP Disconnected."));
+	}
 }
 
 void CPanelID::OnTimer(UINT_PTR nIDEvent)

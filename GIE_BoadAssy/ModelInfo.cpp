@@ -1329,28 +1329,33 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 void CModelInfo::OnBnClickedBtnSave()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	Lf_saveModelInfoData();
+}
+
+void CModelInfo::Lf_saveModelInfoData()
+{
 	CString strCurrentModel, strSaveModel, strSource, strTarget;
 
 	GetDlgItem(IDC_STT_CUR_MODEL)->GetWindowText(strCurrentModel);
 	GetDlgItem(IDC_EDT_CREATE_MODEL)->GetWindowText(strSaveModel);
 
-	if(strCurrentModel.Compare(strSaveModel))
+	if (strCurrentModel.Compare(strSaveModel))
 	{
 		strSource.Format(_T(".\\Model\\%s.mod"), strCurrentModel);
 		strTarget.Format(_T(".\\Model\\%s.mod"), strSaveModel);
 
 		// Model File Copy
-		CopyFile(strSource , strTarget, FALSE);
+		CopyFile(strSource, strTarget, FALSE);
 
 		Lf_saveCtrlData(strSaveModel);
 
-		Write_SysIniFile(_T("SYSTEM"),		_T("LAST_MODELNAME"),			strSaveModel);
+		Write_SysIniFile(_T("SYSTEM"), _T("LAST_MODELNAME"), strSaveModel);
 
 	}
 	else
 	{
 		Lf_saveCtrlData(lpSystemInfo->m_sModelName);
-		
+
 	}
 	m_pApp->Gf_loadModelData();
 	/*CInitialize initDlg;
@@ -2165,6 +2170,8 @@ void CModelInfo::OnStnClickedSttFusing()
 	m_pApp->Gf_writeLogData("<TEST>", "MANUAL Fusing Start");
 	GetDlgItem(IDC_STT_FUSING)->EnableWindow(FALSE);
 	m_bfusingflag = 0;
+
+	Lf_saveModelInfoData();
 	m_pApp->m_pCommand->Gf_setZoneSel();
 	if (m_pApp->m_pCommand->Gf_setFusingSystemInfo() == TRUE)
 	{

@@ -20,11 +20,14 @@ CSocketTcpApp::~CSocketTcpApp(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TCP PLC Function
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL CSocketTcpApp::tcp_plc_Connection(int nPort)
+BOOL CSocketTcpApp::tcp_plc_Connection(CString ipAddress, int nPort)
 {
+	char szIPAddress[20] = { 0, };
 	pSocketTcp->nSID = SOC_SERVER_PLC;
 	pSocketTcp->m_bPlcReconnectFlag = false;
-	return pSocketTcp->eth_Connection(TCP_PLC_IP, nPort);
+
+	sprintf_s(szIPAddress, "%S", ipAddress.GetBuffer(0));
+	return pSocketTcp->eth_Connection(szIPAddress, nPort);
 }
 
 BOOL CSocketTcpApp::tcp_plc_DisConnection()

@@ -16,6 +16,9 @@
     <Filter Include="헤더 파일\XImageInc">
       <UniqueIdentifier>{ace23f8d-4238-4884-bec6-7993afeb710b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GolbalDefine">
+      <UniqueIdentifier>{8adfcc94-4c9a-45df-87a7-09ec6677bd86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AutoFirmware.cpp">
@@ -125,9 +128,6 @@
     <ClInclude Include="GieJudge.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="_GlobalDefine.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="IniProfileAPI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -208,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="PlcCtrl.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="_GlobalDefine.h">
+      <Filter>GolbalDefine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

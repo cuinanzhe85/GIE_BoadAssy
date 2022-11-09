@@ -131,12 +131,19 @@ int CPLCCtrl::plc_melsec_makePacketRead(char* packet_buff, UINT addr, int dataLe
 
 	return packet_len;
 }
-BOOL CPLCCtrl::plc_sendInputPID(WORD* wData, int nLength)
+
+BOOL CPLCCtrl::plc_sendInputPID(int deviceNum, WORD* wData, int nLength)
 {
 	char szPacket[1024] = { 0, };
 	int packetLen = 0;
+	UINT wAddr;
 
-	packetLen = plc_melsec_makePacketWrite(szPacket, PLC_PID_WRITE_START_ADDR, nLength, wData);
+	if (deviceNum == 0)
+		wAddr = PLC_PID_WRITE_START_ADDR_1;
+	else
+		wAddr = PLC_PID_WRITE_START_ADDR_2;
+
+	packetLen = plc_melsec_makePacketWrite(szPacket, wAddr, nLength, wData);
 	if (m_pApp->m_pCommand->plc_sendQuery(szPacket, packetLen) == FALSE)
 	{
 		return FALSE;
@@ -144,14 +151,22 @@ BOOL CPLCCtrl::plc_sendInputPID(WORD* wData, int nLength)
 
 	return TRUE;
 }
-BOOL CPLCCtrl::plc_sendPidWriteComplete()
+
+BOOL CPLCCtrl::plc_sendPidWriteComplete(int deviceNum)
 {
 	char szPacket[1024] = { 0, };
 	int packetLen = 0;
 	WORD wData[1];
+	UINT wAddr;
+
+	if (deviceNum == 0)
+		wAddr = PLC_PID_WRITE_COMPLETE_ADDR_1;
+	else
+		wAddr = PLC_PID_WRITE_COMPLETE_ADDR_2;
+
 	wData[0] = 0x0001;
 
-	packetLen = plc_melsec_makePacketWrite(szPacket, PLC_PID_WRITE_COMPLETE_ADDR, 1, wData);
+	packetLen = plc_melsec_makePacketWrite(szPacket, wAddr, 1, wData);
 	if (m_pApp->m_pCommand->plc_sendQuery(szPacket, packetLen) == FALSE)
 	{
 		return FALSE;

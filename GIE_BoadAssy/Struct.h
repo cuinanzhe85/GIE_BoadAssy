@@ -326,6 +326,10 @@ typedef struct _ST_SYSTEMINFO_{
 	CString		sEasLocalSubject;
 	CString		sEasRemoteSubject;
 
+	// TCP/IP (PLC)
+	int			m_nPlcDeviceNum;
+	CString		m_sPlcIPAddress;
+	CString		m_sPlcPort;
 
 }SYSTEMINFO, *LPSYSTEMINFO;
 

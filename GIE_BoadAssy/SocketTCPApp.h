@@ -14,7 +14,7 @@ public:
 
 	//////////////////////////////////////////////////////////////////////
 	// PLC Control Function
-	BOOL tcp_plc_Connection(int nPort);
+	BOOL tcp_plc_Connection(CString ipAddress, int nPort);
 	BOOL tcp_plc_DisConnection();
 	BOOL tcp_plc_SendQuery(char *data, WORD nDataLen);
 	BOOL tcp_plc_GetReceivePacketData(char* szRcvPacket);

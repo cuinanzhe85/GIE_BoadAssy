@@ -87,6 +87,7 @@ BOOL CGIE_BoadAssyApp::InitInstance()
 	InitCreateUdpSocket();
 	// GMES DLL Initialize
 
+#if (DEBUG_MES_NOT_USE==0)
 	if (Gf_gmesInitServer(SERVER_MES) == FALSE)
 	{
 		AfxMessageBox(_T("TIB Driver Init Fail.\r\nPlease check whether you have installed the TibDriver and registered the MES DLL."), MB_ICONERROR);
@@ -95,7 +96,8 @@ BOOL CGIE_BoadAssyApp::InitInstance()
 	{
 		AfxMessageBox(_T("TIB Driver Init Fail.\r\nPlease check whether you have installed the TibDriver and registered the MES DLL."), MB_ICONERROR);
 	}
-	
+#endif
+
 	CUserID idDlg;
 	if(idDlg.DoModal() == IDCANCEL)
 		return FALSE;
@@ -346,6 +348,10 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpSystemInfo->sEasLocalSubject.Empty();
 	lpSystemInfo->sEasRemoteSubject.Empty();
 
+	lpSystemInfo->m_nPlcDeviceNum = 0;
+	lpSystemInfo->m_sPlcIPAddress.Empty();
+	lpSystemInfo->m_sPlcPort.Empty();
+
 	lpModelInfo->m_nEdidUse=0;
 	lpModelInfo->m_nEdidAddr=0;
 	lpModelInfo->m_nEdidLine=0;
@@ -494,8 +500,6 @@ void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 	Read_SysIniFile(_T("SYSTEM"),		_T("TEST_START_DELAY"),				&lpSystemInfo->m_nTestStartDelay);
 	
 
-
-
 	Read_SysIniFile(_T("SYSTEM"),		_T("I2C_PULL_UP"),					&lpSystemInfo->m_nI2CPullUp);
 	Read_SysIniFile(_T("SYSTEM"),		_T("I2C_FREQ"),						&lpSystemInfo->m_nI2CClock);
 	Read_SysIniFile(_T("SYSTEM"),		_T("PG_TYPE"),						&lpSystemInfo->m_nPGSystemType);
@@ -514,6 +518,11 @@ void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 	Read_SysIniFile(_T("SYSTEM"),		_T("GRAY_ADJ_LR"),					&lpSystemInfo->m_nGrayAdjustStepLeftRight);
 	Read_SysIniFile(_T("SYSTEM"),		_T("IF_BD_SELECT"),					&lpSystemInfo->m_nIFBoardSelect);
 	Read_SysIniFile(_T("SYSTEM"),		_T("EDP_INIT_CODE_SEL"),			&lpSystemInfo->m_neDPInitCodeSelect);
+
+
+	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_DEVICE_NUM"),				&lpSystemInfo->m_nPlcDeviceNum);
+	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_IP_ADDRESS"),				&lpSystemInfo->m_sPlcIPAddress);
+	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_PORT"),						&lpSystemInfo->m_sPlcPort);
 
 	m_sSysIniFile.Format(_T("%s"),_T("Module Load OK"));
 }

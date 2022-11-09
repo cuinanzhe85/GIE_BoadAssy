@@ -42,6 +42,9 @@ void CStationMenu::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_EAS_DEMONPORT, m_edtEasDaemonPort);
 	DDX_Control(pDX, IDC_EDIT_EAS_LOCALSUBJECT, m_edtEasLocalSubject);
 	DDX_Control(pDX, IDC_EDIT_EAS_REMOTESUBJECT, m_edtEasRemoteSubject);
+	DDX_Control(pDX, IDC_CMB_PLC_DEVICE_NUM, m_cmbPlcDeviceNum);
+	DDX_Control(pDX, IDC_IPA_TCPIP_PLC_IPADDR, m_ipaPlcIPAddress);
+	DDX_Control(pDX, IDC_EDT_TCPIP_PLC_PORT, m_edtPlcPort);
 }
 
 
@@ -56,6 +59,7 @@ BEGIN_MESSAGE_MAP(CStationMenu, CDialog)
 	ON_BN_CLICKED(IDC_BTN_MOD_FILE_PATH, &CStationMenu::OnBnClickedBtnModFilePath)
 	ON_BN_CLICKED(IDC_BTN_PTN_FILE_PATH, &CStationMenu::OnBnClickedBtnPtnFilePath)
 	ON_BN_CLICKED(IDC_BTN_EDID_FILE_PATH, &CStationMenu::OnBnClickedBtnEdidFilePath)
+	ON_CBN_SELCHANGE(IDC_CMB_PLC_DEVICE_NUM, &CStationMenu::OnCbnSelchangeCmbPlcDeviceNum)
 END_MESSAGE_MAP()
 
 
@@ -129,32 +133,36 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| (pWnd->GetDlgCtrlID()==IDC_STT_PORT_TIT)
 			|| (pWnd->GetDlgCtrlID()==IDC_STT_MES_TIT)
 			|| (pWnd->GetDlgCtrlID()==IDC_STT_PATH_TIT)
-			| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_TCPIP_PLC_TIT)
 			)
 		{
 			pDC->SetBkColor(COLOR_LIGHT_BLUE);
 			pDC->SetTextColor(COLOR_BLACK);
 			return m_Brush[COLOR_IDX_LIGHT_BLUE];
 		}
-		if (pWnd->GetDlgCtrlID() == IDC_STT_EQP_NAME
-			|| pWnd->GetDlgCtrlID() == IDC_STT_TEST_START_DELAY
-			|| pWnd->GetDlgCtrlID() == IDC_STT_AUTO_BCR_PORT
-			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_PORT
-			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_SERV_PORT
-			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_NETWORK
-			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_DEAMON
-			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_LOCAL_SUBJ
-			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_REMOTE_SUBJ
-			|| pWnd->GetDlgCtrlID() == IDC_STT_MES_LOCAL_IP
-			|| pWnd->GetDlgCtrlID() == IDC_STT_MODEL_PATH
-			|| pWnd->GetDlgCtrlID() == IDC_STT_PATTERN_PATH
-			|| pWnd->GetDlgCtrlID() == IDC_STT_EDID_FILE_PATH
-			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_SERV_PORT
-			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_NETWORK
-			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_DEAMON
-			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_LOCAL_SUBJ
-			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_REMOTE_SUBJ
-			|| pWnd->GetDlgCtrlID() == IDC_STT_EAS_USE
+		if ((pWnd->GetDlgCtrlID() == IDC_STT_EQP_NAME)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_TEST_START_DELAY)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_AUTO_BCR_PORT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_BLU_PORT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MES_SERV_PORT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MES_NETWORK)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MES_DEAMON)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MES_LOCAL_SUBJ)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MES_REMOTE_SUBJ)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MES_LOCAL_IP)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_MODEL_PATH)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_PATTERN_PATH)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_EDID_FILE_PATH)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_SERV_PORT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_NETWORK)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_DEAMON)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_LOCAL_SUBJ)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_REMOTE_SUBJ)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_USE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_PLC_DEVICE_NUM)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_TCPIP_PLC_IPADDR)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_TCPIP_PLC_PORT)
 			)
 		{
 			pDC->SetBkColor(COLOR_BLUISH);
@@ -207,7 +215,8 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_STT_MES_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_EAS_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_PATH_TIT)->SetFont(&m_Font[3]);
-	
+	GetDlgItem(IDC_STT_TCPIP_PLC_TIT)->SetFont(&m_Font[3]);
+
 	m_Font[4].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_EDT_EQP_NAME)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_EDT_TEST_START_DELAY)->SetFont(&m_Font[4]);
@@ -241,6 +250,13 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_STT_MODEL_PATH)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_PATTERN_PATH)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_EDID_FILE_PATH)->SetFont(&m_Font[4]);
+
+	GetDlgItem(IDC_STT_PLC_DEVICE_NUM)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_PLC_DEVICE_NUM)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_TCPIP_PLC_IPADDR)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_IPA_TCPIP_PLC_IPADDR)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_TCPIP_PLC_PORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDT_TCPIP_PLC_PORT)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_STT_EAS_USE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_EAS_SERV_PORT)->SetFont(&m_Font[4]);
@@ -297,6 +313,10 @@ void CStationMenu::Lf_initControls()
 	m_edtEasDaemonPort.SetWindowText(lpSystemInfo->sEasDaemonPort);
 	m_edtEasLocalSubject.SetWindowText(lpSystemInfo->sEasLocalSubject);
 	m_edtEasRemoteSubject.SetWindowText(lpSystemInfo->sEasRemoteSubject);
+
+	m_cmbPlcDeviceNum.SetCurSel(lpSystemInfo->m_nPlcDeviceNum);
+	m_ipaPlcIPAddress.SetWindowText(lpSystemInfo->m_sPlcIPAddress);
+	m_edtPlcPort.SetWindowText(lpSystemInfo->m_sPlcPort);
 
 	m_edtModFilePath.SetWindowText(lpSystemInfo->m_sModelDnPath);
 	m_edtPtnFilePath.SetWindowText(lpSystemInfo->m_sPatternPath);
@@ -360,8 +380,18 @@ void CStationMenu::Lf_saveSystemInfo()
 	m_edtEasLocalSubject.GetWindowText(lpSystemInfo->sEasLocalSubject);
 	Write_SysIniFile(_T("EAS"), _T("EAS_LOCAL_SUBJECT"), lpSystemInfo->sEasLocalSubject);
 
-	m_edtMesRemoteSubject.GetWindowText(lpSystemInfo->sEasRemoteSubject);
+	m_edtEasRemoteSubject.GetWindowText(lpSystemInfo->sEasRemoteSubject);
 	Write_SysIniFile(_T("EAS"), _T("EAS_REMOTE_SUBJECT"), lpSystemInfo->sEasRemoteSubject);
+
+	lpSystemInfo->m_nPlcDeviceNum = m_cmbPlcDeviceNum.GetCurSel();
+	Write_SysIniFile(_T("TCPIP_PLC"), _T("PLC_DEVICE_NUM"), lpSystemInfo->m_nPlcDeviceNum);
+
+	m_ipaPlcIPAddress.GetWindowText(lpSystemInfo->m_sPlcIPAddress);
+	Write_SysIniFile(_T("TCPIP_PLC"), _T("PLC_IP_ADDRESS"), lpSystemInfo->m_sPlcIPAddress);
+
+	m_edtPlcPort.GetWindowText(lpSystemInfo->m_sPlcPort);
+	Write_SysIniFile(_T("TCPIP_PLC"), _T("PLC_PORT"), lpSystemInfo->m_sPlcPort);
+
 
  	m_edtModFilePath.GetWindowText(lpSystemInfo->m_sModelDnPath);
  	Write_SysIniFile(_T("SYSTEM"), _T("MODEL_FILE_PATH"), lpSystemInfo->m_sModelDnPath);
@@ -480,4 +510,14 @@ void CStationMenu::OnBnClickedBtnEdidFilePath()
 	m_edtEdidFilePath.GetWindowText(sdata);
 	m_edtEdidFilePath.SetWindowText(Lf_FileLoadDialog(sdata));
 	UpdateData(FALSE);
+}
+
+
+void CStationMenu::OnCbnSelchangeCmbPlcDeviceNum()
+{
+	// TODO: Add your control notification handler code here
+	if (m_cmbPlcDeviceNum.GetCurSel() == 0)
+		m_edtPlcPort.SetWindowText(_T("4000"));
+	else
+		m_edtPlcPort.SetWindowText(_T("4001"));
 }

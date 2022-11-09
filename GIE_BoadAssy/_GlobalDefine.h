@@ -15,6 +15,7 @@
 #define DEBUG_232RECEIVE_OK			0
 #define DEBUG_RS232C_LOG			0
 #define DEBUG_PALLET_ARRIVE			0
+#define DEBUG_MES_NOT_USE			1
 
 /////////////////////////////////////////////////////////////////////////////
 // DebugMode
@@ -73,8 +74,10 @@
 #define MELSEC_SUBCMD_WORD			0x0000		// 서브 커맨드 (WORD 단위 R/W)
 #define MELSEC_CMD_DEVICE_CODE		0xA8		// 디바이스 코드
 
-#define PLC_PID_WRITE_START_ADDR			0X0000		// Panel ID Write Address (확인 후 정의 필요)
-#define PLC_PID_WRITE_COMPLETE_ADDR			0X0000		// Panel ID Write Address (확인 후 정의 필요)
+#define PLC_PID_WRITE_START_ADDR_1		8000		// Panel ID Write Address (확인 후 정의 필요)
+#define PLC_PID_WRITE_COMPLETE_ADDR_1	8009		// Panel ID Write Address (확인 후 정의 필요)
+#define PLC_PID_WRITE_START_ADDR_2		8010		// Panel ID Write Address (확인 후 정의 필요)
+#define PLC_PID_WRITE_COMPLETE_ADDR_2	8019		// Panel ID Write Address (확인 후 정의 필요)
 /////////////////////////////////////////////////////////////////////////////
 //DIO
 /////////////////////////////////////////////////////////////////////////////

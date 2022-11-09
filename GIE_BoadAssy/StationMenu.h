@@ -67,4 +67,8 @@ public:
 	afx_msg void OnBnClickedBtnPtnFilePath();
 	afx_msg void OnBnClickedBtnEdidFilePath();
 	CComboBox m_cmbEasUse;
+	CComboBox m_cmbPlcDeviceNum;
+	CIPAddressCtrl m_ipaPlcIPAddress;
+	CEdit m_edtPlcPort;
+	afx_msg void OnCbnSelchangeCmbPlcDeviceNum();
 };

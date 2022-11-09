@@ -696,6 +696,13 @@ BOOL CGIE_BoadAssyDlg::PreTranslateMessage(MSG* pMsg)
 				initDlg.DoModal();
 				return TRUE;
 			}
+		case 'm':
+		case 'M':
+		{
+			CMaint maintDlg;
+			maintDlg.DoModal();
+			return TRUE;
+		}
 		case 's':
 		case 'S':
 			{

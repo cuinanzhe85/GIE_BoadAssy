@@ -238,15 +238,15 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				return m_Brush[COLOR_IDX_GRAY96];
 			}
 		}
-		if(pWnd->GetDlgCtrlID()==IDC_STT_GFD250_VALUE)
+		if(pWnd->GetDlgCtrlID()==IDC_STT_PLC_VALUE)
 		{
-			if(m_nStatus[ST_GFD250] == FALSE)
+			if(m_nStatus[ST_PLC] == FALSE)
 			{
 				pDC->SetBkColor(COLOR_RED);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED];
 			}
-			else if (m_nStatus[ST_GFD250] == TRUE)
+			else if (m_nStatus[ST_PLC] == TRUE)
 			{
 				pDC->SetBkColor(COLOR_GREEN128);
 				pDC->SetTextColor(COLOR_WHITE);
@@ -317,9 +317,9 @@ void CInitialize::Lf_initFontSet()
 	GetDlgItem(IDC_STT_EDID_VALUE)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_PG_VALUE)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_BCR_VALUE)->SetFont(&m_Font[0]);
-	GetDlgItem(IDC_STT_GFD250_VALUE)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_BLU_VALUE)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_DIO_VALUE)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_PLC_VALUE)->SetFont(&m_Font[0]);
 
 	m_Font[1].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
@@ -352,7 +352,7 @@ void CInitialize::Lf_loadData()
 {
 	int i=0;
 
-	memset(m_nStatus, -1, sizeof(m_nStatus));
+	memset(m_nStatus, TRUE, sizeof(m_nStatus));
 	Invalidate(FALSE);
 	GetDlgItem(IDC_BTN_RETRY)->EnableWindow(FALSE);
 	GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
@@ -425,19 +425,7 @@ void CInitialize::Lf_loadData()
 	GetDlgItem(IDC_STT_PG_VALUE)->Invalidate(FALSE);
 
 	m_pApp->Gf_setSerialPort();
-#if 0
-	if (!m_pApp->m_sSerialPort2.Compare(_T("GFD250 OK.")))
-		m_nStatus[ST_GFD250] = TRUE;
-	else
-		m_nStatus[ST_GFD250] = FALSE;
 
-	//SetDlgItemText (IDC_STT_GFD250_VALUE, m_pApp->m_sSerialPort2);
-	
-
-	
-#else
-	m_nStatus[ST_GFD250] = TRUE;
-#endif // 0
 	if (!m_pApp->m_sSerialPort4.Compare(_T("LED BLU OK.")))
 		m_nStatus[ST_LED_BLU] = TRUE;
 	else
@@ -446,7 +434,6 @@ void CInitialize::Lf_loadData()
 	//SetDlgItemText (IDC_STT_BLU_VALUE, m_pApp->m_sSerialPort4);
 	GetDlgItem(IDC_STT_BLU_VALUE)->Invalidate(FALSE);
 	
-	GetDlgItem(IDC_STT_GFD250_VALUE)->Invalidate(FALSE);
 	if (!m_pApp->m_sSerialPort3.Compare(_T("Auto BCR OK.")))
 		m_nStatus[ST_BCR] = TRUE;
 	else
@@ -463,13 +450,19 @@ void CInitialize::Lf_loadData()
 	{
 		m_nStatus[ST_DIO] = FALSE;
 	}
+	GetDlgItem(IDC_STT_DIO_VALUE)->Invalidate(FALSE);
+
 	m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
 	delayMS(500);
 	if (m_pApp->m_pPlcCtrl->plc_tcpConnection() == TRUE)
 	{
-		m_nStatus[ST_DIO] = FALSE;
+		m_nStatus[ST_PLC] = TRUE;
 	}
-	GetDlgItem(IDC_STT_DIO_VALUE)->Invalidate(FALSE);
+	else
+	{
+		m_nStatus[ST_PLC] = FALSE;
+	}
+	GetDlgItem(IDC_STT_PLC_VALUE)->Invalidate(FALSE);
 
 	UpdateData(FALSE);
 
@@ -489,7 +482,8 @@ void CInitialize::Lf_loadData()
 		}
 	}	
 	
-	for(int i=0;i<20;i++)
+	int m_nChkPoint = 0;
+	for(int i=0; i<20; i++)
 	{
 		if(m_nStatus[i] == FALSE)
 			m_nChkPoint++;

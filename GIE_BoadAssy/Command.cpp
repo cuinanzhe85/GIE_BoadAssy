@@ -1133,9 +1133,9 @@ BOOL CCommand::Gf_getGfd250I2CReadPacketSend(int nStartReg, int ReadNum, int Cmd
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL CCommand::plc_Connection()
 {
-	int nPort = 50001;
+	int nPort = _ttoi(lpSystemInfo->m_sPlcPort);
 
-	return m_pApp->m_pSocketTCPApp->tcp_plc_Connection(nPort);
+	return m_pApp->m_pSocketTCPApp->tcp_plc_Connection(lpSystemInfo->m_sPlcIPAddress, nPort);
 }
 
 BOOL CCommand::plc_DisConnection()

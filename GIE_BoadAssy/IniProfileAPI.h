@@ -391,20 +391,6 @@ static void Read_SummaryFile(LPCWSTR lpTitle, LPCWSTR lpKey, CString *szRetStrin
 	szRetString->Format(_T("%s"), wszData);
 }
 
-static void Write_GmesFile(LPCWSTR lpTitle, LPCWSTR lpKey, CString strValue)
-{
-	::WritePrivateProfileString(lpTitle, lpKey, strValue, _T(".\\GMES.ini"));
-}
-
-static void Read_GmesFile(LPCWSTR lpTitle, LPCWSTR lpKey, CString *szRetString)
-{
-	wchar_t wszData[100] = {0,};
-
-	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), _T(".\\GMES.ini"));
-
-	szRetString->Format(_T("%s"), wszData);
-}
-
 static void Write_WDRRequestInform(LPCWSTR lpWdrFileName, LPCWSTR lpTitle, LPCWSTR lpKey, CString strValue)
 {
 	::WritePrivateProfileString(lpTitle, lpKey, strValue, lpWdrFileName);

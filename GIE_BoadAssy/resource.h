@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++에서 생성한 포함 파일입니다.
-// GIE_BoadAssy.rc에서 사용되고 있습니다.
+// Microsoft Visual C++ generated include file.
+// Used by GIE_BoadAssy.rc
 //
 #define IDC_BTN_FILE_SELECT             3
 #define IDC_BTN_FW_VERSION              4
@@ -162,7 +162,7 @@
 #define IDC_STT_GFD100_VALUE            1062
 #define IDC_EDT_PTN_BG                  1062
 #define IDC_CBO_GFD250_COMPORT          1062
-#define IDC_STT_GFD250_VALUE            1062
+#define IDC_STT_PLC_VALUE               1062
 #define IDC_CMB_ON_SEQ_OP_1             1062
 #define IDC_CBO_AUTO_BCR_COMPORT2       1062
 #define IDC_CBO_EAS_USE                 1062
@@ -175,6 +175,8 @@
 #define IDC_EDT_PTN_TMS                 1065
 #define IDC_STT_SYSTEM_TIT              1065
 #define IDC_EDT_BLU_FREQ                1065
+#define IDC_CBO_AUTO_BCR_COMPORT3       1065
+#define IDC_CMB_PLC_DEVICE_NUM          1065
 #define IDC_EDT_PTN_VSYNC               1066
 #define IDC_STT_MODEL_TIT               1066
 #define IDC_EDIT_MES_SERVICEPORT        1066
@@ -210,6 +212,8 @@
 #define IDC_EDIT_EAS_REMOTESUBJECT      1075
 #define IDC_BTN_LOAD                    1076
 #define IDC_STT_BLU_CLK                 1076
+#define IDC_EDIT_MES_REMOTESUBJECT2     1076
+#define IDC_EDT_TCPIP_PLC_PORT          1076
 #define IDC_CMB_EEPROM_ADDR             1077
 #define IDC_BTN_ADD                     1078
 #define IDC_BTN_DELETE                  1079
@@ -436,11 +440,13 @@
 #define IDC_STT_VCC_MEA_TIT             1164
 #define IDC_EDT_OFF_SEQ_DEL_11          1164
 #define IDC_IPADDRESS_LOCAL_EAS_IP      1164
+#define IDC_STT_TCPIP_PLC_TIT           1164
 #define IDC_STT_ICC_MEA_TIT             1165
 #define IDC_CMB_OFF_SEQ_OP_12           1165
 #define IDC_STT_EAS_TIT                 1165
 #define IDC_STT_IDD_MEA_TIT             1166
 #define IDC_EDT_OFF_SEQ_DEL_12          1166
+#define IDC_IPA_TCPIP_PLC_IPADDR        1166
 #define IDC_STT_VDD_MEA_TIT             1167
 #define IDC_CMB_OFF_SEQ_OP_13           1167
 #define IDC_STT_VDD_SET_TIT             1168
@@ -512,13 +518,16 @@
 #define IDC_STT_BMP_TITLE               1196
 #define IDC_EDT_GAMMA_CH21              1196
 #define IDC_STT_MES_LOCAL_IP2           1196
+#define IDC_STT_TCPIP_PLC_PORT          1196
 #define IDC_LIST_BMP_TOTAL              1197
 #define IDC_EDT_GAMMA_CH22              1197
 #define IDC_STT_EAS_USE                 1197
 #define IDC_LIST_BMP_DOWNLOAD           1198
 #define IDC_EDT_GAMMA_CH23              1198
+#define IDC_STT_TCPIP_PLC_IPADDR        1198
 #define IDC_BTN_BMP_DELETE              1199
 #define IDC_EDT_GAMMA_CH24              1199
+#define IDC_STT_PLC_DEVICE_NUM          1199
 #define IDC_BTN_BMP_DOWNLOAD_START      1200
 #define IDC_EDT_GAMMA_CH25              1200
 #define IDC_PROG_BMP_DOWNLOAD_STATUS    1201

@@ -66,6 +66,7 @@ protected:
 	void Lf_saveCtrlData(CString modelName);
 	void Lf_setPatternList();
 	void Lf_insertListColum();
+	void Lf_saveModelInfoData();
 	void Lf_setSwapData(int pos1, int pos2);
 	void Lf_setPtnDataChange(int sel);
 	void Lf_setChangeFont();
