@@ -139,14 +139,22 @@ void CPanelID::OnBnClickedOk()
 		return;
 	}
 
-	if (m_pApp->m_pPlcCtrl->m_bPlcTcpConnect == TRUE)
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// PLC PID Write
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	memset(wPID, 0x00, sizeof(wPID));
+	memcpy(wPID, cbuff, strlen(cbuff));
+	m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
+	delayMS(200);
+	if (m_pApp->m_pPlcCtrl->plc_tcpConnection() == TRUE)
 	{
-		memset(wPID, 0x00, sizeof(wPID));
-		memcpy(wPID, cbuff, strlen(cbuff));
 		if (m_pApp->m_pPlcCtrl->plc_sendInputPID(lpSystemInfo->m_nPlcDeviceNum, wPID, len) == TRUE)
 		{
 			m_pApp->Gf_writeLogData(_T("<PLC>"), _T("PLC Panel ID Write Success"));
-			if (m_pApp->m_pPlcCtrl->plc_sendPidWriteComplete(lpSystemInfo->m_nPlcDeviceNum) == TRUE)
+
+			m_pApp->m_pPlcCtrl->plc_sendPidWriteComplete(lpSystemInfo->m_nPlcDeviceNum, _SET_);
+			delayMS(500);
+			if (m_pApp->m_pPlcCtrl->plc_sendPidWriteComplete(lpSystemInfo->m_nPlcDeviceNum, _CLEAR_) == TRUE)
 			{
 				m_pApp->Gf_writeLogData(_T("<PLC>"), _T("PLC Panel ID Write Complete Bit ON"));
 				lpWorkInfo->m_sPID = strPanelId;
@@ -155,12 +163,18 @@ void CPanelID::OnBnClickedOk()
 				return;
 			}
 		}
-		m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC Panel ID Write Fail"));
+		else
+		{
+			m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC Panel ID Write Fail"));
+		}
 	}
 	else
 	{
-		m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC PID Write Skip. PLC TCP/IP Disconnected."));
+		m_pApp->Gf_ShowMessageBox(_T("<PLC> TCP/IP Connection Fail"));
 	}
+	m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 void CPanelID::OnTimer(UINT_PTR nIDEvent)

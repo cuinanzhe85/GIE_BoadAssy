@@ -1,4 +1,4 @@
-// CCommand.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// CCommand.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -26,7 +26,7 @@ BEGIN_MESSAGE_MAP(CCommand, CWnd)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-// eDP 1.4 Bridgeº¸µå¿¡ CMDÀü¼ÛÀ» À§ÇÑ ÇÔ¼ö.
+// eDP 1.4 Bridgeë³´ë“œì— CMDì „ì†¡ì„ ìœ„í•œ í•¨ìˆ˜.
 BOOL CCommand::Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE nCmd, int nLength, char* pData, BOOL Ack)
 {
 	int target=0;
@@ -38,28 +38,28 @@ BOOL CCommand::Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE 
 
 	datalen = nLength;
 
-	// data ¾Õ±îÁö Packet »ı¼º
+	// data ì•ê¹Œì§€ Packet ìƒì„±
 	sprintf_s(sendPacket, "%cA1%02X%02X%02X%02X%04X", PACKET_STX, TARGET_GFD250, nId, nMSCmd, nCmd, datalen);
 
-	// data¸¦ Æ÷ÇÔÇÏ¿© packet »ı¼º. hex·Î Àü¼ÛÇÒ data°¡ ÀÖÀ¸¹Ç·Î memcpy¸¦ »ç¿ë
+	// dataë¥¼ í¬í•¨í•˜ì—¬ packet ìƒì„±. hexë¡œ ì „ì†¡í•  dataê°€ ìˆìœ¼ë¯€ë¡œ memcpyë¥¼ ì‚¬ìš©
 	packetlen = (int)strlen(sendPacket);
 	memcpy(&sendPacket[packetlen], pData, datalen);
 
-	// data ¸¦ Æ÷ÇÔÇÑ packetÀÇ ±æÀÌ¸¦ ±¸ÇÑ´Ù.
+	// data ë¥¼ í¬í•¨í•œ packetì˜ ê¸¸ì´ë¥¼ êµ¬í•œë‹¤.
 	packetlen += datalen;
 
-	// »ı¼ºµÈ PacketÀ» ÀÌ¿ëÇÏ¿© CheckSumÀ» ±¸ÇÑ´Ù.
+	// ìƒì„±ëœ Packetì„ ì´ìš©í•˜ì—¬ CheckSumì„ êµ¬í•œë‹¤.
 	for(int j=1; j<packetlen; j++)		// Check Sum
 	{
 		nChkSum += sendPacket[j];
 	}
 	sprintf_s(szbuff, "%02X%c", nChkSum, 0x03);
 
-	// Checksum°ú ETX 3byte¸¦ ºÙ¿© ´Ù½Ã PacketÀ» ¸¸µç´Ù.
+	// Checksumê³¼ ETX 3byteë¥¼ ë¶™ì—¬ ë‹¤ì‹œ Packetì„ ë§Œë“ ë‹¤.
 	memcpy(&sendPacket[packetlen], szbuff, 3);
 	packetlen += 3;
 
-	// PacketÀÇ ¸¶Áö¸·¿¡ StringÀÇ ³¡À» ¾Ë¸®±â À§ÇÏ¿© NULLÀ» Ãß°¡ÇÑ´Ù.
+	// Packetì˜ ë§ˆì§€ë§‰ì— Stringì˜ ëì„ ì•Œë¦¬ê¸° ìœ„í•˜ì—¬ NULLì„ ì¶”ê°€í•œë‹¤.
 	sendPacket[packetlen] = 0x00;
 
 	m_pApp->m_nRcvGfd250Msg = 0;
@@ -165,27 +165,27 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	else if(lpModelInfo->m_nPixelType == DUAL)		nInterface=1;
 	else if(lpModelInfo->m_nPixelType == QUAD)		nInterface=2;
 
-	sdata.Format(_T("%02X"), (nInterface | nBitsSwap));						makePacket.Append(sdata);	// MODE
+	sdata.Format(_T("%02X"), (nInterface | nBitsSwap));								makePacket.Append(sdata);	// MODE
 	sdata.Format(_T("%01X"), (nHsyncPolarity | nVsyncPolarity));					makePacket.Append(sdata);	// Polarity
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorActive);						makePacket.Append(sdata);	// H Active
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerActive);						makePacket.Append(sdata);	// V Active
 
 	float fMclock = lpModelInfo->m_fTimingFreq;
-	if (lpModelInfo->m_nSignalType == 1)	// DP Type ÀÏ¶§ MCLOCK/2
+	if (lpModelInfo->m_nSignalType == 1)	// DP Type ì¼ë•Œ MCLOCK/2
 	{
 		fMclock = lpModelInfo->m_fTimingFreq / 2;
 	}
-	if(lpModelInfo->m_nPixelType == SINGLE)
+	if (lpModelInfo->m_nPixelType == SINGLE)
 	{
-		sdata.Format(_T("%06.2f"), fMclock);						makePacket.Append(sdata);	// M Clock
+		sdata.Format(_T("%06.2f"), fMclock);										makePacket.Append(sdata);	// M Clock
 	}
-	else if(lpModelInfo->m_nPixelType == DUAL)
+	else if (lpModelInfo->m_nPixelType == DUAL)
 	{
-		sdata.Format(_T("%06.2f"), fMclock / 2.f);				makePacket.Append(sdata);	// M Clock
+		sdata.Format(_T("%06.2f"), fMclock / 2.f);									makePacket.Append(sdata);	// M Clock
 	}
-	else if(lpModelInfo->m_nPixelType == QUAD)
+	else if (lpModelInfo->m_nPixelType == QUAD)
 	{
-		sdata.Format(_T("%06.2f"), fMclock / 4.f);				makePacket.Append(sdata);	// M Clock
+		sdata.Format(_T("%06.2f"), fMclock / 4.f);									makePacket.Append(sdata);	// M Clock
 	}
 
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorWidth);						makePacket.Append(sdata);	// H Width
@@ -316,7 +316,7 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);	// LED Type
 	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// LED Ovp
 	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);	// LED ISet
-	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);	// Cable Open Check (Chamber¿ë)
+	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);	// Cable Open Check (Chamberìš©)
 	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// PWM Freq
 	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);	// PWM Duty
 	sdata.Format(_T("%01d"), lpModelInfo->m_nI2cLevel);								makePacket.Append(sdata);	// I2C Level 
@@ -404,7 +404,7 @@ CString CCommand::MakeT2PtnDataGFD250(CString strPtnName, BOOL bHotKeyFlags, BOO
 		break;
 	}
 
-	if(nIndex != -1)//ÆĞÅÏ ÆÄÀÏ¿¡ CBT°¡ ÀÖÀ¸¸é ¾Æ·¡ ³»¿ëÀ» ¼öÇà ÇÑ´Ù.
+	if(nIndex != -1)//íŒ¨í„´ íŒŒì¼ì— CBTê°€ ìˆìœ¼ë©´ ì•„ë˜ ë‚´ìš©ì„ ìˆ˜í–‰ í•œë‹¤.
 	{
 		strFG.Format(_T("%04X%04X%04X"), nFG,nFG,nFG);
 		lpData.Delete(nIndex+3, 12);
@@ -462,7 +462,7 @@ CString CCommand::MakeT2PtnFusingData(CString strPtnName, BOOL bHotKeyFlags, BOO
 		break;
 	}
 
-	if(nIndex != -1)//ÆĞÅÏ ÆÄÀÏ¿¡ CBT°¡ ÀÖÀ¸¸é ¾Æ·¡ ³»¿ëÀ» ¼öÇà ÇÑ´Ù.
+	if(nIndex != -1)//íŒ¨í„´ íŒŒì¼ì— CBTê°€ ìˆìœ¼ë©´ ì•„ë˜ ë‚´ìš©ì„ ìˆ˜í–‰ í•œë‹¤.
 	{
 		strFG.Format(_T("%04X%04X%04X"), nFG,nFG,nFG);
 		lpData.Delete(nIndex+3, 12);
@@ -745,7 +745,7 @@ BOOL CCommand::Gf_setPwmOnOff(int OnOff, int duty, int freq)
 	char szPacket[50];
 	int length;
 
-	sprintf_s(szPacket, "%01d%03d%05d%01d%03d%05d", OnOff, duty, freq, OnOff, duty, freq); // Chanel 1,2 µ¿ÀÏÇÑ °ªÀ¸·Î Àü´Ş. CNZ
+	sprintf_s(szPacket, "%01d%03d%05d%01d%03d%05d", OnOff, duty, freq, OnOff, duty, freq); // Chanel 1,2 ë™ì¼í•œ ê°’ìœ¼ë¡œ ì „ë‹¬. CNZ
 	length = (int)strlen(szPacket);
 
 	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_PWM_SET, length, szPacket);
@@ -838,15 +838,15 @@ int CCommand::makeI2cClock(int index)
 {
 	int i2c_freq = 100;
 
-	if (index == 0)		i2c_freq = 20;	//½ÇÁ¦20
-	if (index == 1)		i2c_freq = 50;	//½ÇÁ¦50
-	if (index == 2)		i2c_freq = 100;	//½ÇÁ¦100
-	if (index == 3)		i2c_freq = 154;	//½ÇÁ¦150
-	if (index == 4)		i2c_freq = 208;	//½ÇÁ¦200
-	if (index == 5)		i2c_freq = 250;	//½ÇÁ¦240
-	if (index == 6)		i2c_freq = 319;	//½ÇÁ¦300
-	if (index == 7)		i2c_freq = 376;	//½ÇÁ¦350
-	if (index == 8)		i2c_freq = 422;	//½ÇÁ¦400
+	if (index == 0)		i2c_freq = 20;	//ì‹¤ì œ20
+	if (index == 1)		i2c_freq = 50;	//ì‹¤ì œ50
+	if (index == 2)		i2c_freq = 100;	//ì‹¤ì œ100
+	if (index == 3)		i2c_freq = 154;	//ì‹¤ì œ150
+	if (index == 4)		i2c_freq = 208;	//ì‹¤ì œ200
+	if (index == 5)		i2c_freq = 250;	//ì‹¤ì œ240
+	if (index == 6)		i2c_freq = 319;	//ì‹¤ì œ300
+	if (index == 7)		i2c_freq = 376;	//ì‹¤ì œ350
+	if (index == 8)		i2c_freq = 422;	//ì‹¤ì œ400
 
 	return i2c_freq;
 }
@@ -858,19 +858,10 @@ BOOL CCommand::Gf_CheckCableOpen()
 	{
 		if (gszudpRcvPacket[PACKET_PT_RET] == '0')
 		{
-			char szData[50];
-			memcpy(szData, &gszudpRcvPacket[PACKET_PT_DATA], 10);
-			for (int i = 0; i < 5; i++)
-			{
-				if (szData[i] != '0')
-				{
-					ret = FALSE;
-					break;
-				}
-			}
+			return TRUE;
 		}
 	}
-	return ret;
+	return FALSE;
 }
 BOOL CCommand::Gf_setPowerVoltSet(float vcc, float vdd, float vgh, float vgl)
 {
@@ -958,48 +949,48 @@ BOOL CCommand::Gf_setPGInfoGFD250(CString strPtnName, BOOL bHotKeyFlags, BOOL bH
 	if(m_PacketLength > 1000)
 	{
 #if 0
-		// ÀÌ ¾Ë°í¸®ÁòÀº Æ¯Á¤ Pattern¿¡¼­ ¹«Á¶°Ç Error°¡ ¹ß»ıÇÒ °ÍÀÌ´Ù.	
-		// ¾ğÁ¨°¡´Â ¼öÁ¤ÇØ¾ß¸¸ ÇÑ´Ù.
-		int nFindPtr=0;			// PacketÀ» ÀÚ¸¦ À§Ä¡¸¦ Ã£±â À§ÇÑ º¯¼ö.
-		int nReadPtr=0;			// PacketÀ» ÀĞÀ» À§Ä¡¸¦ ÀúÀåÇÏ±â À§ÇÑ º¯¼ö.
-		BYTE nX = 0;			// ÇöÀç Àü¼ÛÇÏ´Â PacketÀÇ ¹øÈ£.
-		BYTE nY = 0;			// Àü¼ÛÇØ¾ßÇÒ ÀüÃ¼ PacketÀÇ ¼ö.
+		// ì´ ì•Œê³ ë¦¬ì¦˜ì€ íŠ¹ì • Patternì—ì„œ ë¬´ì¡°ê±´ Errorê°€ ë°œìƒí•  ê²ƒì´ë‹¤.	
+		// ì–¸ì  ê°€ëŠ” ìˆ˜ì •í•´ì•¼ë§Œ í•œë‹¤.
+		int nFindPtr=0;			// Packetì„ ìë¥¼ ìœ„ì¹˜ë¥¼ ì°¾ê¸° ìœ„í•œ ë³€ìˆ˜.
+		int nReadPtr=0;			// Packetì„ ì½ì„ ìœ„ì¹˜ë¥¼ ì €ì¥í•˜ê¸° ìœ„í•œ ë³€ìˆ˜.
+		BYTE nX = 0;			// í˜„ì¬ ì „ì†¡í•˜ëŠ” Packetì˜ ë²ˆí˜¸.
+		BYTE nY = 0;			// ì „ì†¡í•´ì•¼í•  ì „ì²´ Packetì˜ ìˆ˜.
 		CString strReData;
 		CStringArray strArry;
 
 		while(1)
 		{
-			// 800Byte ÀÌÈÄºÎÅÍ "TA" Command¸¦ Ã£´Â´Ù.
+			// 800Byte ì´í›„ë¶€í„° "TA" Commandë¥¼ ì°¾ëŠ”ë‹¤.
 			nFindPtr = strCmd.Find(_T("TA"), (nFindPtr+800));
 
-			// "TA" Command¸¦ Ã£Áö ¸øÇßÀ» °æ¿ì. (-1)
+			// "TA" Commandë¥¼ ì°¾ì§€ ëª»í–ˆì„ ê²½ìš°. (-1)
 			if(nFindPtr == -1)
 			{
-				// ÀĞ¾î¾ß ÇÏ´Â À§Ä¡ºÎÅÍ ³²¾ÆÀÖ´Â StringÀÇ °ªÀ» °¡Á®¿Â´Ù.
+				// ì½ì–´ì•¼ í•˜ëŠ” ìœ„ì¹˜ë¶€í„° ë‚¨ì•„ìˆëŠ” Stringì˜ ê°’ì„ ê°€ì ¸ì˜¨ë‹¤.
 				strReData.Format("%s", strCmd.Mid(nReadPtr));
 
-				// Áö±İÀº 1000ByteÀÌÇÏÀÇ ÆĞÅÏ¸¸ ÀÖÀ¸¹Ç·Î ¹®Á¦µÇÁö ¾ÊÁö¸¸ ÀÌÈÄ ¹®Á¦µÇ¸é ÀÌºÎºĞ ¼öÁ¤ÇÏÀÚ.
+				// ì§€ê¸ˆì€ 1000Byteì´í•˜ì˜ íŒ¨í„´ë§Œ ìˆìœ¼ë¯€ë¡œ ë¬¸ì œë˜ì§€ ì•Šì§€ë§Œ ì´í›„ ë¬¸ì œë˜ë©´ ì´ë¶€ë¶„ ìˆ˜ì •í•˜ì.
 				if(strReData.GetLength() < 1000)
-				{	// ³²¾ÆÀÖ´Â StringÀÇ ±æÀÌ°¡ 1000Byte ÀÌÇÏÀÏ °æ¿ì Array¿¡ AddÈÄ Á¾·áÇÑ´Ù.
+				{	// ë‚¨ì•„ìˆëŠ” Stringì˜ ê¸¸ì´ê°€ 1000Byte ì´í•˜ì¼ ê²½ìš° Arrayì— Addí›„ ì¢…ë£Œí•œë‹¤.
 					strArry.Add(strReData);
 					break;
 				}
 				else
-				{	// ³²¾ÆÀÖ´Â StringÀÇ ±æÀÌ°¡ 1000Byte ÀÌ»óÀÏ °æ¿ì ´Ù¸¥ Command¸¦ °Ë»öÇÑ´Ù.
+				{	// ë‚¨ì•„ìˆëŠ” Stringì˜ ê¸¸ì´ê°€ 1000Byte ì´ìƒì¼ ê²½ìš° ë‹¤ë¥¸ Commandë¥¼ ê²€ìƒ‰í•œë‹¤.
 					// "TB", "TD", "LC", "TC", "RH", "OL", "LH", "LV", "LT", "LP", "LR", "BS", "RV", "BM", "CD", "CLN", "CBT", "CFG", "CBG"
-					// À§ Command¸¦ ¸ğµÎ Ã£À¸·Á¸é String °Ë»ö¿¡ ´Ù¼Ò ½Ã°£ÀÌ ¼Ò¿äµÇ¹Ç·Î ¾Ë°í¸®ÁòÀ» Àß ÆÇ´ÜÇÏÀÚ.
+					// ìœ„ Commandë¥¼ ëª¨ë‘ ì°¾ìœ¼ë ¤ë©´ String ê²€ìƒ‰ì— ë‹¤ì†Œ ì‹œê°„ì´ ì†Œìš”ë˜ë¯€ë¡œ ì•Œê³ ë¦¬ì¦˜ì„ ì˜ íŒë‹¨í•˜ì.
 
 				}
 			}
-			// ÀĞ¾î¾ßÇÒ À§Ä¡¿¡¼­ ºÎÅÍ "TA" Command ¾Õ±îÁöÀÇ StringÀ» ÀÚ¸¥´Ù.
+			// ì½ì–´ì•¼í•  ìœ„ì¹˜ì—ì„œ ë¶€í„° "TA" Command ì•ê¹Œì§€ì˜ Stringì„ ìë¥¸ë‹¤.
 			strReData.Format("%s", strCmd.Mid(nReadPtr, nFindPtr-nReadPtr));
 			strArry.Add(strReData);
 
-			// ´ÙÀ½ Packet ÀĞÀ» À§Ä¡¸¦ "TA" CommandÀÇ ¾ÕÀ¸·Î ÀÌµ¿ ½ÃÅ²´Ù.
+			// ë‹¤ìŒ Packet ì½ì„ ìœ„ì¹˜ë¥¼ "TA" Commandì˜ ì•ìœ¼ë¡œ ì´ë™ ì‹œí‚¨ë‹¤.
 			nReadPtr = nFindPtr;
 		}
 
-		// ÀúÀåµÈ PacketÀ» Â÷·Ê´ë·Î Àü¼ÛÇÑ´Ù.
+		// ì €ì¥ëœ Packetì„ ì°¨ë¡€ëŒ€ë¡œ ì „ì†¡í•œë‹¤.
 		nX = 0;
 		nY = strArry.GetSize();
 		for(int i=0; i<nY; i++)
@@ -1050,7 +1041,7 @@ BOOL CCommand::Gf_setGFD250Timeing()
 	else if(lpModelInfo->m_nPixelType == QUAD)
 		fMclk = (lpModelInfo->m_fTimingFreq / 4.f);
 
-	// HBR3´Â /2 ¸¦ ÇÑ¹ø ´õ ÇÔ
+	// HBR3ëŠ” /2 ë¥¼ í•œë²ˆ ë” í•¨
 	fMclk = fMclk / 2.0f;				
 	sdata.Format(_T("%06.2f"), fMclk);												makePacket.Append(sdata);
 
@@ -1170,7 +1161,7 @@ BOOL CCommand::plc_getReceivePacket(char* m_szRcvPacket)
 			return TRUE;
 		}
 
-		// Ack¸¦ ±â´Ù¸°´Ù. Wait Time¾È¿¡ Ack°¡ µé¾î¿ÀÁö ¾ÊÀ¸¸é False¸¦ ReturnÇÑ´Ù.
+		// Ackë¥¼ ê¸°ë‹¤ë¦°ë‹¤. Wait Timeì•ˆì— Ackê°€ ë“¤ì–´ì˜¤ì§€ ì•Šìœ¼ë©´ Falseë¥¼ Returní•œë‹¤.
 		eTick = ::GetTickCount();
 		if ((eTick - sTick) > ETH_ACK_NOR_WAIT_TIME)
 			break;

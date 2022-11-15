@@ -15,7 +15,7 @@ public:
 	int  plc_melsec_makePacketRead(char* packet_buff, UINT addr, int dataLen);
 
 	BOOL plc_sendInputPID(int deviceNum, WORD* wData, int nLength);
-	BOOL plc_sendPidWriteComplete(int deviceNum);
+	BOOL plc_sendPidWriteComplete(int deviceNum, BOOL set_clear);
 
 	int m_nPlcDioRetry;
 

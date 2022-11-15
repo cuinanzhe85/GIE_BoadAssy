@@ -456,6 +456,8 @@ void CInitialize::Lf_loadData()
 	delayMS(500);
 	if (m_pApp->m_pPlcCtrl->plc_tcpConnection() == TRUE)
 	{
+		delayMS(100);
+		m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
 		m_nStatus[ST_PLC] = TRUE;
 	}
 	else

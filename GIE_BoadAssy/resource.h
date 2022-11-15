@@ -215,6 +215,8 @@
 #define IDC_EDIT_MES_REMOTESUBJECT2     1076
 #define IDC_EDT_TCPIP_PLC_PORT          1076
 #define IDC_CMB_EEPROM_ADDR             1077
+#define IDC_CBO_BLU_COMPORT2            1077
+#define IDC_CMB_PINBLOCK_OPEN_CHECK     1077
 #define IDC_BTN_ADD                     1078
 #define IDC_BTN_DELETE                  1079
 #define IDC_STT_VCC_SET                 1079
@@ -299,6 +301,8 @@
 #define IDC_STT_ERR_MESSAGE             1101
 #define IDC_STT_PTN_ICC_LOW             1101
 #define IDC_EDT_IGL_LOW_LIMIT           1101
+#define IDC_BTN_QUALITY_FTP_SETUP2      1101
+#define IDC_BTN_QUANTITY_COUNT_RESET    1101
 #define IDD_MESSAGE_QUESTION            1102
 #define IDC_STT_PTN_LIST_TITLE          1102
 #define IDC_CMB_ON_SEQ_OP_2             1102
@@ -471,6 +475,7 @@
 #define IDC_STT_TEST_START_DELAY        1175
 #define IDC_STT_FAST_JUDGE              1176
 #define IDC_EDT_GAMMA_CH1               1176
+#define IDC_STT_PINBLOCK_OPEN_CHECK     1176
 #define IDC_STT_PANELID_NG              1177
 #define IDC_EDT_GAMMA_CH2               1177
 #define IDC_STT_PG_PORT                 1178

@@ -1,12 +1,12 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef _GOLBAL_DEFINE_
 #define _GOLBAL_DEFINE_
 
 
-/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////Äs
 #define _STR_DEFAULTMODEL			"DEFAULT_MODEL"
-#define PGM_VERSION					_T("1.0.0")
+#define PGM_VERSION					_T("1.0.0_R1")
 /////////////////////////////////////////////////////////////////////////////
 #define MLOG_MAX_LENGTH				16*1024
 
@@ -15,21 +15,19 @@
 #define DEBUG_232RECEIVE_OK			0
 #define DEBUG_RS232C_LOG			0
 #define DEBUG_PALLET_ARRIVE			0
-#define DEBUG_MES_NOT_USE			1
+#define DEBUG_MES_NOT_USE			0
 
 /////////////////////////////////////////////////////////////////////////////
 // DebugMode
 #define DEBUG_DIO_SKIP				0
 /////////////////////////////////////////////////////////////////////////////
 #define UDP_MAIN_IP					_T("192.168.10.3")		// CString type define
-#define TCP_PLC_IP					"192.168.0.3"
-
 
 /////////////////////////////////////////////////////////////////////////////
 #define PACKET_SIZE					1024*64
 
 /////////////////////////////////////////////////////////////////////////////
-// ON/OFF¿Í TRUE/FALSE¿¡ °ü·ÃµÈ DefineÀº ¿©±â¿¡¼­ ÇÑ´Ù.
+// ON/OFFì™€ TRUE/FALSEì— ê´€ë ¨ëœ Defineì€ ì—¬ê¸°ì—ì„œ í•œë‹¤.
 /////////////////////////////////////////////////////////////////////////////
 #define _OFF_						0
 #define _ON_						1
@@ -39,6 +37,9 @@
 
 #define POWER_OFF					0
 #define POWER_ON					1
+
+#define _CLEAR_						0
+#define _SET_						1
 
 #define SIG_TYPE_TMDS				0
 #define SIG_TYPE_LVDS				1
@@ -62,22 +63,22 @@
 /////////////////////////////////////////////////////////////////////////////
 // PLC Interface define
 /////////////////////////////////////////////////////////////////////////////
-#define MELSEC_SUB_HEAD				0x5000		// ¼­ºê ¸Ó¸®±Û
-#define MELSEC_NETWORK_NO			0x00		// ³×Æ®¿öÅ© ¹øÈ£
-#define MELSEC_PLC_NO				0xFF		// PLC ¹øÈ£
-#define MELSEC_MODULE_IO_NO			0x03FF		// ¿ä±¸ »ó´ë ¸ğµâ I/O ¹øÈ£
-#define MELSEC_MODULE_COUNTRY_NO	0x00		// ¿ä±¸ »ó´ë ¸ğµâ ±¹ ¹øÈ£
-#define MELSEC_CPU_TIMER			0x000A		// CPU °¨½Ã TIMER
+#define MELSEC_SUB_HEAD				0x5000		// ì„œë¸Œ ë¨¸ë¦¬ê¸€
+#define MELSEC_NETWORK_NO			0x00		// ë„¤íŠ¸ì›Œí¬ ë²ˆí˜¸
+#define MELSEC_PLC_NO				0xFF		// PLC ë²ˆí˜¸
+#define MELSEC_MODULE_IO_NO			0x03FF		// ìš”êµ¬ ìƒëŒ€ ëª¨ë“ˆ I/O ë²ˆí˜¸
+#define MELSEC_MODULE_COUNTRY_NO	0x00		// ìš”êµ¬ ìƒëŒ€ ëª¨ë“ˆ êµ­ ë²ˆí˜¸
+#define MELSEC_CPU_TIMER			0x000A		// CPU ê°ì‹œ TIMER
 
 #define MELSEC_CMD_WRITE			0x1401		// Write Command
 #define MELSEC_CMD_READ				0x0401		// Read Command
-#define MELSEC_SUBCMD_WORD			0x0000		// ¼­ºê Ä¿¸Çµå (WORD ´ÜÀ§ R/W)
-#define MELSEC_CMD_DEVICE_CODE		0xA8		// µğ¹ÙÀÌ½º ÄÚµå
+#define MELSEC_SUBCMD_WORD			0x0000		// ì„œë¸Œ ì»¤ë§¨ë“œ (WORD ë‹¨ìœ„ R/W)
+#define MELSEC_CMD_DEVICE_CODE		0xA8		// ë””ë°”ì´ìŠ¤ ì½”ë“œ
 
-#define PLC_PID_WRITE_START_ADDR_1		8000		// Panel ID Write Address (È®ÀÎ ÈÄ Á¤ÀÇ ÇÊ¿ä)
-#define PLC_PID_WRITE_COMPLETE_ADDR_1	8009		// Panel ID Write Address (È®ÀÎ ÈÄ Á¤ÀÇ ÇÊ¿ä)
-#define PLC_PID_WRITE_START_ADDR_2		8010		// Panel ID Write Address (È®ÀÎ ÈÄ Á¤ÀÇ ÇÊ¿ä)
-#define PLC_PID_WRITE_COMPLETE_ADDR_2	8019		// Panel ID Write Address (È®ÀÎ ÈÄ Á¤ÀÇ ÇÊ¿ä)
+#define PLC_PID_WRITE_START_ADDR_1		8000		// Panel ID Write Address (í™•ì¸ í›„ ì •ì˜ í•„ìš”)
+#define PLC_PID_WRITE_COMPLETE_ADDR_1	8009		// Panel ID Write Address (í™•ì¸ í›„ ì •ì˜ í•„ìš”)
+#define PLC_PID_WRITE_START_ADDR_2		8010		// Panel ID Write Address (í™•ì¸ í›„ ì •ì˜ í•„ìš”)
+#define PLC_PID_WRITE_COMPLETE_ADDR_2	8019		// Panel ID Write Address (í™•ì¸ í›„ ì •ì˜ í•„ìš”)
 /////////////////////////////////////////////////////////////////////////////
 //DIO
 /////////////////////////////////////////////////////////////////////////////
@@ -287,7 +288,7 @@ typedef enum _COLOR_IDX_{
 #define CMD_CTRL_SRUNNER_COPLETE				0x45
 #define CMD_CTRL_SRUNNER_TYPE_SELECT			0x46
 //----------------------------------------------------------------------------
-// LED B/L Á¡µî±â Á¦¾î Command
+// LED B/L ì ë“±ê¸° ì œì–´ Command
 
 #define	_MIN_									0
 #define	_MAX_									1

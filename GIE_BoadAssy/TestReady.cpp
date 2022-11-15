@@ -1,4 +1,4 @@
-// TestReady.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// TestReady.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -7,7 +7,8 @@
 #include "PatternTest.h"
 #include "PanelID.h"
 #include "GieJudge.h"
-// CTestReady ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+#include "MessageQuestion.h"
+// CTestReady ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 IMPLEMENT_DYNAMIC(CTestReady, CDialog)
 
@@ -37,15 +38,16 @@ BEGIN_MESSAGE_MAP(CTestReady, CDialog)
 END_MESSAGE_MAP()
 
 
-// CTestReady ¸Ş½ÃÁö Ã³¸®±âÀÔ´Ï´Ù.
+// CTestReady ë©”ì‹œì§€ ì²˜ë¦¬ê¸°ì…ë‹ˆë‹¤.
 
 BOOL CTestReady::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  ¿©±â¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì¶”ê°€ ì´ˆê¸°í™” ì‘ì—…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	lpSystemInfo = m_pApp->GetSystemInfo();	
 	lpWorkInfo	= m_pApp->GetWorkInfo();
+	lpModelInfo = m_pApp->GetModelInfo();
 
 	Lf_initFontSet();
 	Lf_initVariable();
@@ -53,15 +55,21 @@ BOOL CTestReady::OnInitDialog()
 
 	SetTimer(1, 100, NULL);
 	SetTimer(TIMER_PID_CHECK, 100, NULL);
+
+	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE))
+	{
+		GetDlgItem(IDC_BTN_TEST_START)->EnableWindow(TRUE);
+	}
+
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// ¿¹¿Ü: OCX ¼Ó¼º ÆäÀÌÁö´Â FALSE¸¦ ¹İÈ¯ÇØ¾ß ÇÕ´Ï´Ù.
+	// ì˜ˆì™¸: OCX ì†ì„± í˜ì´ì§€ëŠ” FALSEë¥¼ ë°˜í™˜í•´ì•¼ í•©ë‹ˆë‹¤.
 }
 
 void CTestReady::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	for(int i=0; i<COLOR_IDX_MAX; i++)
 	{
 		m_Brush[i].DeleteObject();
@@ -73,20 +81,39 @@ void CTestReady::OnDestroy()
 	}
 }
 
+void CTestReady::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+					   // ê·¸ë¦¬ê¸° ë©”ì‹œì§€ì— ëŒ€í•´ì„œëŠ” CDialog::OnPaint()ì„(ë¥¼) í˜¸ì¶œí•˜ì§€ ë§ˆì‹­ì‹œì˜¤.
+	CRect rect;
+	GetClientRect(&rect);
+	rect.bottom = 90;
+	dc.FillSolidRect(rect, COLOR_DEEP_BLUE);
+
+	GetClientRect(&rect);
+	rect.top = 91;
+	dc.FillSolidRect(rect, COLOR_BLUE);
+
+	GetClientRect(&rect);
+	rect.top = 92;
+	dc.FillSolidRect(rect, COLOR_GRAY64);
+}
+
 void CTestReady::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ê°’ì„ í˜¸ì¶œí•©ë‹ˆë‹¤.
 
 	if(nIDEvent == 1)
 	{
 		KillTimer(1);
-
+		int timerInterval = 1000;
 		if (m_pApp->m_pDio7230->Gf_getDIOJigTilting() == TRUE)
 		{
 			m_dioInputBit |= DI_START_READY;
 			GetDlgItem(IDC_STT_DIO_INPUT_2)->Invalidate(FALSE);
 			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("PANEL TILTING ON"));
-			if (lpWorkInfo->m_sPID.IsEmpty() == FALSE)
+//			if (lpWorkInfo->m_sPID.IsEmpty() == FALSE)
 			{
 				if (m_pApp->m_pDio7230->Gf_getDIOTestStart())
 				{
@@ -95,6 +122,7 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 					GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST START SIGNAL ON"));
 
 					Lf_startTest();
+					timerInterval = 1000;
 				}
 				else
 				{
@@ -102,18 +130,21 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 					GetDlgItem(IDC_STT_DIO_INPUT_3)->Invalidate(FALSE);
 				}
 			}
-			else
-			{
-				CPanelID piddlg;
-				if (piddlg.DoModal() == IDOK)
-				{
-					if (lpWorkInfo->m_sPID.IsEmpty()==FALSE)
-					{
-						GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);
-					}
-				}
-
-			}
+//			else
+//			{
+//				CPanelID piddlg;
+//				if (piddlg.DoModal() == IDOK)
+//				{
+//					if (lpWorkInfo->m_sPID.IsEmpty()==FALSE)
+//					{
+//						GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);
+//					}
+//				}
+//				else
+//				{
+//					timerInterval = 1000;
+//				}
+//			}
 			
 		}
 		else
@@ -121,7 +152,7 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 			m_dioInputBit &= ~ DI_START_READY;
 			GetDlgItem(IDC_STT_DIO_INPUT_2)->Invalidate(FALSE);
 		}
-		SetTimer(1, 100, NULL);
+		SetTimer(1, timerInterval, NULL);
 		
 	}
 	else if(nIDEvent == TIMER_PID_CHECK)
@@ -149,19 +180,12 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 
 void CTestReady::OnBnClickedBtnTestStart()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	if (lpWorkInfo->m_sPID.IsEmpty() == FALSE)
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE))
 	{
+		KillTimer(1);
 		Lf_startTest();
-	}
-	else
-	{
-		CPanelID piddlg;
-		if (piddlg.DoModal() == IDOK)
-		{
-			GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);
-			Lf_startTest();
-		}
+		SetTimer(1, 1000, NULL);
 	}
 }
 
@@ -169,7 +193,7 @@ HBRUSH CTestReady::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  ¿©±â¼­ DCÀÇ Æ¯¼ºÀ» º¯°æÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì„œ DCì˜ íŠ¹ì„±ì„ ë³€ê²½í•©ë‹ˆë‹¤.
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_MSGBOX:
@@ -278,13 +302,13 @@ HBRUSH CTestReady::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		break;
 	}
-	// TODO:  ±âº»°ªÀÌ Àû´çÇÏÁö ¾ÊÀ¸¸é ´Ù¸¥ ºê·¯½Ã¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+	// TODO:  ê¸°ë³¸ê°’ì´ ì ë‹¹í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ë¥¸ ë¸ŒëŸ¬ì‹œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	return hbr;
 }
 
 BOOL CTestReady::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: ¿©±â¿¡ Æ¯¼öÈ­µÈ ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº» Å¬·¡½º¸¦ È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— íŠ¹ìˆ˜í™”ëœ ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ í´ë˜ìŠ¤ë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch(pMsg->wParam)
@@ -306,12 +330,25 @@ BOOL CTestReady::PreTranslateMessage(MSG* pMsg)
 			{
 				return TRUE;
 			}
-		case VK_SPACE:		return 1;
+		case VK_RETURN:
+		{
+			return TRUE;
+		}
+		case VK_SPACE:
+			if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE))
+			{
+				KillTimer(1);
+				Lf_startTest();
+				SetTimer(1, 1000, NULL);
+				return 1;
+			}
 		}
 	}
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CTestReady::Lf_initFontSet()
 {
 	/**************************************************************************************************************************/
@@ -370,6 +407,7 @@ void CTestReady::Lf_initVariable()
 bool CTestReady::Lf_getControlBdReady()
 {
 	int nCnt=0;
+	CString strMsg;
 
 	m_pApp->Gf_writeLogData(_T("<PG>"),_T("CTRL B/D Ready Check START"));
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("CTRL B/D Ready Check"));
@@ -385,7 +423,10 @@ bool CTestReady::Lf_getControlBdReady()
 
 		if(nCnt > 3)
 		{
-			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("No Response PG.!!!!"));
+			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("No Response PG!"));
+
+			strMsg.Format(_T("<PG> PG Communication Error. No Reponse PG"));
+			m_pApp->Gf_ShowMessageBox(strMsg);
 			return FALSE;
 
 		}
@@ -435,7 +476,7 @@ BOOL CTestReady::Lf_checkPanelId()
 }
 
 /*****************************************************************************************************************/
-// ÀÌ ÇÔ¼ö´Â ±âÁ¸  BA¼Ò½º ±×´ë·Î´Ù. µû·Î »õ·Î ÀÛ¼ºÇÏ´Â°Íº¸´Ù ±×³É º¸´ø´ë·Î º¸°í ±âÁ¸ flow´ë·Î µ¹¾Æ°¡°Ô ³öµĞ´Ù.
+// ì´ í•¨ìˆ˜ëŠ” ê¸°ì¡´  BAì†ŒìŠ¤ ê·¸ëŒ€ë¡œë‹¤. ë”°ë¡œ ìƒˆë¡œ ì‘ì„±í•˜ëŠ”ê²ƒë³´ë‹¤ ê·¸ëƒ¥ ë³´ë˜ëŒ€ë¡œ ë³´ê³  ê¸°ì¡´ flowëŒ€ë¡œ ëŒì•„ê°€ê²Œ ë†”ë‘”ë‹¤.
 /*****************************************************************************************************************/
 BOOL CTestReady::Lf_sendGMESData()
 {
@@ -447,13 +488,12 @@ BOOL CTestReady::Lf_sendGMESData()
 	{
 		if (lpWorkInfo->m_bIsEdidFail == true)
 		{
-			//EDID °á°ú NGÀÎ °æ¿ì, NG·Î¸¸ ¹èÃâÀÌ °¡´É ÇÏµµ·Ï ÇÑ´Ù.
-			//ÀÛ¾÷ÀÚ OK ¹èÃâ ½Ãµµ ½Ã¿¡´Â »óÀ§ Åë½ÅÀ» ¸øÇÏµµ·Ï ¸·´Â´Ù.
+			//EDID ê²°ê³¼ NGì¸ ê²½ìš°, NGë¡œë§Œ ë°°ì¶œì´ ê°€ëŠ¥ í•˜ë„ë¡ í•œë‹¤.
+			//ì‘ì—…ì OK ë°°ì¶œ ì‹œë„ ì‹œì—ëŠ” ìƒìœ„ í†µì‹ ì„ ëª»í•˜ë„ë¡ ë§‰ëŠ”ë‹¤.
 			m_pApp->Gf_ShowMessageBox(_T("EDID Fail. Can not decide OK."));//AfxMessageBox(_T("EDID Fail. Can not decide OK."));
 			return FALSE;
 		}
  		lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
-		//m_pApp->Gf_setGMesGoodInfo();
 	}
 	else
 	{
@@ -464,23 +504,19 @@ BOOL CTestReady::Lf_sendGMESData()
 
 		defecetResult = ShowDefectResult(GetSafeOwner());
 		lpWorkInfo->m_sRwkCD = GetRWK_CD();
-		if (defecetResult == IDOK && lpWorkInfo->m_sRwkCD.IsEmpty()!=FALSE)
+		m_pApp->m_pCimNet->SetRwkCode(lpWorkInfo->m_sRwkCD);
+		if ((defecetResult == IDOK) && (lpWorkInfo->m_sRwkCD.IsEmpty() == TRUE))
 		{
-			//m_pApp->Gf_setGMesGoodInfo();
 			lpWorkInfo->m_nPassOrFail = GMES_PNF_PASS;
 		}
-		else if(lpWorkInfo->m_sRwkCD.IsEmpty()==FALSE || lpWorkInfo->m_bDioJudgeNg == true)
+		else if (((defecetResult == IDOK) && (lpWorkInfo->m_sRwkCD.IsEmpty() == FALSE)) || (lpWorkInfo->m_bDioJudgeNg == true))
 		{
 			m_pApp->Gf_writeLogData(_T("<MES>"), outLog.GetBuffer(0));
-
-			//lpWorkInfo->m_sExpectedCode = GetExpected_RWK();
 
 			outLog.Format(_T("RWK- %s"), lpWorkInfo->m_sRwkCD);
 			m_pApp->Gf_writeLogData(_T("<MES>"), outLog);
 
 			lpWorkInfo->m_nPassOrFail = GMES_PNF_FAIL;
-			//m_pApp->Gf_setGMesBadInfo();
-				
 		}
 		else
 		{
@@ -491,7 +527,6 @@ BOOL CTestReady::Lf_sendGMESData()
 
 	
 	GetForegroundWindow()->PostMessage (WM_KEYDOWN, VK_F12, 0);
-	m_pApp->Gf_sendGmesHost(HOST_EICR);
 	return TRUE;
 }
 
@@ -501,21 +536,28 @@ void CTestReady::Lf_openResult()
 	
 	if(Lf_sendGMESData()==TRUE)
 	{
+		if (m_pApp->Gf_PinBlockOpenCheck() == FALSE)
+		{
+			return;
+		}
+
 		if(lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS) 
 		{
-			m_pApp->m_pDio7230->Gf_setDioOutOK();
-			Lf_createCount(GOOD_CNT);
+			if (m_pApp->Gf_sendGmesHost(HOST_EICR) == TRUE)
+			{
+				m_pApp->m_pDio7230->Gf_setDioOutOK();
+				Lf_createCount(GOOD_CNT);
+			}
 		}
 		else if(lpWorkInfo->m_nPassOrFail == GMES_PNF_FAIL)
 		{
-			m_pApp->m_pDio7230->Gf_setDioOutNG();
-			Lf_createCount(BAD_CNT);
-			
+			if (m_pApp->Gf_sendGmesHost(HOST_EICR) == TRUE)
+			{
+				m_pApp->m_pDio7230->Gf_setDioOutNG();
+				Lf_createCount(BAD_CNT);
+			}
 		}
 	}
-	// °Ë»ç ÇÔ¹øÇÒ¶§¸¶´Ù PID ´Ù½Ã ÀÔ·ÂÇÏµµ·Ï ¼öÁ¤.(ÃÖÁ¾°Ë¼ö¶§ ¿äÃ») 2022-10-04 CNZ
-	lpWorkInfo->m_sPID.Empty();
-	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(_T(""));
 }
 
 void CTestReady::Lf_updateCount()
@@ -544,13 +586,44 @@ void CTestReady::Lf_createCount(int typ)
 
 bool CTestReady::Lf_startTest()
 {
+	bool bRet;
+
+	bRet = Lf_startTestOn();
+
+	// after test initialize
+	Lf_setVariableReset();
+
+	SetTimer(1, 1000, NULL);
+	return bRet;
+}
+
+bool CTestReady::Lf_startTestOn()
+{
 	BYTE dioRd=0;
 	
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("[DIO PLC -> PC] JIG IN - START PATTERN TEST"));
 
+	if (lpWorkInfo->m_sPID.IsEmpty() == TRUE)
+	{
+		CPanelID piddlg;
+		if (piddlg.DoModal() == IDOK)
+		{
+			GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	if(Lf_getControlBdReady() == false)
 	{
 		return false;
+	}
+
+	if (Lf_SystemAutoFusing() == FALSE)
+	{
+		return FALSE;
 	}
 
 	lpWorkInfo->m_nPassOrFail = GMES_PNF_NONE;
@@ -560,9 +633,16 @@ bool CTestReady::Lf_startTest()
 	{
 		return false;
 	}
+
+	if (Lf_CableOpenCheck() == FALSE)
+	{
+		return false;
+	}
+
+
 	GetDlgItem(IDC_BTN_TEST_START)->EnableWindow(FALSE);
 
-	// °Ë»ç ½ÃÀÛÇÏ¸é ¹èÃâÇÒ¶§±îÁö TESTING DIO ½ÅÈ£ »ì¸°´Ù.
+	// ê²€ì‚¬ ì‹œì‘í•˜ë©´ ë°°ì¶œí• ë•Œê¹Œì§€ TEST_ING DIO ì‹ í˜¸ ì‚´ë¦°ë‹¤.
 	m_pApp->m_pDio7230->Gf_setDioOutTesting();
 
 	delayMS(lpSystemInfo->m_nTestStartDelay);
@@ -577,41 +657,79 @@ bool CTestReady::Lf_startTest()
 
 	m_pApp->Gf_writeLogData(_T("<TEST>"), _T("Pattern Test END"));
 
-	/*********************************************************************************************************************/
-	// after test initialize
-	Lf_setVariableAfter();
-	
-	GetDlgItem(IDC_BTN_TEST_START)->EnableWindow(TRUE);
+	/*********************************************************************************************************************/	
+	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST READY"));
+	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE))
+	{
+		GetDlgItem(IDC_BTN_TEST_START)->EnableWindow(TRUE);
+	}
 	return true;
 }
 
-void CTestReady::Lf_setVariableAfter()
+void CTestReady::Lf_setVariableReset()
 {
 	ZeroMemory(m_pApp->m_nStartCheckTime, sizeof(m_pApp->m_nStartCheckTime));
 	ZeroMemory(m_pApp->m_nEndCheckTime, sizeof(m_pApp->m_nEndCheckTime));
 	ZeroMemory(m_pApp->m_nPatTime, sizeof(m_pApp->m_nPatTime));
 	lpWorkInfo->m_bIsEdidFail = false;
+	m_pApp->m_pCimNet->SetRwkCode(_T(""));
+
+	// ê²€ì‚¬ í•¨ë²ˆí• ë•Œë§ˆë‹¤ PID ë‹¤ì‹œ ì…ë ¥í•˜ë„ë¡ ìˆ˜ì •.(ìµœì¢…ê²€ìˆ˜ë•Œ ìš”ì²­) 2022-10-04 CNZ
+	lpWorkInfo->m_sPID.Empty();
+	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(_T(""));
 
 	m_dioInputBit = 0x0000;
 	SetTimer(TIMER_PID_CHECK, 100, NULL);
 
 }
 
-void CTestReady::OnPaint()
+BOOL CTestReady::Lf_SystemAutoFusing()
 {
-	CPaintDC dc(this); // device context for painting
-					   // TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-					   // ±×¸®±â ¸Ş½ÃÁö¿¡ ´ëÇØ¼­´Â CDialog::OnPaint()À»(¸¦) È£ÃâÇÏÁö ¸¶½Ê½Ã¿À.
-	CRect rect;
-	GetClientRect(&rect);
-	rect.bottom = 90;
-	dc.FillSolidRect(rect, COLOR_DEEP_BLUE);
+	m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing"));
+	if (m_pApp->m_pCommand->Gf_setFusingSystemInfo() == TRUE)
+	{
+		m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing => OK"));
+		return TRUE;
+	}
+	else
+	{
+		m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing => NG"));
 
-	GetClientRect(&rect);
-	rect.top = 91;
-	dc.FillSolidRect(rect, COLOR_BLUE);
+		CString strMsg;
+		strMsg.Format(_T("<PG> System Auto Fusing Error. No Reponse PG"));
+		m_pApp->Gf_ShowMessageBox(strMsg);
 
-	GetClientRect(&rect);
-	rect.top = 92;
-	dc.FillSolidRect(rect, COLOR_GRAY64);
+		return FALSE;
+	}
 }
+
+BOOL CTestReady::Lf_CableOpenCheck()
+{
+	int nOpenValue;
+	BOOL bOpen40P=0, bOpen50P=0;
+	if (lpModelInfo->m_nCableOpenUse == _ON_)
+	{
+		if (m_pApp->m_pCommand->Gf_CheckCableOpen() == TRUE)
+		{
+			sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA], "%04X", &nOpenValue);
+			bOpen40P = nOpenValue & 0x000C;
+			bOpen50P = nOpenValue & 0x0003;
+			if ((bOpen40P == 0) && (bOpen50P == 0))
+			{
+				return TRUE;
+			}
+			else
+			{
+				CString strMsg;
+				strMsg.Format(_T("User Cable Open Check Fail. "));
+				if (bOpen40P != 0)	strMsg.Append(_T("(40P) "));
+				if (bOpen50P != 0)	strMsg.Append(_T("(50P or PIN Block)"));
+				m_pApp->Gf_ShowMessageBox(strMsg);
+			}
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+

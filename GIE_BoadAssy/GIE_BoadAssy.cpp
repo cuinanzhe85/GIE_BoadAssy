@@ -1,5 +1,5 @@
-
-// GIE_BoadAssy.cpp : ÀÀ¿ë ÇÁ·Î±×·¥¿¡ ´ëÇÑ Å¬·¡½º µ¿ÀÛÀ» Á¤ÀÇÇÕ´Ï´Ù.
+ï»¿
+// GIE_BoadAssy.cpp : ì‘ìš© í”„ë¡œê·¸ë¨ì— ëŒ€í•œ í´ë˜ìŠ¤ ë™ì‘ì„ ì •ì˜í•©ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -20,12 +20,12 @@ BEGIN_MESSAGE_MAP(CGIE_BoadAssyApp, CWinAppEx)
 END_MESSAGE_MAP()
 
 
-// CGIE_BoadAssyApp »ı¼º
+// CGIE_BoadAssyApp ìƒì„±
 
 CGIE_BoadAssyApp::CGIE_BoadAssyApp()
 {
-	// TODO: ¿©±â¿¡ »ı¼º ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	// InitInstance¿¡ ¸ğµç Áß¿äÇÑ ÃÊ±âÈ­ ÀÛ¾÷À» ¹èÄ¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ìƒì„± ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+	// InitInstanceì— ëª¨ë“  ì¤‘ìš”í•œ ì´ˆê¸°í™” ì‘ì—…ì„ ë°°ì¹˜í•©ë‹ˆë‹¤.
 	m_pApp			= (CGIE_BoadAssyApp*)AfxGetApp();
 	lpSystemInfo	= new SYSTEMINFO;
 	lpFusingInfo	= new FUSINGINFO;
@@ -42,22 +42,22 @@ CGIE_BoadAssyApp::CGIE_BoadAssyApp()
 }
 
 
-// À¯ÀÏÇÑ CGIE_BoadAssyApp °³Ã¼ÀÔ´Ï´Ù.
+// ìœ ì¼í•œ CGIE_BoadAssyApp ê°œì²´ì…ë‹ˆë‹¤.
 
 CGIE_BoadAssyApp theApp;
 CGIE_BoadAssyApp* m_pApp;
 
-// CGIE_BoadAssyApp ÃÊ±âÈ­
+// CGIE_BoadAssyApp ì´ˆê¸°í™”
 
 BOOL CGIE_BoadAssyApp::InitInstance()
 {
-	// ÀÀ¿ë ÇÁ·Î±×·¥ ¸Å´ÏÆä½ºÆ®°¡ ComCtl32.dll ¹öÀü 6 ÀÌ»óÀ» »ç¿ëÇÏ¿© ºñÁÖ¾ó ½ºÅ¸ÀÏÀ»
-	// »ç¿ëÇÏµµ·Ï ÁöÁ¤ÇÏ´Â °æ¿ì, Windows XP »ó¿¡¼­ ¹İµå½Ã InitCommonControlsEx()°¡ ÇÊ¿äÇÕ´Ï´Ù.
-	// InitCommonControlsEx()¸¦ »ç¿ëÇÏÁö ¾ÊÀ¸¸é Ã¢À» ¸¸µé ¼ö ¾ø½À´Ï´Ù.
+	// ì‘ìš© í”„ë¡œê·¸ë¨ ë§¤ë‹ˆí˜ìŠ¤íŠ¸ê°€ ComCtl32.dll ë²„ì „ 6 ì´ìƒì„ ì‚¬ìš©í•˜ì—¬ ë¹„ì£¼ì–¼ ìŠ¤íƒ€ì¼ì„
+	// ì‚¬ìš©í•˜ë„ë¡ ì§€ì •í•˜ëŠ” ê²½ìš°, Windows XP ìƒì—ì„œ ë°˜ë“œì‹œ InitCommonControlsEx()ê°€ í•„ìš”í•©ë‹ˆë‹¤.
+	// InitCommonControlsEx()ë¥¼ ì‚¬ìš©í•˜ì§€ ì•Šìœ¼ë©´ ì°½ì„ ë§Œë“¤ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
-	// ÀÀ¿ë ÇÁ·Î±×·¥¿¡¼­ »ç¿ëÇÒ ¸ğµç °ø¿ë ÄÁÆ®·Ñ Å¬·¡½º¸¦ Æ÷ÇÔÇÏµµ·Ï
-	// ÀÌ Ç×¸ñÀ» ¼³Á¤ÇÏ½Ê½Ã¿À.
+	// ì‘ìš© í”„ë¡œê·¸ë¨ì—ì„œ ì‚¬ìš©í•  ëª¨ë“  ê³µìš© ì»¨íŠ¸ë¡¤ í´ë˜ìŠ¤ë¥¼ í¬í•¨í•˜ë„ë¡
+	// ì´ í•­ëª©ì„ ì„¤ì •í•˜ì‹­ì‹œì˜¤.
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls);
 
@@ -71,22 +71,23 @@ BOOL CGIE_BoadAssyApp::InitInstance()
 
 	AfxEnableControlContainer();
 
-	// Ç¥ÁØ ÃÊ±âÈ­
-	// ÀÌµé ±â´ÉÀ» »ç¿ëÇÏÁö ¾Ê°í ÃÖÁ¾ ½ÇÇà ÆÄÀÏÀÇ Å©±â¸¦ ÁÙÀÌ·Á¸é
-	// ¾Æ·¡¿¡¼­ ÇÊ¿ä ¾ø´Â Æ¯Á¤ ÃÊ±âÈ­
-	// ·çÆ¾À» Á¦°ÅÇØ¾ß ÇÕ´Ï´Ù.
-	// ÇØ´ç ¼³Á¤ÀÌ ÀúÀåµÈ ·¹Áö½ºÆ®¸® Å°¸¦ º¯°æÇÏ½Ê½Ã¿À.
-	// TODO: ÀÌ ¹®ÀÚ¿­À» È¸»ç ¶Ç´Â Á¶Á÷ÀÇ ÀÌ¸§°ú °°Àº
-	// ÀûÀıÇÑ ³»¿ëÀ¸·Î ¼öÁ¤ÇØ¾ß ÇÕ´Ï´Ù.
-	SetRegistryKey(_T("·ÎÄÃ ÀÀ¿ë ÇÁ·Î±×·¥ ¸¶¹ı»ç¿¡¼­ »ı¼ºµÈ ÀÀ¿ë ÇÁ·Î±×·¥"));
-	Lf_initVariable();//±¸Á¶Ã¼ ÃÊ±âÈ­
+	// í‘œì¤€ ì´ˆê¸°í™”
+	// ì´ë“¤ ê¸°ëŠ¥ì„ ì‚¬ìš©í•˜ì§€ ì•Šê³  ìµœì¢… ì‹¤í–‰ íŒŒì¼ì˜ í¬ê¸°ë¥¼ ì¤„ì´ë ¤ë©´
+	// ì•„ë˜ì—ì„œ í•„ìš” ì—†ëŠ” íŠ¹ì • ì´ˆê¸°í™”
+	// ë£¨í‹´ì„ ì œê±°í•´ì•¼ í•©ë‹ˆë‹¤.
+	// í•´ë‹¹ ì„¤ì •ì´ ì €ì¥ëœ ë ˆì§€ìŠ¤íŠ¸ë¦¬ í‚¤ë¥¼ ë³€ê²½í•˜ì‹­ì‹œì˜¤.
+	// TODO: ì´ ë¬¸ìì—´ì„ íšŒì‚¬ ë˜ëŠ” ì¡°ì§ì˜ ì´ë¦„ê³¼ ê°™ì€
+	// ì ì ˆí•œ ë‚´ìš©ìœ¼ë¡œ ìˆ˜ì •í•´ì•¼ í•©ë‹ˆë‹¤.
+	SetRegistryKey(_T("ë¡œì»¬ ì‘ìš© í”„ë¡œê·¸ë¨ ë§ˆë²•ì‚¬ì—ì„œ ìƒì„±ëœ ì‘ìš© í”„ë¡œê·¸ë¨"));
+	Lf_initVariable();//êµ¬ì¡°ì²´ ì´ˆê¸°í™”
 	Gf_loadSystemInfo();
 	Gf_loadInspCount();
 	Lf_readGmesInfo();
+	Gf_writeLogData(_T("*****************************"), _T("*****************************"));
 
 	InitCreateUdpSocket();
-	// GMES DLL Initialize
 
+	// GMES DLL Initialize
 #if (DEBUG_MES_NOT_USE==0)
 	if (Gf_gmesInitServer(SERVER_MES) == FALSE)
 	{
@@ -98,25 +99,21 @@ BOOL CGIE_BoadAssyApp::InitInstance()
 	}
 #endif
 
-	CUserID idDlg;
-	if(idDlg.DoModal() == IDCANCEL)
-		return FALSE;
-
 	CGIE_BoadAssyDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{
-		// TODO: ¿©±â¿¡ [È®ÀÎ]À» Å¬¸¯ÇÏ¿© ´ëÈ­ »óÀÚ°¡ ¾ø¾îÁú ¶§ Ã³¸®ÇÒ
-		//  ÄÚµå¸¦ ¹èÄ¡ÇÕ´Ï´Ù.
+		// TODO: ì—¬ê¸°ì— [í™•ì¸]ì„ í´ë¦­í•˜ì—¬ ëŒ€í™” ìƒìê°€ ì—†ì–´ì§ˆ ë•Œ ì²˜ë¦¬í• 
+		//  ì½”ë“œë¥¼ ë°°ì¹˜í•©ë‹ˆë‹¤.
 	}
 	else if (nResponse == IDCANCEL)
 	{
-		// TODO: ¿©±â¿¡ [Ãë¼Ò]¸¦ Å¬¸¯ÇÏ¿© ´ëÈ­ »óÀÚ°¡ ¾ø¾îÁú ¶§ Ã³¸®ÇÒ
-		//  ÄÚµå¸¦ ¹èÄ¡ÇÕ´Ï´Ù.
+		// TODO: ì—¬ê¸°ì— [ì·¨ì†Œ]ë¥¼ í´ë¦­í•˜ì—¬ ëŒ€í™” ìƒìê°€ ì—†ì–´ì§ˆ ë•Œ ì²˜ë¦¬í• 
+		//  ì½”ë“œë¥¼ ë°°ì¹˜í•©ë‹ˆë‹¤.
 	}
-	// ´ëÈ­ »óÀÚ°¡ ´İÇûÀ¸¹Ç·Î ÀÀ¿ë ÇÁ·Î±×·¥ÀÇ ¸Ş½ÃÁö ÆßÇÁ¸¦ ½ÃÀÛÇÏÁö ¾Ê°í  ÀÀ¿ë ÇÁ·Î±×·¥À» ³¡³¾ ¼ö ÀÖµµ·Ï FALSE¸¦
-	// ¹İÈ¯ÇÕ´Ï´Ù.
+	// ëŒ€í™” ìƒìê°€ ë‹«í˜”ìœ¼ë¯€ë¡œ ì‘ìš© í”„ë¡œê·¸ë¨ì˜ ë©”ì‹œì§€ íŒí”„ë¥¼ ì‹œì‘í•˜ì§€ ì•Šê³   ì‘ìš© í”„ë¡œê·¸ë¨ì„ ëë‚¼ ìˆ˜ ìˆë„ë¡ FALSEë¥¼
+	// ë°˜í™˜í•©ë‹ˆë‹¤.
 	return FALSE;
 }
 
@@ -164,7 +161,7 @@ void CGIE_BoadAssyApp::InitCreateUdpSocket()
 
 void CGIE_BoadAssyApp::InitLocalHostIPAddress()
 {
-	// Receive Message Ã³¸®¸¦ Á¦¿ÜÇÒ ÀÚ½ÅÀÇ IP¿Í GateIP¸¦ °¡Á®¿Â´Ù.
+	// Receive Message ì²˜ë¦¬ë¥¼ ì œì™¸í•  ìì‹ ì˜ IPì™€ GateIPë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	//	m_pSocketUDP->m_bEthernetInit = FALSE;
 
 	m_pSocketUDP->getLocalIPAddress();
@@ -177,14 +174,14 @@ void CGIE_BoadAssyApp::udp_processPacket(char* wParam, int lParam)
 	int ntoken = 0;
 	int recvRet = 0;
 
-	// Receive Packet¿¡¼­ Group, Command Á¤º¸¸¦ ÃßÃâÇÑ´Ù.
+	// Receive Packetì—ì„œ Group, Command ì •ë³´ë¥¼ ì¶”ì¶œí•œë‹¤.
 	sprintf_s(szbuf, "%c%c", wParam[PACKET_PT_CMD], wParam[PACKET_PT_CMD + 1]);
 	recvCMD = strtol(szbuf, 0, 16);
 	recvRet = wParam[PACKET_PT_RET];
 
 	memcpy(m_pCommand->gszudpRcvPacket, wParam, lParam);
 
-	// Message Ã³¸®
+	// Message ì²˜ë¦¬
 	switch (recvCMD)
 	{
 	case CMD_CTRL_FUSING_SYSTEM:
@@ -198,6 +195,9 @@ void CGIE_BoadAssyApp::udp_processPacket(char* wParam, int lParam)
 		}break;
 	case CMD_MEASURE_ALL_POWER :
 		Lf_parsingMeasureAllPower(char_To_wchar(wParam));
+		break;
+	case CMD_CTRL_CABLE_OPEN_TEST:
+		Lf_parsingCableOpenCheck(char_To_wchar(wParam));
 		break;
 	case CMD_CTRL_FW_VERSION:
 	{
@@ -278,10 +278,10 @@ void CGIE_BoadAssyApp::Gf_writeLogData(CString Event, CString Data)
 
 	//	Read_SysIniFile(_T("SYSTEM"), _T("STATION_NO"), &lpSystemInfo->m_sStationNo);
 	strFileName.Format(_T("%s_%04d%02d%02d"), lpSystemInfo->m_sMachinName, time.GetYear(), time.GetMonth(), time.GetDay());
-	path.Format(_T(".\\MLog\\%s.txt"), strFileName);
+	path.Format(_T(".\\Logs\\MLog\\%s.txt"), strFileName);
 
-	if ((_access(".\\MLog", 0)) == -1)
-		_mkdir(".\\MLog");
+	if ((_access(".\\Logs", 0)) == -1)
+		_mkdir(".\\Logs");
 
 	if ((_access(".\\Logs\\MLog", 0)) == -1)
 		_mkdir(".\\Logs\\MLog");
@@ -351,6 +351,8 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpSystemInfo->m_nPlcDeviceNum = 0;
 	lpSystemInfo->m_sPlcIPAddress.Empty();
 	lpSystemInfo->m_sPlcPort.Empty();
+
+	lpSystemInfo->m_nPinBlockOpenCheck = 0;
 
 	lpModelInfo->m_nEdidUse=0;
 	lpModelInfo->m_nEdidAddr=0;
@@ -442,8 +444,6 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpWorkInfo->m_nGoodCnt=0;
 	lpWorkInfo->m_nBadCnt=0;
 	lpWorkInfo->m_sBadPattern.Empty();
-
-	Gf_writeLogData(_T("*****************************"), _T("*****************************"));
 }
 
 void CGIE_BoadAssyApp::Lf_readGmesInfo()
@@ -518,6 +518,8 @@ void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 	Read_SysIniFile(_T("SYSTEM"),		_T("GRAY_ADJ_LR"),					&lpSystemInfo->m_nGrayAdjustStepLeftRight);
 	Read_SysIniFile(_T("SYSTEM"),		_T("IF_BD_SELECT"),					&lpSystemInfo->m_nIFBoardSelect);
 	Read_SysIniFile(_T("SYSTEM"),		_T("EDP_INIT_CODE_SEL"),			&lpSystemInfo->m_neDPInitCodeSelect);
+	Read_SysIniFile(_T("SYSTEM"),		_T("PIN_BLOCK_OPEN_CHECK"),			&lpSystemInfo->m_nPinBlockOpenCheck);
+
 
 
 	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_DEVICE_NUM"),				&lpSystemInfo->m_nPlcDeviceNum);
@@ -529,6 +531,8 @@ void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 
 void CGIE_BoadAssyApp::Gf_loadInspCount()
 {
+	Gf_QtyCountResetCheck();
+
 	Read_SysIniFile(_T("SYSTEM"),		_T("GOOD_COUNT"),						&lpWorkInfo->m_nGoodCnt);
 	Read_SysIniFile(_T("SYSTEM"),		_T("BAD_COUNT"),						&lpWorkInfo->m_nBadCnt);
 }
@@ -755,7 +759,7 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 			lpModelInfo->m_nLbCnt = nLoop+1;
 		}
 
-		// Data°¡ NULL°ªÀÌ ÀÖÀ¸¸é PasingÀ» Áß´ÜÇÑ´Ù.
+		// Dataê°€ NULLê°’ì´ ìˆìœ¼ë©´ Pasingì„ ì¤‘ë‹¨í•œë‹¤.
 		//if(*szData==NULL)	break;
 		if(sdata.IsEmpty())	
 			break;
@@ -1083,7 +1087,7 @@ void CGIE_BoadAssyApp::Gf_receivedBLUAckInfo(char* lpBuff)
 
 	if (nDataLen > 0)
 		m_nRcvMsgBlu = TRUE;
-	//if(nDataLen < 8)// Noise·Î ÀÎÇÑ PGM Down ¹æÁö.
+	//if(nDataLen < 8)// Noiseë¡œ ì¸í•œ PGM Down ë°©ì§€.
 	//	return;		
 
 	//if((lpBuff[0]==PACKET_STX) && (lpBuff[nDataLen-1]==PACKET_ETX))
@@ -1190,6 +1194,13 @@ void CGIE_BoadAssyApp::Lf_parsingMeasureAllPower(CString strAckData)
 		m_nLcmPInfo[PINFO_ERR_VALUE] = (int)_ttoi(strAckData.Mid(PACKET_PT_DATA + 1 + 1 + 1, 5));
 	}
 	
+}
+
+void CGIE_BoadAssyApp::Lf_parsingCableOpenCheck(CString strAckData)
+{
+	CString openMsg;
+
+	openMsg = strAckData.Mid(PACKET_PT_DATA+1, 8);
 }
 
 void CGIE_BoadAssyApp::Lf_parsingEdidDataGfd250(CString strAckData)
@@ -1423,7 +1434,7 @@ void CGIE_BoadAssyApp::Gf_setStartPtnLockTime(int nPtnNum)
 void CGIE_BoadAssyApp::Gf_setEndPtnLockTime(int nPtnNum)
 {
 	m_nELockTime = ::GetTickCount();
-	m_nPtnLockTime[nPtnNum] = m_nELockTime - m_nSLockTime;		// Pattern °Ë»ç ½Ã°£ ÀúÀå.
+	m_nPtnLockTime[nPtnNum] = m_nELockTime - m_nSLockTime;		// Pattern ê²€ì‚¬ ì‹œê°„ ì €ì¥.
 }
 
 BOOL CGIE_BoadAssyApp::Lf_loadEdidFile(CString spath)
@@ -1551,12 +1562,12 @@ BOOL CGIE_BoadAssyApp::Gf_gmesDisConnect(int nServerType)
 {
 	return m_pCimNet->CloseTibRv(nServerType);
 }
+
 BOOL CGIE_BoadAssyApp::Gf_gmesInitServer(BOOL nServerType)
 {
-	m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
-
 	if ((DEBUG_GMES_TEST_SERVER == TRUE) && (nServerType == SERVER_MES))
 	{
+		m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 		m_pCimNet->SetLocalTest(nServerType);
 	}
 	else if ((DEBUG_GMES_TEST_SERVER == TRUE) && (nServerType == SERVER_EAS))
@@ -1575,19 +1586,16 @@ BOOL CGIE_BoadAssyApp::Gf_gmesInitServer(BOOL nServerType)
 void CGIE_BoadAssyApp::Gf_setGMesGoodInfo()
 {
  	m_pCimNet->SetPF(_T("P"));
-	m_pCimNet->SetRwkCode(lpWorkInfo->m_sRwkCD);
 }
 
 void CGIE_BoadAssyApp::Gf_setGMesBGradeInfo()
 {
 	m_pCimNet->SetPF(_T("P"));
-	m_pCimNet->SetRwkCode(lpWorkInfo->m_sRwkCD);
 }
 
 void CGIE_BoadAssyApp::Gf_setGMesBadInfo()
 {
 	m_pCimNet->SetPF(_T("F"));
-	m_pCimNet->SetRwkCode(lpWorkInfo->m_sRwkCD);
 }
 void CGIE_BoadAssyApp::Lf_setGmesValuePCHK()
 {
@@ -1607,12 +1615,12 @@ void CGIE_BoadAssyApp::Lf_setEasValueAPDR()
 }
 void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 {
-	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);	
+	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);
 	m_pCimNet->SetBLID(_T(""));
 	m_pCimNet->SetSerialNumber(_T(""));
 	m_pCimNet->SetPalletID(_T(""));
 
-	// ¾çÇ°/ºÒ·® ¼³Á¤.
+	// ì–‘í’ˆ/ë¶ˆëŸ‰ ì„¤ì •.
 	if(!m_pCimNet->GetRwkCode().Compare(_T("")))
 	{
 		m_pCimNet->SetPF(_T("P"));
@@ -1621,7 +1629,7 @@ void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 	else
 	{
 		m_pCimNet->SetPF(_T("F"));
-		// ºÒ·® Pattern Á¤º¸ ¼³Á¤.
+		// ë¶ˆëŸ‰ Pattern ì •ë³´ ì„¤ì •.
 		CString strBadPtn;
 		strBadPtn.Format(_T("%s"), lpWorkInfo->m_sBadPattern);
 		strBadPtn.Replace(_T(" "), _T("_"));
@@ -1631,7 +1639,7 @@ void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 	m_pCimNet->SetPvcomAdjustValue(_T(""));
 	m_pCimNet->SetPvcomAdjustDropValue(_T(""));
 
-	// Pattern Á¤º¸ ¼³Á¤
+	// Pattern ì •ë³´ ì„¤ì •
 	m_pCimNet->SetPatternInfo(Lf_getPatternData());
 }
 
@@ -1646,12 +1654,10 @@ CString CGIE_BoadAssyApp::Gf_getGmesRTNCD()
 void CGIE_BoadAssyApp::Gf_showLocalErrorMsg()
 {
 	CString strMsg;
-	CString strVal;
 	CMessageError msg_dlg;
 
 	m_pCimNet->GetFieldData(&strMsg, _T("ERR_MSG_LOC"));	//ERR_MSG_ENG	ERR_MSG_LOC
-	Read_ErrorCode(_T("EQP"), _T("2"), &strVal);
-	msg_dlg.m_strEMessage.Format(_T("%s. %s"), strVal.GetBuffer(0), strMsg.GetBuffer(0));
+	msg_dlg.m_strEMessage.Format(_T("[MES ERROR] %s"), strMsg.GetBuffer(0));
 
 	msg_dlg.DoModal();
 }
@@ -1771,35 +1777,35 @@ BOOL CGIE_BoadAssyApp::udp_sendPacket(CString ipAddress, int nTarget, int nComma
 	char lpbuff[20] = { 0, };
 	BYTE nChkSum = 0;
 
-	// data ¾Õ±îÁö Packet »ı¼º
+	// data ì•ê¹Œì§€ Packet ìƒì„±
 	sprintf_s(szpacket, "%cA1%02X00%02X%04X", PACKET_STX, nTarget, nCommand, nLength);
 
-	// data¸¦ Æ÷ÇÔÇÏ¿© packet »ı¼º. hex·Î Àü¼ÛÇÒ data°¡ ÀÖÀ¸¹Ç·Î memcpy¸¦ »ç¿ë
+	// dataë¥¼ í¬í•¨í•˜ì—¬ packet ìƒì„±. hexë¡œ ì „ì†¡í•  dataê°€ ìˆìœ¼ë¯€ë¡œ memcpyë¥¼ ì‚¬ìš©
 	packetlen = (int)strlen(szpacket);
 	memcpy(&szpacket[packetlen], pData, nLength);
 
-	// data ¸¦ Æ÷ÇÔÇÑ packetÀÇ ±æÀÌ¸¦ ±¸ÇÑ´Ù.
+	// data ë¥¼ í¬í•¨í•œ packetì˜ ê¸¸ì´ë¥¼ êµ¬í•œë‹¤.
 	packetlen += nLength;
 
-	// »ı¼ºµÈ PacketÀ» ÀÌ¿ëÇÏ¿© CheckSumÀ» ±¸ÇÑ´Ù.
+	// ìƒì„±ëœ Packetì„ ì´ìš©í•˜ì—¬ CheckSumì„ êµ¬í•œë‹¤.
 	for (int j = 1; j < packetlen; j++)		// Check Sum
 	{
 		nChkSum += szpacket[j];
 	}
 	sprintf_s(lpbuff, "%02X%c", nChkSum, PACKET_ETX);
 
-	// Checksum°ú ETX 3byte¸¦ ºÙ¿© ´Ù½Ã PacketÀ» ¸¸µç´Ù.
+	// Checksumê³¼ ETX 3byteë¥¼ ë¶™ì—¬ ë‹¤ì‹œ Packetì„ ë§Œë“ ë‹¤.
 	memcpy(&szpacket[packetlen], lpbuff, 3);
 	packetlen += 3;
 
-	// PacketÀÇ ¸¶Áö¸·¿¡ StringÀÇ ³¡À» ¾Ë¸®±â À§ÇÏ¿© NULLÀ» Ãß°¡ÇÑ´Ù.
+	// Packetì˜ ë§ˆì§€ë§‰ì— Stringì˜ ëì„ ì•Œë¦¬ê¸° ìœ„í•˜ì—¬ NULLì„ ì¶”ê°€í•œë‹¤.
 	szpacket[packetlen] = 0x00;
 
 
-	// Receive Buff¸¦ Clear
+	// Receive Buffë¥¼ Clear
 	ZeroMemory(m_pCommand->gszudpRcvPacket, sizeof(m_pCommand->gszudpRcvPacket));
 
-	// »ı¼ºµÈ PacketÀ» Àü¼Û.
+	// ìƒì„±ëœ Packetì„ ì „ì†¡.
 	m_pSocketUDP->SendToUDP(ipAddress, packetlen, szpacket);
 
 	// ACK Receive
@@ -1838,10 +1844,74 @@ BOOL CGIE_BoadAssyApp::udp_procWaitRecvACK(int cmd, DWORD waitTime)
 	}
 	return FALSE;
 }
+
 void CGIE_BoadAssyApp::Gf_ShowMessageBox(CString strMessage)
 {
 	CMessageError err_dlg;
 
 	err_dlg.m_strEMessage = strMessage;
 	err_dlg.DoModal();
+}
+
+void CGIE_BoadAssyApp::Gf_QtyCountReset()
+{
+	lpWorkInfo->m_nGoodCnt = 0;
+	Write_SysIniFile(_T("SYSTEM"), _T("GOOD_COUNT"), _T("0"));
+
+	lpWorkInfo->m_nBadCnt = 0;
+	Write_SysIniFile(_T("SYSTEM"), _T("BAD_COUNT"), _T("0"));
+
+	CTime time = CTime::GetCurrentTime();
+	CString sdata;
+	sdata.Format(_T("%04d-%02d-%02d"), time.GetYear(), time.GetMonth(), time.GetDay());
+	Write_SysIniFile(_T("SYSTEM"), _T("QTY_COUNT_RESET_DATE"), sdata);
+}
+
+void CGIE_BoadAssyApp::Gf_QtyCountResetCheck()
+{
+	CString resetDate;
+	Read_SysIniFile(_T("SYSTEM"), _T("QTY_COUNT_RESET_DATE"), &resetDate);
+
+	CString sdata;
+	CTime time = CTime::GetCurrentTime();
+	sdata.Format(_T("%04d-%02d-%02d"), time.GetYear(), time.GetMonth(), time.GetDay());
+
+	if (resetDate != sdata)
+	{
+		Gf_QtyCountReset();
+	}
+}
+
+BOOL CGIE_BoadAssyApp::Gf_PinBlockOpenCheck()
+{
+	int nOpenValue;
+	if (lpSystemInfo->m_nPinBlockOpenCheck == _ON_)
+	{
+		while (1)
+		{
+			if (m_pApp->m_pCommand->Gf_CheckCableOpen() == TRUE)
+			{
+				sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA], "%04X", &nOpenValue);
+				if ((nOpenValue & 0x0003) != 0)
+				{
+					return TRUE;
+				}
+				else
+				{
+					CMessageQuestion retry_dlg;
+					retry_dlg.m_strQMessage.Format(_T("PIN Block Closed. Please PIN Block Open!!"));
+					retry_dlg.m_strLButton = _T("RETRY");
+					retry_dlg.m_nMessageColor = 1;
+					if (retry_dlg.DoModal() == IDCANCEL)
+						return FALSE;
+				}
+			}
+			else
+			{
+				m_pApp->Gf_ShowMessageBox(_T("<PG> PIN Block Open Check Communication Fail."));
+				return FALSE;
+			}
+		}
+	}
+	return TRUE;
 }

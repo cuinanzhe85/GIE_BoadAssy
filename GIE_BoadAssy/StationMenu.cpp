@@ -1,4 +1,4 @@
-// StationMenu.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// StationMenu.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -6,7 +6,7 @@
 #include "StationMenu.h"
 #include "Initialize.h"
 
-// CStationMenu ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CStationMenu ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 IMPLEMENT_DYNAMIC(CStationMenu, CDialog)
 
@@ -45,6 +45,7 @@ void CStationMenu::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_PLC_DEVICE_NUM, m_cmbPlcDeviceNum);
 	DDX_Control(pDX, IDC_IPA_TCPIP_PLC_IPADDR, m_ipaPlcIPAddress);
 	DDX_Control(pDX, IDC_EDT_TCPIP_PLC_PORT, m_edtPlcPort);
+	DDX_Control(pDX, IDC_CMB_PINBLOCK_OPEN_CHECK, m_cmbPinBlockOpenCheck);
 }
 
 
@@ -60,16 +61,17 @@ BEGIN_MESSAGE_MAP(CStationMenu, CDialog)
 	ON_BN_CLICKED(IDC_BTN_PTN_FILE_PATH, &CStationMenu::OnBnClickedBtnPtnFilePath)
 	ON_BN_CLICKED(IDC_BTN_EDID_FILE_PATH, &CStationMenu::OnBnClickedBtnEdidFilePath)
 	ON_CBN_SELCHANGE(IDC_CMB_PLC_DEVICE_NUM, &CStationMenu::OnCbnSelchangeCmbPlcDeviceNum)
+	ON_BN_CLICKED(IDC_BTN_QUANTITY_COUNT_RESET, &CStationMenu::OnBnClickedBtnQuantityCountReset)
 END_MESSAGE_MAP()
 
 
-// CStationMenu ¸Ş½ÃÁö Ã³¸®±âÀÔ´Ï´Ù.
+// CStationMenu ë©”ì‹œì§€ ì²˜ë¦¬ê¸°ì…ë‹ˆë‹¤.
 
 BOOL CStationMenu::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  ¿©±â¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì¶”ê°€ ì´ˆê¸°í™” ì‘ì—…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	lpSystemInfo = m_pApp->GetSystemInfo();	
 
 	Lf_initFontSet();
@@ -86,14 +88,14 @@ BOOL CStationMenu::OnInitDialog()
 	pBtn->SetIcon(hIcon);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// ¿¹¿Ü: OCX ¼Ó¼º ÆäÀÌÁö´Â FALSE¸¦ ¹İÈ¯ÇØ¾ß ÇÕ´Ï´Ù.
+	// ì˜ˆì™¸: OCX ì†ì„± í˜ì´ì§€ëŠ” FALSEë¥¼ ë°˜í™˜í•´ì•¼ í•©ë‹ˆë‹¤.
 }
 
 void CStationMenu::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	for(int i=0; i<COLOR_IDX_MAX; i++)
 	{
 		m_Brush[i].DeleteObject();
@@ -109,7 +111,7 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  ¿©±â¼­ DCÀÇ Æ¯¼ºÀ» º¯°æÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì„œ DCì˜ íŠ¹ì„±ì„ ë³€ê²½í•©ë‹ˆë‹¤.
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_MSGBOX:
@@ -143,6 +145,7 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		if ((pWnd->GetDlgCtrlID() == IDC_STT_EQP_NAME)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_TEST_START_DELAY)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_PINBLOCK_OPEN_CHECK)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_AUTO_BCR_PORT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_BLU_PORT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_MES_SERV_PORT)
@@ -171,15 +174,15 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		break;
 	}
-	// TODO:  ±âº»°ªÀÌ Àû´çÇÏÁö ¾ÊÀ¸¸é ´Ù¸¥ ºê·¯½Ã¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+	// TODO:  ê¸°ë³¸ê°’ì´ ì ë‹¹í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ë¥¸ ë¸ŒëŸ¬ì‹œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	return hbr;
 }
 
 void CStationMenu::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	// ±×¸®±â ¸Ş½ÃÁö¿¡ ´ëÇØ¼­´Â CDialog::OnPaint()À»(¸¦) È£ÃâÇÏÁö ¸¶½Ê½Ã¿À.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+	// ê·¸ë¦¬ê¸° ë©”ì‹œì§€ì— ëŒ€í•´ì„œëŠ” CDialog::OnPaint()ì„(ë¥¼) í˜¸ì¶œí•˜ì§€ ë§ˆì‹­ì‹œì˜¤.
 	CRect rect;
 
 	GetClientRect(&rect);
@@ -220,6 +223,7 @@ void CStationMenu::Lf_initFontSet()
 	m_Font[4].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_EDT_EQP_NAME)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_EDT_TEST_START_DELAY)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_PINBLOCK_OPEN_CHECK)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_CBO_AUTO_BCR_COMPORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CBO_BLU_COMPORT)->SetFont(&m_Font[4]);
@@ -239,6 +243,7 @@ void CStationMenu::Lf_initFontSet()
 
 	GetDlgItem(IDC_STT_EQP_NAME)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_TEST_START_DELAY)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_PINBLOCK_OPEN_CHECK)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_AUTO_BCR_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_BLU_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MES_SERV_PORT)->SetFont(&m_Font[4]);
@@ -318,6 +323,8 @@ void CStationMenu::Lf_initControls()
 	m_ipaPlcIPAddress.SetWindowText(lpSystemInfo->m_sPlcIPAddress);
 	m_edtPlcPort.SetWindowText(lpSystemInfo->m_sPlcPort);
 
+	m_cmbPinBlockOpenCheck.SetCurSel(lpSystemInfo->m_nPinBlockOpenCheck);
+
 	m_edtModFilePath.SetWindowText(lpSystemInfo->m_sModelDnPath);
 	m_edtPtnFilePath.SetWindowText(lpSystemInfo->m_sPatternPath);
 	m_edtEdidFilePath.SetWindowText(lpSystemInfo->m_sEdidDnPath);
@@ -393,6 +400,9 @@ void CStationMenu::Lf_saveSystemInfo()
 	Write_SysIniFile(_T("TCPIP_PLC"), _T("PLC_PORT"), lpSystemInfo->m_sPlcPort);
 
 
+	lpSystemInfo->m_nPinBlockOpenCheck = m_cmbPinBlockOpenCheck.GetCurSel();
+	Write_SysIniFile(_T("SYSTEM"), _T("PIN_BLOCK_OPEN_CHECK"), lpSystemInfo->m_nPinBlockOpenCheck);
+
  	m_edtModFilePath.GetWindowText(lpSystemInfo->m_sModelDnPath);
  	Write_SysIniFile(_T("SYSTEM"), _T("MODEL_FILE_PATH"), lpSystemInfo->m_sModelDnPath);
  
@@ -451,7 +461,7 @@ CString CStationMenu::Lf_FileLoadDialog(CString Temp)
 
 void CStationMenu::OnBnClickedBtnSave()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	Lf_saveSystemInfo();
 
 	CInitialize initDlg;
@@ -463,25 +473,25 @@ void CStationMenu::OnBnClickedBtnSave()
 
 void CStationMenu::OnBnClickedBtnCancel()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CDialog::OnCancel();
 }
 
 void CStationMenu::OnBnClickedBtnQualitySetup()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	ShowDefectCodeSet(GetSafeOwner());
 }
 
 void CStationMenu::OnBnClickedBtnQualityFtpSetup()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	ShowDefectCodeSetFTP(GetSafeOwner());
 }
 
 void CStationMenu::OnBnClickedBtnModFilePath()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString sdata;
 
 	UpdateData(TRUE);
@@ -492,7 +502,7 @@ void CStationMenu::OnBnClickedBtnModFilePath()
 
 void CStationMenu::OnBnClickedBtnPtnFilePath()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString sdata;
 
 	UpdateData(TRUE);
@@ -503,7 +513,7 @@ void CStationMenu::OnBnClickedBtnPtnFilePath()
 
 void CStationMenu::OnBnClickedBtnEdidFilePath()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString sdata;
 
 	UpdateData(TRUE);
@@ -520,4 +530,11 @@ void CStationMenu::OnCbnSelchangeCmbPlcDeviceNum()
 		m_edtPlcPort.SetWindowText(_T("4000"));
 	else
 		m_edtPlcPort.SetWindowText(_T("4001"));
+}
+
+
+void CStationMenu::OnBnClickedBtnQuantityCountReset()
+{
+	// TODO: Add your control notification handler code here
+	m_pApp->Gf_QtyCountReset();
 }

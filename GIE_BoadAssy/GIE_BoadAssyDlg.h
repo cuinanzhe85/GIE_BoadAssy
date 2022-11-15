@@ -1,32 +1,32 @@
-
-// GIE_BoadAssyDlg.h : Çì´õ ÆÄÀÏ
+ï»¿
+// GIE_BoadAssyDlg.h : í—¤ë” íŒŒì¼
 //
 
 #pragma once
 
 
-// CGIE_BoadAssyDlg ´ëÈ­ »óÀÚ
+// CGIE_BoadAssyDlg ëŒ€í™” ìƒì
 class CGIE_BoadAssyDlg : public CDialog
 {
-// »ı¼ºÀÔ´Ï´Ù.
+// ìƒì„±ì…ë‹ˆë‹¤.
 public:
-	CGIE_BoadAssyDlg(CWnd* pParent = NULL);	// Ç¥ÁØ »ı¼ºÀÚÀÔ´Ï´Ù.
+	CGIE_BoadAssyDlg(CWnd* pParent = NULL);	// í‘œì¤€ ìƒì„±ìì…ë‹ˆë‹¤.
 
-// ´ëÈ­ »óÀÚ µ¥ÀÌÅÍÀÔ´Ï´Ù.
+// ëŒ€í™” ìƒì ë°ì´í„°ì…ë‹ˆë‹¤.
 	enum { IDD = IDD_GIE_BOADASSY_DIALOG };
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV Áö¿øÀÔ´Ï´Ù.
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV ì§€ì›ì…ë‹ˆë‹¤.
 
 
-// ±¸ÇöÀÔ´Ï´Ù.
+// êµ¬í˜„ì…ë‹ˆë‹¤.
 protected:
 	HICON m_hIcon;
 	LPSYSTEMINFO	lpSystemInfo;
 	LPMODELSETINFO	lpModelInfo;
 	LPINSPWORKINFO	lpWorkInfo;
 
-	// »ı¼ºµÈ ¸Ş½ÃÁö ¸Ê ÇÔ¼ö
+	// ìƒì„±ëœ ë©”ì‹œì§€ ë§µ í•¨ìˆ˜
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
@@ -40,6 +40,8 @@ protected:
 	void Lf_InitColorBrush();
 	void Lf_InitItemValue();
 	void InitProgramTitle();
+	void Lf_openToDayMLog();
+	void Lf_QtyCountReset();
 
 private:
 	CFont m_Font[FONT_IDX_MAX];

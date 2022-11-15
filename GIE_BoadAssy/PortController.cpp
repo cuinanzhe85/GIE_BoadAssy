@@ -675,8 +675,8 @@ DWORD CPortController::ReadPort1 (BYTE* pBuff, DWORD nToRead)
 	
 	if(0 < dwLength)
 	{
+		Sleep(50);
 		fReadStat = ReadFile(m_hComm1, pBuff, dwLength, &dwLength, &osRead);
-
 		if (!fReadStat)
 		{
 			if (GetLastError() == ERROR_IO_PENDING)
@@ -721,6 +721,7 @@ DWORD CPortController::ReadPort2 (BYTE* pBuff, DWORD nToRead)
 
 	if(dwRead > 0)
 	{
+		Sleep(50);
 		fReadStat = ReadFile(m_hComm2, pBuff, dwRead, &dwRead, &osRead);
 		if (!fReadStat)
 		{
@@ -758,6 +759,7 @@ DWORD CPortController::ReadPort3 (BYTE* pBuff, DWORD nToRead)
 	dwRead = comstat.cbInQue;
 	if (dwRead > 0)
 	{
+		Sleep(50);
 		if (!ReadFile (m_hComm3, pBuff, nToRead, &dwRead, &m_osRead3))
 		{
 			if (GetLastError () == ERROR_IO_PENDING)
@@ -823,7 +825,7 @@ DWORD CPortController::ReadPort5 (BYTE* pBuff, DWORD nToRead)
 	dwRead = comstat.cbInQue;
 	if (dwRead > 0)
 	{
-		Sleep (10);
+		Sleep(50);
 		if (!ReadFile (m_hComm5, pBuff, nToRead, &dwRead, &m_osRead5))
 		{
 			if (GetLastError () == ERROR_IO_PENDING)
@@ -856,7 +858,7 @@ DWORD CPortController::ReadPort6 (BYTE* pBuff, DWORD nToRead) // 2005-03-07 : Au
 	dwRead = comstat.cbInQue;
 	if (dwRead > 0)
 	{
-		Sleep (10);
+		Sleep(50);
 		if (!ReadFile (m_hComm6, pBuff, nToRead, &dwRead, &m_osRead6))
 		{
 			if (GetLastError () == ERROR_IO_PENDING)

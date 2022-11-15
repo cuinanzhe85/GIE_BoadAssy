@@ -56,7 +56,6 @@ protected:
 	BOOL Lf_PatternLockTimeCheck();
 	BOOL Lf_PatternCurrentCheck();
 	BOOL Lf_PatternVoltageSetting();
-	BOOL Lf_CableOpenCheck();
 
 	void Lf_PtnTestEventView(CString Event);
 	void Lf_setPatternImageView(CString strPtnName);

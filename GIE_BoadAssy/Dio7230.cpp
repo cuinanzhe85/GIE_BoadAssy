@@ -22,7 +22,7 @@ BOOL CDIO7230::Dio_Initialize()
 
 	if(Register_Card(PCI_7230, DIO_CARD_NUM) == NoError)
 	{
-		DO_WritePort(DIO_CARD_NUM, 0, DIO_OUT_RESET);
+		Dio_DO_WritePort(DIO_OUT_RESET);
 		return TRUE;
 	}
 
@@ -46,28 +46,31 @@ U32 CDIO7230::Dio_DI_ReadPort()
 	return ulDIn;
 }
 
-
 void CDIO7230::Gf_setDioWrite(U32 ulDOut)
 {
-	DO_WritePort(DIO_CARD_NUM, 0, ulDOut);
+	Dio_DO_WritePort(ulDOut);
 	delayMS(1000);
-	DO_WritePort(DIO_CARD_NUM, 0, DIO_OUT_RESET);
+	Dio_DO_WritePort(DIO_OUT_RESET);
 }
+
 void CDIO7230::Gf_setDioOutOK()
 {
 	Gf_setDioWrite(DO_TEST_JUDGE_OK);
 	m_pApp->Gf_writeLogData("<DIO>", "Out OK");
 }
+
 void CDIO7230::Gf_setDioOutNG()
 {
 	Gf_setDioWrite(DO_TEST_JUDGE_NG);
 	m_pApp->Gf_writeLogData("<DIO>", "Out NG");
 }
+
 void CDIO7230::Gf_setDioOutTesting()
 {
-	DO_WritePort(DIO_CARD_NUM, 0, DO_TEST_TESTING);
+	Dio_DO_WritePort(DO_TEST_TESTING);
 	m_pApp->Gf_writeLogData("<DIO>", "Out Testing");
 }
+
 bool CDIO7230::Gf_getDIOJigTilting()
 {
 	U32 dio_in;

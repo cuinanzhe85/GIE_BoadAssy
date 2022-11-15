@@ -331,6 +331,8 @@ typedef struct _ST_SYSTEMINFO_{
 	CString		m_sPlcIPAddress;
 	CString		m_sPlcPort;
 
+	int			m_nPinBlockOpenCheck;
+
 }SYSTEMINFO, *LPSYSTEMINFO;
 
 

@@ -1,4 +1,4 @@
-// PatternTest.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// PatternTest.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -6,7 +6,7 @@
 #include "PatternTest.h"
 #include "T2CmdGen.h"
 
-// CPatternTest ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CPatternTest ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 IMPLEMENT_DYNAMIC(CPatternTest, CDialog)
 
@@ -39,13 +39,13 @@ BEGIN_MESSAGE_MAP(CPatternTest, CDialog)
 END_MESSAGE_MAP()
 
 
-// CPatternTest ¸Ş½ÃÁö Ã³¸®±âÀÔ´Ï´Ù.
+// CPatternTest ë©”ì‹œì§€ ì²˜ë¦¬ê¸°ì…ë‹ˆë‹¤.
 
 BOOL CPatternTest::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  ¿©±â¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì¶”ê°€ ì´ˆê¸°í™” ì‘ì—…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	lpModelInfo		= m_pApp->GetModelInfo();
 	lpSystemInfo	= m_pApp->GetSystemInfo();		
 	lpWorkInfo		= m_pApp->GetWorkInfo();
@@ -56,33 +56,29 @@ BOOL CPatternTest::OnInitDialog()
 	Lf_initFontSet();
 	Lf_insertListColum();
 	Lf_insertListItem();
-	
+
 	m_pApp->m_pCommand->Gf_setPGInfoPatternName(_T("BLACK"));
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_ON);
-	if (Lf_CableOpenCheck() == FALSE)
-	{
-		CDialog::OnCancel();
-	}
 	Lf_sendPatternBluData();
 
 	SetTimer(1,200,NULL);	// EDID
 	SetTimer(2,1000,NULL);	// Power Measure
 	SetTimer(3, 1000, NULL);  // OK,NG DIO Input Check
-	SetTimer(5, 500, NULL);  // Ã¹¹øÂ° ÆĞÅÏ ÀÌ¹ÌÁö Ãâ·Â
+	SetTimer(5, 500, NULL);  // ì²«ë²ˆì§¸ íŒ¨í„´ ì´ë¯¸ì§€ ì¶œë ¥
 
-	SetTimer(99,200,NULL); // ¸¶¿ì½º °íÁ¤
+	SetTimer(99,200,NULL); // ë§ˆìš°ìŠ¤ ê³ ì •
 	SetTimer(100,100,NULL);
 
 	m_pApp->Gf_setStartPtnLockTime(0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// ¿¹¿Ü: OCX ¼Ó¼º ÆäÀÌÁö´Â FALSE¸¦ ¹İÈ¯ÇØ¾ß ÇÕ´Ï´Ù.
+	// ì˜ˆì™¸: OCX ì†ì„± í˜ì´ì§€ëŠ” FALSEë¥¼ ë°˜í™˜í•´ì•¼ í•©ë‹ˆë‹¤.
 }
 void CPatternTest::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-					   // TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-					   // ±×¸®±â ¸Ş½ÃÁö¿¡ ´ëÇØ¼­´Â CDialog::OnPaint()À»(¸¦) È£ÃâÇÏÁö ¸¶½Ê½Ã¿À.
+					   // TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+					   // ê·¸ë¦¬ê¸° ë©”ì‹œì§€ì— ëŒ€í•´ì„œëŠ” CDialog::OnPaint()ì„(ë¥¼) í˜¸ì¶œí•˜ì§€ ë§ˆì‹­ì‹œì˜¤.
 	CRect rect;
 	GetClientRect(&rect);
 	dc.FillSolidRect(rect, COLOR_GRAY64);
@@ -92,7 +88,7 @@ void CPatternTest::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	for (int i = 0; i < COLOR_IDX_MAX; i++)
 	{
 		m_Brush[i].DeleteObject();
@@ -114,7 +110,7 @@ void CPatternTest::RemoveMessageFromQueue()
 
 BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: ¿©±â¿¡ Æ¯¼öÈ­µÈ ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº» Å¬·¡½º¸¦ È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— íŠ¹ìˆ˜í™”ëœ ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ í´ë˜ìŠ¤ë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	if( pMsg->message == WM_KEYDOWN)
 	{
 		RemoveMessageFromQueue();
@@ -122,7 +118,7 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 		{
 		case VK_RETURN:
 		case VK_SPACE:
-			// ALT ¶Ç´Â CONTROL ¶Ç´Â SHIFT Key ÀÔ·Â ¹æÁö.
+			// ALT ë˜ëŠ” CONTROL ë˜ëŠ” SHIFT Key ì…ë ¥ ë°©ì§€.
 			if((GetKeyState(VK_MENU)<0) || (GetKeyState(VK_CONTROL)<0) || (GetKeyState(VK_SHIFT)<0))
 				return TRUE;
 		case VK_HOME:
@@ -209,7 +205,7 @@ HBRUSH CPatternTest::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  ¿©±â¼­ DCÀÇ Æ¯¼ºÀ» º¯°æÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì„œ DCì˜ íŠ¹ì„±ì„ ë³€ê²½í•©ë‹ˆë‹¤.
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_MSGBOX:
@@ -317,7 +313,7 @@ HBRUSH CPatternTest::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		break;
 	}
-	// TODO:  ±âº»°ªÀÌ Àû´çÇÏÁö ¾ÊÀ¸¸é ´Ù¸¥ ºê·¯½Ã¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+	// TODO:  ê¸°ë³¸ê°’ì´ ì ë‹¹í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ë¥¸ ë¸ŒëŸ¬ì‹œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	return hbr;
 }
 
@@ -334,7 +330,7 @@ void CPatternTest::Lf_initVariable()
 
 	lpWorkInfo->m_bIsEdidFail = false;
 
-	// Á¦Ç°ÀÇ ÇØ»óµµ ¼³Á¤
+	// ì œí’ˆì˜ í•´ìƒë„ ì„¤ì •
 	CRect rcLCD, rcFrame;
 
 	rcLCD.top = 0;
@@ -342,11 +338,11 @@ void CPatternTest::Lf_initVariable()
 	rcLCD.right = lpModelInfo->m_nTimingHorActive;
 	rcLCD.bottom = lpModelInfo->m_nTimingVerActive;
 
-	// Preview ¿µ¿ª ¼³Á¤
+	// Preview ì˜ì—­ ì„¤ì •
 	GetDlgItem(IDC_STT_PTN_IMAGE_VIEW_SIZE)->GetWindowRect(rcFrame);
 	ScreenToClient(rcFrame);
 
-	// Preview ¿µ¿ª ÃÊ±âÈ­
+	// Preview ì˜ì—­ ì´ˆê¸°í™”
 	m_pApp->m_pPatternView->InitPatternRect(GetDC(), rcLCD, rcFrame);
 	m_pApp->m_pPatternView->InitPatternPath(_T(""));
 	m_pApp->m_pPatternView->InitBmpPatternPath(_T(""));
@@ -482,7 +478,7 @@ void CPatternTest::Lf_sendPatternBluData()
 
 void CPatternTest::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ê°’ì„ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	if(nIDEvent==1)
 	{	
 		KillTimer(1);
@@ -911,7 +907,7 @@ void CPatternTest::Lf_compareEEPRomData()
 
 void CPatternTest::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ê°’ì„ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	CString sdata=_T("");
 	
 	m_pApp->Gf_setPatEndCheckTime(m_nSelNum);
@@ -927,7 +923,7 @@ void CPatternTest::OnLButtonDown(UINT nFlags, CPoint point)
 		m_pApp->m_nPatLock[m_nSelNum] = TRUE;
 
 	Lf_PtnTestEventView(_T("Mouse LEFT - NEXT"));
-	// on ÀÏ¶§ reset ±â´É
+	// on ì¼ë•Œ reset ê¸°ëŠ¥
 	if(m_nSelNum <= lpModelInfo->m_nLbCnt-1)
 	{
 		if(lpModelInfo->m_nLbCnt-1 <= m_nSelNum)  
@@ -951,7 +947,7 @@ void CPatternTest::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CPatternTest::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ê°’ì„ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	if(m_nSelNum <= 0)  
 	{ 
 		return;
@@ -987,14 +983,14 @@ void CPatternTest::Lf_setPatternGrayLevel(int wParam)
 	int adjustValue = 0;
 	int R_Val = 0, G_Val = 0, B_Val = 0;
 
-	// 1. Pattern Name°ú Index¸¦ °¡Á®¿Â´Ù.
+	// 1. Pattern Nameê³¼ Indexë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 
 	strPattern = lpModelInfo->m_sLbPtnName[m_nSelNum];
 
 	strPattern.MakeUpper();
 
-	// 2. Pattern ÀÌ¸§À» ±âÁØÀ¸·Î °¡º¯ÇÒ Color Á¤º¸¸¦ °¡Á®¿Â´Ù.
-	// Pattern StringÀ» ¸¸µç´Ù.
+	// 2. Pattern ì´ë¦„ì„ ê¸°ì¤€ìœ¼ë¡œ ê°€ë³€í•  Color ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+	// Pattern Stringì„ ë§Œë“ ë‹¤.
 	int nPtnGrayLevel, nRedData, nGreenData, nBlueData;
 	CString sdata;
 	GetDlgItem(IDC_STT_TP_COLOR_R_VAL)->GetWindowTextW(sdata);
@@ -1004,7 +1000,7 @@ void CPatternTest::Lf_setPatternGrayLevel(int wParam)
 	GetDlgItem(IDC_STT_TP_COLOR_B_VAL)->GetWindowTextW(sdata);
 	nBlueData = (int)_ttoi(sdata);
 
-	//    ÇÏÀ§ 3bit¸¸ »ç¿ëÇÏ¸ç R:2 G:1 B:0  bit¸¦ ÇÒ´çÇÑ´Ù. 
+	//    í•˜ìœ„ 3bitë§Œ ì‚¬ìš©í•˜ë©° R:2 G:1 B:0  bitë¥¼ í• ë‹¹í•œë‹¤. 
 	if (strPattern.Find(_T("GRAY")) != -1)			{ colorConf = 0x07;	nPtnGrayLevel = nRedData; }
 	else if (strPattern.Find(_T("WHITE")) != -1)	{ colorConf = 0x07;	nPtnGrayLevel = nRedData; }
 	else if (strPattern.Find(_T("BLACK")) != -1)	{ colorConf = 0x07;	nPtnGrayLevel = nRedData; }
@@ -1016,18 +1012,18 @@ void CPatternTest::Lf_setPatternGrayLevel(int wParam)
 	else if (strPattern.Find(_T("YELLOW")) != -1)	{ colorConf = 0x06;	nPtnGrayLevel = nRedData; }
 	else { return; }
 
-	// 3. Gray °¡º¯ Step Á¤º¸¸¦ °¡Á®¿Â´Ù.
+	// 3. Gray ê°€ë³€ Step ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	if (wParam == VK_UP)	adjustValue = 5;
 	if (wParam == VK_DOWN)	adjustValue = -5;
 	if (wParam == VK_LEFT)	adjustValue = -2;
 	if (wParam == VK_RIGHT)	adjustValue = 2;
 
-	// 4. Gray Level °ªÀ» º¯°æÇÑ´Ù.
+	// 4. Gray Level ê°’ì„ ë³€ê²½í•œë‹¤.
 	if (colorConf & 0x04)		R_Val = nPtnGrayLevel + adjustValue;
 	if (colorConf & 0x02)		G_Val = nPtnGrayLevel + adjustValue;
 	if (colorConf & 0x01)		B_Val = nPtnGrayLevel + adjustValue;
 
-	// 5. Gray LevelÀÇ Limit¸¦ °è»êÇÑ´Ù.
+	// 5. Gray Levelì˜ Limitë¥¼ ê³„ì‚°í•œë‹¤.
 	int upLimit = 0;
 	if (lpModelInfo->m_nSignalBit == SIG_6BIT)	upLimit = 63;	// 6bit
 	if (lpModelInfo->m_nSignalBit == SIG_8BIT)	upLimit = 255;	// 8bit
@@ -1041,12 +1037,12 @@ void CPatternTest::Lf_setPatternGrayLevel(int wParam)
 	if (B_Val < 0)			B_Val = 0;
 	if (B_Val > upLimit)	B_Val = upLimit;
 
-	// 6. ÇöÀçÀÇ Gray Level °ªÀ» Update ÇÑ´Ù.
+	// 6. í˜„ì¬ì˜ Gray Level ê°’ì„ Update í•œë‹¤.
 	/*if (colorConf & 0x04)		nPtnGrayLevel = R_Val;
 	if (colorConf & 0x02)		nPtnGrayLevel = G_Val;
 	if (colorConf & 0x01)		nPtnGrayLevel = B_Val;*/
 
-	// 6. PG¿¡ Àü´ŞÇÒ StringÀ» ¸¸µç´Ù.
+	// 6. PGì— ì „ë‹¬í•  Stringì„ ë§Œë“ ë‹¤.
 	int nBitShift;
 	if (lpModelInfo->m_nSignalBit == SIG_6BIT) // 6bit
 	{
@@ -1082,7 +1078,7 @@ void CPatternTest::Lf_setPatternGrayLevel(int wParam)
 
 	BOOL ret;
 	ret = m_pApp->m_pCommand->Gf_setPGInfoPatternString(strPacket, FALSE);
-	// 7. Pattern Data¸¦ PG¿¡ Àü¼ÛÇÑ´Ù.
+	// 7. Pattern Dataë¥¼ PGì— ì „ì†¡í•œë‹¤.
 	if (ret == TRUE)
 	{
 		sdata.Format(_T("%d"), (R_Val >> nBitShift));
@@ -1242,19 +1238,6 @@ BOOL CPatternTest::Lf_PatternCurrentCheck()
 			return FALSE;
 		}
 	}
-	return TRUE;
-}
-BOOL CPatternTest::Lf_CableOpenCheck()
-{
-	if (lpModelInfo->m_nCableOpenUse == _ON_)
-	{
-		if (m_pApp->m_pCommand->Gf_CheckCableOpen() == FALSE)
-		{
-			m_pApp->Gf_ShowMessageBox(_T("Cable Open Check Fail"));
-			return FALSE;
-		}
-	}
-	
 	return TRUE;
 }
 void CPatternTest::Lf_setPatternImageView(CString strPtnName)

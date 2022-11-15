@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CMessageQuestion, CDialog)
 CMessageQuestion::CMessageQuestion(CWnd* pParent /*=NULL*/)
 	: CDialog(CMessageQuestion::IDD, pParent)
 {
-
+	m_nMessageColor = 0;
 }
 
 CMessageQuestion::~CMessageQuestion()
@@ -90,9 +90,18 @@ HBRUSH CMessageQuestion::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	case CTLCOLOR_STATIC:		// Static, CheckBox control
 		if(pWnd->GetDlgCtrlID()==IDC_STT_MSG_MESSAGE)
 		{
-			pDC->SetBkColor(COLOR_JADEGREEN);
-			pDC->SetTextColor(COLOR_BLACK);
-			return Brush[COLOR_IDX_JADEGREEN];
+			if (m_nMessageColor == 0)
+			{
+				pDC->SetBkColor(COLOR_JADEGREEN);
+				pDC->SetTextColor(COLOR_BLACK);
+				return Brush[COLOR_IDX_JADEGREEN];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_RED128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return Brush[COLOR_IDX_RED128];
+			}
 		}
 		break;
 	}
@@ -151,6 +160,7 @@ void CMessageQuestion::Lf_initColorBrush()
 	Brush[COLOR_IDX_BLACK].CreateSolidBrush (COLOR_BLACK);
 	Brush[COLOR_IDX_WHITE].CreateSolidBrush (COLOR_WHITE);
 	Brush[COLOR_IDX_RED].CreateSolidBrush (COLOR_RED);
+	Brush[COLOR_IDX_RED128].CreateSolidBrush(COLOR_RED128);
 	Brush[COLOR_IDX_GREEN].CreateSolidBrush (COLOR_GREEN);
 	Brush[COLOR_IDX_BLUE].CreateSolidBrush (COLOR_BLUE);
 	Brush[COLOR_IDX_JADEGREEN].CreateSolidBrush (COLOR_JADEGREEN);

@@ -33,6 +33,7 @@ public:
 	CStatic m_sttMsgMessage;
 	CButton m_btnMsgConfirm;
 	CButton m_btnMsgClose;
+	int	m_nMessageColor;
 
 protected:
 	void Lf_initLocalValue();

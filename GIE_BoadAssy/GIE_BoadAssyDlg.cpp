@@ -1,5 +1,5 @@
-
-// GIE_BoadAssyDlg.cpp : ���� ����
+﻿
+// GIE_BoadAssyDlg.cpp : 구현 파일
 //
 
 #include "stdafx.h"
@@ -32,19 +32,19 @@ UINT ThreadDioRead(LPVOID pParam)
 	return (0);
 }
 
-// ���� ���α׷� ������ ���Ǵ� CAboutDlg ��ȭ �����Դϴ�.
+// 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
 class CAboutDlg : public CDialog
 {
 public:
 	CAboutDlg();
 
-// ��ȭ ���� �������Դϴ�.
+// 대화 상자 데이터입니다.
 	enum { IDD = IDD_ABOUTBOX };
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV �����Դϴ�.
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
-// �����Դϴ�.
+// 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
@@ -63,7 +63,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 
-// CGIE_BoadAssyDlg ��ȭ ����
+// CGIE_BoadAssyDlg 대화 상자
 
 
 
@@ -114,15 +114,15 @@ BEGIN_MESSAGE_MAP(CGIE_BoadAssyDlg, CDialog)
 END_MESSAGE_MAP()
 
 
-// CGIE_BoadAssyDlg �޽��� ó����
+// CGIE_BoadAssyDlg 메시지 처리기
 
 BOOL CGIE_BoadAssyDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// �ý��� �޴��� "����..." �޴� �׸��� �߰��մϴ�.
+	// 시스템 메뉴에 "정보..." 메뉴 항목을 추가합니다.
 
-	// IDM_ABOUTBOX�� �ý��� ���� ������ �־�� �մϴ�.
+	// IDM_ABOUTBOX는 시스템 명령 범위에 있어야 합니다.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
 
@@ -140,13 +140,13 @@ BOOL CGIE_BoadAssyDlg::OnInitDialog()
 		}
 	}
 
-	// �� ��ȭ ������ �������� �����մϴ�. ���� ���α׷��� �� â�� ��ȭ ���ڰ� �ƴ� ��쿡��
-	//  �����ӿ�ũ�� �� �۾��� �ڵ����� �����մϴ�.
-	SetIcon(m_hIcon, TRUE);			// ū �������� �����մϴ�.
-	SetIcon(m_hIcon, FALSE);		// ���� �������� �����մϴ�.
+	// 이 대화 상자의 아이콘을 설정합니다. 응용 프로그램의 주 창이 대화 상자가 아닐 경우에는
+	//  프레임워크가 이 작업을 자동으로 수행합니다.
+	SetIcon(m_hIcon, TRUE);			// 큰 아이콘을 설정합니다.
+	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	
-	// TODO: ���⿡ �߰� �ʱ�ȭ �۾��� �߰��մϴ�.
+	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 	m_pApp = (CGIE_BoadAssyApp*)AfxGetApp();
 	lpSystemInfo = m_pApp->GetSystemInfo();
 	lpModelInfo	= m_pApp->GetModelInfo();
@@ -158,7 +158,7 @@ BOOL CGIE_BoadAssyDlg::OnInitDialog()
 	Lf_InitColorBrush();
 
 	AfxBeginThread(ThreadDioRead, this);
-	SetTimer(1, 200, NULL);
+	SetTimer(1, 500, NULL);
 
 	ShowWindow(SW_MAXIMIZE);
 
@@ -166,7 +166,7 @@ BOOL CGIE_BoadAssyDlg::OnInitDialog()
 	GetClientRect(rect);
 	rect.top = rect.bottom - 30;
 	m_sttMainMlogView.MoveWindow(rect);
-	return TRUE;  // ��Ŀ���� ��Ʈ�ѿ� �������� ������ TRUE�� ��ȯ�մϴ�.
+	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
 void CGIE_BoadAssyDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -182,19 +182,19 @@ void CGIE_BoadAssyDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 }
 
-// ��ȭ ���ڿ� �ּ�ȭ ���߸� �߰��� ��� �������� �׸�����
-//  �Ʒ� �ڵ尡 �ʿ��մϴ�. ����/�� ���� ����ϴ� MFC ���� ���α׷��� ��쿡��
-//  �����ӿ�ũ���� �� �۾��� �ڵ����� �����մϴ�.
+// 대화 상자에 최소화 단추를 추가할 경우 아이콘을 그리려면
+//  아래 코드가 필요합니다. 문서/뷰 모델을 사용하는 MFC 응용 프로그램의 경우에는
+//  프레임워크에서 이 작업을 자동으로 수행합니다.
 
 void CGIE_BoadAssyDlg::OnPaint()
 {
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // �׸��⸦ ���� ����̽� ���ؽ�Ʈ
+		CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
-		// Ŭ���̾�Ʈ �簢������ �������� ����� ����ϴ�.
+		// 클라이언트 사각형에서 아이콘을 가운데에 맞춥니다.
 		int cxIcon = GetSystemMetrics(SM_CXICON);
 		int cyIcon = GetSystemMetrics(SM_CYICON);
 		CRect rect;
@@ -202,14 +202,14 @@ void CGIE_BoadAssyDlg::OnPaint()
 		int x = (rect.Width() - cxIcon + 1) / 2;
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
-		// �������� �׸��ϴ�.
+		// 아이콘을 그립니다.
 		dc.DrawIcon(x, y, m_hIcon);
 
 		
 	}
 	else
 	{
-		CPaintDC dc(this); // �׸��⸦ ���� ����̽� ���ؽ�Ʈ
+		CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트
 		CRect rect;
 		GetClientRect(&rect);
 		rect.bottom = 100;
@@ -222,8 +222,8 @@ void CGIE_BoadAssyDlg::OnPaint()
 	}
 }
 
-// ����ڰ� �ּ�ȭ�� â�� ���� ���ȿ� Ŀ���� ǥ�õǵ��� �ý��ۿ���
-//  �� �Լ��� ȣ���մϴ�.
+// 사용자가 최소화된 창을 끄는 동안에 커서가 표시되도록 시스템에서
+//  이 함수를 호출합니다.
 HCURSOR CGIE_BoadAssyDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
@@ -233,7 +233,7 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  ���⼭ DC�� Ư���� �����մϴ�.
+	// TODO:  여기서 DC의 특성을 변경합니다.
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_MSGBOX:
@@ -312,41 +312,41 @@ HBRUSH CGIE_BoadAssyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		break;
 	}
-	// TODO:  �⺻���� �������� ������ �ٸ� �귯�ø� ��ȯ�մϴ�.
+	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnUserid()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CUserID userDlg;
 	userDlg.DoModal();
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnModelChange()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CModelChange mcDlg;
 	mcDlg.DoModal();
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnModelinfo()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CModelInfo modDlg;
 	modDlg.DoModal();
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnTest()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CTestReady TestDlg;
 	TestDlg.DoModal();
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnSystem()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
 	CStationMenu stDlg;
 	stDlg.DoModal();
@@ -362,7 +362,7 @@ void CGIE_BoadAssyDlg::OnBnClickedBtnAutofirmware()
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnInitialize()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	KillTimer(99);
 	CInitialize initDlg;
 	initDlg.DoModal();
@@ -372,13 +372,13 @@ void CGIE_BoadAssyDlg::OnBnClickedBtnInitialize()
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnExit()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CDialog::OnOK();
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnBmpDownload()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	HBITMAP hBit;
 	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_BMP_P));
 	m_btnMainBmp.SetBitmap(hBit);
@@ -392,7 +392,7 @@ void CGIE_BoadAssyDlg::OnBnClickedBtnBmpDownload()
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnMint()
 {
-	// TODO: ���⿡ ��Ʈ�� �˸� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	HBITMAP hBit;
 	hBit = LoadBitmap(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP_MAINT_P));
 	m_btnMainMaint.SetBitmap(hBit);
@@ -403,20 +403,29 @@ void CGIE_BoadAssyDlg::OnBnClickedBtnMint()
 }
 void CGIE_BoadAssyDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: ���⿡ �޽��� ó���� �ڵ带 �߰� ��/�Ǵ� �⺻���� ȣ���մϴ�.
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	if(nIDEvent==1)
 	{
 		KillTimer(1);
 
-		CInitialize initDlg;
-		initDlg.DoModal();
+		CUserID idDlg;
+		if (idDlg.DoModal() == IDOK)
+		{
+			CInitialize initDlg;
+			initDlg.DoModal();
 
-		SetTimer(99, 1000, NULL);
+			SetTimer(99, 1000, NULL);
+		}
+		else
+		{
+			CDialog::OnCancel();
+		}
 	}
 	if (nIDEvent == 99)
 	{
 		KillTimer(99);
 
+#if 0
 		if (m_pApp->m_pSocketTCPApp->tcp_plc_GetReconnectFlag() == TRUE)
 		{
 			m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
@@ -428,6 +437,7 @@ void CGIE_BoadAssyDlg::OnTimer(UINT_PTR nIDEvent)
 		}
 
 		SetTimer(99, 1000, NULL);
+#endif
 	}
 	CDialog::OnTimer(nIDEvent);
 }
@@ -492,9 +502,9 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	int npos = 0;
 	if (m_pApp->m_pCommand->Gf_getFirmwareVersion() == TRUE)
 	{
-		npos = lpWorkInfo->m_sFirmwareVersion.Find(_T(" "));
+		npos = lpWorkInfo->m_sFirmwareVersion.ReverseFind(' ');
 		sdata = lpWorkInfo->m_sFirmwareVersion.Left(npos);
-		GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(lpWorkInfo->m_sFirmwareVersion);
+		GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(sdata);
 	}
 	// LVDS FPGA Version
 	m_pApp->m_pCommand->Gf_setSRunerTypeSelect(0);
@@ -582,7 +592,7 @@ void CGIE_BoadAssyDlg::Lf_InitFontSet()
 	// Font Set
 	m_Font[0].CreateFont( 150, 70, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
 	m_Font[1].CreateFont( 60, 26, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("ARIAL"));
-	m_Font[2].CreateFont( 18, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	m_Font[2].CreateFont(24, 11, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_STT_MAIN_FW_VERSION_VIEW)->SetFont(&m_Font[2]);
 
 	m_Font[3].CreateFont( 32, 13, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
@@ -651,7 +661,7 @@ void CGIE_BoadAssyDlg::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ���⿡ �޽��� ó���� �ڵ带 �߰��մϴ�.
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	if(m_pApp->m_bIsGmesConnect == TRUE)
 		m_pApp->Gf_gmesDisConnect(SERVER_MES);
 	if (m_pApp->m_bIsEasConnect == TRUE)
@@ -660,7 +670,7 @@ void CGIE_BoadAssyDlg::OnDestroy()
 
 BOOL CGIE_BoadAssyDlg::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: ���⿡ Ư��ȭ�� �ڵ带 �߰� ��/�Ǵ� �⺻ Ŭ������ ȣ���մϴ�.
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	if( pMsg->message == WM_KEYDOWN)
 	{
 		switch(pMsg->wParam)
@@ -675,6 +685,13 @@ BOOL CGIE_BoadAssyDlg::PreTranslateMessage(MSG* pMsg)
 				testrdyDlg.DoModal();
 				return TRUE;
 			}
+		case 'a':
+		case 'A':
+		{
+			CAutoFirmware autofwDlg;
+			autofwDlg.DoModal();
+			return TRUE;
+		}
 		case 'c':
 		case 'C':
 			{
@@ -696,6 +713,12 @@ BOOL CGIE_BoadAssyDlg::PreTranslateMessage(MSG* pMsg)
 				initDlg.DoModal();
 				return TRUE;
 			}
+		case 'l':
+		case 'L':
+		{
+			Lf_openToDayMLog();
+			return TRUE;
+		}
 		case 'm':
 		case 'M':
 		{
@@ -708,13 +731,6 @@ BOOL CGIE_BoadAssyDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				CStationMenu stationDlg;
 				stationDlg.DoModal();
-				return TRUE;
-			}
-		case 'a':
-		case 'A':
-			{
-				CAutoFirmware autofwDlg;
-				autofwDlg.DoModal();
 				return TRUE;
 			}
 		case 'u':
@@ -731,10 +747,27 @@ BOOL CGIE_BoadAssyDlg::PreTranslateMessage(MSG* pMsg)
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
+void CGIE_BoadAssyDlg::Lf_openToDayMLog()
+{
+	CString filePath;
+	CTime time = CTime::GetCurrentTime();
+
+	filePath.Format(_T(".\\Logs\\MLog\\%s_%04d%02d%02d.txt"), lpSystemInfo->m_sMachinName, time.GetYear(), time.GetMonth(), time.GetDay());
+
+	SHELLEXECUTEINFO sel;
+	sel.cbSize = sizeof(sel);
+	sel.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_DDEWAIT;
+	sel.lpFile = filePath;
+	sel.hwnd = NULL;
+	sel.lpVerb = _T("open");
+	sel.nShow = SW_NORMAL;
+	ShellExecuteEx(&sel);
+}
+
 //void CGIE_BoadAssyDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 //{
 
-	// TODO: ���⿡ �޽��� ó���� �ڵ带 �߰� ��/�Ǵ� �⺻���� ȣ���մϴ�.
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	/*if ((nIDCtl == IDC_BTN_MODEL_CHANGE) || (nIDCtl == IDC_BTN_MODELINFO)
 		|| (nIDCtl == IDC_BTN_SYSTEM) || (nIDCtl == IDC_BTN_TEST) || (nIDCtl == IDC_BTN_INITIALIZE)
 		|| (nIDCtl == IDC_BTN_AUTOFIRMWARE) ||(nIDCtl == IDC_BTN_BMP_DOWNLOAD)|| (nIDCtl == IDC_BTN_EXIT)

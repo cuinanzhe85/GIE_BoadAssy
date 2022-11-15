@@ -95,6 +95,8 @@ void CUserID::OnBnClickedOk()
 			m_pApp->m_bMesComuCheck = false;
 			m_pApp->m_bUserIdGieng = true;
 			m_pApp->Gf_writeLogData(_T("USER ID"),m_sUserId.GetBuffer(0));
+
+			AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 			CDialog::OnOK();
 		}
 		else if((!m_sUserId.Compare(_T("PM"))) || (!m_sUserId.Compare(_T("pm"))))
@@ -107,6 +109,8 @@ void CUserID::OnBnClickedOk()
 			m_pApp->m_bMesComuCheck = false;
 			m_pApp->m_bUserIdPM = true;
 			m_pApp->Gf_writeLogData(_T("USER ID"),m_sUserId.GetBuffer(0));
+
+			AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 			CDialog::OnOK();
 		}
 		else
@@ -115,7 +119,6 @@ void CUserID::OnBnClickedOk()
 			{
 				if (m_pApp->Gf_gmesConnect(SERVER_MES) == FALSE)
 				{
-					//AfxMessageBox(_T("MES CONNECTION FAIL - MES can not be connected."), MB_ICONERROR);
 					m_pApp->Gf_writeLogData("<MES>", "Connection Fail");
 				}
 			}
@@ -125,7 +128,6 @@ void CUserID::OnBnClickedOk()
 				{
 					if (m_pApp->Gf_gmesConnect(SERVER_EAS) == FALSE)
 					{
-						//AfxMessageBox(_T("MES CONNECTION FAIL - MES can not be connected."), MB_ICONERROR);
 						m_pApp->Gf_writeLogData("<EAS>", "Connection Fail");
 					}
 				}
@@ -135,7 +137,6 @@ void CUserID::OnBnClickedOk()
 			{
 				if(m_pApp->Gf_sendGmesHost(HOST_EAYT)==FALSE)	
 				{
-//						m_pApp->m_bHostComuChk = FALSE;
 					GetDlgItem(IDOK)->EnableWindow(TRUE);
 					return;
 				}
@@ -145,28 +146,16 @@ void CUserID::OnBnClickedOk()
 
 				if(m_pApp->Gf_sendGmesHost(HOST_UCHK)==FALSE)
 				{
-//						m_pApp->m_bHostComuChk = FALSE;
 					GetDlgItem(IDOK)->EnableWindow(TRUE);
 					return;
 				}
 				if(m_pApp->Gf_sendGmesHost(HOST_EDTI)==FALSE)
 				{
-//						m_pApp->m_bHostComuChk = FALSE;
 					GetDlgItem(IDOK)->EnableWindow(TRUE);
 					return;
 				}
-// 					m_pApp->m_bUserIdCheck = TRUE;
-// 					m_pApp->Gf_writeLogData(_T("UserID"), m_pApp->m_pTibDrive->m_sTibUserId);
-// 
-// 					if((m_pApp->m_bPgmStart == FALSE) && (m_pApp->m_bFldrSendOn == TRUE))
-// 					{
-// 						CString strBuff;
-// 						if((m_pApp->m_bUserIdGieng == FALSE) && (m_pApp->m_bUserIdPM == FALSE))
-// 						{
-// 						}
-// 					}
-// 					m_pApp->m_bFldrSendOn = TRUE;
 
+				AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 				CDialog::OnOK();
 			}
 			else

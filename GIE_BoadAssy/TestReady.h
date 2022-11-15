@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "afxwin.h"
 
 
-// CTestReady ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CTestReady ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 #define TIMER_PID_CHECK		2
 
 class CTestReady : public CDialog
@@ -10,14 +10,14 @@ class CTestReady : public CDialog
 	DECLARE_DYNAMIC(CTestReady)
 
 public:
-	CTestReady(CWnd* pParent = NULL);   // Ç¥ÁØ »ı¼ºÀÚÀÔ´Ï´Ù.
+	CTestReady(CWnd* pParent = NULL);   // í‘œì¤€ ìƒì„±ìì…ë‹ˆë‹¤.
 	virtual ~CTestReady();
 
-// ´ëÈ­ »óÀÚ µ¥ÀÌÅÍÀÔ´Ï´Ù.
+// ëŒ€í™” ìƒì ë°ì´í„°ì…ë‹ˆë‹¤.
 	enum { IDD = IDD_TEST_READY };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Áö¿øÀÔ´Ï´Ù.
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ì§€ì›ì…ë‹ˆë‹¤.
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -38,13 +38,18 @@ protected:
 	bool Lf_getControlBdReady();
 	BOOL Lf_checkPanelId();
 	bool Lf_startTest();
+	bool Lf_startTestOn();
 	void Lf_openResult();
 	void Lf_createCount(int typ);
 	BOOL Lf_sendGMESData();
-	void Lf_setVariableAfter();
+	void Lf_setVariableReset();
+	BOOL Lf_SystemAutoFusing();
+	BOOL Lf_CableOpenCheck();
+
 
 protected:
 	LPSYSTEMINFO	lpSystemInfo;
+	LPMODELSETINFO	lpModelInfo;
 	LPINSPWORKINFO	lpWorkInfo;
 
 	unsigned short m_dioInputBit;

@@ -185,6 +185,12 @@ void CMaint::OnTimer(UINT_PTR nIDEvent)
 void CMaint::OnBnClickedCheckDo01()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_pApp->Gf_PinBlockOpenCheck() == FALSE)
+	{
+		m_chkDioOut01.SetCheck(FALSE);
+		return;
+	}
+
 	if (m_chkDioOut01.GetCheck() == TRUE)
 		m_uDioOutBit |= DIO_OUT_01;
 	else
@@ -196,6 +202,12 @@ void CMaint::OnBnClickedCheckDo01()
 void CMaint::OnBnClickedCheckDo02()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_pApp->Gf_PinBlockOpenCheck() == FALSE)
+	{
+		m_chkDioOut01.SetCheck(FALSE);
+		return;
+	}
+
 	if (m_chkDioOut02.GetCheck() == TRUE)
 		m_uDioOutBit |= DIO_OUT_02;
 	else
@@ -564,7 +576,23 @@ void CMaint::Lf_initFontSet()
 	GetDlgItem(IDC_PRO_BLU)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_PRO_BCR)->SetFont(&m_Font[0]);
 
-	m_Font[1].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	m_Font[1].CreateFont(18, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	GetDlgItem(IDC_CHECK_DO_01)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DO_02)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DO_03)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DO_04)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DO_05)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DO_06)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DO_07)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DO_08)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DI_01)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DI_02)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DI_03)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DI_04)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DI_05)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DI_06)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DI_07)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_CHECK_DI_08)->SetFont(&m_Font[0]);
 
 	m_Font[2].CreateFont(15, 8, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
