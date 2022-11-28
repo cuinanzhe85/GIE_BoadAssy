@@ -16,6 +16,7 @@
 #include "SocketUDP.h"
 #include "SocketTCPApp.h"
 #include "PlcCtrl.h"
+#include "FTPInterface.h"
 // CGIE_BoadAssyApp:
 // 이 클래스의 구현에 대해서는 GIE_BoadAssy.cpp을 참조하십시오.
 //
@@ -42,7 +43,8 @@ public:
 	CSocketUDP* m_pSocketUDP;
 	CSocketTcpApp* m_pSocketTCPApp;
 	CPLCCtrl* m_pPlcCtrl;
-	
+	CFTPInterface* lpFtpDFS;
+
 
 	LPFUSINGINFO		GetFusingInfo();
 	LPSYSTEMINFO		GetSystemInfo();
@@ -52,6 +54,7 @@ public:
 public:
 	void Gf_writeLogData(CString strEvent,CString strData);
 	void Gf_writeLogData(char Event[MLOG_MAX_LENGTH],char Data[MLOG_MAX_LENGTH]);
+	void Gf_writeSummaryLog();
 	void Gf_writeInspCount(int Type);
 	void Gf_loadInspCount();
 	void Gf_loadSystemInfo();	
@@ -96,8 +99,24 @@ public:
 
 	BOOL udp_sendPacket(CString ipAddress, int nTarget, int nCommand, int nLength, char* pData, int recvACK=TRUE, int waitTime=2000);
 	BOOL udp_procWaitRecvACK(int cmd, DWORD waitTime);
-	int m_nAckCmd[255];
-	char m_szMainFwVersion[256];
+
+
+	///////////////////////////////////////////////////////////
+	// FTP Function
+	///////////////////////////////////////////////////////////
+	BOOL Gf_ftpConnectDFS();
+	BOOL Gf_ftpDisConnectDFS();
+	BOOL Gf_ftpSetHomeDirectory();
+	BOOL Gf_ftpSetCurrentDirectory(CString strPath);
+	BOOL Gf_ftpCreateDirectory(CFTPInterface* lpFtp, CString strDirectory);
+	BOOL Gf_ftpDownloadModuleIniFile();
+	CString Gf_ftpGetModuleIniFilaName();
+
+	///////////////////////////////////////////////////////////
+	// Gradient Static Function
+	///////////////////////////////////////////////////////////
+	void Gf_setGradientStatic(CGradientStatic* pGStt, long sttColor, CFont* pFont, BOOL bSplit);
+
 public:
 	CStatic* m_pStaticMainLog;
 	CString m_sModelFile;
@@ -139,6 +158,11 @@ public:
 
 	int m_nI2CCmdNumber;
 	int m_nBMtoggle;
+	int m_nAckCmd[255];
+	char m_szMainFwVersion[256];
+
+
+
 protected:
 	BOOL Lf_loadEdidFile(CString spath);
 	void Lf_initVariable();
@@ -163,6 +187,7 @@ protected:
 	LPMODELSETINFO			lpModelInfo;
 	LPSYSTEMINFO			lpSystemInfo;
 	LPINSPWORKINFO			lpWorkInfo;
+	SUMMARYINFO				m_summaryInfo;
 };
 
 extern CGIE_BoadAssyApp theApp;

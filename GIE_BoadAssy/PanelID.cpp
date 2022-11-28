@@ -96,27 +96,28 @@ void CPanelID::Lf_InitBrush()
 	m_Brush[COLOR_IDX_CYAN].CreateSolidBrush(COLOR_CYAN);
 	m_Brush[COLOR_IDX_BLUISH].CreateSolidBrush(COLOR_BLUISH);
 }
+
 void CPanelID::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CString strPanelId=_T("");
+	CString strInputID=_T("");
 	BOOL isDataOK = TRUE;
 	char cbuff[128]={0,};
 	int i=0,len=0;
 	WORD wPID[20];
 	
-	m_edtPanelId.GetWindowText(strPanelId);
-	if(((strPanelId.GetLength() < 7) || (strPanelId.GetLength() > 20)) && (strPanelId != _T("ESC")) )
+	m_edtPanelId.GetWindowText(strInputID);
+	if(((strInputID.GetLength() < 7) || (strInputID.GetLength() > 20)) && (strInputID != _T("ESC")) )
 	{
 		m_pApp->Gf_ShowMessageBox(_T("<BCR> Panel ID Min 7, Max 20"));
 		m_edtPanelId.SetWindowText(_T(""));
 		return;
 	}
-	strPanelId.Replace(_T("\r"), _T(""));
-	strPanelId.Replace(_T("\n"), _T(""));
+	strInputID.Replace(_T("\r"), _T(""));
+	strInputID.Replace(_T("\n"), _T(""));
 
-	m_pApp->Gf_writeLogData(_T("<PID INPUT>"), strPanelId.GetBuffer(0));
-	wchar_To_char(strPanelId.GetBuffer(0), cbuff);
+	m_pApp->Gf_writeLogData(_T("<PID INPUT>"), strInputID.GetBuffer(0));
+	wchar_To_char(strInputID.GetBuffer(0), cbuff);
 	len = (int)strlen(cbuff);
 	for(i=0; i<len; i++)
 	{
@@ -135,46 +136,66 @@ void CPanelID::OnBnClickedOk()
 	if( isDataOK == FALSE )
 	{
 		m_pApp->Gf_ShowMessageBox(_T("<BCR> Incorrected Panel ID"));
-		m_edtPanelId.SetSel(0, strPanelId.GetLength());
+		m_edtPanelId.SetSel(0, strInputID.GetLength());
 		return;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// PLC PID Write
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	memset(wPID, 0x00, sizeof(wPID));
-	memcpy(wPID, cbuff, strlen(cbuff));
-	m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
-	delayMS(200);
-	if (m_pApp->m_pPlcCtrl->plc_tcpConnection() == TRUE)
+	if (lpSystemInfo->m_nPlcDeviceUse == TRUE)
 	{
-		if (m_pApp->m_pPlcCtrl->plc_sendInputPID(lpSystemInfo->m_nPlcDeviceNum, wPID, len) == TRUE)
+		memset(wPID, 0x00, sizeof(wPID));
+		memcpy(wPID, cbuff, strlen(cbuff));
+		m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
+		delayMS(200);
+		if (m_pApp->m_pPlcCtrl->plc_tcpConnection() == TRUE)
 		{
-			m_pApp->Gf_writeLogData(_T("<PLC>"), _T("PLC Panel ID Write Success"));
-
-			m_pApp->m_pPlcCtrl->plc_sendPidWriteComplete(lpSystemInfo->m_nPlcDeviceNum, _SET_);
-			delayMS(500);
-			if (m_pApp->m_pPlcCtrl->plc_sendPidWriteComplete(lpSystemInfo->m_nPlcDeviceNum, _CLEAR_) == TRUE)
+			if (m_pApp->m_pPlcCtrl->plc_sendInputPID(lpSystemInfo->m_nPlcDeviceNum, wPID, len) == TRUE)
 			{
-				m_pApp->Gf_writeLogData(_T("<PLC>"), _T("PLC Panel ID Write Complete Bit ON"));
-				lpWorkInfo->m_sPID = strPanelId;
-				CDialog::OnOK();
+				m_pApp->Gf_writeLogData(_T("<PLC>"), _T("PLC Panel ID Write Success"));
 
+				m_pApp->m_pPlcCtrl->plc_sendPidWriteComplete(lpSystemInfo->m_nPlcDeviceNum, _SET_);
+				delayMS(500);
+				if (m_pApp->m_pPlcCtrl->plc_sendPidWriteComplete(lpSystemInfo->m_nPlcDeviceNum, _CLEAR_) == TRUE)
+				{
+					m_pApp->Gf_writeLogData(_T("<PLC>"), _T("PLC Panel ID Write Complete Bit ON"));
+				}
+				else
+				{
+					m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC Panel ID Write Complete Bit ON => Fail"));
+					return;
+				}
+			}
+			else
+			{
+				m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC Panel ID Write Fail"));
 				return;
 			}
 		}
 		else
 		{
-			m_pApp->Gf_ShowMessageBox(_T("<PLC> PLC Panel ID Write Fail"));
+			m_pApp->Gf_ShowMessageBox(_T("<PLC> TCP/IP Connection Fail"));
+			return;
 		}
+		m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	if (strInputID.GetLength() > 15)			// 입력 ID의 길이가 15자리보다 클 경우 Serial Number 로 인식.
+	{
+		lpWorkInfo->m_sPanelID.Empty();
+		lpWorkInfo->m_sSerialNumber = strInputID;
 	}
 	else
 	{
-		m_pApp->Gf_ShowMessageBox(_T("<PLC> TCP/IP Connection Fail"));
+		lpWorkInfo->m_sPanelID = strInputID;
+		lpWorkInfo->m_sSerialNumber.Empty();
 	}
-	m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	CDialog::OnOK();
 }
 
 void CPanelID::OnTimer(UINT_PTR nIDEvent)

@@ -14,6 +14,7 @@
 #include "AutoFirmware.h"
 #include "BmpDownload.h"
 #include "Maint.h"
+#include "DefectResult.h"
 
 
 #ifdef _DEBUG
@@ -355,6 +356,10 @@ void CGIE_BoadAssyDlg::OnBnClickedBtnSystem()
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnAutofirmware()
 {
+//	CDefectResult dlg;
+//	dlg.DoModal();
+//	return;
+
 	CAutoFirmware fwDlg;
 	fwDlg.DoModal();
 	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
@@ -499,31 +504,22 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(_T(""));
 	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(_T(""));
 
+	// Firmware Version
 	int npos = 0;
-	if (m_pApp->m_pCommand->Gf_getFirmwareVersion() == TRUE)
-	{
-		npos = lpWorkInfo->m_sFirmwareVersion.ReverseFind(' ');
-		sdata = lpWorkInfo->m_sFirmwareVersion.Left(npos);
-		GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(sdata);
-	}
+	npos = lpWorkInfo->m_sFirmwareVersion.ReverseFind(' ');
+	sdata = lpWorkInfo->m_sFirmwareVersion.Left(npos);
+	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(sdata);
+
 	// LVDS FPGA Version
-	m_pApp->m_pCommand->Gf_setSRunerTypeSelect(0);
-	if (m_pApp->m_pCommand->Gf_getFpgaeVersion() == TRUE)
-	{
-		npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
-		sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
-		GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(sdata);
-		GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
-	}
+	npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
+	sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
+	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
+
 	// DP FPGA Version
-	m_pApp->m_pCommand->Gf_setSRunerTypeSelect(1);
-	if (m_pApp->m_pCommand->Gf_getFpgaeVersion() == TRUE)
-	{
-		npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
-		sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
-		GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
-	}
-	
+	npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
+	sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
+	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
 
 	return (0);
 }

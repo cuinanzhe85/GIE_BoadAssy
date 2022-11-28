@@ -239,10 +239,10 @@ static void Write_ModelFile(LPCWSTR lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey,
 	::WritePrivateProfileString(lpTitle, lpKey, szData, szModelPath);        
 }
 
-static void Read_ProfileString(LPCWSTR lpFileName, LPCWSTR lpTitle, LPCWSTR lpKey, CString *retValue)
+static void Read_ProfileString(LPCWSTR lpFileName, LPCWSTR lpSection, LPCWSTR lpKey, CString *retValue)
 {
 	wchar_t wszData[512] = {0,};
-	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), lpFileName);
+	::GetPrivateProfileString(lpSection, lpKey, 0, wszData, sizeof(wszData), lpFileName);
 
 	retValue->Format(_T("%s"), wszData);
 }
@@ -874,4 +874,67 @@ static void Write_WorkLog_Data(LPCWSTR lpPath, LPCWSTR lpKey, CString szRetStrin
 	LPCWSTR lpTitle=_T("NO");
 
 	::WritePrivateProfileString(lpTitle,lpKey, szRetString, lpPath);
+}
+
+
+static CString GetDefectIniProfileString(CString fileName, CString section, CString key)
+{
+	BOOL bRead = TRUE;
+	CString lineStringW;
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////
+	FILE* fStream = NULL;
+	wchar_t* pFilePath = (wchar_t*)fileName.GetBuffer();
+	errno_t e = _tfopen_s(&fStream, pFilePath, _T("rt,ccs=UNICODE"));	// rt가 핵심
+
+	if (!e)
+	{
+		CStdioFile cfile(fStream);
+
+		BOOL bAppendBDINFO = FALSE, bAppendWDRINFO = FALSE;
+
+		section.Insert(0, _T("["));
+		section.Append(_T("]"));
+		while (cfile.ReadString(lineStringW))
+		{
+			lineStringW.Replace(_T("\n"), _T(""));
+			lineStringW.Replace(_T("\r"), _T(""));
+
+			if (!lineStringW.Compare(section))
+			{
+				int len;
+				key.Append(_T("="));
+				len = key.GetLength();
+				while (cfile.ReadString(lineStringW))
+				{
+					lineStringW.TrimLeft();
+					lineStringW.TrimRight();
+
+					// 다음 Section을 만나면 Return한다.
+					if (lineStringW.Left(1) == _T("["))
+						break;
+
+					if (lineStringW.Left(len) == key)
+					{
+						lineStringW.Delete(0, len);
+						cfile.Close();
+
+						return lineStringW;
+					}
+				}
+				break;
+			}
+		}
+		cfile.Close();
+	}
+
+	return _T("");
+}
+
+static void Read_DefectIniFile(CString fileName, LPCWSTR lpSection, LPCWSTR lpKey, CString* pRetValue)
+{
+	CString sdata;
+	sdata = GetDefectIniProfileString(fileName, lpSection, lpKey);
+	pRetValue->Format(_T("%s"), sdata);
 }

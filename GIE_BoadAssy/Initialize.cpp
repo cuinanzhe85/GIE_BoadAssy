@@ -45,6 +45,8 @@ BOOL CInitialize::OnInitDialog()
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	m_pApp->Gf_writeLogData("<WND>", "Test Ready Dialog Open");
 	lpModelInfo		= m_pApp->GetModelInfo();
+	lpSystemInfo	= m_pApp->GetSystemInfo();
+	lpWorkInfo		= m_pApp->GetWorkInfo();
 	
 	Lf_initFontSet();
 
@@ -78,6 +80,13 @@ void CInitialize::OnTimer(UINT_PTR nIDEvent)
 		KillTimer(1);
 
 		Lf_loadData();
+
+		if (lpSystemInfo->m_nDfsUse == TRUE)
+		{
+			m_pApp->Gf_ftpConnectDFS();
+			m_pApp->Gf_ftpDownloadModuleIniFile();
+			m_pApp->Gf_ftpDisConnectDFS();
+		}
 	}
 	CDialog::OnTimer(nIDEvent);
 }
@@ -452,17 +461,20 @@ void CInitialize::Lf_loadData()
 	}
 	GetDlgItem(IDC_STT_DIO_VALUE)->Invalidate(FALSE);
 
-	m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
-	delayMS(500);
-	if (m_pApp->m_pPlcCtrl->plc_tcpConnection() == TRUE)
+	if (lpSystemInfo->m_nPlcDeviceUse == TRUE)
 	{
-		delayMS(100);
 		m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
-		m_nStatus[ST_PLC] = TRUE;
-	}
-	else
-	{
-		m_nStatus[ST_PLC] = FALSE;
+		delayMS(500);
+		if (m_pApp->m_pPlcCtrl->plc_tcpConnection() == TRUE)
+		{
+			delayMS(100);
+			m_pApp->m_pPlcCtrl->plc_tcpDisConnection();
+			m_nStatus[ST_PLC] = TRUE;
+		}
+		else
+		{
+			m_nStatus[ST_PLC] = FALSE;
+		}
 	}
 	GetDlgItem(IDC_STT_PLC_VALUE)->Invalidate(FALSE);
 
@@ -482,7 +494,28 @@ void CInitialize::Lf_loadData()
 			strlog.Format(_T("Main FW Ver : %s"), char_To_wchar(m_pApp->m_szMainFwVersion));
 			m_pApp->Gf_writeLogData(_T("<PG>"), strlog);
 		}
-	}	
+
+		if (lpModelInfo->m_nSignalType == 0)
+		{
+			m_pApp->m_pCommand->Gf_setSRunerTypeSelect(0);
+			if (m_pApp->m_pCommand->Gf_getFpgaeVersion() == TRUE)
+			{
+				CString strlog;
+				strlog.Format(_T("LVDS FPGA FW Ver : %s"), lpWorkInfo->m_sFpgaVersion);
+				m_pApp->Gf_writeLogData(_T("<FPGA>"), strlog);
+			}
+		}
+		else
+		{
+			m_pApp->m_pCommand->Gf_setSRunerTypeSelect(1);
+			if (m_pApp->m_pCommand->Gf_getFpgaeVersion() == TRUE)
+			{
+				CString strlog;
+				strlog.Format(_T("DP FPGA FW Ver : %s"), lpWorkInfo->m_sFpgaVersion);
+				m_pApp->Gf_writeLogData(_T("<FPGA>"), strlog);
+			}
+		}
+	}
 	
 	int m_nChkPoint = 0;
 	for(int i=0; i<20; i++)

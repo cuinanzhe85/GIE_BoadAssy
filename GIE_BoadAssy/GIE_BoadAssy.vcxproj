@@ -204,10 +204,13 @@
     <ClCompile Include="BmpDownload.cpp" />
     <ClCompile Include="CIMNetCommApp.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="DefectResult.cpp" />
     <ClCompile Include="Dio7230.cpp" />
+    <ClCompile Include="FTPInterface.cpp" />
     <ClCompile Include="GieJudge.cpp" />
     <ClCompile Include="GIE_BoadAssy.cpp" />
     <ClCompile Include="GIE_BoadAssyDlg.cpp" />
+    <ClCompile Include="GradientStatic.cpp" />
     <ClCompile Include="IniProfileAPI.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Maint.cpp" />
@@ -240,10 +243,13 @@
     <ClInclude Include="BmpDownload.h" />
     <ClInclude Include="CIMNetCommApp.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="DefectResult.h" />
     <ClInclude Include="Dio7230.h" />
+    <ClInclude Include="FTPInterface.h" />
     <ClInclude Include="GieJudge.h" />
     <ClInclude Include="GIE_BoadAssy.h" />
     <ClInclude Include="GIE_BoadAssyDlg.h" />
+    <ClInclude Include="GradientStatic.h" />
     <ClInclude Include="Maint.h" />
     <ClInclude Include="ModelGamma.h" />
     <ClInclude Include="PlcCtrl.h" />

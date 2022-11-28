@@ -202,6 +202,10 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialog)
 	ON_EN_CHANGE(IDC_EDT_V_BACK_PORCH, &CModelInfo::OnEnChangeEdtVBackPorch)
 	ON_BN_CLICKED(IDC_BTN_GAMMA_VOLTAGE_SET, &CModelInfo::OnBnClickedBtnGammaVoltageSet)
 	ON_STN_CLICKED(IDC_STT_FUSING, &CModelInfo::OnStnClickedSttFusing)
+	ON_STN_CLICKED(IDC_STT_ICC_LOW, &CModelInfo::OnStnClickedSttIccLow)
+	ON_STN_CLICKED(IDC_STT_ICC_HIGH, &CModelInfo::OnStnClickedSttIccHigh)
+	ON_STN_CLICKED(IDC_STT_IDD_LOW, &CModelInfo::OnStnClickedSttIddLow)
+	ON_STN_CLICKED(IDC_STT_IDD_HIGH, &CModelInfo::OnStnClickedSttIddHigh)
 END_MESSAGE_MAP()
 
 
@@ -322,7 +326,7 @@ void CModelInfo::Lf_initFontSet()
 	GetDlgItem(IDC_STT_GRP_I2C_OPTION)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_POWER_VCOM)->SetFont(&m_Font[0]);
 
-	m_Font[1].CreateFont( 15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
+	m_Font[1].CreateFont( 17, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
 	m_Font[2].CreateFont( 15, 8, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
@@ -1443,22 +1447,32 @@ void CModelInfo::Lf_setPtnDataChange(int sel)
 void CModelInfo::Lf_setChangeFont()
 {
 
-	if(m_nChangeFont & 0x0001)	{GetDlgItem(IDC_STT_VCC_CLK)->SetFont(&m_Font[1]);}
+	if (m_nChangeFont & 0x0001)	{GetDlgItem(IDC_STT_VCC_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_VCC_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0002)	{GetDlgItem(IDC_STT_VDD_CLK)->SetFont(&m_Font[1]);}
+	if (m_nChangeFont & 0x0002)	{GetDlgItem(IDC_STT_VDD_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_VDD_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0004)	{GetDlgItem(IDC_STT_TMS_CLK)->SetFont(&m_Font[1]);}
+	if (m_nChangeFont & 0x0004)	{GetDlgItem(IDC_STT_TMS_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_TMS_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0008)	{GetDlgItem(IDC_STT_VSYNC_CLK)->SetFont(&m_Font[1]);}
+	if (m_nChangeFont & 0x0008)	{GetDlgItem(IDC_STT_VSYNC_CLK)->SetFont(&m_Font[1]);}
 	else						{GetDlgItem(IDC_STT_VSYNC_CLK)->SetFont(&m_Font[2]);}
 
-	if(m_nChangeFont & 0x0010)	{GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[1]);}
-	else						{GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[2]);}
+	if (m_nChangeFont & 0x0010)	{GetDlgItem(IDC_STT_ICC_LOW)->SetFont(&m_Font[1]);}
+	else						{GetDlgItem(IDC_STT_ICC_LOW)->SetFont(&m_Font[2]);}
 
-	GetDlgItem(IDC_STT_TOUCH_CLK)->SetFont(&m_Font[2]);
+	if (m_nChangeFont & 0x0020) { GetDlgItem(IDC_STT_ICC_HIGH)->SetFont(&m_Font[1]); }
+	else						{ GetDlgItem(IDC_STT_ICC_HIGH)->SetFont(&m_Font[2]); }
+
+	if (m_nChangeFont & 0x0040) { GetDlgItem(IDC_STT_IDD_LOW)->SetFont(&m_Font[1]); }
+	else						{ GetDlgItem(IDC_STT_IDD_LOW)->SetFont(&m_Font[2]); }
+
+	if (m_nChangeFont & 0x0080) { GetDlgItem(IDC_STT_IDD_HIGH)->SetFont(&m_Font[1]); }
+	else						{ GetDlgItem(IDC_STT_IDD_HIGH)->SetFont(&m_Font[2]); }
+
+	if (m_nChangeFont & 0x0100) { GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[1]); }
+	else						{ GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[2]); }
 }
 
 void CModelInfo::OnBnClickedBtnAdd()
@@ -1712,8 +1726,40 @@ void CModelInfo::OnBnClickedBtnAll()
 	{
 		for(nVertical = 0; nVertical < nCnt; nVertical++)
 		{ 
-			m_edtPtnBlu.GetWindowText(sdata);
+			m_edtPtnIccLow.GetWindowText(sdata);
 			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE,0 ,0);
+		}
+	}
+	if (m_nSelClkFlags == 6)
+	{
+		for (nVertical = 0; nVertical < nCnt; nVertical++)
+		{
+			m_edtPtnIccHigh.GetWindowText(sdata);
+			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE, 0, 0);
+		}
+	}
+	if (m_nSelClkFlags == 7)
+	{
+		for (nVertical = 0; nVertical < nCnt; nVertical++)
+		{
+			m_edtPtnIddLow.GetWindowText(sdata);
+			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE, 0, 0);
+		}
+	}
+	if (m_nSelClkFlags == 8)
+	{
+		for (nVertical = 0; nVertical < nCnt; nVertical++)
+		{
+			m_edtPtnIddHigh.GetWindowText(sdata);
+			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE, 0, 0);
+		}
+	}
+	if (m_nSelClkFlags == 9)
+	{
+		for (nVertical = 0; nVertical < nCnt; nVertical++)
+		{
+			m_edtPtnBlu.GetWindowText(sdata);
+			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE, 0, 0);
 		}
 	}
 	UpdateData(FALSE);
@@ -1755,13 +1801,49 @@ void CModelInfo::OnStnClickedSttVsyncClk()
 	Lf_setChangeFont();
 }
 
+void CModelInfo::OnStnClickedSttIccLow()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nSelClkFlags = 5;
+	m_nChangeFont &= 0x0000;
+	m_nChangeFont |= 0x0010;
+	Lf_setChangeFont();
+}
+
+void CModelInfo::OnStnClickedSttIccHigh()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nSelClkFlags = 6;
+	m_nChangeFont &= 0x0000;
+	m_nChangeFont |= 0x0020;
+	Lf_setChangeFont();
+}
+
+void CModelInfo::OnStnClickedSttIddLow()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nSelClkFlags = 7;
+	m_nChangeFont &= 0x0000;
+	m_nChangeFont |= 0x0040;
+	Lf_setChangeFont();
+}
+
+
+void CModelInfo::OnStnClickedSttIddHigh()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nSelClkFlags = 8;
+	m_nChangeFont &= 0x0000;
+	m_nChangeFont |= 0x0080;
+	Lf_setChangeFont();
+}
 
 void CModelInfo::OnStnClickedSttBluClk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_nSelClkFlags=6;
+	m_nSelClkFlags=9;
 	m_nChangeFont&=0x0000;
-	m_nChangeFont|=0x0010;
+	m_nChangeFont|=0x0100;
 	Lf_setChangeFont();
 }
 
@@ -2187,3 +2269,4 @@ void CModelInfo::OnStnClickedSttFusing()
 	GetDlgItem(IDC_STT_FUSING)->EnableWindow(TRUE);
 	GetDlgItem(IDC_STT_FUSING)->Invalidate(FALSE);
 }
+

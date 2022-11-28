@@ -5,6 +5,7 @@
 #include "GIE_BoadAssy.h"
 #include "StationMenu.h"
 #include "Initialize.h"
+#include "MessageQuestion.h"
 
 // CStationMenu 대화 상자입니다.
 
@@ -42,10 +43,15 @@ void CStationMenu::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_EAS_DEMONPORT, m_edtEasDaemonPort);
 	DDX_Control(pDX, IDC_EDIT_EAS_LOCALSUBJECT, m_edtEasLocalSubject);
 	DDX_Control(pDX, IDC_EDIT_EAS_REMOTESUBJECT, m_edtEasRemoteSubject);
+	DDX_Control(pDX, IDC_CMB_PLC_DEVICE_USE, m_cmbPlcDeviceUse);
 	DDX_Control(pDX, IDC_CMB_PLC_DEVICE_NUM, m_cmbPlcDeviceNum);
 	DDX_Control(pDX, IDC_IPA_TCPIP_PLC_IPADDR, m_ipaPlcIPAddress);
 	DDX_Control(pDX, IDC_EDT_TCPIP_PLC_PORT, m_edtPlcPort);
 	DDX_Control(pDX, IDC_CMB_PINBLOCK_OPEN_CHECK, m_cmbPinBlockOpenCheck);
+	DDX_Control(pDX, IDC_CMB_DFS_USE, m_cmbDfsUse);
+	DDX_Control(pDX, IDC_IPA_DFS_IP_ADDRESS, m_ipaDfsIPAddress);
+	DDX_Control(pDX, IDC_EDT_DFS_USER_ID, m_edtDfsUserId);
+	DDX_Control(pDX, IDC_EDT_DFS_PASSWORD, m_edtDfsPassword);
 }
 
 
@@ -137,6 +143,7 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| (pWnd->GetDlgCtrlID()==IDC_STT_PATH_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_TIT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_TCPIP_PLC_TIT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_DFS_TIT)
 			)
 		{
 			pDC->SetBkColor(COLOR_LIGHT_BLUE);
@@ -163,9 +170,14 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_LOCAL_SUBJ)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_REMOTE_SUBJ)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_EAS_USE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_PLC_DEVICE_USE)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_PLC_DEVICE_NUM)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_TCPIP_PLC_IPADDR)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_TCPIP_PLC_PORT)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_DFS_USE)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_DFS_IP_ADDRESS)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_DFS_USER_ID)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_DFS_PASSWORD)
 			)
 		{
 			pDC->SetBkColor(COLOR_BLUISH);
@@ -219,6 +231,7 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_STT_EAS_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_PATH_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_TCPIP_PLC_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_DFS_TIT)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 	GetDlgItem(IDC_EDT_EQP_NAME)->SetFont(&m_Font[4]);
@@ -236,6 +249,7 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_IPADDRESS_LOCAL_IP)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_BTN_QUALITY_SETUP)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_BTN_QUALITY_FTP_SETUP)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_BTN_QUANTITY_COUNT_RESET)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_EDT_MOD_FILE_PATH)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_EDT_PTN_FILE_PATH)->SetFont(&m_Font[4]);
@@ -256,12 +270,22 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_STT_PATTERN_PATH)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_EDID_FILE_PATH)->SetFont(&m_Font[4]);
 
+	GetDlgItem(IDC_STT_PLC_DEVICE_USE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_PLC_DEVICE_USE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_PLC_DEVICE_NUM)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CMB_PLC_DEVICE_NUM)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_TCPIP_PLC_IPADDR)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_IPA_TCPIP_PLC_IPADDR)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_TCPIP_PLC_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_EDT_TCPIP_PLC_PORT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_DFS_USE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_DFS_IP_ADDRESS)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_DFS_USER_ID)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_DFS_PASSWORD)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_DFS_USE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_IPA_DFS_IP_ADDRESS)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDT_DFS_USER_ID)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDT_DFS_PASSWORD)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_STT_EAS_USE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_EAS_SERV_PORT)->SetFont(&m_Font[4]);
@@ -319,9 +343,15 @@ void CStationMenu::Lf_initControls()
 	m_edtEasLocalSubject.SetWindowText(lpSystemInfo->sEasLocalSubject);
 	m_edtEasRemoteSubject.SetWindowText(lpSystemInfo->sEasRemoteSubject);
 
+	m_cmbPlcDeviceUse.SetCurSel(lpSystemInfo->m_nPlcDeviceUse);
 	m_cmbPlcDeviceNum.SetCurSel(lpSystemInfo->m_nPlcDeviceNum);
 	m_ipaPlcIPAddress.SetWindowText(lpSystemInfo->m_sPlcIPAddress);
 	m_edtPlcPort.SetWindowText(lpSystemInfo->m_sPlcPort);
+
+	m_cmbDfsUse.SetCurSel(lpSystemInfo->m_nDfsUse);
+	m_ipaDfsIPAddress.SetWindowText(lpSystemInfo->m_sDfsIPAddress);
+	m_edtDfsUserId.SetWindowText(lpSystemInfo->m_sDfsUserId);
+	m_edtDfsPassword.SetWindowText(lpSystemInfo->m_sDfsPassword);
 
 	m_cmbPinBlockOpenCheck.SetCurSel(lpSystemInfo->m_nPinBlockOpenCheck);
 
@@ -390,6 +420,9 @@ void CStationMenu::Lf_saveSystemInfo()
 	m_edtEasRemoteSubject.GetWindowText(lpSystemInfo->sEasRemoteSubject);
 	Write_SysIniFile(_T("EAS"), _T("EAS_REMOTE_SUBJECT"), lpSystemInfo->sEasRemoteSubject);
 
+	lpSystemInfo->m_nPlcDeviceUse = m_cmbPlcDeviceUse.GetCurSel();
+	Write_SysIniFile(_T("TCPIP_PLC"), _T("PLC_DEVICE_USE"), lpSystemInfo->m_nPlcDeviceUse);
+
 	lpSystemInfo->m_nPlcDeviceNum = m_cmbPlcDeviceNum.GetCurSel();
 	Write_SysIniFile(_T("TCPIP_PLC"), _T("PLC_DEVICE_NUM"), lpSystemInfo->m_nPlcDeviceNum);
 
@@ -398,6 +431,18 @@ void CStationMenu::Lf_saveSystemInfo()
 
 	m_edtPlcPort.GetWindowText(lpSystemInfo->m_sPlcPort);
 	Write_SysIniFile(_T("TCPIP_PLC"), _T("PLC_PORT"), lpSystemInfo->m_sPlcPort);
+
+	lpSystemInfo->m_nDfsUse = m_cmbDfsUse.GetCurSel();
+	Write_SysIniFile(_T("DFS"), _T("DFS_USE"), lpSystemInfo->m_nDfsUse);
+
+	m_ipaDfsIPAddress.GetWindowText(lpSystemInfo->m_sDfsIPAddress);
+	Write_SysIniFile(_T("DFS"), _T("DFS_IP_ADDRESS"), lpSystemInfo->m_sDfsIPAddress);
+
+	m_edtDfsUserId.GetWindowText(lpSystemInfo->m_sDfsUserId);
+	Write_SysIniFile(_T("DFS"), _T("DFS_USER_ID"), lpSystemInfo->m_sDfsUserId);
+
+	m_edtDfsPassword.GetWindowText(lpSystemInfo->m_sDfsPassword);
+	Write_SysIniFile(_T("DFS"), _T("DFS_PASSWORD"), lpSystemInfo->m_sDfsPassword);
 
 
 	lpSystemInfo->m_nPinBlockOpenCheck = m_cmbPinBlockOpenCheck.GetCurSel();
@@ -536,5 +581,12 @@ void CStationMenu::OnCbnSelchangeCmbPlcDeviceNum()
 void CStationMenu::OnBnClickedBtnQuantityCountReset()
 {
 	// TODO: Add your control notification handler code here
-	m_pApp->Gf_QtyCountReset();
+	CMessageQuestion que_dlg;
+	que_dlg.m_strQMessage.Format(_T("Do you want clear quantity count?"));
+	que_dlg.m_strLButton = _T("YES");
+	que_dlg.m_strRButton = _T("NO");
+	if (que_dlg.DoModal() == IDOK)
+	{
+		m_pApp->Gf_QtyCountReset();
+	}
 }

@@ -108,6 +108,15 @@
     <ClCompile Include="PlcCtrl.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="FTPInterface.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DefectResult.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GradientStatic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoFirmware.h">
@@ -211,6 +220,15 @@
     </ClInclude>
     <ClInclude Include="_GlobalDefine.h">
       <Filter>GolbalDefine</Filter>
+    </ClInclude>
+    <ClInclude Include="FTPInterface.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DefectResult.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GradientStatic.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

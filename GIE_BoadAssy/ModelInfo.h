@@ -235,4 +235,8 @@ public:
 	
 	afx_msg void OnBnClickedBtnGammaVoltageSet();
 	afx_msg void OnStnClickedSttFusing();
+	afx_msg void OnStnClickedSttIccLow();
+	afx_msg void OnStnClickedSttIccHigh();
+	afx_msg void OnStnClickedSttIddLow();
+	afx_msg void OnStnClickedSttIddHigh();
 };

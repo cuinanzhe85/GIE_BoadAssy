@@ -39,6 +39,8 @@ protected:
 
 protected:
 	LPMODELSETINFO	lpModelInfo;
+	LPSYSTEMINFO	lpSystemInfo;
+	LPINSPWORKINFO	lpWorkInfo;
 
 	int m_nStatus[20];
 public:

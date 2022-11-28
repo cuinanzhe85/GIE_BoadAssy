@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by GIE_BoadAssy.rc
+// Microsoft Visual C++에서 생성한 포함 파일입니다.
+// GIE_BoadAssy.rc에서 사용되고 있습니다.
 //
 #define IDC_BTN_FILE_SELECT             3
 #define IDC_BTN_FW_VERSION              4
@@ -58,6 +58,7 @@
 #define IDD_MODEL_GAMMA                 194
 #define IDI_ICON_LEFT                   196
 #define IDI_ICON_RIGHT                  197
+#define IDD_DEFECT_RESULT               198
 #define IDC_BTN_USERID                  1000
 #define IDC_BTN_MODELINFO               1001
 #define IDC_BTN_FUSING                  1001
@@ -218,12 +219,16 @@
 #define IDC_CBO_BLU_COMPORT2            1077
 #define IDC_CMB_PINBLOCK_OPEN_CHECK     1077
 #define IDC_BTN_ADD                     1078
+#define IDC_EDT_DFS_USER_ID             1078
 #define IDC_BTN_DELETE                  1079
 #define IDC_STT_VCC_SET                 1079
+#define IDC_EDT_DFS_PASSWORD            1079
 #define IDC_BTN_UP                      1080
 #define IDC_STT_VCC_MEASURE             1080
+#define IDC_CMB_PLC_DEVICE_USE          1080
 #define IDC_BTN_DOWN                    1081
 #define IDC_STT_VDD_MEASURE             1081
+#define IDC_CMB_DFS_USE                 1081
 #define IDC_BTN_CHANGE                  1082
 #define IDC_STT_VDD_SET                 1082
 #define IDC_STT_VGH_MEASURE             1082
@@ -427,8 +432,10 @@
 #define IDC_CMB_FW_TYPE_SELECT          1156
 #define IDC_STT_PORT_TIT                1157
 #define IDC_EDT_OFF_SEQ_DEL_8           1157
+#define IDC_STT_FW_FILE_PATH            1157
 #define IDC_STT_MES_TIT                 1158
 #define IDC_CMB_OFF_SEQ_OP_9            1158
+#define IDC_STT_FW_VERSION_READ         1158
 #define IDC_IPADDRESS_LOCAL_IP          1159
 #define IDC_EDT_OFF_SEQ_DEL_9           1159
 #define IDC_STT_PATH_TIT                1160
@@ -453,9 +460,11 @@
 #define IDC_IPA_TCPIP_PLC_IPADDR        1166
 #define IDC_STT_VDD_MEA_TIT             1167
 #define IDC_CMB_OFF_SEQ_OP_13           1167
+#define IDC_STT_DFS_TIT                 1167
 #define IDC_STT_VDD_SET_TIT             1168
 #define IDC_STT_VGH_MEA_TIT             1168
 #define IDC_EDT_OFF_SEQ_DEL_13          1168
+#define IDC_IPA_DFS_IP_ADDRESS          1168
 #define IDC_STT_TT_TIT                  1169
 #define IDC_CMB_OFF_SEQ_OP_14           1169
 #define IDC_PIC_MD_PTN_PREVIEW          1170
@@ -535,15 +544,20 @@
 #define IDC_STT_PLC_DEVICE_NUM          1199
 #define IDC_BTN_BMP_DOWNLOAD_START      1200
 #define IDC_EDT_GAMMA_CH25              1200
+#define IDC_STT_DFS_IP_ADDRESS          1200
 #define IDC_PROG_BMP_DOWNLOAD_STATUS    1201
 #define IDC_EDT_GAMMA_CH26              1201
+#define IDC_STT_DFS_USER_ID             1201
 #define IDC_PIC_BMP_IMAGE               1202
 #define IDC_EDT_GAMMA_CH27              1202
 #define IDC_BTN_BMP_ADD                 1202
+#define IDC_STT_DFS_PASSWORD            1202
 #define IDC_STT_TOTAL_LIST_TITLE        1203
 #define IDC_EDT_GAMMA_CH28              1203
+#define IDC_STT_PLC_DEVICE_USE          1203
 #define IDC_STT_DOWNLOAD_LIST_TITLE     1204
 #define IDC_EDT_GAMMA_CH29              1204
+#define IDC_STT_DFS_USE                 1204
 #define IDC_STT_IMAGE_TITLE             1205
 #define IDC_EDT_GAMMA_CH30              1205
 #define IDC_STT_DOWNLOAD_STATUS         1206
@@ -620,14 +634,115 @@
 #define IDC_GRO_PG_TEST                 1249
 #define IDC_PRO_BLU                     1250
 #define IDC_PRO_BCR                     1251
+#define IDC_STT_DEF_1_TO_1              1253
+#define IDC_STT_DEF_1_TO_2              1254
+#define IDC_STT_RDY_QTY_RESET           1254
+#define IDC_STT_DEF_1_TO_3              1255
+#define IDC_STT_DEF_1_TO_4              1256
+#define IDC_STT_DEF_1_TO_5              1257
+#define IDC_STT_DEF_1_TO_6              1258
+#define IDC_STT_DEF_1_TO_7              1259
+#define IDC_STT_DEF_1_TO_8              1260
+#define IDC_STT_DEF_1_TO_9              1261
+#define IDC_STT_DEF_1_TO_10             1262
+#define IDC_STT_DEF_2_TO_1              1263
+#define IDC_STT_DEF_3_TO_1              1264
+#define IDC_STT_DEF_4_TO_1              1265
+#define IDC_STT_DEF_5_TO_1              1266
+#define IDC_STT_DEF_6_TO_1              1267
+#define IDC_STT_DEF_7_TO_1              1268
+#define IDC_STT_DEF_8_TO_1              1269
+#define IDC_STT_DEF_9_TO_1              1270
+#define IDC_STT_DEF_10_TO_1             1271
+#define IDC_STT_DEF_2_TO_2              1272
+#define IDC_STT_DEF_2_TO_3              1273
+#define IDC_STT_DEF_2_TO_4              1274
+#define IDC_STT_DEF_2_TO_5              1275
+#define IDC_STT_DEF_2_TO_6              1276
+#define IDC_STT_DEF_2_TO_7              1277
+#define IDC_STT_DEF_2_TO_8              1278
+#define IDC_STT_DEF_2_TO_9              1279
+#define IDC_STT_DEF_2_TO_10             1280
+#define IDC_STT_DEF_3_TO_2              1281
+#define IDC_STT_DEF_3_TO_3              1282
+#define IDC_STT_DEF_3_TO_4              1283
+#define IDC_STT_DEF_3_TO_5              1284
+#define IDC_STT_DEF_3_TO_6              1285
+#define IDC_STT_DEF_3_TO_7              1286
+#define IDC_STT_DEF_3_TO_8              1287
+#define IDC_STT_DEF_3_TO_9              1288
+#define IDC_STT_DEF_3_TO_10             1289
+#define IDC_STT_DEF_4_TO_2              1290
+#define IDC_STT_DEF_4_TO_3              1291
+#define IDC_STT_DEF_4_TO_4              1292
+#define IDC_STT_DEF_4_TO_5              1293
+#define IDC_STT_DEF_4_TO_6              1294
+#define IDC_STT_DEF_4_TO_7              1295
+#define IDC_STT_DEF_4_TO_8              1296
+#define IDC_STT_DEF_4_TO_9              1297
+#define IDC_STT_DEF_4_TO_10             1298
+#define IDC_STT_DEF_5_TO_2              1299
+#define IDC_STT_DEF_5_TO_3              1300
+#define IDC_STT_DEF_5_TO_4              1301
+#define IDC_STT_DEF_5_TO_5              1302
+#define IDC_STT_DEF_5_TO_6              1303
+#define IDC_STT_DEF_5_TO_7              1304
+#define IDC_STT_DEF_5_TO_8              1305
+#define IDC_STT_DEF_5_TO_9              1306
+#define IDC_STT_DEF_5_TO_10             1307
+#define IDC_STT_DEF_6_TO_2              1308
+#define IDC_STT_DEF_6_TO_3              1309
+#define IDC_STT_DEF_6_TO_4              1310
+#define IDC_STT_DEF_6_TO_5              1311
+#define IDC_STT_DEF_6_TO_6              1312
+#define IDC_STT_DEF_6_TO_7              1313
+#define IDC_STT_DEF_6_TO_8              1314
+#define IDC_STT_DEF_6_TO_9              1315
+#define IDC_STT_DEF_6_TO_10             1316
+#define IDC_STT_DEF_7_TO_2              1317
+#define IDC_STT_DEF_7_TO_3              1318
+#define IDC_STT_DEF_7_TO_4              1319
+#define IDC_STT_DEF_7_TO_5              1320
+#define IDC_STT_DEF_7_TO_6              1321
+#define IDC_STT_DEF_7_TO_7              1322
+#define IDC_STT_DEF_7_TO_8              1323
+#define IDC_STT_DEF_7_TO_9              1324
+#define IDC_STT_DEF_7_TO_10             1325
+#define IDC_STT_DEF_8_TO_2              1326
+#define IDC_STT_DEF_8_TO_3              1327
+#define IDC_STT_DEF_8_TO_4              1328
+#define IDC_STT_DEF_8_TO_5              1329
+#define IDC_STT_DEF_8_TO_6              1330
+#define IDC_STT_DEF_8_TO_7              1331
+#define IDC_STT_DEF_8_TO_8              1332
+#define IDC_STT_DEF_8_TO_9              1333
+#define IDC_STT_DEF_8_TO_10             1334
+#define IDC_STT_DEF_9_TO_2              1335
+#define IDC_STT_DEF_9_TO_3              1336
+#define IDC_STT_DEF_9_TO_4              1337
+#define IDC_STT_DEF_9_TO_5              1338
+#define IDC_STT_DEF_9_TO_6              1339
+#define IDC_STT_DEF_9_TO_7              1340
+#define IDC_STT_DEF_9_TO_8              1341
+#define IDC_STT_DEF_9_TO_9              1342
+#define IDC_STT_DEF_9_TO_10             1343
+#define IDC_STT_DEF_10_TO_2             1344
+#define IDC_STT_DEF_10_TO_3             1345
+#define IDC_STT_DEF_10_TO_4             1346
+#define IDC_STT_DEF_10_TO_5             1347
+#define IDC_STT_DEF_10_TO_6             1348
+#define IDC_STT_DEF_10_TO_7             1349
+#define IDC_STT_DEF_10_TO_8             1350
+#define IDC_STT_DEF_10_TO_9             1351
+#define IDC_STT_DEF_10_TO_10            1352
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        198
+#define _APS_NEXT_RESOURCE_VALUE        200
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1252
+#define _APS_NEXT_CONTROL_VALUE         1255
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

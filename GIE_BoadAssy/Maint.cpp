@@ -558,10 +558,18 @@ void CMaint::OnBnClickedBtnBcrRead()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	
-	if (lpWorkInfo->m_sPID.IsEmpty() == FALSE)
-		GetDlgItem(IDC_EDT_BCR_PID)->SetWindowTextW(lpWorkInfo->m_sPID);
+	if (lpWorkInfo->m_sPanelID.IsEmpty() == FALSE)
+	{
+		GetDlgItem(IDC_EDT_BCR_PID)->SetWindowTextW(lpWorkInfo->m_sPanelID);
+	}
+	else if (lpWorkInfo->m_sSerialNumber.IsEmpty() == FALSE)
+	{
+		GetDlgItem(IDC_EDT_BCR_PID)->SetWindowTextW(lpWorkInfo->m_sSerialNumber);
+	}
 	else
+	{
 		GetDlgItem(IDC_EDT_BCR_PID)->SetWindowTextW(_T(""));
+	}
 }
 void CMaint::Lf_initFontSet()
 {

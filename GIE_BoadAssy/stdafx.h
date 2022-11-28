@@ -47,6 +47,7 @@
 #include "IniProfileAPI.h"
 #include "GiMCodeDll.h"
 #include "PatternView.h"
+#include "GradientStatic.h"
 #include "XImageInc/ximage.h"
 
 using namespace std;

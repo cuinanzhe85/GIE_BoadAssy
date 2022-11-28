@@ -39,6 +39,7 @@ CGIE_BoadAssyApp::CGIE_BoadAssyApp()
 	m_pSocketUDP = new CSocketUDP();
 	m_pSocketTCPApp = new CSocketTcpApp();
 	m_pPlcCtrl = new CPLCCtrl();
+	lpFtpDFS = new CFTPInterface;
 }
 
 
@@ -304,6 +305,117 @@ void CGIE_BoadAssyApp::Gf_writeLogData(CString Event, CString Data)
 	}
 }
 
+void CGIE_BoadAssyApp::Gf_writeSummaryLog()
+{
+	FILE* fp;
+
+	BOOL bNewCsv = FALSE;
+	char filepath[128] = { 0 };
+	char buff[2048] = { 0 };
+	CString sResult = _T("NG");
+	CString sdata;
+
+	SYSTEMTIME sysTime;
+	::GetSystemTime(&sysTime);
+	CTime time = CTime::GetCurrentTime();
+
+	if ((_access(".\\Logs\\SummaryLog", 0)) == -1)
+		_mkdir(".\\Logs\\SummaryLog");
+
+	sprintf_s(filepath, ".\\Logs\\SummaryLog\\Summary_%04d%02d%02d.csv", time.GetYear(), time.GetMonth(), time.GetDay());
+	fopen_s(&fp, filepath, "r+");
+	if (fp == NULL)
+	{
+		delayMS(1);
+		fopen_s(&fp, filepath, "a+");
+		if (fp == NULL) // 2007-08-01 : fseek.c(101) error
+		{
+			if ((_access(filepath, 2)) != -1) // 2007-09-02 : fseek.c(101) error
+			{
+				delayMS(1);
+				fopen_s(&fp, filepath, "a+");
+				if (fp == NULL) // 2007-09-02 : fseek.c(101) error
+				{
+					return;
+				}
+			}
+		}
+		bNewCsv = TRUE;
+	}
+
+	TCHAR szSwVer[1024] = { 0, };
+	GetModuleFileName(NULL, szSwVer, 1024);
+	sdata.Format(_T("%s"), szSwVer);
+	sdata = sdata.Mid(sdata.ReverseFind(_T('\\')) + 1);
+	sdata.Delete(sdata.GetLength() - 4, 4);
+	m_summaryInfo.m_sumData[SUM_SW_VER] = sdata;
+
+	m_summaryInfo.m_sumData[SUM_DATE].Format(_T("%04d-%02d-%02d"), time.GetYear(), time.GetMonth(), time.GetDay());
+	m_summaryInfo.m_sumData[SUM_PM_MES].Format(_T("%s"), lpWorkInfo->m_sUserID);
+
+	int npos = lpWorkInfo->m_sFirmwareVersion.ReverseFind(' ');
+	sdata = lpWorkInfo->m_sFirmwareVersion.Left(npos);
+	m_summaryInfo.m_sumData[SUM_FW_VER] = sdata;
+	m_summaryInfo.m_sumData[SUM_MODEL] = lpSystemInfo->m_sModelName;
+	m_summaryInfo.m_sumData[SUM_EQP_ID] = lpSystemInfo->m_sMachinName;
+	m_summaryInfo.m_sumData[SUM_PID] = lpWorkInfo->m_sPanelID;
+	if (lpWorkInfo->m_sRwkCD == _T(""))
+	{
+		m_summaryInfo.m_sumData[SUM_PASS_FAIL] = _T("PASS");
+		m_summaryInfo.m_sumData[SUM_RWK_CD] = _T("");
+	}
+	else
+	{
+		m_summaryInfo.m_sumData[SUM_PASS_FAIL] = _T("FAIL");
+		m_summaryInfo.m_sumData[SUM_RWK_CD] = lpWorkInfo->m_sRwkCD;
+	}
+
+	m_summaryInfo.m_sumData[SUM_TACT_TIME].Format(_T("%d"), lpWorkInfo->tt_endTime - lpWorkInfo->tt_startTime);
+	m_summaryInfo.m_sumData[SUM_START_TIME].Format(_T("%04d-%02d-%02d %02d:%02d:%02d")
+		, lpWorkInfo->tt_startTime.GetYear()
+		, lpWorkInfo->tt_startTime.GetMonth()
+		, lpWorkInfo->tt_startTime.GetDay()
+		, lpWorkInfo->tt_startTime.GetHour()
+		, lpWorkInfo->tt_startTime.GetMinute()
+		, lpWorkInfo->tt_startTime.GetSecond()
+	);
+	m_summaryInfo.m_sumData[SUM_END_TIME].Format(_T("%04d-%02d-%02d %02d:%02d:%02d")
+		, lpWorkInfo->tt_endTime.GetYear()
+		, lpWorkInfo->tt_endTime.GetMonth()
+		, lpWorkInfo->tt_endTime.GetDay()
+		, lpWorkInfo->tt_endTime.GetHour()
+		, lpWorkInfo->tt_endTime.GetMinute()
+		, lpWorkInfo->tt_endTime.GetSecond()
+	);
+
+	if (bNewCsv == TRUE)
+	{
+		sprintf_s(buff, "Date,PM/MES,S/W_Ver,H/W_Ver,SCRIPT_NAME(Model),EQP_ID,PANEL_ID,FINAL_PASS_FAIL,RWK_CD,TACT_TIME(s),START_TIME,END_TIME\n");
+		fprintf(fp, "%s", buff);
+	}
+
+	sdata.Format(_T("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n")
+		,m_summaryInfo.m_sumData[SUM_DATE]
+		,m_summaryInfo.m_sumData[SUM_PM_MES]
+		,m_summaryInfo.m_sumData[SUM_SW_VER]
+		,m_summaryInfo.m_sumData[SUM_FW_VER]
+		,m_summaryInfo.m_sumData[SUM_MODEL]
+		,m_summaryInfo.m_sumData[SUM_EQP_ID]
+		,m_summaryInfo.m_sumData[SUM_PID]
+		,m_summaryInfo.m_sumData[SUM_PASS_FAIL]
+		,m_summaryInfo.m_sumData[SUM_RWK_CD]
+		,m_summaryInfo.m_sumData[SUM_TACT_TIME]
+		,m_summaryInfo.m_sumData[SUM_START_TIME]
+		,m_summaryInfo.m_sumData[SUM_END_TIME]
+	);
+	sprintf_s(buff, "%s", wchar_To_char(sdata.GetBuffer(0)));
+
+	fseek(fp, 0L, SEEK_END);
+	fprintf(fp, "%s", buff);
+
+	fclose(fp);
+}
+
 void CGIE_BoadAssyApp::Lf_initVariable()
 {
 	int i=0;
@@ -348,9 +460,15 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpSystemInfo->sEasLocalSubject.Empty();
 	lpSystemInfo->sEasRemoteSubject.Empty();
 
+	lpSystemInfo->m_nPlcDeviceUse = 0;
 	lpSystemInfo->m_nPlcDeviceNum = 0;
 	lpSystemInfo->m_sPlcIPAddress.Empty();
 	lpSystemInfo->m_sPlcPort.Empty();
+
+	lpSystemInfo->m_nDfsUse = 0;
+	lpSystemInfo->m_sDfsIPAddress.Empty();
+	lpSystemInfo->m_sDfsUserId.Empty();
+	lpSystemInfo->m_sDfsPassword.Empty();
 
 	lpSystemInfo->m_nPinBlockOpenCheck = 0;
 
@@ -520,11 +638,16 @@ void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 	Read_SysIniFile(_T("SYSTEM"),		_T("EDP_INIT_CODE_SEL"),			&lpSystemInfo->m_neDPInitCodeSelect);
 	Read_SysIniFile(_T("SYSTEM"),		_T("PIN_BLOCK_OPEN_CHECK"),			&lpSystemInfo->m_nPinBlockOpenCheck);
 
-
-
+	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_DEVICE_USE"),				&lpSystemInfo->m_nPlcDeviceUse);
 	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_DEVICE_NUM"),				&lpSystemInfo->m_nPlcDeviceNum);
 	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_IP_ADDRESS"),				&lpSystemInfo->m_sPlcIPAddress);
 	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_PORT"),						&lpSystemInfo->m_sPlcPort);
+
+	Read_SysIniFile(_T("DFS"),			_T("DFS_USE"),						&lpSystemInfo->m_nDfsUse);
+	Read_SysIniFile(_T("DFS"),			_T("DFS_IP_ADDRESS"),				&lpSystemInfo->m_sDfsIPAddress);
+	Read_SysIniFile(_T("DFS"),			_T("DFS_USER_ID"),					&lpSystemInfo->m_sDfsUserId);
+	Read_SysIniFile(_T("DFS"),			_T("DFS_PASSWORD"),					&lpSystemInfo->m_sDfsPassword);
+
 
 	m_sSysIniFile.Format(_T("%s"),_T("Module Load OK"));
 }
@@ -539,7 +662,9 @@ void CGIE_BoadAssyApp::Gf_loadInspCount()
 
 void CGIE_BoadAssyApp::Gf_writeInspCount(int Type)
 {
-	if(Type == GOOD_CNT) 
+	Gf_QtyCountResetCheck();
+
+	if(Type == GOOD_CNT)
 	{
 		lpWorkInfo->m_nGoodCnt++;
 		Write_SysIniFile(_T("SYSTEM"), _T("GOOD_COUNT"), lpWorkInfo->m_nGoodCnt);
@@ -1240,7 +1365,7 @@ void CGIE_BoadAssyApp::Lf_parsingAckData(CString strAckData)
 	{
 		sLog.Format(_T("CMD:0x%02X  DATA:%s"), recvCMD, strAckData); 
 
-		Gf_writeLogData(_T("<PG_R>"), sLog.GetBuffer(0));
+		Gf_writeLogData(_T("<UDP_RECV>"), sLog.GetBuffer(0));
 	}
 
 	switch(recvCMD)
@@ -1599,25 +1724,26 @@ void CGIE_BoadAssyApp::Gf_setGMesBadInfo()
 }
 void CGIE_BoadAssyApp::Lf_setGmesValuePCHK()
 {
-	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);
+	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
+	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
 	m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 
 }
 void CGIE_BoadAssyApp::Lf_setEasValueAPDR()
 {
 	CString sAPDInfo;
-	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);
+	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
+	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
 	m_pCimNet->SetBLID(_T(""));
-	m_pCimNet->SetSerialNumber(_T(""));
 	m_pCimNet->SetPalletID(_T(""));
 
 	m_pCimNet->SetAPDInfo(sAPDInfo);
 }
 void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 {
-	m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);
+	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
+	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
 	m_pCimNet->SetBLID(_T(""));
-	m_pCimNet->SetSerialNumber(_T(""));
 	m_pCimNet->SetPalletID(_T(""));
 
 	// 양품/불량 설정.
@@ -1801,9 +1927,14 @@ BOOL CGIE_BoadAssyApp::udp_sendPacket(CString ipAddress, int nTarget, int nComma
 	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
 	szpacket[packetlen] = 0x00;
 
+	if (DEBUG_RS232C_LOG)
+	{
+		Gf_writeLogData("<UDP_SEND>", szpacket);
+	}
 
 	// Receive Buff를 Clear
 	ZeroMemory(m_pCommand->gszudpRcvPacket, sizeof(m_pCommand->gszudpRcvPacket));
+
 
 	// 생성된 Packet을 전송.
 	m_pSocketUDP->SendToUDP(ipAddress, packetlen, szpacket);
@@ -1811,6 +1942,9 @@ BOOL CGIE_BoadAssyApp::udp_sendPacket(CString ipAddress, int nTarget, int nComma
 	// ACK Receive
 	UINT ret = TRUE;
 	m_nAckCmd[nCommand] = FALSE;
+
+	if (DEBUG_232RECEIVE_OK)
+		return TRUE;
 
 	if (recvACK == TRUE)
 	{
@@ -1869,6 +2003,10 @@ void CGIE_BoadAssyApp::Gf_QtyCountReset()
 
 void CGIE_BoadAssyApp::Gf_QtyCountResetCheck()
 {
+	// 자동 Clear 조건에 대한 Concept 확인 후 적용 할 것.
+	return;
+
+
 	CString resetDate;
 	Read_SysIniFile(_T("SYSTEM"), _T("QTY_COUNT_RESET_DATE"), &resetDate);
 
@@ -1915,3 +2053,190 @@ BOOL CGIE_BoadAssyApp::Gf_PinBlockOpenCheck()
 	}
 	return TRUE;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FTP 접속/다운로드/업로드 코드 알고리즘
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CGIE_BoadAssyApp::Gf_ftpConnectDFS()
+{
+	swprintf_s(lpFtpDFS->m_stFtpInfo.wszIpAddress, lpSystemInfo->m_sDfsIPAddress);
+	lpFtpDFS->m_stFtpInfo.nServerPort = 21;
+	lpFtpDFS->m_stFtpInfo.dwFlags = INTERNET_FLAG_PASSIVE;
+	swprintf_s(lpFtpDFS->m_stFtpInfo.wszUserName, lpSystemInfo->m_sDfsUserId);
+	swprintf_s(lpFtpDFS->m_stFtpInfo.wszPassword, lpSystemInfo->m_sDfsPassword);
+
+
+	Gf_writeLogData("<FTP>", "DFS SERVER Connecting...");
+
+	lpFtpDFS->ftp_Disconnect();
+	Sleep(300);
+
+	int timeOutDelay = 3000;  // 3000ms
+	if (lpFtpDFS->ftp_Connect(timeOutDelay) == FALSE)
+	{
+		Gf_writeLogData("<FTP>", "DFS SERVER Connect Fail.");
+		return FALSE;
+	}
+
+	Gf_writeLogData("<FTP>", "DFS SERVER Connect Success.");
+	Sleep(200);
+
+	return TRUE;
+}
+
+BOOL CGIE_BoadAssyApp::Gf_ftpDisConnectDFS()
+{
+	Gf_writeLogData("<FTP>", "DFS SERVER Disconnect");
+	lpFtpDFS->ftp_Disconnect();
+
+	return TRUE;
+}
+
+CString CGIE_BoadAssyApp::Gf_ftpGetModuleIniFilaName()
+{
+	CStringArray arrFileName;
+	CString strNewName;
+	CString strName;
+
+	if (lpFtpDFS->ftp_getFileNameList(&arrFileName, _T("*VN.ANSI*.ini")) == TRUE)
+	{
+		return arrFileName.GetAt(arrFileName.GetCount()-1);
+	}
+	else
+	{
+		return _T("");
+	}
+}
+
+BOOL CGIE_BoadAssyApp::Gf_ftpSetHomeDirectory()
+{
+	if (lpSystemInfo->m_sDfsIPAddress == _T("127.0.0.1"))
+	{
+		return lpFtpDFS->ftp_SetCurrentDirectory(_T("\\"));
+	}
+	else
+	{
+		return lpFtpDFS->ftp_SetCurrentDirectory(_T("~"));
+	}
+}
+
+BOOL CGIE_BoadAssyApp::Gf_ftpSetCurrentDirectory(CString strPath)
+{
+	return lpFtpDFS->ftp_SetCurrentDirectory(strPath);
+}
+
+BOOL CGIE_BoadAssyApp::Gf_ftpCreateDirectory(CFTPInterface* lpFtp, CString strDirectory)
+{
+	int fst = 0, lst = 0;
+	CString strToken;
+	CString strLog;
+
+
+	strLog.Format(_T("FTP Create Directory => %s"), strDirectory);
+	Gf_writeLogData(_T("<FTP>"), strLog);
+	while (1)
+	{
+		lst = strDirectory.Find(_T("/"), fst);
+		if (lst != -1)
+		{
+			strToken = strDirectory.Mid(fst, (lst - fst));
+			if (!lpFtp->ftp_SetCurrentDirectory(strToken))
+			{
+				if (lpFtp->ftp_createDirectory(strToken) == FALSE)
+				{
+					Gf_writeLogData("<DFS>", "FTP Create Directory = > Fail");
+					return FALSE;
+				}
+				lpFtp->ftp_SetCurrentDirectory(strToken);
+			}
+			fst = lst + 1;
+			continue;
+		}
+		else
+		{
+			strToken = strDirectory.Mid(fst);
+
+			if (!lpFtp->ftp_SetCurrentDirectory(strToken))
+			{
+				if (lpFtp->ftp_createDirectory(strToken) == FALSE)
+				{
+					Gf_writeLogData("<DFS>", "FTP Create Directory = > Fail");
+					return FALSE;
+				}
+				lpFtp->ftp_SetCurrentDirectory(strToken);
+			}
+			break;
+		}
+	}
+
+	Gf_writeLogData("<DFS>", "FTP Create Directory = > Success");
+	return TRUE;
+}
+
+BOOL CGIE_BoadAssyApp::Gf_ftpDownloadModuleIniFile()
+{
+	CString strDirectory;
+	CString strDownLoad, strFileName, strOldFileName;
+	CString strLog;
+	DWORD dwFlags = 0;
+	BOOL bReturn = TRUE;
+
+	if ((_access(".\\Module_Defect_Ini", 0)) == -1)
+		_mkdir(".\\Module_Defect_Ini");
+
+#ifdef CODE_USE_SIMPLE_FTP
+	CString ftp_IP, ftp_Name, ftp_Passwd;
+	ftp_IP.Format(_T("%s"), lpSystemInfo->m_sDfsIPAddr);
+	ftp_Name.Format(_T("%s"), lpSystemInfo->m_sDfsName);
+	ftp_Passwd.Format(_T("%s"), lpSystemInfo->m_sDfsPassword);
+
+	strFileName.Format(_T("%s.IDX"), char_To_wchar(lpInspWorkInfo->m_szPanelID_01));
+	strDirectory.Format(_T("/DEFECT/INDEX/%s/%s"), strHashIndex, strFileName);
+	strDownLoad.Format(_T("./DEFECT/INDEX/%s"), strFileName);
+	bReturn = lpFtpDFS->simFtp_DownLoad(ftp_IP, ftp_Name, ftp_Passwd, strDirectory, strDownLoad);
+#else
+	strDirectory.Format(_T("DEFECT/MD"));
+	strLog.Format(_T("Module Ini File Host Path => %s"), strDirectory);
+	Gf_writeLogData(_T("<FTP>"), strLog);
+
+	Gf_ftpSetHomeDirectory();
+	if (!lpFtpDFS->ftp_SetCurrentDirectory(strDirectory))
+	{
+		bReturn = FALSE;
+	}
+
+	strFileName = Gf_ftpGetModuleIniFilaName();
+
+	if (strFileName != _T(""))
+	{
+		strDownLoad.Format(_T("./Module_Defect_Ini/%s"), strFileName);
+		dwFlags = FTP_TRANSFER_TYPE_BINARY | INTERNET_FLAG_RELOAD;
+		if (lpFtpDFS->ftp_FileDownload(strDownLoad) == FALSE)
+		{
+			bReturn = FALSE;
+		}
+	}
+#endif
+
+	return bReturn;
+	// FTP Download End
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Gradation Station Function
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CGIE_BoadAssyApp::Gf_setGradientStatic(CGradientStatic* pGStt, long sttColor,  CFont* pFont, BOOL bSplit)
+{
+	pGStt->SetFont(pFont);
+	pGStt->SetTextAlign(TEXT_ALIGN_CENTER);
+	pGStt->SetColor(sttColor);
+	pGStt->SetGradientColor(sttColor);
+	pGStt->SetVerticalGradient();
+	if (bSplit == TRUE)	pGStt->SetSplitMode(TRUE);
+	pGStt->SetTextColor(RGB(0, 0, 0));
+}
+
+
+
+
+

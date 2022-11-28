@@ -111,7 +111,10 @@ HBRUSH CAutoFirmware::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetTextColor(COLOR_CYAN);
 			return m_Brush[COLOR_IDX_GRAY64];
 		}
-		if (pWnd->GetDlgCtrlID() == IDC_STT_TARGET_SEL)
+		if ((pWnd->GetDlgCtrlID() == IDC_STT_TARGET_SEL)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_FW_FILE_PATH)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_FW_VERSION_READ)
+			)
 		{
 			pDC->SetBkColor(COLOR_BLUISH);
 			pDC->SetTextColor(COLOR_WHITE);
@@ -151,6 +154,8 @@ void CAutoFirmware::Lf_initFontSet()
 	GetDlgItem(IDC_BTN_FW_VERSION)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_BTN_DOWNLOAD)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_TARGET_SEL)->SetFont(&m_Font[0]);	
+	GetDlgItem(IDC_STT_FW_FILE_PATH)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_FW_VERSION_READ)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_CMB_TARGET_SELECT)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_CMB_FW_TYPE_SELECT)->SetFont(&m_Font[0]);
 

@@ -67,10 +67,15 @@ public:
 	afx_msg void OnBnClickedBtnPtnFilePath();
 	afx_msg void OnBnClickedBtnEdidFilePath();
 	CComboBox m_cmbEasUse;
+	CComboBox m_cmbPlcDeviceUse;
 	CComboBox m_cmbPlcDeviceNum;
 	CIPAddressCtrl m_ipaPlcIPAddress;
 	CEdit m_edtPlcPort;
 	afx_msg void OnCbnSelchangeCmbPlcDeviceNum();
 	CComboBox m_cmbPinBlockOpenCheck;
 	afx_msg void OnBnClickedBtnQuantityCountReset();
+	CComboBox m_cmbDfsUse;
+	CIPAddressCtrl m_ipaDfsIPAddress;
+	CEdit m_edtDfsUserId;
+	CEdit m_edtDfsPassword;
 };

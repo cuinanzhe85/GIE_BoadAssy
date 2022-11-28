@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CTestReady, CDialog)
 	ON_BN_CLICKED(IDC_BTN_TEST_START, &CTestReady::OnBnClickedBtnTestStart)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
+	ON_STN_CLICKED(IDC_STT_RDY_QTY_RESET, &CTestReady::OnStnClickedSttRdyQtyReset)
 END_MESSAGE_MAP()
 
 
@@ -107,45 +108,27 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 	if(nIDEvent == 1)
 	{
 		KillTimer(1);
-		int timerInterval = 1000;
+		int timerInterval = 500;
 		if (m_pApp->m_pDio7230->Gf_getDIOJigTilting() == TRUE)
 		{
 			m_dioInputBit |= DI_START_READY;
 			GetDlgItem(IDC_STT_DIO_INPUT_2)->Invalidate(FALSE);
 			GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("PANEL TILTING ON"));
-//			if (lpWorkInfo->m_sPID.IsEmpty() == FALSE)
-			{
-				if (m_pApp->m_pDio7230->Gf_getDIOTestStart())
-				{
-					m_dioInputBit |= DI_TEST_SWITCH1;
-					GetDlgItem(IDC_STT_DIO_INPUT_3)->Invalidate(FALSE);
-					GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST START SIGNAL ON"));
 
-					Lf_startTest();
-					timerInterval = 1000;
-				}
-				else
-				{
-					m_dioInputBit &= ~DI_TEST_SWITCH1;
-					GetDlgItem(IDC_STT_DIO_INPUT_3)->Invalidate(FALSE);
-				}
+			if (m_pApp->m_pDio7230->Gf_getDIOTestStart())
+			{
+				m_dioInputBit |= DI_TEST_SWITCH1;
+				GetDlgItem(IDC_STT_DIO_INPUT_3)->Invalidate(FALSE);
+				GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST START SIGNAL ON"));
+
+				Lf_startTest();
+				timerInterval = 1000;
 			}
-//			else
-//			{
-//				CPanelID piddlg;
-//				if (piddlg.DoModal() == IDOK)
-//				{
-//					if (lpWorkInfo->m_sPID.IsEmpty()==FALSE)
-//					{
-//						GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);
-//					}
-//				}
-//				else
-//				{
-//					timerInterval = 1000;
-//				}
-//			}
-			
+			else
+			{
+				m_dioInputBit &= ~DI_TEST_SWITCH1;
+				GetDlgItem(IDC_STT_DIO_INPUT_3)->Invalidate(FALSE);
+			}
 		}
 		else
 		{
@@ -235,6 +218,12 @@ HBRUSH CTestReady::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetBkColor(COLOR_WHITE);
 			pDC->SetTextColor(COLOR_BLACK);
 			return m_Brush[COLOR_IDX_WHITE];
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_RDY_QTY_RESET)
+		{
+			pDC->SetBkColor(COLOR_ORANGE);
+			pDC->SetTextColor(COLOR_WHITE);
+			return m_Brush[COLOR_IDX_ORANGE];
 		}
 		if (pWnd->GetDlgCtrlID() == IDC_STT_TOTAL_CNT_VALUE)
 		{
@@ -347,6 +336,25 @@ BOOL CTestReady::PreTranslateMessage(MSG* pMsg)
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
+void CTestReady::OnStnClickedSttRdyQtyReset()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMessageQuestion que_dlg;
+	que_dlg.m_strQMessage.Format(_T("Do you want clear quantity count?"));
+	que_dlg.m_strLButton = _T("YES");
+	que_dlg.m_strRButton = _T("NO");
+	if (que_dlg.DoModal() == IDOK)
+	{
+		CString sLog;
+		sLog.Format(_T("Quentity Count Reset."));
+		m_pApp->Gf_writeLogData(_T("<TEST> "), sLog);
+
+		m_pApp->Gf_QtyCountReset();
+		Lf_updateCount();
+	}
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CTestReady::Lf_initFontSet()
@@ -359,6 +367,7 @@ void CTestReady::Lf_initFontSet()
 	GetDlgItem(IDC_STT_GOOD_CNT_TIT)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_BAD_CNT_TIT)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_DIO_INPUT_TITLE)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_RDY_QTY_RESET)->SetFont(&m_Font[0]);
 
 	GetDlgItem(IDC_STT_DIO_INPUT_1)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_DIO_INPUT_2)->SetFont(&m_Font[0]);
@@ -442,36 +451,51 @@ BOOL CTestReady::Lf_checkPanelId()
 	CString sdata=_T(""), strlog;
 	strlog.Format(_T("BCR [%s]"), lpWorkInfo->m_sReceivePID);
 	m_pApp->Gf_writeLogData(_T("<BCR>"), strlog);
-
-	lpWorkInfo->m_sPID = lpWorkInfo->m_sReceivePID;
 	
-	if(lpWorkInfo->m_sPID.GetLength() <= 9)
+	if(lpWorkInfo->m_sReceivePID.GetLength() <= 9)
 	{
-		strlog.Format(_T("PANEL ID LENGTH ERROR] LESS 9 [%s]"), lpWorkInfo->m_sPID);
+		strlog.Format(_T("BCR ID LENGTH ERROR] LESS 9 [%s]"), lpWorkInfo->m_sReceivePID);
 		m_pApp->Gf_ShowMessageBox(strlog);
+		lpWorkInfo->m_sPanelID.Empty();
+		lpWorkInfo->m_sSerialNumber.Empty();
 		CPanelID pidDlg;
 		if (pidDlg.DoModal() == IDCANCEL)
 			return FALSE;
 	}
 	else
-	{		
-		sdata.Format(_T("%s"), lpWorkInfo->m_sPID);
+	{
+		sdata.Format(_T("%s"), lpWorkInfo->m_sReceivePID);
 		sdata.MakeUpper();
 
 		if(sdata == _T("ERROR") || sdata == _T("NOREAD"))
-		{ 
-			strlog.Format(_T("PANEL ID DATA ERROR [%s]"), lpWorkInfo->m_sPID);
+		{
+			strlog.Format(_T("BCR ID DATA ERROR [%s]"), lpWorkInfo->m_sReceivePID);
 			m_pApp->Gf_ShowMessageBox(strlog);
-			lpWorkInfo->m_sPID.Empty();
+			lpWorkInfo->m_sPanelID.Empty();
+			lpWorkInfo->m_sSerialNumber.Empty();
 			CPanelID pidDlg;
 			if (pidDlg.DoModal() == IDCANCEL)
 				return FALSE;
 		}
 	}
 
-	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);	
-	m_pApp->m_pCimNet->SetPanelID(lpWorkInfo->m_sPID);//pUiPorc->pCimNet->SetPanelId (pUiPorc->comm.curData.strUsePanelId.GetBuffer(0));
-	m_pApp->Gf_writeLogData(_T("<MES>"), lpWorkInfo->m_sPID);
+	if (lpWorkInfo->m_sReceivePID.GetLength() > 15)
+	{
+		lpWorkInfo->m_sPanelID.Empty();
+		lpWorkInfo->m_sSerialNumber = lpWorkInfo->m_sReceivePID;
+
+		m_pApp->m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
+	}
+	else
+	{
+		lpWorkInfo->m_sPanelID = lpWorkInfo->m_sReceivePID;
+		lpWorkInfo->m_sSerialNumber.Empty();
+
+		m_pApp->m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
+	}
+
+	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sReceivePID);
+	m_pApp->Gf_writeLogData(_T("<MES>"), lpWorkInfo->m_sReceivePID);
 	return TRUE;
 }
 
@@ -600,15 +624,23 @@ bool CTestReady::Lf_startTest()
 bool CTestReady::Lf_startTestOn()
 {
 	BYTE dioRd=0;
-	
-	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("[DIO PLC -> PC] JIG IN - START PATTERN TEST"));
 
-	if (lpWorkInfo->m_sPID.IsEmpty() == TRUE)
+	lpWorkInfo->tt_startTime = CTime::GetCurrentTime();
+
+	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("[DIO PLC -> PC] JIG IN"));
+	if ((lpWorkInfo->m_sPanelID.IsEmpty() == TRUE) && (lpWorkInfo->m_sSerialNumber.IsEmpty() == TRUE))
 	{
 		CPanelID piddlg;
 		if (piddlg.DoModal() == IDOK)
 		{
-			GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPID);
+			if (lpWorkInfo->m_sPanelID.IsEmpty() == FALSE)
+			{
+				GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPanelID);
+			}
+			else if (lpWorkInfo->m_sSerialNumber.IsEmpty() == FALSE)
+			{
+				GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sSerialNumber);
+			}
 		}
 		else
 		{
@@ -657,6 +689,9 @@ bool CTestReady::Lf_startTestOn()
 
 	m_pApp->Gf_writeLogData(_T("<TEST>"), _T("Pattern Test END"));
 
+	lpWorkInfo->tt_endTime = CTime::GetCurrentTime();
+	m_pApp->Gf_writeSummaryLog();
+
 	/*********************************************************************************************************************/	
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST READY"));
 	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE))
@@ -675,7 +710,8 @@ void CTestReady::Lf_setVariableReset()
 	m_pApp->m_pCimNet->SetRwkCode(_T(""));
 
 	// 검사 함번할때마다 PID 다시 입력하도록 수정.(최종검수때 요청) 2022-10-04 CNZ
-	lpWorkInfo->m_sPID.Empty();
+	lpWorkInfo->m_sPanelID.Empty();
+	lpWorkInfo->m_sSerialNumber.Empty();
 	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(_T(""));
 
 	m_dioInputBit = 0x0000;
@@ -732,4 +768,8 @@ BOOL CTestReady::Lf_CableOpenCheck()
 
 	return TRUE;
 }
+
+
+
+
 

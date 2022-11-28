@@ -5,75 +5,75 @@
 
 
 /////////////////////////////////////////////////////////////////////////////Đs
-#define _STR_DEFAULTMODEL			"DEFAULT_MODEL"
-#define PGM_VERSION					_T("1.0.0_R1")
+#define _STR_DEFAULTMODEL				"DEFAULT_MODEL"
+#define PGM_VERSION						_T("1.0.0_R1")
 /////////////////////////////////////////////////////////////////////////////
-#define MLOG_MAX_LENGTH				16*1024
+#define MLOG_MAX_LENGTH					16*1024
 
 /////////////////////////////////////////////////////////////////////////////
-#define	DEBUG_GMES_TEST_SERVER		0
-#define DEBUG_232RECEIVE_OK			0
-#define DEBUG_RS232C_LOG			0
-#define DEBUG_PALLET_ARRIVE			0
-#define DEBUG_MES_NOT_USE			0
+#define	DEBUG_GMES_TEST_SERVER			0
+#define DEBUG_232RECEIVE_OK				0
+#define DEBUG_RS232C_LOG				0
+#define DEBUG_PALLET_ARRIVE				0
+#define DEBUG_MES_NOT_USE				0
 
 /////////////////////////////////////////////////////////////////////////////
 // DebugMode
-#define DEBUG_DIO_SKIP				0
+#define DEBUG_DIO_SKIP					0
 /////////////////////////////////////////////////////////////////////////////
-#define UDP_MAIN_IP					_T("192.168.10.3")		// CString type define
+#define UDP_MAIN_IP						_T("192.168.10.3")		// CString type define
 
 /////////////////////////////////////////////////////////////////////////////
-#define PACKET_SIZE					1024*64
+#define PACKET_SIZE						1024*64
 
 /////////////////////////////////////////////////////////////////////////////
 // ON/OFF와 TRUE/FALSE에 관련된 Define은 여기에서 한다.
 /////////////////////////////////////////////////////////////////////////////
-#define _OFF_						0
-#define _ON_						1
+#define _OFF_							0
+#define _ON_							1
 
-#define _DISABLE_					0
-#define _ENABLE_					1
+#define _DISABLE_						0
+#define _ENABLE_						1
 
-#define POWER_OFF					0
-#define POWER_ON					1
+#define POWER_OFF						0
+#define POWER_ON						1
 
-#define _CLEAR_						0
-#define _SET_						1
+#define _CLEAR_							0
+#define _SET_							1
 
-#define SIG_TYPE_TMDS				0
-#define SIG_TYPE_LVDS				1
-#define SIG_TYPE_DP					2
-#define SIG_TYPE_EDP				3
-#define SIG_TYPE_MIPI				4
-#define SIG_TYPE_ALPLD				5
+#define SIG_TYPE_TMDS					0
+#define SIG_TYPE_LVDS					1
+#define SIG_TYPE_DP						2
+#define SIG_TYPE_EDP					3
+#define SIG_TYPE_MIPI					4
+#define SIG_TYPE_ALPLD					5
 
-#define SINGLE						0
-#define DUAL						1
-#define QUAD						2
-
-/////////////////////////////////////////////////////////////////////////////
-#define PTNLST_MAX					200
+#define SINGLE							0
+#define DUAL							1
+#define QUAD							2
 
 /////////////////////////////////////////////////////////////////////////////
-#define OFF_LINE					0
-#define IN_LINE						1
+#define PTNLST_MAX						200
+
+/////////////////////////////////////////////////////////////////////////////
+#define OFF_LINE						0
+#define IN_LINE							1
 
 
 /////////////////////////////////////////////////////////////////////////////
 // PLC Interface define
 /////////////////////////////////////////////////////////////////////////////
-#define MELSEC_SUB_HEAD				0x5000		// 서브 머리글
-#define MELSEC_NETWORK_NO			0x00		// 네트워크 번호
-#define MELSEC_PLC_NO				0xFF		// PLC 번호
-#define MELSEC_MODULE_IO_NO			0x03FF		// 요구 상대 모듈 I/O 번호
-#define MELSEC_MODULE_COUNTRY_NO	0x00		// 요구 상대 모듈 국 번호
-#define MELSEC_CPU_TIMER			0x000A		// CPU 감시 TIMER
+#define MELSEC_SUB_HEAD					0x5000		// 서브 머리글
+#define MELSEC_NETWORK_NO				0x00		// 네트워크 번호
+#define MELSEC_PLC_NO					0xFF		// PLC 번호
+#define MELSEC_MODULE_IO_NO				0x03FF		// 요구 상대 모듈 I/O 번호
+#define MELSEC_MODULE_COUNTRY_NO		0x00		// 요구 상대 모듈 국 번호
+#define MELSEC_CPU_TIMER				0x000A		// CPU 감시 TIMER
 
-#define MELSEC_CMD_WRITE			0x1401		// Write Command
-#define MELSEC_CMD_READ				0x0401		// Read Command
-#define MELSEC_SUBCMD_WORD			0x0000		// 서브 커맨드 (WORD 단위 R/W)
-#define MELSEC_CMD_DEVICE_CODE		0xA8		// 디바이스 코드
+#define MELSEC_CMD_WRITE				0x1401		// Write Command
+#define MELSEC_CMD_READ					0x0401		// Read Command
+#define MELSEC_SUBCMD_WORD				0x0000		// 서브 커맨드 (WORD 단위 R/W)
+#define MELSEC_CMD_DEVICE_CODE			0xA8		// 디바이스 코드
 
 #define PLC_PID_WRITE_START_ADDR_1		8000		// Panel ID Write Address (확인 후 정의 필요)
 #define PLC_PID_WRITE_COMPLETE_ADDR_1	8009		// Panel ID Write Address (확인 후 정의 필요)

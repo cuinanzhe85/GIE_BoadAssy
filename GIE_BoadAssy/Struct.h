@@ -327,9 +327,16 @@ typedef struct _ST_SYSTEMINFO_{
 	CString		sEasRemoteSubject;
 
 	// TCP/IP (PLC)
+	int			m_nPlcDeviceUse;
 	int			m_nPlcDeviceNum;
 	CString		m_sPlcIPAddress;
 	CString		m_sPlcPort;
+
+	// DFS
+	int			m_nDfsUse;
+	CString		m_sDfsIPAddress;
+	CString		m_sDfsUserId;
+	CString		m_sDfsPassword;
 
 	int			m_nPinBlockOpenCheck;
 
@@ -386,7 +393,8 @@ typedef struct _ST_INSPWORKINFO_{
 
 	bool	m_bPIDReadComplete;
 	CString	m_sReceivePID;
-	CString	m_sPID;
+	CString	m_sPanelID;
+	CString m_sSerialNumber;
 
 	int m_nFastDioJudge;
 	
@@ -419,5 +427,30 @@ typedef struct _ST_INSPWORKINFO_{
 
 	BOOL m_bBmpDoneCheck;
 
+	CTime tt_startTime;
+	CTime tt_endTime;
+
 }INSPWORKINFO, *LPINSPWORKINFO;
 
+enum
+{
+	SUM_DATE = 0,
+	SUM_PM_MES,
+	SUM_SW_VER,
+	SUM_FW_VER,
+	SUM_MODEL,
+	SUM_EQP_ID,
+	SUM_PID,
+	SUM_PASS_FAIL,
+	SUM_RWK_CD,
+	SUM_TACT_TIME,
+	SUM_START_TIME,
+	SUM_END_TIME,
+	SUM_INFO_MAX
+};
+
+typedef struct _ST_SUMMARY_
+{
+	CString	m_sumData[SUM_INFO_MAX];
+
+} SUMMARYINFO, * LPSUMMARYINFO;
