@@ -1,6 +1,6 @@
-#pragma once
+ï»¿#pragma once
 
-// CSocketUDP ¸í·É ´ë»óÀÔ´Ï´Ù.
+// CSocketUDP ëª…ë ¹ ëŒ€ìƒì…ë‹ˆë‹¤.
 #define WM_UDP_RECEIVE				(WM_USER+200)
 #define UDP_SOCKET_PORT				50001
 #define LOCAL_HOST_IP				_T("127.0.0.1")
@@ -14,7 +14,7 @@ public:
 	virtual ~CSocketUDP();
 
 /////////////////////////////////////////////////////////////////////////////
-// »ç¿ëÀÚ Á¤ÀÇ Function/Variable
+// ì‚¬ìš©ì ì •ì˜ Function/Variable
 /////////////////////////////////////////////////////////////////////////////
 public:
 #if (DEBUG_RECV_COUNT==1)
@@ -23,17 +23,17 @@ public:
 
 	BOOL m_bEthernetInit;
 	BOOL m_bUDPSendFail;
-	char m_sendBuf[PACKET_SIZE];	// º¸³¾ µ¥ÀÌÅÍ¸¦ ÀúÀå
+	char m_sendBuf[PACKET_SIZE];	// ë³´ë‚¼ ë°ì´í„°ë¥¼ ì €ì¥
 
-	char m_recvBuf[PACKET_SIZE*4];	// ¹ŞÀº µ¥ÀÌÅÍ¸¦ ÀúÀå
-	int  m_recvSize;				// ¹ŞÀº µ¥ÀÌÅÍÀÇ Size
-	int  m_recvCommand;				// ¹ŞÀº Command
-	int  m_recvTotalLength;			// ÀüÃ¼ ¹ŞÀ» PacketÀÇ Length
-	BOOL m_bIsContinueRecv;			// ¿¬¼ÓµÈ PacketÀÎÁö »õ·Î¿î PacketÀÎÁö ±¸ºĞÇÏ´Â Flag
+	char m_recvBuf[PACKET_SIZE*4];	// ë°›ì€ ë°ì´í„°ë¥¼ ì €ì¥
+	int  m_recvSize;				// ë°›ì€ ë°ì´í„°ì˜ Size
+	int  m_recvCommand;				// ë°›ì€ Command
+	int  m_recvTotalLength;			// ì „ì²´ ë°›ì„ Packetì˜ Length
+	BOOL m_bIsContinueRecv;			// ì—°ì†ëœ Packetì¸ì§€ ìƒˆë¡œìš´ Packetì¸ì§€ êµ¬ë¶„í•˜ëŠ” Flag
 
 	CString m_strLocalIP1, m_strLocalIP2, m_strGateway;
 
-	SOCKADDR_IN *m_recvSocketAddr;	//¹Ş´Â ÁÖ¼ÒÁ¤º¸¸¦ ´ã°íÀÖÀ½
+	SOCKADDR_IN *m_recvSocketAddr;	//ë°›ëŠ” ì£¼ì†Œì •ë³´ë¥¼ ë‹´ê³ ìˆìŒ
 
 	CString _hex_to_string(int size, char* hexStr);
 

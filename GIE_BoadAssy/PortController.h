@@ -1,4 +1,4 @@
-// PortController.h: interface for the CPortController class.
+﻿// PortController.h: interface for the CPortController class.
 //
 //////////////////////////////////////////////////////////////////////
 

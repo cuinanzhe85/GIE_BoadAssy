@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "afxcmn.h"
 #include "afxwin.h"
 
 
-// CAutoFirmware ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
-#define MAX_FILE_SIZE		1024*1024		// ÃÖ´ë 1M Buff ÇÒ´ç.
-#define MAX_DATASIZE 400000 //FW File¿¡¼­ ÀĞÀ» ¼öÀÖ´Â ÃÖ´ë Å©±â
+// CAutoFirmware ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
+#define MAX_FILE_SIZE		1024*1024		// ìµœëŒ€ 1M Buff í• ë‹¹.
+#define MAX_DATASIZE		400000			// FW Fileì—ì„œ ì½ì„ ìˆ˜ìˆëŠ” ìµœëŒ€ í¬ê¸°
 #define FLASH_PAGE_SIZE		1024
 
 #define	SIZE_OF_EPCQ16A				(32*1024*1024)	// 2MByte
@@ -20,14 +20,14 @@ class CAutoFirmware : public CDialog
 	DECLARE_DYNAMIC(CAutoFirmware)
 
 public:
-	CAutoFirmware(CWnd* pParent = NULL);   // Ç¥ÁØ »ı¼ºÀÚÀÔ´Ï´Ù.
+	CAutoFirmware(CWnd* pParent = NULL);   // í‘œì¤€ ìƒì„±ìì…ë‹ˆë‹¤.
 	virtual ~CAutoFirmware();
 
-// ´ëÈ­ »óÀÚ µ¥ÀÌÅÍÀÔ´Ï´Ù.
+// ëŒ€í™” ìƒì ë°ì´í„°ì…ë‹ˆë‹¤.
 	enum { IDD = IDD_AUTO_FIRMWARE };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Áö¿øÀÔ´Ï´Ù.
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ì§€ì›ì…ë‹ˆë‹¤.
 
 	DECLARE_MESSAGE_MAP()
 public:

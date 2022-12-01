@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <direct.h>
 #include <io.h>
@@ -50,7 +50,7 @@ static int _str_to_dec(CString hexStr)
 	nLength = hexStr.GetLength();
 	while(nLength != 0)
 	{
-		// Hex Char¿¡ ÇØ´çÇÏ´Â Decimal °ªÀ» °¡Á®¿Â´Ù.
+		// Hex Charì— í•´ë‹¹í•˜ëŠ” Decimal ê°’ì„ ê°€ì ¸ì˜¨ë‹¤.
 		if(hexStr.GetAt(index)=='0')			tmpdata=0;
 		else if(hexStr.GetAt(index)=='1')		tmpdata=1;
 		else if(hexStr.GetAt(index)=='2')		tmpdata=2;
@@ -68,16 +68,16 @@ static int _str_to_dec(CString hexStr)
 		else if(hexStr.GetAt(index)=='E')		tmpdata=14;
 		else if(hexStr.GetAt(index)=='F')		tmpdata=15;
 
-		// °á°ú °ªÀ» ´©ÀûÇÑ´Ù.
+		// ê²°ê³¼ ê°’ì„ ëˆ„ì í•œë‹¤.
 		dwRtnData += tmpdata;
 
-		// Index °ªÀ» Áõ°¡ ½ÃÅ²´Ù.
+		// Index ê°’ì„ ì¦ê°€ ì‹œí‚¨ë‹¤.
 		index++;
 
-		// ¸¶Áö¸· DataÀÌ¸é while¹®À» ºüÁ® ³ª°£´Ù.
+		// ë§ˆì§€ë§‰ Dataì´ë©´ whileë¬¸ì„ ë¹ ì ¸ ë‚˜ê°„ë‹¤.
 		if(nLength == index)	break;
 
-		// ´©ÀûµÈ Data °ªÀ» Shift ½ÃÅ²´Ù.
+		// ëˆ„ì ëœ Data ê°’ì„ Shift ì‹œí‚¨ë‹¤.
 		dwRtnData <<= 4;
 	}
 
@@ -87,7 +87,7 @@ static int _str_to_dec(CString hexStr)
 /////////////////////////////////////////////////////////////////////////////
 static void char_To_wchar(char* szOrg, wchar_t* wszConv)
 {
-	// char*ÇüÀÇ ¸ğµ¨¸íÀ» wchar ÇüÅÂÀÇ ¸ğµ¨¸íÀ¸·Î º¯È¯.
+	// char*í˜•ì˜ ëª¨ë¸ëª…ì„ wchar í˜•íƒœì˜ ëª¨ë¸ëª…ìœ¼ë¡œ ë³€í™˜.
 	int mlen = (int)strlen(szOrg);
 	int wlen = 0;
 	wlen		= MultiByteToWideChar(CP_ACP,0,szOrg,mlen,NULL,0);
@@ -97,7 +97,7 @@ static void char_To_wchar(char* szOrg, wchar_t* wszConv)
 
 static wchar_t* char_To_wchar(char* szOrg)
 {
-	// char*ÇüÀÇ ¸ğµ¨¸íÀ» wchar ÇüÅÂÀÇ ¸ğµ¨¸íÀ¸·Î º¯È¯.
+	// char*í˜•ì˜ ëª¨ë¸ëª…ì„ wchar í˜•íƒœì˜ ëª¨ë¸ëª…ìœ¼ë¡œ ë³€í™˜.
 	int mlen = (int)strlen(szOrg);
 	int wlen = 0;
 	wlen		= MultiByteToWideChar(CP_ACP,0,szOrg,mlen,NULL,0);
@@ -109,17 +109,17 @@ static wchar_t* char_To_wchar(char* szOrg)
 
 static void wchar_To_char(wchar_t* wszOrg, char* szConv)
 {
-	//¸ÕÀú ±æÀÌ¸¦ ±¸ÇÑ´Ù.
+	//ë¨¼ì € ê¸¸ì´ë¥¼ êµ¬í•œë‹¤.
 	int nMultiByteLen = WideCharToMultiByte(CP_ACP, 0, wszOrg, -1, NULL, 0, NULL,NULL);
-	//º¯È¯ÇÑ´Ù.
+	//ë³€í™˜í•œë‹¤.
 	WideCharToMultiByte(CP_ACP, 0, wszOrg, -1, szConv, nMultiByteLen, NULL, NULL);
 }
 
 static char* wchar_To_char(wchar_t* wszOrg)
 {
-	//¸ÕÀú ±æÀÌ¸¦ ±¸ÇÑ´Ù.
+	//ë¨¼ì € ê¸¸ì´ë¥¼ êµ¬í•œë‹¤.
 	int nMultiByteLen = WideCharToMultiByte(CP_ACP, 0, wszOrg, -1, NULL, 0, NULL,NULL);
-	//º¯È¯ÇÑ´Ù.
+	//ë³€í™˜í•œë‹¤.
 	WideCharToMultiByte(CP_ACP, 0, wszOrg, -1, szConv, nMultiByteLen, NULL, NULL);
 
 	return szConv;
@@ -255,7 +255,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, CS
 
 	char_To_wchar(lpModelName, wszModel);
 
-	// ¸ğµ¨ File °æ·Î ¼³Á¤
+	// ëª¨ë¸ File ê²½ë¡œ ì„¤ì •
 	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), szModelPath);
@@ -274,7 +274,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, ch
 	// Return Memory Initialize
 	memset(szRetString,'\0',sizeof(szRetString));
 
-	// ¸ğµ¨ File °æ·Î ¼³Á¤
+	// ëª¨ë¸ File ê²½ë¡œ ì„¤ì •
 	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), szModelPath);
@@ -291,7 +291,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, in
 
 	char_To_wchar(lpModelName, wszModel);
 
-	// ¸ğµ¨ File °æ·Î ¼³Á¤
+	// ëª¨ë¸ File ê²½ë¡œ ì„¤ì •
 	*pRetValue = 0;
 	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
@@ -310,7 +310,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, LO
 
 	char_To_wchar(lpModelName, wszModel);
 
-	// ¸ğµ¨ File °æ·Î ¼³Á¤
+	// ëª¨ë¸ File ê²½ë¡œ ì„¤ì •
 	*pRetValue = 0;
 	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
@@ -328,7 +328,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, fl
 
 	char_To_wchar(lpModelName, wszModel);
 
-	// ¸ğµ¨ File °æ·Î ¼³Á¤
+	// ëª¨ë¸ File ê²½ë¡œ ì„¤ì •
 	*pRetValue = 0;
 	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
@@ -348,7 +348,7 @@ static void Read_ModelFile(char* lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, do
 
 	char_To_wchar(lpModelName, wszModel);
 
-	// ¸ğµ¨ File °æ·Î ¼³Á¤
+	// ëª¨ë¸ File ê²½ë¡œ ì„¤ì •
 	*pRetValue = 0;
 	szModelPath.Format(_T(".\\Model\\%s.MOD"), wszModel);
 
@@ -551,7 +551,7 @@ static void Write_AgingErrorLog(int rackID, int channel, CString strError, CStri
 	strTime.Format(_T("%02d:%02d:%02d"), time.GetHour(), time.GetMinute(), time.GetSecond());
 
 
-	// 1. Aging LogÆú´õ¸¦ Ã£¾Æ FileÀ» OpenÇÏ°í ¾øÀ¸¸é Æú´õ¿Í ÆÄÀÏÀ» »ı¼ºÇÑ´Ù.
+	// 1. Aging Logí´ë”ë¥¼ ì°¾ì•„ Fileì„ Opení•˜ê³  ì—†ìœ¼ë©´ í´ë”ì™€ íŒŒì¼ì„ ìƒì„±í•œë‹¤.
 	wchar_To_char(strDate.GetBuffer(0), buff1);
 	sprintf_s(filepath, sizeof(filepath), ".\\Aging_Log\\%s_AgingLog.txt", buff1);
 	fopen_s(&fp, filepath, "a+");
@@ -571,9 +571,9 @@ static void Write_AgingErrorLog(int rackID, int channel, CString strError, CStri
 	}
 	fseek (fp, 0L, SEEK_END);
 
-	// 2. Aging Log Data¸¦ WriteÇÑ´Ù.
+	// 2. Aging Log Dataë¥¼ Writeí•œë‹¤.
 
-	// 2.1 ÁÙ¹Ù²ŞÀº @@·Î ´ëÃ¼ÇÏ¿© File¿¡ ÀúÀåÇÑ´Ù. º¸¿©ÁÙ¶§´Â ¿øº¹½ÃÅ²´Ù.
+	// 2.1 ì¤„ë°”ê¿ˆì€ @@ë¡œ ëŒ€ì²´í•˜ì—¬ Fileì— ì €ì¥í•œë‹¤. ë³´ì—¬ì¤„ë•ŒëŠ” ì›ë³µì‹œí‚¨ë‹¤.
 	strError.Replace(_T("\r\n"), _T("@@"));
 
 	wchar_To_char(strTime.GetBuffer(0), buff1);
@@ -582,7 +582,7 @@ static void Write_AgingErrorLog(int rackID, int channel, CString strError, CStri
 	sprintf_s(szLine, "%d\t%d\t%s\t%s\t%s\r\n", rackID, (channel+1), buff1, buff2, buff3);
 	fwrite(szLine, sizeof(char), strlen(szLine), fp);
 
-	// 3. FileÀ» ´İ´Â´Ù.
+	// 3. Fileì„ ë‹«ëŠ”ë‹¤.
 	fclose(fp);
 }
 
@@ -594,15 +594,15 @@ static int Read_AgingErrorLog(CString lpDate, int *rackID, int *channel, CString
 	CString filepath;
 	CString readline;
 
-	// º¯¼ö ÃÊ±âÈ­
+	// ë³€ìˆ˜ ì´ˆê¸°í™”
 	*rackID = 0xFF;
 	lpTime[0].Format(_T(""));
 	lpResult[0].Format(_T(""));
 
-	// FileÀ» ÀĞ´Â´Ù.
+	// Fileì„ ì½ëŠ”ë‹¤.
 	filepath.Format(_T(".\\Aging_Log\\%s_AgingLog.txt"), lpDate);
 
-	// FileÀ» OpenÇÑ´Ù.
+	// Fileì„ Opení•œë‹¤.
 	if(cfile.Open(filepath, CFile::modeRead | CFile::typeText))
 	{
 		while(cfile.ReadString(readline))
@@ -650,24 +650,24 @@ static CString Read_GBSettingValue(CString keyString)
 	{
 		if(pFile->Open(_T("GB_Value.txt"), CStdioFile::modeRead | CStdioFile::typeText)==NULL)
 		{
-			AfxMessageBox(_T("GB_Value.txt ÆÄÀÏÀ» ¿­¼ö ¾ø½À´Ï´Ù."), MB_ICONERROR);	
+			AfxMessageBox(_T("GB_Value.txt íŒŒì¼ì„ ì—´ìˆ˜ ì—†ìŠµë‹ˆë‹¤."), MB_ICONERROR);	
 			delete pFile;
 			return FALSE;
 		}
 	}
 	
 
-	// LineÀÌ NullÀÏ¶§±îÁö ÀĞ´Â´Ù.
+	// Lineì´ Nullì¼ë•Œê¹Œì§€ ì½ëŠ”ë‹¤.
 	while(pFile->ReadString(readString)==TRUE)
 	{
-		// StringÀÇ ¿¹¿ÜÃ³¸® ºÎºĞÀ» Ãß°¡ÇÑ´Ù.
+		// Stringì˜ ì˜ˆì™¸ì²˜ë¦¬ ë¶€ë¶„ì„ ì¶”ê°€í•œë‹¤.
 		readString.TrimLeft();
 		readString.TrimRight();
 
-		// CA310 Channel Á¤º¸°¡ ÀúÀåµÈ LineÀ» Ã£´Â´Ù.
+		// CA310 Channel ì •ë³´ê°€ ì €ì¥ëœ Lineì„ ì°¾ëŠ”ë‹¤.
 		if(readString.Left(keyString.GetLength()) == keyString)
 		{
-			// CA310 Channel Á¤º¸¸¦ Parsing ÇÑ´Ù.
+			// CA310 Channel ì •ë³´ë¥¼ Parsing í•œë‹¤.
 			sRetString = readString.Mid(readString.Find(_T(" "))+1);
 
 			sRetString.TrimLeft();
@@ -787,7 +787,7 @@ static void Read_YCB_Setting(LPCWSTR lpTitle, LPCWSTR lpKey, LONG *pRetValue)
 	wchar_t wszData[100] = {0,};
 
 
-	// ¸ğµ¨ File °æ·Î ¼³Á¤
+	// ëª¨ë¸ File ê²½ë¡œ ì„¤ì •
 	*pRetValue = 0;
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), _T(".\\YCB_Setting.ini"));        
@@ -886,7 +886,7 @@ static CString GetDefectIniProfileString(CString fileName, CString section, CStr
 	////////////////////////////////////////////////////////////////////////////////////////////
 	FILE* fStream = NULL;
 	wchar_t* pFilePath = (wchar_t*)fileName.GetBuffer();
-	errno_t e = _tfopen_s(&fStream, pFilePath, _T("rt,ccs=UNICODE"));	// rt°¡ ÇÙ½É
+	errno_t e = _tfopen_s(&fStream, pFilePath, _T("rt,ccs=UNICODE"));	// rtê°€ í•µì‹¬
 
 	if (!e)
 	{
@@ -911,7 +911,7 @@ static CString GetDefectIniProfileString(CString fileName, CString section, CStr
 					lineStringW.TrimLeft();
 					lineStringW.TrimRight();
 
-					// ´ÙÀ½ SectionÀ» ¸¸³ª¸é ReturnÇÑ´Ù.
+					// ë‹¤ìŒ Sectionì„ ë§Œë‚˜ë©´ Returní•œë‹¤.
 					if (lineStringW.Left(1) == _T("["))
 						break;
 

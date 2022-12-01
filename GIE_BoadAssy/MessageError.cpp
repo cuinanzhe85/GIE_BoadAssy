@@ -1,4 +1,4 @@
-// MessageError.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// MessageError.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -6,7 +6,7 @@
 #include "MessageError.h"
 
 
-// CMessageError ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CMessageError ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 IMPLEMENT_DYNAMIC(CMessageError, CDialog)
 
@@ -36,13 +36,13 @@ BEGIN_MESSAGE_MAP(CMessageError, CDialog)
 END_MESSAGE_MAP()
 
 
-// CMessageError ¸Ş½ÃÁö Ã³¸®±âÀÔ´Ï´Ù.
+// CMessageError ë©”ì‹œì§€ ì²˜ë¦¬ê¸°ì…ë‹ˆë‹¤.
 
 BOOL CMessageError::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  ¿©±â¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì¶”ê°€ ì´ˆê¸°í™” ì‘ì—…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_pApp->Gf_writeLogData("<WND>", "Message Dialog OPEN");
 
 	Lf_initLocalValue();
@@ -50,14 +50,14 @@ BOOL CMessageError::OnInitDialog()
 	Lf_initColorBrush();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// ¿¹¿Ü: OCX ¼Ó¼º ÆäÀÌÁö´Â FALSE¸¦ ¹İÈ¯ÇØ¾ß ÇÕ´Ï´Ù.
+	// ì˜ˆì™¸: OCX ì†ì„± í˜ì´ì§€ëŠ” FALSEë¥¼ ë°˜í™˜í•´ì•¼ í•©ë‹ˆë‹¤.
 }
 
 void CMessageError::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	for(int i=0; i<COLOR_IDX_MAX; i++)
 	{
 		Brush[i].DeleteObject();
@@ -73,7 +73,7 @@ HBRUSH CMessageError::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  ¿©±â¼­ DCÀÇ Æ¯¼ºÀ» º¯°æÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì„œ DCì˜ íŠ¹ì„±ì„ ë³€ê²½í•©ë‹ˆë‹¤.
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_MSGBOX:
@@ -95,33 +95,33 @@ HBRUSH CMessageError::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		break;
 	}
-	// TODO:  ±âº»°ªÀÌ Àû´çÇÏÁö ¾ÊÀ¸¸é ´Ù¸¥ ºê·¯½Ã¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+	// TODO:  ê¸°ë³¸ê°’ì´ ì ë‹¹í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ë¥¸ ë¸ŒëŸ¬ì‹œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	return hbr;
 }
 
 void CMessageError::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ê°’ì„ í˜¸ì¶œí•©ë‹ˆë‹¤.
 
 	CDialog::OnTimer(nIDEvent);
 }
 
 void CMessageError::OnBnClickedBtnErrClose()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_pApp->Gf_writeLogData(_T("<WND>"), _T("Message Dialog Close"));
 	CDialog::OnCancel();
 }
 
 BOOL CMessageError::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: ¿©±â¿¡ Æ¯¼öÈ­µÈ ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº» Å¬·¡½º¸¦ È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— íŠ¹ìˆ˜í™”ëœ ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ í´ë˜ìŠ¤ë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	if(pMsg->message == WM_SYSKEYDOWN && pMsg->wParam == VK_F4)
 	{
 		if (::GetKeyState(VK_MENU)<0)	return TRUE;
 	}
 
-	// ÀÏ¹İ Key µ¿ÀÛ¿¡ ´ëÇÑ Event
+	// ì¼ë°˜ Key ë™ì‘ì— ëŒ€í•œ Event
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch(pMsg->wParam)
@@ -160,7 +160,7 @@ void CMessageError::Lf_initFontset()
 
 void CMessageError::Lf_initColorBrush()
 {
-	// °¢ ControlÀÇ COLOR ¼³Á¤À» À§ÇÑ Brush¸¦ Setting ÇÑ´Ù.
+	// ê° Controlì˜ COLOR ì„¤ì •ì„ ìœ„í•œ Brushë¥¼ Setting í•œë‹¤.
 	Brush[COLOR_IDX_BLACK].CreateSolidBrush (COLOR_BLACK);
 	Brush[COLOR_IDX_WHITE].CreateSolidBrush (COLOR_WHITE);
 	Brush[COLOR_IDX_RED].CreateSolidBrush (COLOR_RED);

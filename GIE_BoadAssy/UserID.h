@@ -1,24 +1,24 @@
-#pragma once
+ï»¿#pragma once
 #include "afxwin.h"
 
 
-// CUserID ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CUserID ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 class CUserID : public CDialog
 {
 	DECLARE_DYNAMIC(CUserID)
 
 public:
-	CUserID(CWnd* pParent = NULL);   // Ç¥ÁØ »ı¼ºÀÚÀÔ´Ï´Ù.
+	CUserID(CWnd* pParent = NULL);   // í‘œì¤€ ìƒì„±ìì…ë‹ˆë‹¤.
 	virtual ~CUserID();
 
-// ´ëÈ­ »óÀÚ µ¥ÀÌÅÍÀÔ´Ï´Ù.
+// ëŒ€í™” ìƒì ë°ì´í„°ì…ë‹ˆë‹¤.
 	enum { IDD = IDD_USERID };
 
 	
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Áö¿øÀÔ´Ï´Ù.
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ì§€ì›ì…ë‹ˆë‹¤.
 
 	DECLARE_MESSAGE_MAP()
 public:

@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
 
-// CInitialize ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CInitialize ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 #define ST_SYS		0
 #define ST_MOD		1
 #define ST_PTN		2
@@ -18,14 +18,14 @@ class CInitialize : public CDialog
 	DECLARE_DYNAMIC(CInitialize)
 
 public:
-	CInitialize(CWnd* pParent = NULL);   // Ç¥ÁØ »ı¼ºÀÚÀÔ´Ï´Ù.
+	CInitialize(CWnd* pParent = NULL);   // í‘œì¤€ ìƒì„±ìì…ë‹ˆë‹¤.
 	virtual ~CInitialize();
 
-// ´ëÈ­ »óÀÚ µ¥ÀÌÅÍÀÔ´Ï´Ù.
+// ëŒ€í™” ìƒì ë°ì´í„°ì…ë‹ˆë‹¤.
 	enum { IDD = IDD_INITIALIZE };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Áö¿øÀÔ´Ï´Ù.
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ì§€ì›ì…ë‹ˆë‹¤.
 
 	DECLARE_MESSAGE_MAP()
 public:

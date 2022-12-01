@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "GIE_BoadAssy.h"
 
 #include "DIO7230.h"
@@ -182,7 +182,7 @@ void CDIO7230::Lf_setDioFlow(BYTE newReadVal)
 	{
 		if (lpWorkInfo->m_bDioJudgeOk == false && lpWorkInfo->m_bIsEdidFail == false)
 		{
-			//Pattern Test ÁøÇà Áß¿¡´Â ÆÇÁ¤ OK, NG ¹öÆ°Àº ¹«½ÃÇÑ´Ù. Fast JudgeÀÇ °æ¿ì Á¦¿Ü.
+			//Pattern Test ì§„í–‰ ì¤‘ì—ëŠ” íŒì • OK, NG ë²„íŠ¼ì€ ë¬´ì‹œí•œë‹¤. Fast Judgeì˜ ê²½ìš° ì œì™¸.
 //imsi			if (pUiPorc->comm.curData.iStartTest != SEQ_PTN_TEST_START || lpSystemInfo->m_nFastDioJudge == TRUE)
 			{
 				lpWorkInfo->m_bDioJudgeOk = true;

@@ -1,4 +1,4 @@
-// PatternView.cpp : ±∏«ˆ ∆ƒ¿œ¿‘¥œ¥Ÿ.
+Ôªø// PatternView.cpp : Íµ¨ÌòÑ ÌååÏùºÏûÖÎãàÎã§.
 //
 
 #include "stdafx.h"
@@ -44,7 +44,7 @@ END_MESSAGE_MAP()
 
 
 
-// CPatternView ∏ﬁΩ√¡ˆ √≥∏Æ±‚¿‘¥œ¥Ÿ.
+// CPatternView Î©îÏãúÏßÄ Ï≤òÎ¶¨Í∏∞ÏûÖÎãàÎã§.
 
 void CPatternView::InitPatternRect(CDC* pDC, CRect lcdArea, CRect viewArea)
 {
@@ -104,7 +104,7 @@ void CPatternView::drawPatternBmp(CString bmpName)
 	memdc.CreateCompatibleDC(m_pDC);
 	memdc.SelectObject(bmp);
 	//m_pDC->BitBlt(0,0,bmpinfo.bmWidth,bmpinfo.bmHeight,&memdc,0,0,SRCCOPY);
-	// ∏∏æ‡ø° ≈©±‚∏¶ ∞Ì¡§ Ω√≈∞∞Ì ΩÕ¥Ÿ∏È StretchBit∏¶ ªÁøÎ
+	// ÎßåÏïΩÏóê ÌÅ¨Í∏∞Î•º Í≥†Ï†ï ÏãúÌÇ§Í≥† Ïã∂Îã§Î©¥ StretchBitÎ•º ÏÇ¨Ïö©
 	m_pDC->StretchBlt(m_frameRect.left,m_frameRect.top,m_frameRect.Width(),m_frameRect.Height(),&memdc,0,0,bmpinfo.bmWidth,bmpinfo.bmHeight,SRCCOPY);
 	memdc.DeleteDC();
 	cBitmap.DeleteObject();
@@ -118,7 +118,7 @@ void CPatternView::drawPrevPattern(CString ptnString)
 	setColorBitmap(ptnString);
 	setLineWindow(ptnString);
 
-	// Pattern πÃ∏Æ∫∏±‚∏¶ ±◊∏∞¥Ÿ.
+	// Pattern ÎØ∏Î¶¨Î≥¥Í∏∞Î•º Í∑∏Î¶∞Îã§.
 	drawCanvas(ptnString);			// Layer-1 Canvas
 	drawBitmap(ptnString);			// Layer-1 Bitmap
 	drawChess(ptnString);			// Layer-1 Chess
@@ -512,7 +512,7 @@ void CPatternView::drawCanvas_HVGradient(CDC* dc,const CRect& rect, COLORREF sCo
 			(GetGValue(eColor) == 0x0000) &&
 			(GetBValue(eColor) == 0x0000))
 		{
-			//1ªÁ∫–∏È
+			//1ÏÇ¨Î∂ÑÎ©¥
 			vert[0].x		=  rect.left;
 			vert[0].y		=  rect.top;
 			vert[0].Red		=  GetRValue(sColor)<< 8;
@@ -790,7 +790,7 @@ void CPatternView::drawBitmap(CString ptnString)
 	}
 	sizeY		= bitString.GetLength() / sizeX;
 
-	// User Bitmap ª˝º∫
+	// User Bitmap ÏÉùÏÑ±
 	drawBitmap_setUserBrush(bitString, sizeX, sizeY);
 
 	// Draw Bitmap
@@ -814,7 +814,7 @@ void CPatternView::drawBitmap_Draw(CDC* dc, CRect rc, int sizeX, int sizeY, int 
 	rect.top	= (LONG)(m_frameRect.top + round((double)rc.top * zoomV));
 	rect.bottom	= (LONG)(m_frameRect.top + round((double)rc.bottom * zoomV));
 
-	//∫Ò∆Æ ∏  √ﬂ∞°
+	//ÎπÑÌä∏ Îßµ Ï∂îÍ∞Ä
 	CRect Framerect((LONG)round(m_frameRect.left),
 		(LONG)round(m_frameRect.top),
 		(LONG)round(m_frameRect.right),
@@ -861,7 +861,7 @@ void CPatternView::drawBitmap_Draw(CDC* dc, CRect rc, int sizeX, int sizeY, int 
 	dc->RestoreDC(savedc);
 
 
-	//ªÁ∞¢«¸ øµø™√ﬂ∞°
+	//ÏÇ¨Í∞ÅÌòï ÏòÅÏó≠Ï∂îÍ∞Ä
 	if(fillopt == 1)
 	{
 		dc->FillRect(&rect,&fgbrush);
@@ -916,7 +916,7 @@ void CPatternView::drawBitmap_setUserBrush(CString szbrush, int sizeX, int sizeY
 			int ydes_s = y*sizeX;
 			int ysrc_s = y*oldx;
 
-			//¿Ã¿¸ Y∂Û¿Œ.
+			//Ïù¥Ï†Ñ YÎùºÏù∏.
 			if(sizeX <= oldx)
 			{
 				strBuff = szbrush.Mid(ysrc_s,sizeX);
@@ -1436,7 +1436,7 @@ void CPatternView::drawHRepeat_Draw(CDC* dc, CRect rc, int repeatCount, int repe
 
 	double zoomH	= getZoomH();
 	double zoomV	= getZoomV();
-	int	   bottom	= m_frameRect.bottom;	//∞Ê∞Ëº±
+	int	   bottom	= m_frameRect.bottom;	//Í≤ΩÍ≥ÑÏÑ†
 	int x1			= (int)(m_frameRect.left + round((double)rc.left * zoomH));
 	int y1			= (int)(m_frameRect.top + round((double)rc.top * zoomV));
 	int x2			= (int)(m_frameRect.left + round((double)rc.right * zoomH));
@@ -1669,7 +1669,7 @@ void CPatternView::drawVRepeat_Draw(CDC* dc, CRect rc, int repeatCount, int repe
 
 	double zoomH	= getZoomH();
 	double zoomV	= getZoomV();
-	int	   right	= m_frameRect.right;	//∞Ê∞Ëº±
+	int	   right	= m_frameRect.right;	//Í≤ΩÍ≥ÑÏÑ†
 	int x1			= (int)(m_frameRect.left + round((double)rc.left * zoomH));
 	int y1			= (int)(m_frameRect.top + round((double)rc.top * zoomV));
 	int y2			= (int)(m_frameRect.top + round((double)rc.bottom * zoomV));
@@ -1753,7 +1753,7 @@ void CPatternView::drawTLine_Draw(CDC* dc, CRect rc, int fillopt)
 			(LONG)round(m_frameRect.bottom) );
 
 		if(m_lineWindow.left == 0)
-		{	// Line Window πÃº≥¡§
+		{	// Line Window ÎØ∏ÏÑ§Ï†ï
 			vertex[0].x = Framerect.left;
 			vertex[0].y = rect.top;
 			vertex[1].x = rect.left;
@@ -1766,7 +1766,7 @@ void CPatternView::drawTLine_Draw(CDC* dc, CRect rc, int fillopt)
 			vertex[4].y = rect.top;
 		}
 		else
-		{	// Line Window º≥¡§
+		{	// Line Window ÏÑ§Ï†ï
 			int lwLeft = (int)(m_frameRect.left + round((double)m_lineWindow.left * getZoomH()));
 
 			vertex[0].x = lwLeft;
@@ -1796,7 +1796,7 @@ void CPatternView::drawTLine_Draw(CDC* dc, CRect rc, int fillopt)
 
 
 		if(m_lineWindow.right == 0)
-		{	// Line Window πÃº≥¡§
+		{	// Line Window ÎØ∏ÏÑ§Ï†ï
 			vertex[0].x = Framerect.right;
 			vertex[0].y = rect.top;
 			vertex[1].x = rect.left;
@@ -1809,7 +1809,7 @@ void CPatternView::drawTLine_Draw(CDC* dc, CRect rc, int fillopt)
 			vertex[4].y = rect.top;
 		}
 		else
-		{	// Line Window º≥¡§
+		{	// Line Window ÏÑ§Ï†ï
 			int lwRight = (int)(m_frameRect.left + round((double)m_lineWindow.right * getZoomH()));
 
 			vertex[0].x = lwRight;//Framerect.right;

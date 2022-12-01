@@ -1,4 +1,4 @@
-// MessageQuestion.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// MessageQuestion.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -6,7 +6,7 @@
 #include "MessageQuestion.h"
 
 
-// CMessageQuestion ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CMessageQuestion ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 IMPLEMENT_DYNAMIC(CMessageQuestion, CDialog)
 
@@ -37,13 +37,13 @@ BEGIN_MESSAGE_MAP(CMessageQuestion, CDialog)
 END_MESSAGE_MAP()
 
 
-// CMessageQuestion ¸Ş½ÃÁö Ã³¸®±âÀÔ´Ï´Ù.
+// CMessageQuestion ë©”ì‹œì§€ ì²˜ë¦¬ê¸°ì…ë‹ˆë‹¤.
 
 BOOL CMessageQuestion::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  ¿©±â¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì¶”ê°€ ì´ˆê¸°í™” ì‘ì—…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_pApp->Gf_writeLogData("<WND>", "Question Dialog OPEN");
 
 	Lf_initLocalValue();
@@ -51,14 +51,14 @@ BOOL CMessageQuestion::OnInitDialog()
 	Lf_initColorBrush();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// ¿¹¿Ü: OCX ¼Ó¼º ÆäÀÌÁö´Â FALSE¸¦ ¹İÈ¯ÇØ¾ß ÇÕ´Ï´Ù.
+	// ì˜ˆì™¸: OCX ì†ì„± í˜ì´ì§€ëŠ” FALSEë¥¼ ë°˜í™˜í•´ì•¼ í•©ë‹ˆë‹¤.
 }
 
 void CMessageQuestion::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	for(int i=0; i<COLOR_IDX_MAX; i++)
 	{
 		Brush[i].DeleteObject();
@@ -74,7 +74,7 @@ HBRUSH CMessageQuestion::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  ¿©±â¼­ DCÀÇ Æ¯¼ºÀ» º¯°æÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì„œ DCì˜ íŠ¹ì„±ì„ ë³€ê²½í•©ë‹ˆë‹¤.
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_MSGBOX:
@@ -105,20 +105,20 @@ HBRUSH CMessageQuestion::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		break;
 	}
-	// TODO:  ±âº»°ªÀÌ Àû´çÇÏÁö ¾ÊÀ¸¸é ´Ù¸¥ ºê·¯½Ã¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+	// TODO:  ê¸°ë³¸ê°’ì´ ì ë‹¹í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ë¥¸ ë¸ŒëŸ¬ì‹œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	return hbr;
 }
 
 void CMessageQuestion::OnBnClickedBtnMsgConfirm()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_pApp->Gf_writeLogData(_T("<WND>"), _T("Question Dialog Confirm"));
 	CDialog::OnOK();
 }
 
 void CMessageQuestion::OnBnClickedBtnMsgClose()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_pApp->Gf_writeLogData(_T("<WND>"), _T("Question Dialog Cancel"));
 	CDialog::OnCancel();
 }
@@ -156,7 +156,7 @@ void CMessageQuestion::Lf_initFontset()
 
 void CMessageQuestion::Lf_initColorBrush()
 {
-	// °¢ ControlÀÇ COLOR ¼³Á¤À» À§ÇÑ Brush¸¦ Setting ÇÑ´Ù.
+	// ê° Controlì˜ COLOR ì„¤ì •ì„ ìœ„í•œ Brushë¥¼ Setting í•œë‹¤.
 	Brush[COLOR_IDX_BLACK].CreateSolidBrush (COLOR_BLACK);
 	Brush[COLOR_IDX_WHITE].CreateSolidBrush (COLOR_WHITE);
 	Brush[COLOR_IDX_RED].CreateSolidBrush (COLOR_RED);

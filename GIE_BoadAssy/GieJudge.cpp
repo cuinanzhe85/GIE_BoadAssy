@@ -1,4 +1,4 @@
-// GieJudge.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// GieJudge.cpp : êµ¬í˜„ íŒŒì¼ìž…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -6,7 +6,7 @@
 #include "GieJudge.h"
 
 
-// CGieJudge ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CGieJudge ëŒ€í™” ìƒìžìž…ë‹ˆë‹¤.
 
 IMPLEMENT_DYNAMIC(CGieJudge, CDialog)
 
@@ -34,13 +34,13 @@ BEGIN_MESSAGE_MAP(CGieJudge, CDialog)
 END_MESSAGE_MAP()
 
 
-// CGieJudge ¸Þ½ÃÁö Ã³¸®±âÀÔ´Ï´Ù.
+// CGieJudge ë©”ì‹œì§€ ì²˜ë¦¬ê¸°ìž…ë‹ˆë‹¤.
 
 BOOL CGieJudge::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  ¿©±â¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì¶”ê°€ ì´ˆê¸°í™” ìž‘ì—…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	lpSystemInfo	= m_pApp->GetSystemInfo();
 	lpModelInfo		= m_pApp->GetModelInfo();
 	lpWorkInfo		= m_pApp->GetWorkInfo();
@@ -51,19 +51,19 @@ BOOL CGieJudge::OnInitDialog()
 	SetTimer(1, 20, NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// ¿¹¿Ü: OCX ¼Ó¼º ÆäÀÌÁö´Â FALSE¸¦ ¹ÝÈ¯ÇØ¾ß ÇÕ´Ï´Ù.
+	// ì˜ˆì™¸: OCX ì†ì„± íŽ˜ì´ì§€ëŠ” FALSEë¥¼ ë°˜í™˜í•´ì•¼ í•©ë‹ˆë‹¤.
 }
 
 void CGieJudge::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ¿©±â¿¡ ¸Þ½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 void CGieJudge::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: ¿©±â¿¡ ¸Þ½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ê°’ì„ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	if (nIDEvent == 1)
 	{
 		if (m_pApp->m_pDio7230->Gf_getDIOJudgeNG() == TRUE)
@@ -86,7 +86,7 @@ void CGieJudge::OnTimer(UINT_PTR nIDEvent)
 
 void CGieJudge::OnBnClickedBtnOk()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	KillTimer(1);
 	lpWorkInfo->m_bGieJudgeOk = true;
 	m_pApp->Gf_writeLogData(_T("<WND>"), _T("GIE JUDGE BUTTORN OK"));
@@ -95,7 +95,7 @@ void CGieJudge::OnBnClickedBtnOk()
 
 void CGieJudge::OnBnClickedBtnNg()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	KillTimer(1);
 	lpWorkInfo->m_bGieJudgeNg = true;
 	m_pApp->Gf_writeLogData(_T("<WND>"), _T("GIE JUDGE BUTTORN NG"));

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Dask64.h"
 
 #define DIO_CARD_NUM		0

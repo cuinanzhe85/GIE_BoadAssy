@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "GIE_BoadAssy.h"
 #include "FTPInterface.h"
 
@@ -69,7 +69,7 @@ BOOL CFTPInterface::ftp_Connect(int timeout)
 	DWORD dwFlag=0;
 	DWORD dwTimeout, dwExitCode;
 
-	//¿ÖÇÊ¿äÇÑÁö ¸ğ¸£°ÚÀ½. ÀÏ´ÜÁÖ¼®
+	//ì™œí•„ìš”í•œì§€ ëª¨ë¥´ê² ìŒ. ì¼ë‹¨ì£¼ì„
 	/*
 	int nTimeoutCount=0;
 	while(1)
@@ -107,7 +107,7 @@ BOOL CFTPInterface::ftp_Connect(int timeout)
 		&dwThreadID // Pointer to returned thread identifier 
 	);
 
-	//±âÁ¸ÄÚµå
+	//ê¸°ì¡´ì½”ë“œ
 	/*m_hConnect = InternetConnect(
 			m_hOpen,
 			m_stFtpInfo.wszIpAddress, 
@@ -197,7 +197,7 @@ void CFTPInterface::ftp_Disconnect()
 		{
 			if(InternetCloseHandle(m_hConnect))
 			{
-				//m_strFTPStatusMsg = "¿¬°áÀÌ Á¾·á µÇ¾ú½À´Ï´Ù.";
+				//m_strFTPStatusMsg = "ì—°ê²°ì´ ì¢…ë£Œ ë˜ì—ˆìŠµë‹ˆë‹¤.";
 				bRet1 = TRUE;
 				m_hConnect = NULL;
 			}
@@ -211,7 +211,7 @@ void CFTPInterface::ftp_Disconnect()
 		{
 			if(InternetCloseHandle(m_hOpen))
 			{
-				//m_strFTPStatusMsg = "¿¬°áÀÌ Á¾·á µÇ¾ú½À´Ï´Ù.";
+				//m_strFTPStatusMsg = "ì—°ê²°ì´ ì¢…ë£Œ ë˜ì—ˆìŠµë‹ˆë‹¤.";
 				bRet2 = TRUE;
 				m_hOpen = NULL;
 			}
@@ -296,7 +296,7 @@ BOOL CFTPInterface::ftp_getFileNameList(CStringArray* pArrFileName, CString sear
 	int n;
 	BOOL bResult = TRUE;
 
-	// FTP RootÀÇ File List¸¦ °¡Á®¿Â´Ù.
+	// FTP Rootì˜ File Listë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	hFind = FtpFindFirstFile(m_hConnect, searchName, &wfd, 0, 0);
 	if (hFind == NULL)
 	{

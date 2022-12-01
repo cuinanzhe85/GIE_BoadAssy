@@ -1,4 +1,4 @@
-// T4CmdGen.h: interface for the T4CmdGen class.
+﻿// T4CmdGen.h: interface for the T4CmdGen class.
 //
 //////////////////////////////////////////////////////////////////////
 

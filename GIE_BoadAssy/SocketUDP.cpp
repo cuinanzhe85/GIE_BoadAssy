@@ -1,4 +1,4 @@
-// UDPSocket.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// UDPSocket.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -42,18 +42,18 @@ BOOL CSocketUDP::CreatSocket(UINT nSocketPort, int nSocketType)
 {
 	CString m_stError;
 
-	ZeroMemory(m_sendBuf, sizeof(m_sendBuf)); // ¹öÆÛÃÊ±âÈ­
+	ZeroMemory(m_sendBuf, sizeof(m_sendBuf)); // ë²„í¼ì´ˆê¸°í™”
 
-	//¼ÒÄÏÀ» »ı¼º
+	//ì†Œì¼“ì„ ìƒì„±
 //	if (!Create(nSocketPort, nSocketType, FD_READ|FD_WRITE|FD_OOB|FD_ACCEPT|FD_CONNECT|FD_CLOSE, _T("192.168.10.98")))
 	if (!Create(nSocketPort, nSocketType))
-	{ // ¼ÒÄÏ »ı¼ºÀÌ ½ÇÆĞÇÏ¸é
+	{ // ì†Œì¼“ ìƒì„±ì´ ì‹¤íŒ¨í•˜ë©´
 		m_stError.Format(_T("Socket Create Fail -> %d"), GetLastError());
 		AfxMessageBox(m_stError);
 		return FALSE;
 	}
 
-	// ºê·Îµå Ä³½ºÆ®¸¦ ¿øÇÏ¸é ¾Æ·¡ Ãß°¡ /////////////////////////////////////////////
+	// ë¸Œë¡œë“œ ìºìŠ¤íŠ¸ë¥¼ ì›í•˜ë©´ ì•„ë˜ ì¶”ê°€ /////////////////////////////////////////////
 	int flag=TRUE;
 	int len, rflag;
 
@@ -132,8 +132,8 @@ void CSocketUDP::getLocalGateWay()
  
     dwStatus = GetAdaptersInfo(pAdapterInfo,&ulSizeAdapterInfo);
     //***********************************************************************
-    //¹öÆÛ ¿À¹ö ÇÃ·Î¿ì ÀÏ¶§ ulSizeAdapterInfo Å©±â·Î ¸Ş¸ğ¸®¸¦ ÇÒ´çÇÏ°í 
-    //´Ù½Ã GetAdaptersInfo¸¦ È£ÃâÇÑ´Ù.
+    //ë²„í¼ ì˜¤ë²„ í”Œë¡œìš° ì¼ë•Œ ulSizeAdapterInfo í¬ê¸°ë¡œ ë©”ëª¨ë¦¬ë¥¼ í• ë‹¹í•˜ê³  
+    //ë‹¤ì‹œ GetAdaptersInfoë¥¼ í˜¸ì¶œí•œë‹¤.
     if( dwStatus == ERROR_BUFFER_OVERFLOW)
     {
         if(!(pAdapterInfo = (PIP_ADAPTER_INFO)malloc(ulSizeAdapterInfo)))
@@ -157,13 +157,13 @@ void CSocketUDP::getLocalGateWay()
 	}
 }
 
-// CSocketUDP ¸â¹ö ÇÔ¼ö
+// CSocketUDP ë©¤ë²„ í•¨ìˆ˜
 void CSocketUDP::parseReceivePacket(int nRead, char* buf)
 {
 	int source, dest;
 	CString recvpacket=_T("");
 
-	// Receive BuffÀÇ ¸¶Áö¸·Àº NULLÀ» ³Ö¾îÁØ´Ù.		
+	// Receive Buffì˜ ë§ˆì§€ë§‰ì€ NULLì„ ë„£ì–´ì¤€ë‹¤.		
 	buf[nRead] = NULL;
 
 	if(m_bIsContinueRecv==FALSE)
@@ -173,7 +173,7 @@ void CSocketUDP::parseReceivePacket(int nRead, char* buf)
 		sscanf_s(&buf[PACKET_PT_CMD],	"%02X", &m_recvCommand);
 		sscanf_s(&buf[PACKET_PT_LEN],	"%04X", &m_recvTotalLength);
 
-		// ¸ñÀûÁö°¡ PC°¡ ¾Æ´Ï¸é ReturnÇÑ´Ù.
+		// ëª©ì ì§€ê°€ PCê°€ ì•„ë‹ˆë©´ Returní•œë‹¤.
 		if(dest != TARGET_PC)	return;
 
 		m_recvSize += nRead;
@@ -187,7 +187,7 @@ void CSocketUDP::parseReceivePacket(int nRead, char* buf)
 			memcpy(m_recvBuf, buf, m_recvSize);
 			m_bIsContinueRecv = TRUE;
 
-			// ´õ ¹ŞÀ» Data°¡ ÀÖ´Ù¸é Message SendÇÏÁö ¾Ê°íRetrunÇÑ´Ù.
+			// ë” ë°›ì„ Dataê°€ ìˆë‹¤ë©´ Message Sendí•˜ì§€ ì•Šê³ Retruní•œë‹¤.
 			return;
 		}
 	}
@@ -197,18 +197,18 @@ void CSocketUDP::parseReceivePacket(int nRead, char* buf)
 		m_recvSize += nRead;
 		if(m_recvSize < (m_recvTotalLength+16))
 		{
-			// ´õ ¹ŞÀ» Data°¡ ÀÖ´Ù¸é Message SendÇÏÁö ¾Ê°íRetrunÇÑ´Ù.
+			// ë” ë°›ì„ Dataê°€ ìˆë‹¤ë©´ Message Sendí•˜ì§€ ì•Šê³ Retruní•œë‹¤.
 			return;
 		}
 	}
 
-	// IPAddress¿Í Message °°ÀÌ Àü´ŞÇÑ´Ù.
+	// IPAddressì™€ Message ê°™ì´ ì „ë‹¬í•œë‹¤.
 //	char szmsg[1024*8] = {0,};
 //	sprintf_s(szmsg, "%s", szipa, m_recvBuf);
 	AfxGetApp()->GetMainWnd()->SendMessage(WM_UDP_RECEIVE, (WPARAM)m_recvBuf, (LPARAM)m_recvSize);
 
 
-	// º¯¼ö¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+	// ë³€ìˆ˜ë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 	m_bIsContinueRecv = FALSE;
 	m_recvSize = 0;
 	m_recvCommand = 0;
@@ -234,7 +234,7 @@ void CSocketUDP::OnReceive(int nErrorCode)
 					m_recvSocketAddr->sin_addr.S_un.S_un_b.s_b4
 				);
 
-	// Local Host IPÁÖ¼Ò¿¡¼­ Àü¼ÛµÈ PacketÀº ¹ö¸°´Ù.
+	// Local Host IPì£¼ì†Œì—ì„œ ì „ì†¡ëœ Packetì€ ë²„ë¦°ë‹¤.
 	if((recvIP==m_strLocalIP1) || (recvIP==m_strLocalIP2) || (recvIP==LOCAL_HOST_IP))
 		return;
 
@@ -251,23 +251,23 @@ void CSocketUDP::OnReceive(int nErrorCode)
 		}
 		case SOCKET_ERROR:
 		{
-			if (GetLastError() != WSAEWOULDBLOCK) // WSAEWOULDBLOCKÀÌµÇ¸é °Á ³ª°£´Ù
+			if (GetLastError() != WSAEWOULDBLOCK) // WSAEWOULDBLOCKì´ë˜ë©´ ê± ë‚˜ê°„ë‹¤
 			{
 				if(GetLastError() != WSAEMSGSIZE)
-				{   // ÀÏ¹İÀûÀÎ ¹Ş±â ¿¡·¯Ã³¸®
+				{   // ì¼ë°˜ì ì¸ ë°›ê¸° ì—ëŸ¬ì²˜ë¦¬
 					CString stErr;
-					stErr.Format(_T("¹Ş±â¿¡·¯, LastError() Code => %d"), GetLastError());
+					stErr.Format(_T("ë°›ê¸°ì—ëŸ¬, LastError() Code => %d"), GetLastError());
 					recvpacket.Format(_T("<<SOCKET RECEVIE FAIL>>   %s#%s"), recvIP, stErr);
 				}
 				else
 				{
-					recvpacket.Format(_T("<<SOCKET RECEVIE FAIL>>   %s#%s"), recvIP, _T("µ¥ÀÌÅÍ±×·¥ »çÀÌÁî°¡ ³Ê¹«Ä¿¼­ Àß·È½À´Ï´Ù."));
+					recvpacket.Format(_T("<<SOCKET RECEVIE FAIL>>   %s#%s"), recvIP, _T("ë°ì´í„°ê·¸ë¨ ì‚¬ì´ì¦ˆê°€ ë„ˆë¬´ì»¤ì„œ ì˜ë ¸ìŠµë‹ˆë‹¤."));
 				}
 				//AfxMessageBox(recvpacket, MB_ICONERROR);
 			}
 			break;
 		}
-		default: // ¿¡·¯°¡ ¾Æ´Ï¸é
+		default: // ì—ëŸ¬ê°€ ì•„ë‹ˆë©´
 		{
 			if (nRead != SOCKET_ERROR && nRead != 0)
 			{
@@ -296,7 +296,7 @@ BOOL CSocketUDP::SendToUDP(CString remoteIP, int length, char* m_sendPacket)
 		else
 			sendlen = 1450;
 
-		// SendTo(º¸³¾¸Ş½ÃÁö, ¸Ş½ÃÁö»çÀÌÁî, ¹ŞÀ»Æ÷Æ®, ¹ŞÀ»IP)
+		// SendTo(ë³´ë‚¼ë©”ì‹œì§€, ë©”ì‹œì§€ì‚¬ì´ì¦ˆ, ë°›ì„í¬íŠ¸, ë°›ì„IP)
 		dwBytes = SendTo((m_sendPacket+m_nBytesSent), sendlen, UDP_SOCKET_PORT, remoteIP);
 		if(dwBytes == SOCKET_ERROR)
 		{
@@ -312,7 +312,7 @@ BOOL CSocketUDP::SendToUDP(CString remoteIP, int length, char* m_sendPacket)
 				return FALSE;
 			}
 		}
-		else // ¿¡·¯°¡ ¾È³ª¸é
+		else // ì—ëŸ¬ê°€ ì•ˆë‚˜ë©´
 		{
 			m_nBytesSent += dwBytes;
 		}

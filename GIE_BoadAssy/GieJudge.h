@@ -1,21 +1,21 @@
-#pragma once
+ï»¿#pragma once
 
 
-// CGieJudge ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CGieJudge ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 class CGieJudge : public CDialog
 {
 	DECLARE_DYNAMIC(CGieJudge)
 
 public:
-	CGieJudge(CWnd* pParent = NULL);   // Ç¥ÁØ »ı¼ºÀÚÀÔ´Ï´Ù.
+	CGieJudge(CWnd* pParent = NULL);   // í‘œì¤€ ìƒì„±ìì…ë‹ˆë‹¤.
 	virtual ~CGieJudge();
 
-// ´ëÈ­ »óÀÚ µ¥ÀÌÅÍÀÔ´Ï´Ù.
+// ëŒ€í™” ìƒì ë°ì´í„°ì…ë‹ˆë‹¤.
 	enum { IDD = IDD_GIE_JUDGE };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Áö¿øÀÔ´Ï´Ù.
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ì§€ì›ì…ë‹ˆë‹¤.
 
 	DECLARE_MESSAGE_MAP()
 public:

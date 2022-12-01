@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "GIE_BoadAssy.h"
 
 #include "atlbase.h"
@@ -216,7 +216,7 @@ BOOL CCimNetCommApi::Init(int nServerType)
 {
 	CString sLog;
 
-	// Host Á¢¼Ó Á¤º¸¸¦ °¡Á®¿Â´Ù.
+	// Host ì ‘ì† ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	if(nServerType == SERVER_MES){
 		
 		CoInitialize(NULL);
@@ -227,7 +227,7 @@ BOOL CCimNetCommApi::Init(int nServerType)
 		
 		m_strLocalSubjectMesF.Format(_T("%s.%s"), m_strLocalSubject, m_strLocalSubjectIP);
 
-		// MES Test ModeÀÏ¶§ ÇÊ¿ä. CNZ
+		// MES Test Modeì¼ë•Œ í•„ìš”. CNZ
 		//m_strLocalSubjectMesF = (_T("EQP.TEST"));
 		HRESULT mesHr = CoCreateInstance(CLSID_DllGmes, NULL, CLSCTX_INPROC_SERVER, IID_ICallGmesClass, reinterpret_cast<void**>(&gmes));
 		
@@ -245,7 +245,7 @@ BOOL CCimNetCommApi::Init(int nServerType)
 
 			if (resultIni == VARIANT_TRUE)
 			{
-				//Oda FIle »ı¼º
+				//Oda FIle ìƒì„±
 				//m_pApp->Lf_createOdaFile();
 
 				return TRUE;
@@ -367,7 +367,7 @@ BOOL CCimNetCommApi::MessageSend (int nMode)	// Event
 		m_strHostSendMessage = m_strPOIR;
 		break;
 	default:
-		return RTN_MSG_NOT_SEND;	// Åë½Å NG
+		return RTN_MSG_NOT_SEND;	// í†µì‹  NG
 	}
 
 	CString sLog;
@@ -412,7 +412,7 @@ BOOL CCimNetCommApi::MessageSend (int nMode)	// Event
 				if(bRetCode == VARIANT_FALSE){
 
 					AfxMessageBox (_T ("Did not send a message !!!"));
-					return RTN_MSG_NOT_SEND;	// Åë½Å NG
+					return RTN_MSG_NOT_SEND;	// í†µì‹  NG
 				}
 
 			}while(1);
@@ -453,7 +453,7 @@ BOOL CCimNetCommApi::MessageSend (int nMode)	// Event
 				if(bRetCode == VARIANT_FALSE){
 
 					AfxMessageBox (_T ("Did not send a message !!!"));
-					return RTN_MSG_NOT_SEND;	// Åë½Å NG
+					return RTN_MSG_NOT_SEND;	// í†µì‹  NG
 				}
 
 			}while(1);
@@ -502,7 +502,7 @@ BOOL CCimNetCommApi::GetFieldData (CString* pstrReturn, CString wszToken, int nM
 //	m_strHostRecvMessage.Format(_T("PCHK_R ADDR=M2.G3.EQP.MOD.172_25_55_39,M2.G3.EQP.MOD.172_25_55_39 EQP=M2AMALAVBE04 PID=P8SP67018G14A1 SERIAL_NO= BLID= PPALLET=B1067 SKD_BOX_ID= USER_ID=x070400103 MODE=AUTO CLIENT_DATE=20160906001553 COMMENT=[] RTN_CD=0 ERR_MSG_LOC=[] ERR_MSG_ENG=[] HOST_DATE=20160906001554  RTN_PID=P8SP67018G14A1 RTN_SERIAL_NO=650F9P1Y00A9K RTN_BLID=[] RTN_PCBID=[] MODEL=LC650AQD-GJA8-Y31-B GRADE=FIRST_CLASS LANE=3 REMARK=[] BUYER=[LGE] PF=P RWK_CD= RWK_DESC=[] QA_LOT_ID= EXPECTED_RWK= AGING_RWK= AGING_RWK_DESC=[] CVD_POS=[] PD_POS=[] PXL_CD= CELL_GAP= USD=[] LAMP_LOT_NO=[] CUSTOMER_GROUP_CODE= CUSTOMER_LABEL_ID= VTH_PREVALUE= CURRENT_VTH_COUNT=0 TOTAL_VTH_COUNT=0 BD_INFO=[] WDR_INFO=[7768:756:R:90W:LCM,10913:1017:W:90V:CELL,10941:1057:W:90V:CELL] FNI_CODE=FNI1 DEPOSITION_GROUP=065_01_41_16_SP081024 TOP_MODEL_NAME=LC650AQD-GJA8-Y31-B LASER_REPAIR_COUNT=0"));
 //	m_strHostRecvMessage.Format(_T("PCHK_R ADDR=M2.G3.EQP.MOD.172_25_54_230,M2.G3.EQP.MOD.172_25_54_230  EQP=M2AMAL51G001 PID= SERIAL_NO=770FAP5X000BD BLID=[] PPALLET= SKD_BOX_ID= USER_ID=744995 MODE=AUTO CLIENT_DATE=20161027103836 COMMENT=[] RTN_CD=0 ERR_MSG_LOC=[] ERR_MSG_ENG=[] HOST_DATE=20161027103838  RTN_PID=P8Y369000209B1 RTN_SERIAL_NO=770FAP5X000BD RTN_BLID=[] RTN_PCBID=[] MODEL=LC770AQP-AKA3-X31-S GRADE=FIRST_CLASS LANE=1 REMARK=[] BUYER=[SONY E] PF=P RWK_CD= RWK_DESC=[] QA_LOT_ID= EXPECTED_RWK= AGING_RWK= AGING_RWK_DESC=[] CVD_POS=[458:251] PD_POS=[] PXL_CD= CELL_GAP= USD=[] LAMP_LOT_NO=[] CUSTOMER_GROUP_CODE= CUSTOMER_LABEL_ID= BD_INFO=[3121:1228:ADPD3_WHITE,145:0:GB_LV,3122:1228:ADPD3_WHITE,3119:1229:ADPD3_WHITE,3120:1229:ADPD3_WHITE,3071:1230:ADPD3_WHITE,3115:1230:ADPD3_WHITE,3117:1230:ADPD3_WHITE,3119:1230:ADPD3_WHITE,3069:1232:ADPD3_WHITE,3071:1232:ADPD3_WHITE,3071:1219:ADPD3_WHITE,3099:1232:ADPD3_WHITE,3070:1233:ADPD3_WHITE,3122:1233:ADPD3_WHITE,3069:1234:ADPD3_WHITE,3070:1234:ADPD3_WHITE,3073:1234:ADPD3_WHITE,3089:1234:ADPD3_WHITE,3059:1235:ADPD3_WHITE,3070:1235:ADPD3_WHITE,3071:1235:ADPD3_WHITE,3069:1220:ADPD3_WHITE,3073:1235:ADPD3_WHITE,3074:1235:ADPD3_WHITE,3067:1236:ADPD3_WHITE,3070:1236:ADPD3_WHITE,3073:1236:ADPD3_WHITE,3099:1236:ADPD3_WHITE,3102:1236:ADPD3_WHITE,3064:1237:ADPD3_WHITE,3067:1237:ADPD3_WHITE,3068:1237:ADPD3_WHITE,3071:1220:ADPD3_WHITE,3071:1237:ADPD3_WHITE,3078:1237:ADPD3_WHITE,3099:1237:ADPD3_WHITE,3123:1237:ADPD3_WHITE,3060:1238:ADPD3_WHITE,3061:1238:ADPD3_WHITE,3064:1238:ADPD3_WHITE,3067:1238:ADPD3_WHITE,3068:1238:ADPD3_WHITE,3069:1238:ADPD3_WHITE,3073:1220:ADPD3_WHITE,3070:1238:ADPD3_WHITE,3071:1238:ADPD3_WHITE,3073:1238:ADPD3_WHITE,3059:1239:ADPD3_WHITE,3068:1239:ADPD3_WHITE,3069:1239:ADPD3_WHITE,3070:1239:ADPD3_WHITE,3071:1239:ADPD3_WHITE,3073:1239:ADPD3_WHITE,3125:1239:ADPD3_WHITE,3067:1222:ADPD3_WHITE,3065:1240:ADPD3_WHITE,3068:1240:ADPD3_WHITE,3070:1240:ADPD3_WHITE,3071:1240:ADPD3_WHITE,3072:1240:ADPD3_WHITE,3073:1240:ADPD3_WHITE,3074:1240:ADPD3_WHITE,3075:1240:ADPD3_WHITE,3077:1240:ADPD3_WHITE,3078:1240:ADPD3_WHITE,3057:1226:ADPD3_WHITE,3081:1240:ADPD3_WHITE,3085:1240:ADPD3_WHITE,3116:1240:ADPD3_WHITE,3122:1240:ADPD3_WHITE,3125:1240:ADPD3_WHITE,3066:1241:ADPD3_WHITE,3069:1241:ADPD3_WHITE,3072:1241:ADPD3_WHITE,3073:1241:ADPD3_WHITE,3074:1241:ADPD3_WHITE,3070:1226:ADPD3_WHITE,3076:1241:ADPD3_WHITE,3061:1242:ADPD3_WHITE,3063:1242:ADPD3_WHITE,3066:1242:ADPD3_WHITE,3067:1242:ADPD3_WHITE,3068:1242:ADPD3_WHITE,3069:1242:ADPD3_WHITE,3070:1242:ADPD3_WHITE,3071:1242:ADPD3_WHITE,3073:1242:ADPD3_WHITE,3118:1226:ADPD3_WHITE,3074:1242:ADPD3_WHITE,3075:1242:ADPD3_WHITE,3077:1242:ADPD3_WHITE,3098:1242:ADPD3_WHITE,3099:1242:ADPD3_WHITE,3123:1242:ADPD3_WHITE,3057:1243:ADPD3_WHITE,3059:1243:ADPD3_WHITE,3068:1243:ADPD3_WHITE,3069:1243:ADPD3_WHITE] WDR_INFO=[2100:505:R:90W:TFT,250:457:B:90W:TFT,260:1675:R:90W:TFT,5787:1520:G:90W:TFT,9372:1071:R:90W:TFT,10933:1102:W:90V:CELL,10933:1107:W:90V:CELL,10941:1103:W:90V:CELL,15009:433:W:90W:TFT] FNI_CODE=FNI1 DEPOSITION_GROUP=077_01_31_16_Y3100224 TOP_MODEL_NAME=LC770AQP-AKA3-X31-S LASER_REPAIR_COUNT=0"));
 //	m_strHostRecvMessage.Format(_T("PCHK_R ADDR=M2.G3.EQP.MOD.172_25_55_197,M2.G3.EQP.MOD.172_25_55_197  EQP=M2AMALAWG003 PID= SERIAL_NO=650G4P1Y0173M BLID= PPALLET=M2245010S SKD_BOX_ID= USER_ID=745312 MODE=AUTO CLIENT_DATE=20170419003047 COMMENT=[] RTN_CD=0 ERR_MSG_LOC=[] ERR_MSG_ENG=[] HOST_DATE=20170419003049  RTN_PID=P8ST7303SJ04A1 RTN_SERIAL_NO=650G4P1Y0173M RTN_BLID=[] RTN_PCBID=[] MODEL=LC650AQD-GJA4-Y31-B GRADE=FIRST_CLASS LANE=5 REMARK=[] BUYER=[PANASONIC] PF=P RWK_CD= RWK_DESC=[] QA_LOT_ID= EXPECTED_RWK= AGING_RWK= AGING_RWK_DESC=[] CVD_POS=[] PD_POS=[] PXL_CD= CELL_GAP= USD=[] LAMP_LOT_NO=[] CUSTOMER_GROUP_CODE= CUSTOMER_LABEL_ID= BD_INFO=[141:0:GB_LV,18:0:COLOR_VIEW,328:0:IVDD,1488:0:IELVDD] WDR_INFO=[6177:1917:W:90V:CELL] FNI_CODE=FNI1 DEPOSITION_GROUP=065_01_41_17_ST040912 TOP_MODEL_NAME=LC650AQD-GJA4-Y31-B LASER_REPAIR_COUNT=0 RTN_WODR=74LM00GI-FA05"));
-	// - default ng ·Î ¼ÂÆÃ.  
+	// - default ng ë¡œ ì…‹íŒ….  
 	m_strNgComment.Format (_T("0"));
 	CString strBuff;
  	if (0 == nMode)
@@ -538,7 +538,7 @@ BOOL CCimNetCommApi::GetFieldData (CString* pstrReturn, CString wszToken, int nM
 	{
 		case '0':
 		{
-			//DEPOSITION_GROUP Á¤º¸´Â 0À¸·Î ½ÃÀÛ ÇÒ¼ö ÀÖ´Ù.20160907
+			//DEPOSITION_GROUP ì •ë³´ëŠ” 0ìœ¼ë¡œ ì‹œì‘ í• ìˆ˜ ìˆë‹¤.20160907
 			//if (!wcscmp (wszToken, _T("DEPOSITION_GROUP")))
 			if (!wszToken.Compare(_T("DEPOSITION_GROUP")))
 			{
@@ -559,7 +559,7 @@ BOOL CCimNetCommApi::GetFieldData (CString* pstrReturn, CString wszToken, int nM
 			//if (!wcscmp (wszToken, _T("RTN_CD")))
 			if (!wszToken.Compare(_T("RTN_CD")))
 			{
-				m_strNgComment.Format (_T("0"));	// normal ·Î ¼ÂÆÃ.
+				m_strNgComment.Format (_T("0"));	// normal ë¡œ ì…‹íŒ….
 
 				if (pstrReturn->GetLength() <= 0)
 				{
@@ -567,10 +567,10 @@ BOOL CCimNetCommApi::GetFieldData (CString* pstrReturn, CString wszToken, int nM
 				}
 
 				delete [] pszBuff;
-				return FALSE;	// ng ¾øÀ½. - Åë½Å Á¤»ó. ex) RTN_CD=0
+				return FALSE;	// ng ì—†ìŒ. - í†µì‹  ì •ìƒ. ex) RTN_CD=0
 			}
 			
-			// OAGING_TIME 0 ÀÏ¶§ÀÇ ¿¹¿Ü Ã³¸®. 2019.07.13 CNZ // 20190713 JKJ CHECK.. 
+			// OAGING_TIME 0 ì¼ë•Œì˜ ì˜ˆì™¸ ì²˜ë¦¬. 2019.07.13 CNZ // 20190713 JKJ CHECK.. 
 			//if (!wcscmp (wszToken, _T("OAGING_TIME")))
 			if (!wszToken.Compare(_T("OAGING_TIME")))
 			{
@@ -583,8 +583,8 @@ BOOL CCimNetCommApi::GetFieldData (CString* pstrReturn, CString wszToken, int nM
 				pstrReturn->Format(_T("%s"), strBuff.Mid (nStartPos, nEndPos-nStartPos));
 			}
 
-			// ng....error string ³»ÀÇ Ã¹ byte °¡ char 0 ÀÌ¶ó´Â ÀÇ¹Ì...
-			// ¹ß»ı °¡´É¼º ¸Å¿ì Èñ¹ÚÇÔ.
+			// ng....error string ë‚´ì˜ ì²« byte ê°€ char 0 ì´ë¼ëŠ” ì˜ë¯¸...
+			// ë°œìƒ ê°€ëŠ¥ì„± ë§¤ìš° í¬ë°•í•¨.
 			if (pstrReturn->GetLength() <= 0)
 			{
 				pstrReturn->Format(_T("%s"), m_strNgComment);
@@ -597,7 +597,7 @@ BOOL CCimNetCommApi::GetFieldData (CString* pstrReturn, CString wszToken, int nM
 
 		case '[':
 		{
-			// [ ·Î ¹­¿©Áø error, error ³»¿ë¾È¿¡ space °¡ Æ÷ÇÔµÉ¼ö ÀÖÀ½.
+			// [ ë¡œ ë¬¶ì—¬ì§„ error, error ë‚´ìš©ì•ˆì— space ê°€ í¬í•¨ë ìˆ˜ ìˆìŒ.
 
 			nEndPos = strBuff.Find (']', nStartPos);
 			if (0 >= nEndPos)
@@ -614,8 +614,8 @@ BOOL CCimNetCommApi::GetFieldData (CString* pstrReturn, CString wszToken, int nM
 
  		default :
  		{
- 			// [ ] °¡ ¾ø´Â error messgae... 
- 			// ¿¡·¯³»¿ë ¾È¿¡ space °¡ Æ÷ÇÔµÉ¼ö ¾øÀ¸¹Ç·Î space ¸¦ token À¸·Î ´Ù½Ã data °Ë»ö..
+ 			// [ ] ê°€ ì—†ëŠ” error messgae... 
+ 			// ì—ëŸ¬ë‚´ìš© ì•ˆì— space ê°€ í¬í•¨ë ìˆ˜ ì—†ìœ¼ë¯€ë¡œ space ë¥¼ token ìœ¼ë¡œ ë‹¤ì‹œ data ê²€ìƒ‰..
  
  			nEndPos = strBuff.Find (' ', nStartPos);
 
@@ -710,9 +710,9 @@ void CCimNetCommApi::SetLocalTimeZone(int timeZone)
 	exeFile.Format(_T("tzutil.exe"));
 
 	// parameter set
-	if (timeZone == UTC_ZONE_VIETNAM)			param.Format(_T("/s \"SE Asia Standard Time\""));	// º£Æ®³² UTC+07:00
-	else if (timeZone == UTC_ZONE_CHINA)		param.Format(_T("/s \"China Standard Time\""));		// Áß±¹ UTC+08:00
-	else if (timeZone == UTC_ZONE_KOREA)		param.Format(_T("/s \"Korea Standard Time\""));		// ¼­¿ï UTC+09:00
+	if (timeZone == UTC_ZONE_VIETNAM)			param.Format(_T("/s \"SE Asia Standard Time\""));	// ë² íŠ¸ë‚¨ UTC+07:00
+	else if (timeZone == UTC_ZONE_CHINA)		param.Format(_T("/s \"China Standard Time\""));		// ì¤‘êµ­ UTC+08:00
+	else if (timeZone == UTC_ZONE_KOREA)		param.Format(_T("/s \"Korea Standard Time\""));		// ì„œìš¸ UTC+09:00
 
 	SHELLEXECUTEINFO sel;
 	memset(&sel, 0, sizeof(sel));
@@ -734,14 +734,14 @@ void CCimNetCommApi::SetLocalTimeZone(int timeZone)
 		}
 		else
 		{
-			// ¹«ÇÑ ·çÇÁ µÇ´Â Çö»ó ÇØ°á //
+			// ë¬´í•œ ë£¨í”„ ë˜ëŠ” í˜„ìƒ í•´ê²° //
 			DWORD dwExitCode;
 			if (NULL != sel.hProcess)
 			{
-				GetExitCodeProcess(sel.hProcess, &dwExitCode);	 // ÇÁ·Î¼¼½º ³ª°¡±â ÄÚµå ¾ò¾î¿À±â
-				TerminateProcess(sel.hProcess, dwExitCode);		  // ÇÁ·Î¼¼½º ¿¬°á ²÷±â
-				WaitForSingleObject(sel.hProcess, 1000);		 // Á¾·á µÉ¶§±îÁö ´ë±â
-				CloseHandle(sel.hProcess);						  // ÇÁ·Î¼¼½º ÇÚµé ´İ±â
+				GetExitCodeProcess(sel.hProcess, &dwExitCode);	 // í”„ë¡œì„¸ìŠ¤ ë‚˜ê°€ê¸° ì½”ë“œ ì–»ì–´ì˜¤ê¸°
+				TerminateProcess(sel.hProcess, dwExitCode);		  // í”„ë¡œì„¸ìŠ¤ ì—°ê²° ëŠê¸°
+				WaitForSingleObject(sel.hProcess, 1000);		 // ì¢…ë£Œ ë ë•Œê¹Œì§€ ëŒ€ê¸°
+				CloseHandle(sel.hProcess);						  // í”„ë¡œì„¸ìŠ¤ í•¸ë“¤ ë‹«ê¸°
 				return;
 			}
 
@@ -758,7 +758,7 @@ void CCimNetCommApi::SetLocalTimeData (CString strTime)
 
 	TCHAR rdata[250];
 
-	// Host ½Ã°£°ú µ¿±âÈ­
+	// Host ì‹œê°„ê³¼ ë™ê¸°í™”
 	GetLocalTime(&HostTime);
 
 	rdata[0]=strTime.GetAt(0);
@@ -1080,7 +1080,7 @@ BOOL CCimNetCommApi::UCHK ()
 	}
 
 	//-------------------------------------------
-	// Receive Message Ã³¸®.
+	// Receive Message ì²˜ë¦¬.
 	//-------------------------------------------
 	CString strMsg;
 	GetFieldData(&strMsg, _T("RTN_CD"), 0);
@@ -1100,7 +1100,7 @@ BOOL CCimNetCommApi::UCHK ()
 
 	if (m_bIsGmesLocalTestMode == FALSE)
 	{
-		// ½Ã½ºÅÛ ½Ã°£À» HOST ½Ã°£°ú µ¿±âÈ­ ½ÃÅ²´Ù.
+		// ì‹œìŠ¤í…œ ì‹œê°„ì„ HOST ì‹œê°„ê³¼ ë™ê¸°í™” ì‹œí‚¨ë‹¤.
 		SetLocalTimeZone(UTC_ZONE_VIETNAM);
 
 		SetLocalTimeData (m_strClientNewDate);
@@ -1200,7 +1200,7 @@ BOOL CCimNetCommApi::PCHK (int ipa_mode, int ipa_value)
 
 BOOL CCimNetCommApi::EICR ()
 {
-//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString ();
 
 	if (m_strPF.GetLength() <= 0)
@@ -1227,7 +1227,7 @@ BOOL CCimNetCommApi::EICR ()
 						  m_strPvcomAdjustValue,
 						  m_strPvcomAdjustDropValue,
 						  m_strOverHaulFlag,
-						  m_strDefectComCode,//DefectCommentcomde Ãß°¡ CNZ 20150624
+						  m_strDefectComCode,//DefectCommentcomde ì¶”ê°€ CNZ 20150624
 						  m_strClientDate,
 						  m_strUserID,
 						  m_strComment,//_T(""),	// Comment
@@ -1264,7 +1264,7 @@ BOOL CCimNetCommApi::RPLT(int Station)
 	CString m_strRepair_Type_CD;
 	m_strRepair_Type_CD.Format(_T("LR"));
 
-	//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+	//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString();
 
 	m_strRPLT.Format(_T ("RPLT ADDR=%s,%s EQP=%s PID=%s SS_FLAG=%s MATERIAL_INFO=[:%s:%s::::%s:] REPAIR_CD=[%s] GIB_CD=%s RWK_TIMEKEY=%s RESP_DEPT=%s USER_ID=%s RECYCLE_INFO=[%s:%s] SERIAL_NO=%s MODE=%s CLIENT_DATE=%s COMMENT=[%s] REPAIR_TYPE_CD=%s TO_OPER=%s REPAIR_INSP_FLAG=%s TACT=%s"),
@@ -1279,7 +1279,7 @@ BOOL CCimNetCommApi::RPLT(int Station)
 		m_strRepairCD,				// REPAIR_CD
 		m_strGibCode,				// GIB_CD
 		m_strClientDate,			// RWK_TIMEKEY
-		m_strRespDept,				// RESP_DEPT (±ÍÃ¥ºÎ¼­)
+		m_strRespDept,				// RESP_DEPT (ê·€ì±…ë¶€ì„œ)
 		m_strUserID,				// USER_ID
 		_T("BLU"),					// MAT_POSITION_NAME : RECYCLE INFO
 		_T("N"),					// RECYCLE_FLAG : RECYCLE INFO
@@ -1400,7 +1400,7 @@ BOOL CCimNetCommApi::SCRP(int station)
 		_T("1"),					// MATERIAL_QTY : MATERIAL_INFO
 		_T(""),						// MATERIAL_LOC : MATERIAL_INFO
 		m_strRepairCD,				// REPAIR_CD
-		m_strRespDept,				// RESP_DEPT (±ÍÃ¥ºÎ¼­)
+		m_strRespDept,				// RESP_DEPT (ê·€ì±…ë¶€ì„œ)
 		m_strUserID,				// USER_ID
 		_T("AUTO"),					// MODE
 		m_strClientDate,			// RWK_TIMEKEY
@@ -1443,7 +1443,7 @@ BOOL CCimNetCommApi::MSET ()
 		m_strClientDate
 		);
 
-	// MSET Error Code È®ÀÎ ÄÚµå Ãß°¡.2022-05-23 CNZ
+	// MSET Error Code í™•ì¸ ì½”ë“œ ì¶”ê°€.2022-05-23 CNZ
 	int nRetCode = MessageSend (ECS_MODE_MSET);
 	if (nRetCode != RTN_OK)
 	{
@@ -1526,7 +1526,7 @@ BOOL CCimNetCommApi::AGN_INSP ()
 
 BOOL CCimNetCommApi::APDR ()
 {
-	//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+	//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString ();
 
 	m_strAPDR.Format(_T ("APDR ADDR=%s,%s EQP=%s MODEL=%s PID=%s SERIAL_NO=%s APD_INFO=[%s] USER_ID=%s MODE=AUTO CLIENT_DATE=%s COMMENT=[%s]"),
@@ -1561,7 +1561,7 @@ BOOL CCimNetCommApi::APDR ()
 
 BOOL CCimNetCommApi::WDCR ()
 {
-	//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+	//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString ();
 
 	m_strWDCR.Format(_T ("WDCR ADDR=%s,%s EQP=%s MODE=AUTO PID=%s SERIAL_NO= BLID= WDR_INFO=[%s] USER_ID=%s CLIENT_DATE=%s"),
@@ -1639,7 +1639,7 @@ BOOL CCimNetCommApi::LPIR()
 
 BOOL CCimNetCommApi::BDCR ()
 {
-	//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+	//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString ();
 
 	m_strBDCR.Format(_T ("BDCR ADDR=%s,%s EQP=%s MODE=AUTO PID=%s SERIAL_NO= BLID= BD_INFO=[%s] USER_ID=%s CLIENT_DATE=%s"),
@@ -1671,7 +1671,7 @@ BOOL CCimNetCommApi::BDCR ()
 
 BOOL CCimNetCommApi::INSP_INFO ()
 {
-	//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+	//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString ();
 
 	m_strINSP_INFO.Format(_T ("INSP_INFO ADDR=%s,%s EQP=%s MODE=AUTO PID=%s USER_ID=%s COMMENT=[%s] CLIENT_DATE=%s"),
@@ -1703,7 +1703,7 @@ BOOL CCimNetCommApi::INSP_INFO ()
 
 BOOL CCimNetCommApi::PINF ()
 {
-	//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+	//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString ();
 
 	m_strPINF.Format(_T ("PINF ADDR=%s,%s EQP=%s PID=%s CGID= SERIAL_NO= BLID= PCBID= USER_ID=%s COMMENT=[%s] MODE=AUTO CLIENT_DATE=%s"),
@@ -1735,7 +1735,7 @@ BOOL CCimNetCommApi::PINF ()
 
 BOOL CCimNetCommApi::AGN_CTR ()
 {
-	//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+	//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString ();
 
 	m_strAGN_CTR.Format(_T ("AGN_CTR ADDR=%s,%s EQP=%s PID=%s AGING_CHANGE_TIME=%s USER_ID=%s COMMENT=[%s] MODE=AUTO CLIENT_DATE=%s"),
@@ -1768,7 +1768,7 @@ BOOL CCimNetCommApi::AGN_CTR ()
 
 BOOL CCimNetCommApi::APTR ()
 {
-	//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+	//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString ();
 
 	m_strAPTR.Format(_T ("APTR ADDR=%s,%s EQP=%s PID=%s AGING_TIME=%s USER_ID=%s COMMENT=[%s] MODE=AUTO CLIENT_DATE=%s"),
@@ -1801,7 +1801,7 @@ BOOL CCimNetCommApi::APTR ()
 
 BOOL CCimNetCommApi::POIR()
 {
-	//	Á¤¹Ğ°Ë»ç default: N, Á¤¹Ğ°Ë»ç »ç¿ë½Ã Y
+	//	ì •ë°€ê²€ì‚¬ default: N, ì •ë°€ê²€ì‚¬ ì‚¬ìš©ì‹œ Y
 	MakeClientTimeString();
 	m_strPOIR.Format(_T("POIR ADDR=%s,%s PID=%s PROCESS_CODE=[%s] COMMENT=[%s] ACT_FLAG=%s REPRESENTATIVE_FACTORY_CODE=HT MODE=AUTO USER_ID=%s CLIENT_DATE=%s")
 		, m_strLocalSubjectMesF

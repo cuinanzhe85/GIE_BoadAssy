@@ -1,10 +1,10 @@
-#pragma once
+﻿#pragma once
 
 #define RTN_OK						0
 #define RTN_MSG_NOT_SEND			1
 #define RTN_RCV_TIMEOUT				5
 
-#define ECS_WAIT_TIME				5000	// 10Sec
+#define ECS_WAIT_TIME				5000	// 5Sec
 
 #define	ECS_MODE_EAYT				0x01
 #define	ECS_MODE_UCHK				0x02

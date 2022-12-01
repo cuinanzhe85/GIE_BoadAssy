@@ -1,4 +1,4 @@
-// ModelInfo.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// ModelInfo.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -8,7 +8,7 @@
 
 #include "ModelGamma.h"
 
-// CModelInfo ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CModelInfo ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 IMPLEMENT_DYNAMIC(CModelInfo, CDialog)
 
@@ -209,13 +209,13 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialog)
 END_MESSAGE_MAP()
 
 
-// CModelInfo ¸Ş½ÃÁö Ã³¸®±âÀÔ´Ï´Ù.
+// CModelInfo ë©”ì‹œì§€ ì²˜ë¦¬ê¸°ì…ë‹ˆë‹¤.
 
 BOOL CModelInfo::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  ¿©±â¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì¶”ê°€ ì´ˆê¸°í™” ì‘ì—…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_pApp->Gf_writeLogData("<WND>", "Model Info Dialog Open");
 	lpModelInfo	= m_pApp->GetModelInfo();
 	lpSystemInfo = m_pApp->GetSystemInfo();
@@ -231,14 +231,14 @@ BOOL CModelInfo::OnInitDialog()
 	GetDlgItem(IDC_EDT_CREATE_MODEL)->SetWindowText(lpSystemInfo->m_sModelName);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// ¿¹¿Ü: OCX ¼Ó¼º ÆäÀÌÁö´Â FALSE¸¦ ¹İÈ¯ÇØ¾ß ÇÕ´Ï´Ù.
+	// ì˜ˆì™¸: OCX ì†ì„± í˜ì´ì§€ëŠ” FALSEë¥¼ ë°˜í™˜í•´ì•¼ í•©ë‹ˆë‹¤.
 }
 
 void CModelInfo::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	for(int i=0; i<COLOR_IDX_MAX; i++)
 	{
 		m_Brush[i].DeleteObject();
@@ -253,7 +253,7 @@ void CModelInfo::Lf_initItemValue()
 {
 	m_bfusingflag = 0;
 
-	// Á¦Ç°ÀÇ ÇØ»óµµ ¼³Á¤
+	// ì œí’ˆì˜ í•´ìƒë„ ì„¤ì •
 	CRect rcLCD, rcFrame;
 
 	rcLCD.top = 0;
@@ -261,11 +261,11 @@ void CModelInfo::Lf_initItemValue()
 	rcLCD.right = lpModelInfo->m_nTimingHorActive;
 	rcLCD.bottom = lpModelInfo->m_nTimingVerActive;
 
-	// Preview ¿µ¿ª ¼³Á¤
+	// Preview ì˜ì—­ ì„¤ì •
 	GetDlgItem(IDC_STT_PTN_IMAGE_SIZE)->GetWindowRect(rcFrame);
 	ScreenToClient(rcFrame);
 
-	// Preview ¿µ¿ª ÃÊ±âÈ­
+	// Preview ì˜ì—­ ì´ˆê¸°í™”
 	m_pApp->m_pPatternView->InitPatternRect(GetDC(), rcLCD, rcFrame);
 	m_pApp->m_pPatternView->InitPatternPath(_T(""));
 	m_pApp->m_pPatternView->InitBmpPatternPath(_T(""));
@@ -1332,7 +1332,7 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 
 void CModelInfo::OnBnClickedBtnSave()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	Lf_saveModelInfoData();
 }
 
@@ -1477,7 +1477,7 @@ void CModelInfo::Lf_setChangeFont()
 
 void CModelInfo::OnBnClickedBtnAdd()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	UpdateData(TRUE);
 
 	//int nFgValue;
@@ -1533,7 +1533,7 @@ void CModelInfo::OnBnClickedBtnAdd()
 
 void CModelInfo::OnBnClickedBtnDelete()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	POSITION Pos = m_lcPtnSetList.GetFirstSelectedItemPosition();
 	int nPos = m_lcPtnSetList.GetNextSelectedItem(Pos);
 	if(nPos < 0)
@@ -1560,7 +1560,7 @@ void CModelInfo::OnBnClickedBtnDelete()
 
 void CModelInfo::OnBnClickedBtnUp()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	UpdateData(TRUE);
 
 	POSITION pos = m_lcPtnSetList.GetFirstSelectedItemPosition();
@@ -1580,7 +1580,7 @@ void CModelInfo::OnBnClickedBtnUp()
 
 void CModelInfo::OnBnClickedBtnDown()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	UpdateData(TRUE);
 
 	POSITION pos = m_lcPtnSetList.GetFirstSelectedItemPosition();
@@ -1603,7 +1603,7 @@ void CModelInfo::OnBnClickedBtnDown()
 
 void CModelInfo::OnBnClickedBtnChange()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	UpdateData(TRUE);
 
 	//int nFgValue;
@@ -1667,7 +1667,7 @@ void CModelInfo::OnBnClickedBtnChange()
 void CModelInfo::OnLvnItemchangedListPatternset(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	if(pNMLV->iItem < 0)	return;
 	if(pNMLV->uOldState && !pNMLV->uNewState)	return;
 	if(!pNMLV->uOldState && !pNMLV->uNewState)	return;
@@ -1678,7 +1678,7 @@ void CModelInfo::OnLvnItemchangedListPatternset(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CModelInfo::OnBnClickedBtnAll()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	int nVertical = 0, nHorizen = 0, nCnt = 0;
 	CString sdata = _T("");
 
@@ -1767,7 +1767,7 @@ void CModelInfo::OnBnClickedBtnAll()
 
 void CModelInfo::OnStnClickedSttVccClk()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_nSelClkFlags=1;
 	m_nChangeFont&=0x0000;
 	m_nChangeFont|=0x0001;
@@ -1776,7 +1776,7 @@ void CModelInfo::OnStnClickedSttVccClk()
 
 void CModelInfo::OnStnClickedSttVddClk()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_nSelClkFlags=2;
 	m_nChangeFont&=0x0000;
 	m_nChangeFont|=0x0002;
@@ -1785,7 +1785,7 @@ void CModelInfo::OnStnClickedSttVddClk()
 
 void CModelInfo::OnStnClickedSttTmsClk()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_nSelClkFlags=3;
 	m_nChangeFont&=0x0000;
 	m_nChangeFont|=0x0004;
@@ -1794,7 +1794,7 @@ void CModelInfo::OnStnClickedSttTmsClk()
 
 void CModelInfo::OnStnClickedSttVsyncClk()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_nSelClkFlags=4;
 	m_nChangeFont&=0x0000;
 	m_nChangeFont|=0x0008;
@@ -1803,7 +1803,7 @@ void CModelInfo::OnStnClickedSttVsyncClk()
 
 void CModelInfo::OnStnClickedSttIccLow()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_nSelClkFlags = 5;
 	m_nChangeFont &= 0x0000;
 	m_nChangeFont |= 0x0010;
@@ -1812,7 +1812,7 @@ void CModelInfo::OnStnClickedSttIccLow()
 
 void CModelInfo::OnStnClickedSttIccHigh()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_nSelClkFlags = 6;
 	m_nChangeFont &= 0x0000;
 	m_nChangeFont |= 0x0020;
@@ -1821,7 +1821,7 @@ void CModelInfo::OnStnClickedSttIccHigh()
 
 void CModelInfo::OnStnClickedSttIddLow()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_nSelClkFlags = 7;
 	m_nChangeFont &= 0x0000;
 	m_nChangeFont |= 0x0040;
@@ -1831,7 +1831,7 @@ void CModelInfo::OnStnClickedSttIddLow()
 
 void CModelInfo::OnStnClickedSttIddHigh()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_nSelClkFlags = 8;
 	m_nChangeFont &= 0x0000;
 	m_nChangeFont |= 0x0080;
@@ -1840,7 +1840,7 @@ void CModelInfo::OnStnClickedSttIddHigh()
 
 void CModelInfo::OnStnClickedSttBluClk()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_nSelClkFlags=9;
 	m_nChangeFont&=0x0000;
 	m_nChangeFont|=0x0100;
@@ -1849,7 +1849,7 @@ void CModelInfo::OnStnClickedSttBluClk()
 
 void CModelInfo::OnBnClickedBtnCancel()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CDialog::OnOK();
 }
 
@@ -1858,7 +1858,7 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  ¿©±â¼­ DCÀÇ Æ¯¼ºÀ» º¯°æÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì„œ DCì˜ íŠ¹ì„±ì„ ë³€ê²½í•©ë‹ˆë‹¤.
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_MSGBOX:
@@ -1947,15 +1947,15 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		break;
 	}
-	// TODO:  ±âº»°ªÀÌ Àû´çÇÏÁö ¾ÊÀ¸¸é ´Ù¸¥ ºê·¯½Ã¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+	// TODO:  ê¸°ë³¸ê°’ì´ ì ë‹¹í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ë¥¸ ë¸ŒëŸ¬ì‹œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	return hbr;
 }
 
 void CModelInfo::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	// ±×¸®±â ¸Ş½ÃÁö¿¡ ´ëÇØ¼­´Â CDialog::OnPaint()À»(¸¦) È£ÃâÇÏÁö ¸¶½Ê½Ã¿À.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+	// ê·¸ë¦¬ê¸° ë©”ì‹œì§€ì— ëŒ€í•´ì„œëŠ” CDialog::OnPaint()ì„(ë¥¼) í˜¸ì¶œí•˜ì§€ ë§ˆì‹­ì‹œì˜¤.
 	CRect rect;
 
 	GetClientRect(&rect);
@@ -1973,7 +1973,7 @@ void CModelInfo::OnPaint()
 
 void CModelInfo::OnBnClickedBtnBluOnoff()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	int bluOnValue=0, bluMin=0,len=0;
 	int m_nValue=0,vLine=2, hLine=4, lineOn=1, nMin=5; 
 	CString sdata=_T("");
@@ -2000,7 +2000,7 @@ void CModelInfo::OnBnClickedBtnBluOnoff()
 
 void CModelInfo::OnBnClickedBtnApply()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	int nItemIndex;
 	int nItemCnt=0;
 	CString sdata=_T("");
@@ -2023,7 +2023,7 @@ void CModelInfo::OnBnClickedBtnApply()
 
 void CModelInfo::OnCbnSelchangeCmbPtnName()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString strPtnName;
 	m_cboPtnName.GetWindowTextW(strPtnName);
 	////////////////////////////////////////////////////////////////////////////////
@@ -2048,7 +2048,7 @@ void CModelInfo::OnCbnSelchangeCmbPtnName()
 
 void CModelInfo::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ê°’ì„ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	
 	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
 }
@@ -2056,7 +2056,7 @@ void CModelInfo::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 void CModelInfo::OnEnChangeEdtHActive()
 {
-	// TODO:  ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString strValue;
 	int nValue=0, nTotal=0;
 	m_edtHorActive.GetWindowTextW(strValue);
@@ -2079,7 +2079,7 @@ void CModelInfo::OnEnChangeEdtHActive()
 
 void CModelInfo::OnEnChangeEdtHWidth()
 {
-	// TODO:  ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString strValue;
 	int nValue = 0, nTotal = 0;
 	m_edtHorActive.GetWindowTextW(strValue);
@@ -2102,7 +2102,7 @@ void CModelInfo::OnEnChangeEdtHWidth()
 
 void CModelInfo::OnEnChangeEdtHFrontPorch()
 {
-	// TODO:  ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString strValue;
 	int nValue = 0, nTotal = 0;
 	m_edtHorActive.GetWindowTextW(strValue);
@@ -2125,7 +2125,7 @@ void CModelInfo::OnEnChangeEdtHFrontPorch()
 
 void CModelInfo::OnEnChangeEdtHBackPorch()
 {
-	// TODO:  ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString strValue;
 	int nValue = 0, nTotal = 0;
 	m_edtHorActive.GetWindowTextW(strValue);
@@ -2148,7 +2148,7 @@ void CModelInfo::OnEnChangeEdtHBackPorch()
 
 void CModelInfo::OnEnChangeEdtVActive()
 {
-	// TODO:  ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString strValue;
 	int nValue = 0, nTotal = 0;
 	m_edtVerActive.GetWindowTextW(strValue);
@@ -2171,7 +2171,7 @@ void CModelInfo::OnEnChangeEdtVActive()
 
 void CModelInfo::OnEnChangeEdtVWidth()
 {
-	// TODO:  ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString strValue;
 	int nValue = 0, nTotal = 0;
 	m_edtVerActive.GetWindowTextW(strValue);
@@ -2194,7 +2194,7 @@ void CModelInfo::OnEnChangeEdtVWidth()
 
 void CModelInfo::OnEnChangeEdtVFrontPorch()
 {
-	// TODO:  ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString strValue;
 	int nValue = 0, nTotal = 0;
 	m_edtVerActive.GetWindowTextW(strValue);
@@ -2217,7 +2217,7 @@ void CModelInfo::OnEnChangeEdtVFrontPorch()
 
 void CModelInfo::OnEnChangeEdtVBackPorch()
 {
-	// TODO:  ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString strValue;
 	int nValue = 0, nTotal = 0;
 	m_edtVerActive.GetWindowTextW(strValue);
@@ -2240,7 +2240,7 @@ void CModelInfo::OnEnChangeEdtVBackPorch()
 
 void CModelInfo::OnBnClickedBtnGammaVoltageSet()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CModelGamma gammadlg;
 	gammadlg.DoModal();
 }
@@ -2248,7 +2248,7 @@ void CModelInfo::OnBnClickedBtnGammaVoltageSet()
 
 void CModelInfo::OnStnClickedSttFusing()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_pApp->Gf_writeLogData("<TEST>", "MANUAL Fusing Start");
 	GetDlgItem(IDC_STT_FUSING)->EnableWindow(FALSE);
 	m_bfusingflag = 0;

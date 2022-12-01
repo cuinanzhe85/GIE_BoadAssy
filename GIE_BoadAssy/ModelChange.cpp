@@ -1,4 +1,4 @@
-// ModelChange.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// ModelChange.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -6,7 +6,7 @@
 #include "ModelChange.h"
 #include "initialize.h"
 
-// CModelChange ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CModelChange ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 IMPLEMENT_DYNAMIC(CModelChange, CDialog)
 
@@ -38,13 +38,13 @@ BEGIN_MESSAGE_MAP(CModelChange, CDialog)
 END_MESSAGE_MAP()
 
 
-// CModelChange ¸Ş½ÃÁö Ã³¸®±âÀÔ´Ï´Ù.
+// CModelChange ë©”ì‹œì§€ ì²˜ë¦¬ê¸°ì…ë‹ˆë‹¤.
 
 BOOL CModelChange::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  ¿©±â¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì¶”ê°€ ì´ˆê¸°í™” ì‘ì—…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	lpSystemInfo	= m_pApp->GetSystemInfo();
 	lpModelInfo		= m_pApp->GetModelInfo();
 
@@ -55,14 +55,14 @@ BOOL CModelChange::OnInitDialog()
 	Lf_InitModelInchInfo();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// ¿¹¿Ü: OCX ¼Ó¼º ÆäÀÌÁö´Â FALSE¸¦ ¹İÈ¯ÇØ¾ß ÇÕ´Ï´Ù.
+	// ì˜ˆì™¸: OCX ì†ì„± í˜ì´ì§€ëŠ” FALSEë¥¼ ë°˜í™˜í•´ì•¼ í•©ë‹ˆë‹¤.
 }
 
 void CModelChange::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	for(int i=0; i<COLOR_IDX_MAX; i++)
 	{
 		m_Brush[i].DeleteObject();
@@ -153,7 +153,7 @@ void CModelChange::Lf_initLoadModelList()
 
 void CModelChange::OnBnClickedBtnLoad()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	CString modelName=_T("");
 
 	m_lcModelList.GetText(m_lcModelList.GetCurSel(), modelName);
@@ -175,7 +175,7 @@ HBRUSH CModelChange::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  ¿©±â¼­ DCÀÇ Æ¯¼ºÀ» º¯°æÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì„œ DCì˜ íŠ¹ì„±ì„ ë³€ê²½í•©ë‹ˆë‹¤.
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_MSGBOX:
@@ -216,15 +216,15 @@ HBRUSH CModelChange::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		break;
 	}	
-	// TODO:  ±âº»°ªÀÌ Àû´çÇÏÁö ¾ÊÀ¸¸é ´Ù¸¥ ºê·¯½Ã¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+	// TODO:  ê¸°ë³¸ê°’ì´ ì ë‹¹í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ë¥¸ ë¸ŒëŸ¬ì‹œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	return hbr;
 }
 
 void CModelChange::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	// ±×¸®±â ¸Ş½ÃÁö¿¡ ´ëÇØ¼­´Â CDialog::OnPaint()À»(¸¦) È£ÃâÇÏÁö ¸¶½Ê½Ã¿À.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+	// ê·¸ë¦¬ê¸° ë©”ì‹œì§€ì— ëŒ€í•´ì„œëŠ” CDialog::OnPaint()ì„(ë¥¼) í˜¸ì¶œí•˜ì§€ ë§ˆì‹­ì‹œì˜¤.
 	CRect rect;
 
 	GetClientRect(&rect);
@@ -251,7 +251,7 @@ void CModelChange::Lf_InitModelInchInfo()
 	m_cmbModelInch.ResetContent();
 	m_cmbModelInch.AddString(_T("ALL"));
 
-	// ********* Host¿¡¼­ MOD List¸¦ ºÒ·¯¿Ã‹š  **********
+	// ********* Hostì—ì„œ MOD Listë¥¼ ë¶ˆëŸ¬ì˜¬ë–„  **********
 	sDatafolder.Format(_T("%s\\*.MOD"), lpSystemInfo->m_sModelDnPath);
 	hSearch = FindFirstFile(sDatafolder, &wfd);
 	if (hSearch != INVALID_HANDLE_VALUE)
@@ -288,7 +288,7 @@ void CModelChange::Lf_InitModelInchInfo()
 		sDrive.Format(_T("DRIVE : %c"), szCurrentPath[0]);
 		GetDlgItem(IDC_STT_MC_DRIVE_PATH)->SetWindowText(sDrive);
 
-		// Local Folder¿¡¼­ Model List¸¦ °¡Á®¿Ã ¶§
+		// Local Folderì—ì„œ Model Listë¥¼ ê°€ì ¸ì˜¬ ë•Œ
 		sDatafolder.Format(_T(".\\Model\\*.MOD"));
 		hSearch = FindFirstFile(sDatafolder, &wfd);
 
@@ -334,7 +334,7 @@ void CModelChange::Lf_LoadModelList()
 		sDatafolder.Format(_T("%s\\*%s*.MOD"), lpSystemInfo->m_sModelDnPath, sInch);
 
 	m_lcModelList.ResetContent();
-	// ********* Host¿¡¼­ MOD List¸¦ ºÒ·¯¿Ã‹š  **********
+	// ********* Hostì—ì„œ MOD Listë¥¼ ë¶ˆëŸ¬ì˜¬ë–„  **********
 	hSearch = FindFirstFile(sDatafolder, &wfd);
 	if (hSearch != INVALID_HANDLE_VALUE)
 	{
@@ -359,7 +359,7 @@ void CModelChange::Lf_LoadModelList()
 	}
 	else
 	{
-		// Local Folder¿¡¼­ Model List¸¦ °¡Á®¿Ã ¶§
+		// Local Folderì—ì„œ Model Listë¥¼ ê°€ì ¸ì˜¬ ë•Œ
 		if (sInch == _T("ALL"))
 			sDatafolder.Format(_T(".\\Model\\*.MOD"));
 		else
@@ -411,14 +411,14 @@ void CModelChange::Lf_LoadModelList()
 
 void CModelChange::OnCbnSelchangeCmbModelInch()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	Lf_LoadModelList();
 }
 
 
 void CModelChange::OnBnClickedBtnAllModel()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	m_cmbModelInch.SetCurSel(0);	// 0¹ø Index´Â ¹«Á¶°Ç ALL ÀÌ´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+	m_cmbModelInch.SetCurSel(0);	// 0ë²ˆ IndexëŠ” ë¬´ì¡°ê±´ ALL ì´ë‹¤.
 	Lf_LoadModelList();
 }

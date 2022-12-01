@@ -1,9 +1,9 @@
-#pragma once
+Ôªø#pragma once
 
 /////////////////////////////////////////////////////////////////////////////
 // User Define
 #define ETH_ACK_PWR_WAIT_TIME		10000	// Power On/Off Receive Wait time : 10Sec
-#define ETH_ACK_NOT_WAIT			0		// ACK∏¶ ±‚¥Ÿ∏Æ¡ˆ æ ¿Ω. : 0Sec
+#define ETH_ACK_NOT_WAIT			0		// ACKÎ•º Í∏∞Îã§Î¶¨ÏßÄ ÏïäÏùå. : 0Sec
 #define ETH_ACK_NOR_WAIT_TIME		2000	// Normal Control Receive Wait time : 2Sec
 #define ETH_CONNECT_WAIT_TIME		2000	// Connect Wait time : 2Sec
 #define MAX_SOCKET					255
@@ -40,9 +40,9 @@ public:
 	SOCKADDR_IN servAddr;
 	SOCKET hSocket[MAX_SOCKET];
 
-	int nSID;					// Socket¿« ID π¯»£.
+	int nSID;					// SocketÏùò ID Î≤àÌò∏.
 	bool m_bCon[MAX_SOCKET];	// is Connection.
-	bool m_bSoRcv[MAX_SOCKET];	// receive data ¿÷¿Ω.
+	bool m_bSoRcv[MAX_SOCKET];	// receive data ÏûàÏùå.
 
 	char szPlcRcvData[4096];
 	bool m_bPlcReconnectFlag;

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SocketTcp.h"
 #include <winsock2.h>
 
@@ -49,7 +49,7 @@ CSocketTCP::~CSocketTCP(void)
 		closesocket(hSocket[i]);
 	}
 
-	WSACleanup();	// WSACleanupÀº ÇÑ¹ø¸¸ ÇÑ´Ù.
+	WSACleanup();	// WSACleanupì€ í•œë²ˆë§Œ í•œë‹¤.
 }
 
 
@@ -82,7 +82,7 @@ BYTE CSocketTCP::eth_SockInit()
 	return 0;
 }
 
-// ¼ÒÄÏ¿¬°á ½ÇÆĞ ½Ã ±â´Ù¸®´Â ½Ã°£À» ÁÙÀÌ±â À§ÇÑ ÇÔ¼ö.
+// ì†Œì¼“ì—°ê²° ì‹¤íŒ¨ ì‹œ ê¸°ë‹¤ë¦¬ëŠ” ì‹œê°„ì„ ì¤„ì´ê¸° ìœ„í•œ í•¨ìˆ˜.
 BOOL CSocketTCP::eth_Connection(char* ipAddr, int nPort)
 {
 	int nTimeout=ETH_CONNECT_WAIT_TIME;
@@ -181,7 +181,7 @@ BOOL CSocketTCP::eth_PlcSendQuery(char *data, WORD nDataLen)
 {
 	int sendlength=0;
 
-	// Receive Buff¸¦ Clear ÇÑ´Ù.
+	// Receive Buffë¥¼ Clear í•œë‹¤.
 	rcvDataLen[SOC_SERVER_PLC] = 0;
 
 	// Socket Send

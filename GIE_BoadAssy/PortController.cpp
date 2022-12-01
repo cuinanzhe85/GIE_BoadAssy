@@ -1,4 +1,4 @@
-
+ï»¿
 #include "stdafx.h"
 #include "PortController.h"
 #include "GIE_BoadAssy.h"
@@ -1269,46 +1269,46 @@ BOOL ThreadWatchCommParseHex(CPortController* port_controller, char *pBuff, DWOR
 	// Hex RS232C Receive
 	// *********************************************************************
 
-	// Hex °ª¿¡´Â Receive Data°¡ STX°ªÀÌ ÀÔ·ÂµÉ ¼ö ÀÖÀ¸¹Ç·Î Receive Data ¸ğµÎ¸¦ Receive Buff¿¡ ½×´Â´Ù.
+	// Hex ê°’ì—ëŠ” Receive Dataê°€ STXê°’ì´ ì…ë ¥ë  ìˆ˜ ìˆìœ¼ë¯€ë¡œ Receive Data ëª¨ë‘ë¥¼ Receive Buffì— ìŒ“ëŠ”ë‹¤.
 	memcpy(m_pApp->szCommRxBuff+m_pApp->m_nCommRxTotData, pBuff, dwSize);
 
-	// ReceiveµÈ Hex DataÀÇ Byte ¼ö¸¦ ´©ÀûÇÑ´Ù.
+	// Receiveëœ Hex Dataì˜ Byte ìˆ˜ë¥¼ ëˆ„ì í•œë‹¤.
 	m_pApp->m_nCommRxTotData += dwSize;
 
-	// Hex Data·Î ReceiveÇÒ ÀüÃ¼ Data Size¸¦ ±¸ÇÑ´Ù.
+	// Hex Dataë¡œ Receiveí•  ì „ì²´ Data Sizeë¥¼ êµ¬í•œë‹¤.
 	if(m_pApp->m_nCommRxTotData > 13)
 	{
-		// RX PacketÀÇ 9~12 À§Ä¡´Â Àü¼ÛÇÏ´Â ¼ø¼ö Data SizeÀÌ´Ù.
+		// RX Packetì˜ 9~12 ìœ„ì¹˜ëŠ” ì „ì†¡í•˜ëŠ” ìˆœìˆ˜ Data Sizeì´ë‹¤.
 		sscanf_s((char*)&m_pApp->szCommRxBuff[9], "%04X", &m_pApp->m_nRcvHexSize);
-		// RX Packet¿¡¼­ STX, TARGET, CMD, LENGTH, CHECKSUM, ETXÀÇ Total°ªÀº 16ÀÌ´Ù. 16+Data°¡ ÀüÃ¼ RX PacketÀÇ Size°¡ µÈ´Ù.
+		// RX Packetì—ì„œ STX, TARGET, CMD, LENGTH, CHECKSUM, ETXì˜ Totalê°’ì€ 16ì´ë‹¤. 16+Dataê°€ ì „ì²´ RX Packetì˜ Sizeê°€ ëœë‹¤.
 		nCommRxSize = 16 + m_pApp->m_nRcvHexSize;
 	}
 
-	// Receive Buff¿¡ ½×ÀÎ DataÀÇ ±æÀÌ°¡ ReadÇØ¾ßÇÏ´Â Size¿Í °°À¸¸é Data¸¦ Ã³¸®ÇÑ´Ù.
+	// Receive Buffì— ìŒ“ì¸ Dataì˜ ê¸¸ì´ê°€ Readí•´ì•¼í•˜ëŠ” Sizeì™€ ê°™ìœ¼ë©´ Dataë¥¼ ì²˜ë¦¬í•œë‹¤.
 	if(m_pApp->m_nCommRxTotData >= nCommRxSize)
 	{
 		while(1)
 		{
-			// STX, ETX, Packet Length µîÀÇ º¯¼ö¸¦ ¼³Á¤ÇÑ´Ù.
+			// STX, ETX, Packet Length ë“±ì˜ ë³€ìˆ˜ë¥¼ ì„¤ì •í•œë‹¤.
 			BOOL bStxIn=FALSE;
 			BOOL bEtxIn=FALSE;
 			BYTE nCheckSum=0;
 
-			// Receive Buff¿¡¼­ STX °ªÀ» È®ÀÎÇÑ´Ù.
+			// Receive Buffì—ì„œ STX ê°’ì„ í™•ì¸í•œë‹¤.
 			if(m_pApp->szCommRxBuff[0] != 0x02)
 			{
 				memset (m_pApp->szCommRxBuff, 0, sizeof(m_pApp->szCommRxBuff));
 				break;
 			}
 
-			// Receive Buff¿¡¼­ ETX °ªÀ» È®ÀÎÇÑ´Ù.
+			// Receive Buffì—ì„œ ETX ê°’ì„ í™•ì¸í•œë‹¤.
 			if(m_pApp->szCommRxBuff[nCommRxSize-1] != 0x03)
 			{
 				memset (m_pApp->szCommRxBuff, 0, sizeof(m_pApp->szCommRxBuff));
 				break;
 			}
 
-			// Receive Data¿¡ ´ëÇÑ Check Sum °ªÀ» ±¸ÇÑ´Ù.
+			// Receive Dataì— ëŒ€í•œ Check Sum ê°’ì„ êµ¬í•œë‹¤.
 			for(UINT i=1; i<(nCommRxSize-3); i++)
 			{
 				nCheckSum += m_pApp->szCommRxBuff[i];
@@ -1316,35 +1316,35 @@ BOOL ThreadWatchCommParseHex(CPortController* port_controller, char *pBuff, DWOR
 			CString strCalChkSum;
 			strCalChkSum.Format(_T("%02X"), nCheckSum);
 
-			// Receive Check Sum°ªÀ» °¡Á®¿Í¼­ ºñ±³ÇÑ´Ù.
+			// Receive Check Sumê°’ì„ ê°€ì ¸ì™€ì„œ ë¹„êµí•œë‹¤.
 			CString strRxChkSum;
 			strRxChkSum.Format(_T("%c%c"), m_pApp->szCommRxBuff[nCommRxSize-3], m_pApp->szCommRxBuff[nCommRxSize-2]);
 
-			// Check Sum°ªÀÌ °°À¸¸é STXºÎÅÍ ETX±îÁöÀÇ Packet Data¸¦ Àü´ŞÇÑ´Ù.
+			// Check Sumê°’ì´ ê°™ìœ¼ë©´ STXë¶€í„° ETXê¹Œì§€ì˜ Packet Dataë¥¼ ì „ë‹¬í•œë‹¤.
 			if(!strRxChkSum.Compare(strCalChkSum))
 			{
-				// Receive Buff¿¡¼­ RX Receive Size ¸¸Å­ÀÇ Data¸¦ TX Buff¿¡ CopyÇÑ´Ù.
+				// Receive Buffì—ì„œ RX Receive Size ë§Œí¼ì˜ Dataë¥¼ TX Buffì— Copyí•œë‹¤.
 				memcpy (TxBuff, m_pApp->szCommRxBuff, nCommRxSize);
 				/////////////////////////////////////////////////////////////////
-				// Packet Data¸¦ Ã³¸®ÇÑ´Ù.
+				// Packet Dataë¥¼ ì²˜ë¦¬í•œë‹¤.
 				m_pApp->Gf_receivedPgAckInfo(TxBuff);
 				/////////////////////////////////////////////////////////////////
 			}
-			// ´ÙÀ½ Packet Àü¼ÛÀ» À§ÇÏ¿© TxBuff¸¦ ClearÇÑ´Ù.
+			// ë‹¤ìŒ Packet ì „ì†¡ì„ ìœ„í•˜ì—¬ TxBuffë¥¼ Clearí•œë‹¤.
 			memset (TxBuff, 0, sizeof(TxBuff));
 			memset (m_pApp->szCommRxBuff, 0, sizeof(m_pApp->szCommRxBuff));
 
 			break;
 		}
-		// Total Rx Size¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+		// Total Rx Sizeë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 		m_pApp->m_nCommRxTotData = 0;
 
-		// OK/NG »ó°ü¾øÀÌ ÇÏ³ªÀÇ Packet¸¦ Ã³¸® ¿Ï·áÇßÀ¸¸é Hex Receive Flag´Â ClearÇÑ´Ù.
+		// OK/NG ìƒê´€ì—†ì´ í•˜ë‚˜ì˜ Packetë¥¼ ì²˜ë¦¬ ì™„ë£Œí–ˆìœ¼ë©´ Hex Receive FlagëŠ” Clearí•œë‹¤.
 		m_pApp->m_bRcvHex = false;
 	}
-	// Rx Receive Buff¸¦ CloearÇÑ´Ù.
+	// Rx Receive Buffë¥¼ Cloearí•œë‹¤.
 	memset (pBuff, 0x00, BUFF_SIZE);
-	// DataÀü´Ş Buff¸¦ ClearÇÑ´Ù.
+	// Dataì „ë‹¬ Buffë¥¼ Clearí•œë‹¤.
 	memset (TxBuff, 0x00, sizeof(TxBuff));
 
 	//*********************************************************************

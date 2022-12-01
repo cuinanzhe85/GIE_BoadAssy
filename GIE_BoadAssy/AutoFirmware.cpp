@@ -1,4 +1,4 @@
-// AutoFirmware.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// AutoFirmware.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -6,7 +6,7 @@
 #include "AutoFirmware.h"
 
 
-// CAutoFirmware ´ëÈ­ »óÀÚÀÔ´Ï´Ù.
+// CAutoFirmware ëŒ€í™” ìƒìì…ë‹ˆë‹¤.
 
 IMPLEMENT_DYNAMIC(CAutoFirmware, CDialog)
 
@@ -39,13 +39,13 @@ BEGIN_MESSAGE_MAP(CAutoFirmware, CDialog)
 END_MESSAGE_MAP()
 
 
-// CAutoFirmware ¸Ş½ÃÁö Ã³¸®±âÀÔ´Ï´Ù.
+// CAutoFirmware ë©”ì‹œì§€ ì²˜ë¦¬ê¸°ì…ë‹ˆë‹¤.
 
 BOOL CAutoFirmware::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  ¿©±â¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì— ì¶”ê°€ ì´ˆê¸°í™” ì‘ì—…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	m_pApp->Gf_writeLogData("<WND>", "Auto Firmware Dialog Open");
 	lpWorkInfo		= m_pApp->GetWorkInfo();
 	lpModelInfo = m_pApp->GetModelInfo();
@@ -54,14 +54,14 @@ BOOL CAutoFirmware::OnInitDialog()
 	Lf_initValue();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// ¿¹¿Ü: OCX ¼Ó¼º ÆäÀÌÁö´Â FALSE¸¦ ¹İÈ¯ÇØ¾ß ÇÕ´Ï´Ù.
+	// ì˜ˆì™¸: OCX ì†ì„± í˜ì´ì§€ëŠ” FALSEë¥¼ ë°˜í™˜í•´ì•¼ í•©ë‹ˆë‹¤.
 }
 
 void CAutoFirmware::OnDestroy()
 {
 	CDialog::OnDestroy();
 
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	for (int i = 0; i < COLOR_IDX_MAX; i++)
 	{
 		m_Brush[i].DeleteObject();
@@ -78,7 +78,7 @@ HBRUSH CAutoFirmware::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO:  ¿©±â¼­ DCÀÇ Æ¯¼ºÀ» º¯°æÇÕ´Ï´Ù.
+	// TODO:  ì—¬ê¸°ì„œ DCì˜ íŠ¹ì„±ì„ ë³€ê²½í•©ë‹ˆë‹¤.
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_MSGBOX:
@@ -122,15 +122,15 @@ HBRUSH CAutoFirmware::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 		break;
 	}
-	// TODO:  ±âº»°ªÀÌ Àû´çÇÏÁö ¾ÊÀ¸¸é ´Ù¸¥ ºê·¯½Ã¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+	// TODO:  ê¸°ë³¸ê°’ì´ ì ë‹¹í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ë¥¸ ë¸ŒëŸ¬ì‹œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	return hbr;
 }
 
 void CAutoFirmware::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	// ±×¸®±â ¸Ş½ÃÁö¿¡ ´ëÇØ¼­´Â CDialog::OnPaint()À»(¸¦) È£ÃâÇÏÁö ¸¶½Ê½Ã¿À.
+	// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+	// ê·¸ë¦¬ê¸° ë©”ì‹œì§€ì— ëŒ€í•´ì„œëŠ” CDialog::OnPaint()ì„(ë¥¼) í˜¸ì¶œí•˜ì§€ ë§ˆì‹­ì‹œì˜¤.
 	CRect rect;
 
 	GetClientRect(&rect);
@@ -187,10 +187,10 @@ void CAutoFirmware::Lf_initFontSet()
 
 void CAutoFirmware::Lf_initValue()
 {
-	m_pApp->m_nDownloadReadyAckCount	= 0;						//Firmware Download ACK Receive Count ÃÊ±âÈ­.	
-	m_nFirmwareDataLen					= 0;						//Firmware File Length ÃÊ±âÈ­
-	m_pFirmwareData						= new BYTE [MAX_FILE_SIZE];	//Firmware File Buff Memory 1M ÇÒ´ç.
-	ZeroMemory(m_pFirmwareData, MAX_FILE_SIZE);						//Buff Memory ÃÊ±âÈ­
+	m_pApp->m_nDownloadReadyAckCount	= 0;						//Firmware Download ACK Receive Count ì´ˆê¸°í™”.	
+	m_nFirmwareDataLen					= 0;						//Firmware File Length ì´ˆê¸°í™”
+	m_pFirmwareData						= new BYTE [MAX_FILE_SIZE];	//Firmware File Buff Memory 1M í• ë‹¹.
+	ZeroMemory(m_pFirmwareData, MAX_FILE_SIZE);						//Buff Memory ì´ˆê¸°í™”
 
 	m_cboTargetSel.SetCurSel(0);
 	m_cmbFwType.SetCurSel(0);
@@ -262,7 +262,7 @@ void CAutoFirmware::Lf_readFirmwareFile(CString strFilePath)
 	CStdioFile* pFile;
 	pFile = new CStdioFile();
 
-	// FileÀ» OpenÇÑ´Ù.
+	// Fileì„ Opení•œë‹¤.
 	if(pFile->Open(strFilePath, CStdioFile::modeRead | CStdioFile::typeText)==NULL)
 	{
 		AfxMessageBox(_T("File Open Fail !!!"), MB_OK | MB_ICONERROR);
@@ -270,16 +270,16 @@ void CAutoFirmware::Lf_readFirmwareFile(CString strFilePath)
 		return;
 	}
 
-	// Firmware Data¸¦ ÀúÀåÇÒ Buff ÇÒ´çÇÏ°í ÃÊ±âÈ­ ÇÑ´Ù.
+	// Firmware Dataë¥¼ ì €ì¥í•  Buff í• ë‹¹í•˜ê³  ì´ˆê¸°í™” í•œë‹¤.
 	unsigned long filesize;
 	filesize =(unsigned long) pFile->GetLength();
 	szParsingData = (unsigned char *)malloc(filesize*sizeof(unsigned char));
 	memset((char*)szParsingData, 0, filesize);
 
-	// Firmware Data¸¦ ÀúÀåÇÒ Buff¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
-	m_nFirmwareDataLen	= 0;								//Firmware File Length ÃÊ±âÈ­
+	// Firmware Dataë¥¼ ì €ì¥í•  Buffë¥¼ ì´ˆê¸°í™” í•œë‹¤.
+	m_nFirmwareDataLen	= 0;								//Firmware File Length ì´ˆê¸°í™”
 
-	// LineÀÌ NullÀÏ¶§±îÁö ÀĞ´Â´Ù.
+	// Lineì´ Nullì¼ë•Œê¹Œì§€ ì½ëŠ”ë‹¤.
 	CString lineString;
 	CString recStart, recData;
 	int recLength, recOffset, recType, recChksum;
@@ -288,7 +288,7 @@ void CAutoFirmware::Lf_readFirmwareFile(CString strFilePath)
 		recStart	= lineString.Left(1);
 		recChksum	= _tcstol(lineString.Right(2),  NULL, 16);
 
-		// ·¹ÄÚµåÀÇ ½ÃÀÛ¹®ÀÚ(:)¸¦ È®ÀÎÇÑ´Ù.
+		// ë ˆì½”ë“œì˜ ì‹œì‘ë¬¸ì(:)ë¥¼ í™•ì¸í•œë‹¤.
 		if(recStart == ":")
 		{
 			recLength	= _tcstol(lineString.Mid(1, 2), NULL, 16);
@@ -303,14 +303,14 @@ void CAutoFirmware::Lf_readFirmwareFile(CString strFilePath)
 			//04 - Extended linear address record 
 			//05 - Start linear address record 
 			if(recType == 0x01)
-			{	// ÆÄÀÏÀÇ ³¡ÀÌ¹Ç·Î Á¾·á.
+			{	// íŒŒì¼ì˜ ëì´ë¯€ë¡œ ì¢…ë£Œ.
 				break;
 			}
 			else if((recType == 0x02) || (recType == 0x04))
-			{	// Address Record´Â Data¿¡ Æ÷ÇÔÇÏÁö ¾Ê´Â´Ù.
+			{	// Address RecordëŠ” Dataì— í¬í•¨í•˜ì§€ ì•ŠëŠ”ë‹¤.
 			}
 			else
-			{	// Data Record¸¦ ParsingÇÑ´Ù.
+			{	// Data Recordë¥¼ Parsingí•œë‹¤.
 				Lf_parseDataRecord(recData, &szParsingData[m_nFirmwareDataLen]);
 				m_nFirmwareDataLen += recLength;
 			}
@@ -318,14 +318,14 @@ void CAutoFirmware::Lf_readFirmwareFile(CString strFilePath)
 		else
 		{
 			AfxMessageBox(_T("Not the Intel hex file type."), MB_OK | MB_ICONERROR);
-			// Data Buff Memory¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+			// Data Buff Memoryë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 			memset((char*)szParsingData, 0, filesize);
-			// Data Length¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+			// Data Lengthë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 			m_nFirmwareDataLen = 0;
 		}
 	}
 
-	// FileÀ» ´İ´Â´Ù.
+	// Fileì„ ë‹«ëŠ”ë‹¤.
 	pFile->Close();
 	delete pFile;
 }
@@ -347,7 +347,7 @@ void CAutoFirmware::Lf_parseDataRecord(CString strRecord, BYTE* pData)
 
 void CAutoFirmware::Lf_readyInitialize()
 {
-	m_pApp->m_nDownloadReadyAckCount	= 0;				//Firmware Download ACK Receive Count ÃÊ±âÈ­.
+	m_pApp->m_nDownloadReadyAckCount	= 0;				//Firmware Download ACK Receive Count ì´ˆê¸°í™”.
 	//	m_bAckReceived						= FALSE;
 	//	m_nAckCommand						= 0x00;
 }
@@ -514,7 +514,7 @@ ERR_EXCEPT:
 
 void CAutoFirmware::OnBnClickedBtnFileSelect()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	if (m_cmbFwType.GetCurSel() == 0)
 	{
 		Lf_loadFirmwareFile();
@@ -527,7 +527,7 @@ void CAutoFirmware::OnBnClickedBtnFileSelect()
 
 void CAutoFirmware::OnBnClickedBtnFwVersion()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	lpWorkInfo->m_sFirmwareVersion.Empty();
 	GetDlgItem(IDC_STT_FW_VERSION)->SetWindowText(_T(""));
 	
@@ -560,7 +560,7 @@ void CAutoFirmware::OnBnClickedBtnFwVersion()
 
 void CAutoFirmware::OnBnClickedBtnDownload()
 {
-	// TODO: ¿©±â¿¡ ÄÁÆ®·Ñ ¾Ë¸² Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì»¨íŠ¸ë¡¤ ì•Œë¦¼ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	GetDlgItem(IDC_BTN_FILE_SELECT)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BTN_FW_VERSION)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BTN_DOWNLOAD)->EnableWindow(FALSE);
@@ -590,7 +590,7 @@ BOOL CAutoFirmware::Lf_FpgaDownloadStart()
 	sdata.Format(_T("FPGA Downloading ..."));
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
 
-	// Progress ÃÊ±âÈ­
+	// Progress ì´ˆê¸°í™”
 	m_progDownload.SetPos(0);
 	sdata.Format(_T("FPGA Downloading ...(0%%)"));
 	GetDlgItem(IDC_STT_FW_STATUS)->SetWindowText(sdata);
@@ -645,7 +645,7 @@ ERR_EXCEPT:
 
 BOOL CAutoFirmware::Lf_checkDownloadReady1()
 {
-	// App ¿µ¿ª¿¡¼­ Boot ¿µ¿ªÀ¸·Î ÁøÀÔÇÏ±â À§ÇÑ Ready CommandÀÌ´Ù.
+	// App ì˜ì—­ì—ì„œ Boot ì˜ì—­ìœ¼ë¡œ ì§„ì…í•˜ê¸° ìœ„í•œ Ready Commandì´ë‹¤.
 	DWORD sTick, eTick;
 
 	sTick = ::GetTickCount();
@@ -672,7 +672,7 @@ BOOL CAutoFirmware::Lf_checkDownloadReady1()
 
 BOOL CAutoFirmware::Lf_checkDownloadReady2()
 {
-	// Boot ¿µ¿ª¿¡¼­ Download Sequence·Î ÁøÀÔÇÏ±â À§ÇÑ Ready CommandÀÌ´Ù.
+	// Boot ì˜ì—­ì—ì„œ Download Sequenceë¡œ ì§„ì…í•˜ê¸° ìœ„í•œ Ready Commandì´ë‹¤.
 	DWORD sTick, eTick;
 
 	sTick = ::GetTickCount();
@@ -709,8 +709,8 @@ BOOL CAutoFirmware::Lf_sendFpgaFile()
 	BOOL bFirstTime = TRUE;
 	while (1)
 	{
-		// 2048 Byte ´ÜÀ§·Î ²÷¾î¼­ PacketÀ» Àü¼ÛÇÑ´Ù.
-		// ³²Àº Data°¡ 2048º¸´Ù ÀÛÀ» °æ¿ì ³²Àº °¹¼ö ¸¸Å­¸¸ Àü¼ÛÇÑ´Ù.
+		// 2048 Byte ë‹¨ìœ„ë¡œ ëŠì–´ì„œ Packetì„ ì „ì†¡í•œë‹¤.
+		// ë‚¨ì€ Dataê°€ 2048ë³´ë‹¤ ì‘ì„ ê²½ìš° ë‚¨ì€ ê°¯ìˆ˜ ë§Œí¼ë§Œ ì „ì†¡í•œë‹¤.
 		if ((startAddr + SIZE_OF_WRITE_PACKET) <= m_fpgaFileSize)
 		{
 			sprintf_s(szpacket, "%04d%04d%08X%04X", EPCQ16A_BYTE_PER_PAGE, EPCQ16A_PAGE_WR_DELAY, startAddr, SIZE_OF_WRITE_PACKET);
@@ -726,7 +726,7 @@ BOOL CAutoFirmware::Lf_sendFpgaFile()
 		}
 		else
 		{
-			//³²Àº Data°¡ ÀÖÀ» °æ¿ì ³ª¸ÓÁö¸¦ SendÇÑ´Ù.
+			//ë‚¨ì€ Dataê°€ ìˆì„ ê²½ìš° ë‚˜ë¨¸ì§€ë¥¼ Sendí•œë‹¤.
 			if ((m_fpgaFileSize - startAddr) != 0)
 			{
 				sprintf_s(szpacket, "%04d%04d%08X%04X", EPCQ16A_BYTE_PER_PAGE, EPCQ16A_PAGE_WR_DELAY, startAddr, (m_fpgaFileSize - startAddr));

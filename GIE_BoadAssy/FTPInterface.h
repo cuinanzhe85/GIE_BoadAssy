@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <wininet.h>		// FTP Library Include
 
 static HINTERNET m_hOpen, m_hConnect;

@@ -1,4 +1,4 @@
-
+ï»¿
 #include "stdafx.h"
 #include "GIE_BoadAssy.h"
 
@@ -42,46 +42,46 @@ int CPLCCtrl::plc_melsec_makePacketWrite(char* packet_buff, UINT addr, int dataL
 	int requestDataLen=0;
 
 	packet_len = 0;
-	requestDataLen = 12 + (dataLen*2);	// 12´Â °íÁ¤±æÀÌ ÀÌ¸ç, Word TypeÀÌ¹Ç·Î DataLen * 2Byte°¡ µÈ´Ù.
+	requestDataLen = 12 + (dataLen*2);	// 12ëŠ” ê³ ì •ê¸¸ì´ ì´ë©°, Word Typeì´ë¯€ë¡œ DataLen * 2Byteê°€ ëœë‹¤.
 
-	// ¼­ºê ¸Ó¸®±Û ±¸¼º (6Byte)
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUB_HEAD >> 8);		// ¼­ºê ¸Ó¸®±Û
+	// ì„œë¸Œ ë¨¸ë¦¬ê¸€ êµ¬ì„± (6Byte)
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUB_HEAD >> 8);		// ì„œë¸Œ ë¨¸ë¦¬ê¸€
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUB_HEAD >> 0);
 
-	packet_buff[packet_len++]  = (BYTE)MELSEC_NETWORK_NO;			// ³×Æ®¿öÅ© ¹øÈ£
+	packet_buff[packet_len++]  = (BYTE)MELSEC_NETWORK_NO;			// ë„¤íŠ¸ì›Œí¬ ë²ˆí˜¸
 
-	packet_buff[packet_len++]  = (BYTE)MELSEC_PLC_NO;				// PLC ¹øÈ£
+	packet_buff[packet_len++]  = (BYTE)MELSEC_PLC_NO;				// PLC ë²ˆí˜¸
 
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_MODULE_IO_NO >> 0);	// ¿ä±¸´ë»ó ¸ðµâ I/O ¹øÈ£
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_MODULE_IO_NO >> 0);	// ìš”êµ¬ëŒ€ìƒ ëª¨ë“ˆ I/O ë²ˆí˜¸
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_MODULE_IO_NO >> 8);
 
-	packet_buff[packet_len++]  = (BYTE)MELSEC_MODULE_COUNTRY_NO;	// ¿ä±¸´ë»ó ¸ðµâ ±¹ ¹øÈ£
+	packet_buff[packet_len++]  = (BYTE)MELSEC_MODULE_COUNTRY_NO;	// ìš”êµ¬ëŒ€ìƒ ëª¨ë“ˆ êµ­ ë²ˆí˜¸
 
-	packet_buff[packet_len++]  = (BYTE)(requestDataLen >> 0);		// ¿ä±¸Data ±æÀÌ (CPU°¨½Ã Å¸ÀÌ¸Ó ~ Data ¸¶Áö¸· Byte±îÁöÀÇ Length)
+	packet_buff[packet_len++]  = (BYTE)(requestDataLen >> 0);		// ìš”êµ¬Data ê¸¸ì´ (CPUê°ì‹œ íƒ€ì´ë¨¸ ~ Data ë§ˆì§€ë§‰ Byteê¹Œì§€ì˜ Length)
 	packet_buff[packet_len++]  = (BYTE)(requestDataLen >> 8);
 
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_CPU_TIMER >> 0);		// CPU °¨½Ã Å¸ÀÌ¸Ó
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_CPU_TIMER >> 0);		// CPU ê°ì‹œ íƒ€ì´ë¨¸
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_CPU_TIMER >> 8);
 
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_CMD_WRITE >> 0);		// Ä¿¸Çµå
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_CMD_WRITE >> 0);		// ì»¤ë§¨ë“œ
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_CMD_WRITE >> 8);
 
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUBCMD_WORD >> 0);	// ¼­ºê Ä¿¸Çµå
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUBCMD_WORD >> 0);	// ì„œë¸Œ ì»¤ë§¨ë“œ
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUBCMD_WORD >> 8);
 
 	packet_buff[packet_len++]  = (BYTE)(addr>>0);					// Write Address (24bit)
 	packet_buff[packet_len++]  = (BYTE)(addr>>8);
 	packet_buff[packet_len++]  = (BYTE)(addr>>16);
 
-	packet_buff[packet_len++]  = (BYTE)MELSEC_CMD_DEVICE_CODE;		// µð¹ÙÀÌ½º ÄÚµå
+	packet_buff[packet_len++]  = (BYTE)MELSEC_CMD_DEVICE_CODE;		// ë””ë°”ì´ìŠ¤ ì½”ë“œ
 
-	packet_buff[packet_len++]  = (BYTE)(dataLen >> 0);				// Write Byte¼ö
+	packet_buff[packet_len++]  = (BYTE)(dataLen >> 0);				// Write Byteìˆ˜
 	packet_buff[packet_len++]  = (BYTE)(dataLen >> 8);
 
 	for(int ptr=0; ptr<dataLen; ptr++)
 	{
-		packet_buff[packet_len++]  = (BYTE)(wszData[ptr]>>0);		// Write Data (Ã¹¹øÂ° Data L)
-		packet_buff[packet_len++]  = (BYTE)(wszData[ptr]>>8);		// Write Data (Ã¹¹øÂ° Data H)
+		packet_buff[packet_len++]  = (BYTE)(wszData[ptr]>>0);		// Write Data (ì²«ë²ˆì§¸ Data L)
+		packet_buff[packet_len++]  = (BYTE)(wszData[ptr]>>8);		// Write Data (ì²«ë²ˆì§¸ Data H)
 	}
 
 	return packet_len;
@@ -93,40 +93,40 @@ int CPLCCtrl::plc_melsec_makePacketRead(char* packet_buff, UINT addr, int dataLe
 	int requestDataLen=0;
 
 	packet_len = 0;
-	requestDataLen = 12;	// 12´Â °íÁ¤±æÀÌ
+	requestDataLen = 12;	// 12ëŠ” ê³ ì •ê¸¸ì´
 
-	// ¼­ºê ¸Ó¸®±Û ±¸¼º (6Byte)
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUB_HEAD >> 8);		// ¼­ºê ¸Ó¸®±Û
+	// ì„œë¸Œ ë¨¸ë¦¬ê¸€ êµ¬ì„± (6Byte)
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUB_HEAD >> 8);		// ì„œë¸Œ ë¨¸ë¦¬ê¸€
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUB_HEAD >> 0);
 
-	packet_buff[packet_len++]  = (BYTE)MELSEC_NETWORK_NO;			// ³×Æ®¿öÅ© ¹øÈ£
+	packet_buff[packet_len++]  = (BYTE)MELSEC_NETWORK_NO;			// ë„¤íŠ¸ì›Œí¬ ë²ˆí˜¸
 
-	packet_buff[packet_len++]  = (BYTE)MELSEC_PLC_NO;				// PLC ¹øÈ£
+	packet_buff[packet_len++]  = (BYTE)MELSEC_PLC_NO;				// PLC ë²ˆí˜¸
 
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_MODULE_IO_NO >> 0);	// ¿ä±¸´ë»ó ¸ðµâ I/O ¹øÈ£
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_MODULE_IO_NO >> 0);	// ìš”êµ¬ëŒ€ìƒ ëª¨ë“ˆ I/O ë²ˆí˜¸
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_MODULE_IO_NO >> 8);
 
-	packet_buff[packet_len++]  = (BYTE)MELSEC_MODULE_COUNTRY_NO;	// ¿ä±¸´ë»ó ¸ðµâ ±¹ ¹øÈ£
+	packet_buff[packet_len++]  = (BYTE)MELSEC_MODULE_COUNTRY_NO;	// ìš”êµ¬ëŒ€ìƒ ëª¨ë“ˆ êµ­ ë²ˆí˜¸
 
-	packet_buff[packet_len++]  = (BYTE)(requestDataLen >> 0);		// ¿ä±¸Data ±æÀÌ (CPU°¨½Ã Å¸ÀÌ¸Ó ~ Data ¸¶Áö¸· Byte±îÁöÀÇ Length)
+	packet_buff[packet_len++]  = (BYTE)(requestDataLen >> 0);		// ìš”êµ¬Data ê¸¸ì´ (CPUê°ì‹œ íƒ€ì´ë¨¸ ~ Data ë§ˆì§€ë§‰ Byteê¹Œì§€ì˜ Length)
 	packet_buff[packet_len++]  = (BYTE)(requestDataLen >> 8);
 
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_CPU_TIMER >> 0);		// CPU °¨½Ã Å¸ÀÌ¸Ó
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_CPU_TIMER >> 0);		// CPU ê°ì‹œ íƒ€ì´ë¨¸
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_CPU_TIMER >> 8);
 
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_CMD_READ >> 0);		// Ä¿¸Çµå
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_CMD_READ >> 0);		// ì»¤ë§¨ë“œ
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_CMD_READ >> 8);
 
-	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUBCMD_WORD >> 0);	// ¼­ºê Ä¿¸Çµå
+	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUBCMD_WORD >> 0);	// ì„œë¸Œ ì»¤ë§¨ë“œ
 	packet_buff[packet_len++]  = (BYTE)(MELSEC_SUBCMD_WORD >> 8);
 
 	packet_buff[packet_len++]  = (BYTE)(addr>>0);					// Read Address (24bit)
 	packet_buff[packet_len++]  = (BYTE)(addr>>8);
 	packet_buff[packet_len++]  = (BYTE)(addr>>16);
 
-	packet_buff[packet_len++]  = (BYTE)MELSEC_CMD_DEVICE_CODE;		// µð¹ÙÀÌ½º ÄÚµå
+	packet_buff[packet_len++]  = (BYTE)MELSEC_CMD_DEVICE_CODE;		// ë””ë°”ì´ìŠ¤ ì½”ë“œ
 
-	packet_buff[packet_len++]  = (BYTE)(dataLen >> 0);				// Read Byte¼ö
+	packet_buff[packet_len++]  = (BYTE)(dataLen >> 0);				// Read Byteìˆ˜
 	packet_buff[packet_len++]  = (BYTE)(dataLen >> 8);
 
 	return packet_len;
