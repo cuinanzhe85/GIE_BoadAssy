@@ -8,6 +8,7 @@
 #include "PanelID.h"
 #include "GieJudge.h"
 #include "MessageQuestion.h"
+#include "DefectResult.h"
 // CTestReady 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CTestReady, CDialog)
@@ -421,7 +422,7 @@ bool CTestReady::Lf_getControlBdReady()
 	m_pApp->Gf_writeLogData(_T("<PG>"),_T("CTRL B/D Ready Check START"));
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("CTRL B/D Ready Check"));
 
-	if(DEBUG_232RECEIVE_OK)	
+	if(DEBUG_UDP_RECEIVE_OK)
 		return TRUE;
 
 	while(m_pApp->m_bAreYouReady==FALSE)
@@ -523,11 +524,16 @@ BOOL CTestReady::Lf_sendGMESData()
 	{
 		int defecetResult = 0;
 
+#if (MES_COMBI_CODE==1)
 		m_pApp->Gf_writeLogData(_T("<MES>"), _T("QualityCode Dialog Open"));
-		m_pApp->Gf_writeLogData(_T("<MES>"), lpWorkInfo->m_sRwkCD);
-
 		defecetResult = ShowDefectResult(GetSafeOwner());
 		lpWorkInfo->m_sRwkCD = GetRWK_CD();
+#else
+		m_pApp->Gf_writeLogData(_T("<MES>"), _T("DefectCode Dialog Open"));
+		CDefectResult dlg;
+		dlg.retReasonCode = &lpWorkInfo->m_sRwkCD;
+		defecetResult = (int)dlg.DoModal();
+#endif
 		m_pApp->m_pCimNet->SetRwkCode(lpWorkInfo->m_sRwkCD);
 		if ((defecetResult == IDOK) && (lpWorkInfo->m_sRwkCD.IsEmpty() == TRUE))
 		{
@@ -535,16 +541,14 @@ BOOL CTestReady::Lf_sendGMESData()
 		}
 		else if (((defecetResult == IDOK) && (lpWorkInfo->m_sRwkCD.IsEmpty() == FALSE)) || (lpWorkInfo->m_bDioJudgeNg == true))
 		{
-			m_pApp->Gf_writeLogData(_T("<MES>"), outLog.GetBuffer(0));
-
-			outLog.Format(_T("RWK- %s"), lpWorkInfo->m_sRwkCD);
+			outLog.Format(_T("Select Reason Code - %s"), lpWorkInfo->m_sRwkCD);
 			m_pApp->Gf_writeLogData(_T("<MES>"), outLog);
 
 			lpWorkInfo->m_nPassOrFail = GMES_PNF_FAIL;
 		}
 		else
 		{
-			m_pApp->Gf_writeLogData(_T("MES"), _T("CANCEL"));
+			m_pApp->Gf_writeLogData(_T("<MES>"), _T("CANCEL"));
 			return FALSE;
 		}
 	}
@@ -666,6 +670,11 @@ bool CTestReady::Lf_startTestOn()
 		return false;
 	}
 
+	if (Lf_AutoModelChange() == FALSE)
+	{
+		return false;
+	}
+
 	if (Lf_CableOpenCheck() == FALSE)
 	{
 		return false;
@@ -769,7 +778,37 @@ BOOL CTestReady::Lf_CableOpenCheck()
 	return TRUE;
 }
 
+BOOL CTestReady::Lf_AutoModelChange()
+{
+	if ((m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdPM == TRUE))
+		return TRUE;
 
+	// 현재 모델과 MES TOP_MODEL이 서로 다르면 자동 M/C를 진행한다.
+	if (lpSystemInfo->m_sModelName != lpWorkInfo->m_sMesTopModelName)
+	{
+		if (m_pApp->Gf_findModelFile(lpWorkInfo->m_sMesTopModelName) == TRUE)
+		{
+			CString sLog;
+			sLog.Format(_T("Auto Model Change OK.  [%s] => [%s]"), lpSystemInfo->m_sModelName, lpWorkInfo->m_sMesTopModelName);
+			m_pApp->Gf_writeLogData(_T("<AUTO M/C>"), sLog);
+
+			lpSystemInfo->m_sModelName = lpWorkInfo->m_sMesTopModelName;
+			Write_SysIniFile(_T("SYSTEM"), _T("LAST_MODELNAME"), lpSystemInfo->m_sModelName);
+
+			m_pApp->Gf_loadMedelFile();
+			AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+		}
+		else
+		{
+			CString sMsg;
+			sMsg.Format(_T("Auto Model Change Fail. '%s' model file does not exist."), lpSystemInfo->m_sModelName);
+			m_pApp->Gf_ShowMessageBox(sMsg);
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
 
 
 

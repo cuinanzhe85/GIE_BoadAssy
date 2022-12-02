@@ -79,7 +79,7 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nEEPRomType;
 	int m_nEEPRomAddr;
 
-	int m_nVocmAddr;
+	int m_nVcomAddr;
 	int m_nVcomLine;
 	int m_nVcomMinMaxUse;
 	int m_nVcomMin;
@@ -429,6 +429,8 @@ typedef struct _ST_INSPWORKINFO_{
 
 	CTime tt_startTime;
 	CTime tt_endTime;
+
+	CString m_sMesTopModelName;
 
 }INSPWORKINFO, *LPINSPWORKINFO;
 

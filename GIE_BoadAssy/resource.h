@@ -735,6 +735,10 @@
 #define IDC_STT_DEF_10_TO_8             1350
 #define IDC_STT_DEF_10_TO_9             1351
 #define IDC_STT_DEF_10_TO_10            1352
+#define IDC_STT_DEF_DETAIL              1353
+#define IDC_BTN_DEF_CONFIRM             1354
+#define IDC_BTN_DEF_CANCEL              1355
+#define IDC_BTN_DEF_UNDO                1356
 
 // Next default values for new objects
 // 
@@ -742,7 +746,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        200
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1255
+#define _APS_NEXT_CONTROL_VALUE         1355
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

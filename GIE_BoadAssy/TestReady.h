@@ -45,7 +45,7 @@ protected:
 	void Lf_setVariableReset();
 	BOOL Lf_SystemAutoFusing();
 	BOOL Lf_CableOpenCheck();
-
+	BOOL Lf_AutoModelChange();
 
 protected:
 	LPSYSTEMINFO	lpSystemInfo;

@@ -422,6 +422,8 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 
 	m_bRcvHex=false;
 	m_nCommRxTotData = 0;
+
+	////////////////////////////////////////////////////////////
 	lpSystemInfo->m_sModelName=_T("");
 	lpSystemInfo->m_sMachinName=_T("");
 	lpSystemInfo->m_nMeasureInterval=0;
@@ -472,6 +474,7 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 
 	lpSystemInfo->m_nPinBlockOpenCheck = 0;
 
+	////////////////////////////////////////////////////////////
 	lpModelInfo->m_nEdidUse=0;
 	lpModelInfo->m_nEdidAddr=0;
 	lpModelInfo->m_nEdidLine=0;
@@ -511,13 +514,128 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpModelInfo->m_nSpiMode=0;
 	lpModelInfo->m_nSpiLevel=0;
 
-	lpModelInfo->m_fVoltVcc=0.0;
-	lpModelInfo->m_fVoltVdd=0.0;
-	lpModelInfo->m_fLimitVccMax=0;
-	lpModelInfo->m_fLimitVddMax=0;
-	lpModelInfo->m_fLimitIccMax=0;
-	lpModelInfo->m_fLimitIddMax=0;
+	lpModelInfo->m_fVoltVcc = 0;
+	lpModelInfo->m_fVoltVdd = 0;
+	lpModelInfo->m_fVoltVgh = 0;
+	lpModelInfo->m_fVoltVgl = 0;
+	lpModelInfo->m_fVoltVbr = 0;
+	lpModelInfo->m_fVoltVbl = 0;
+	lpModelInfo->m_fLimitVccMin = 0;
+	lpModelInfo->m_fLimitVccMax = 0;
+	lpModelInfo->m_fLimitVddMin = 0;
+	lpModelInfo->m_fLimitVddMax = 0;
+	lpModelInfo->m_fLimitVblMin = 0;
+	lpModelInfo->m_fLimitVblMax = 0;
+	lpModelInfo->m_fLimitVghMin = 0;
+	lpModelInfo->m_fLimitVghMax = 0;
+	lpModelInfo->m_fLimitVglMin = 0;
+	lpModelInfo->m_fLimitVglMax = 0;
+	lpModelInfo->m_fLimitIccMin = 0;
+	lpModelInfo->m_fLimitIccMax = 0;
+	lpModelInfo->m_fLimitIddMin = 0;
+	lpModelInfo->m_fLimitIddMax = 0;
+	lpModelInfo->m_fLimitIblMin = 0;
+	lpModelInfo->m_fLimitIblMax = 0;
+	lpModelInfo->m_fLimitIghMin = 0;
+	lpModelInfo->m_fLimitIghMax = 0;
+	lpModelInfo->m_fLimitIglMin = 0;
+	lpModelInfo->m_fLimitIglMax = 0;
 	lpModelInfo->m_nIccCheck=0;
+	lpModelInfo->m_nCableOpenUse = 0;
+	lpModelInfo->m_nShortTestUse = 0;
+	lpModelInfo->m_nVcomAddr = 0;
+	lpModelInfo->m_nVcomLine = 0;
+	lpModelInfo->m_nVcomMinMaxUse = 0;
+	lpModelInfo->m_nVcomMin = 0;
+	lpModelInfo->m_nVcomMax = 0;
+	lpModelInfo->m_nVcomDefault = 0;
+	lpModelInfo->m_nVcomDrop = 0;
+	lpModelInfo->m_nVcomBitShift = 0;
+	lpModelInfo->m_fVoltVcom1 = 0;
+	lpModelInfo->m_fVoltVcom2 = 0;
+	lpModelInfo->m_nClockDelay = 0;
+	lpModelInfo->m_nClockRising = 0;
+	lpModelInfo->m_nHSyncPolarity = 0;
+	lpModelInfo->m_nVSyncPolarity = 0;
+	lpModelInfo->m_nOddEven = 0;
+	lpModelInfo->m_nI2cPullup = 0;
+	lpModelInfo->m_nI2cFreq = 0;
+	lpModelInfo->m_nI2cLevel = 0;
+	lpModelInfo->m_nPowerOnSeqType01 = 0;
+	lpModelInfo->m_nPowerOnSeqType02 = 0;
+	lpModelInfo->m_nPowerOnSeqType03 = 0;
+	lpModelInfo->m_nPowerOnSeqType04 = 0;
+	lpModelInfo->m_nPowerOnSeqType05 = 0;
+	lpModelInfo->m_nPowerOnSeqType06 = 0;
+	lpModelInfo->m_nPowerOnSeqType07 = 0;
+	lpModelInfo->m_nPowerOnSeqType08 = 0;
+	lpModelInfo->m_nPowerOnSeqType09 = 0;
+	lpModelInfo->m_nPowerOnSeqType10 = 0;
+	lpModelInfo->m_nPowerOnSeqType11 = 0;
+	lpModelInfo->m_nPowerOnSeqType12 = 0;
+	lpModelInfo->m_nPowerOnSeqType13 = 0;
+	lpModelInfo->m_nPowerOnSeqType14 = 0;
+	lpModelInfo->m_nPowerOnSeqType15 = 0;
+	lpModelInfo->m_nPowerOnSeqType16 = 0;
+	lpModelInfo->m_nPowerOnSeqType17 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay01 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay02 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay03 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay04 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay05 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay06 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay07 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay08 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay09 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay10 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay11 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay12 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay13 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay14 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay15 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay16 = 0;
+	lpModelInfo->m_nPowerOnSeqDelay17 = 0;
+	lpModelInfo->m_nPowerOffSeqType01 = 0;
+	lpModelInfo->m_nPowerOffSeqType02 = 0;
+	lpModelInfo->m_nPowerOffSeqType03 = 0;
+	lpModelInfo->m_nPowerOffSeqType04 = 0;
+	lpModelInfo->m_nPowerOffSeqType05 = 0;
+	lpModelInfo->m_nPowerOffSeqType06 = 0;
+	lpModelInfo->m_nPowerOffSeqType07 = 0;
+	lpModelInfo->m_nPowerOffSeqType08 = 0;
+	lpModelInfo->m_nPowerOffSeqType09 = 0;
+	lpModelInfo->m_nPowerOffSeqType10 = 0;
+	lpModelInfo->m_nPowerOffSeqType11 = 0;
+	lpModelInfo->m_nPowerOffSeqType12 = 0;
+	lpModelInfo->m_nPowerOffSeqType13 = 0;
+	lpModelInfo->m_nPowerOffSeqType14 = 0;
+	lpModelInfo->m_nPowerOffSeqType15 = 0;
+	lpModelInfo->m_nPowerOffSeqType16 = 0;
+	lpModelInfo->m_nPowerOffSeqType17 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay01 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay02 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay03 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay04 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay05 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay06 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay07 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay08 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay09 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay10 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay11 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay12 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay13 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay14 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay15 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay16 = 0;
+	lpModelInfo->m_nPowerOffSeqDelay17 = 0;
+
+	lpModelInfo->m_nLbCnt = 0;
+
+	for (i = 0; i < 32; i++)
+	{
+		lpModelInfo->m_fVoltGamma[i] = 0;
+	}
 
 	for(i=0; i<10; i++)
 	{
@@ -525,8 +643,6 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 		lpModelInfo->m_nHotPatternGrayFg[i]=0;
 		lpModelInfo->m_nHotPatternGrayBg[i]=0;
 	}
-
-	lpModelInfo->m_nLbCnt=0;
 
 	for(i=0; i<TOTALPATTERN; i++)
 	{
@@ -542,12 +658,10 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 		lpModelInfo->m_sLbPtnIddHigh[i].Empty();
 	}
 
+	////////////////////////////////////////////////////////////
 	lpWorkInfo->m_bPIDReadComplete = false;
-
 	lpWorkInfo->m_bGieJudgeNg = false;
 	lpWorkInfo->m_bGieJudgeOk = false;
-
-
 	lpWorkInfo->m_bDioJigArrived = false;
 	lpWorkInfo->m_bDioTestStart = false;
 	lpWorkInfo->m_bDioJudgeOk = false;
@@ -556,9 +670,7 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpWorkInfo->m_bDioJudgeNg = false;
 	lpWorkInfo->m_bDioPassMode = false;
 	lpWorkInfo->m_bDioPajuJudgeBGrade = false;
-
 	lpWorkInfo->m_nPassOrFail=0;
-
 	lpWorkInfo->m_nGoodCnt=0;
 	lpWorkInfo->m_nBadCnt=0;
 	lpWorkInfo->m_sBadPattern.Empty();
@@ -891,6 +1003,32 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	}
 }
 
+BOOL CGIE_BoadAssyApp::Gf_findModelFile(CString fileName)
+{
+	CString strDataFolder;
+
+	WIN32_FIND_DATA wfd;
+	HANDLE hSearch;
+	int nLoof = 1;
+
+	if (fileName == _T(""))
+		return FALSE;
+
+	strDataFolder.Format(_T(".\\%s\\%s.mod"), _T("Model"), fileName);
+	hSearch = FindFirstFile(strDataFolder, &wfd);
+
+	if (hSearch != INVALID_HANDLE_VALUE)
+	{
+		FindClose(hSearch);
+		return TRUE;
+	}
+	else
+	{
+		FindClose(hSearch);
+		return FALSE;
+	}
+}
+
 BOOL CGIE_BoadAssyApp::Gf_loadMedelFile()
 {
 	CString strLFileName, strNFileName, strDataFolder;
@@ -915,9 +1053,6 @@ BOOL CGIE_BoadAssyApp::Gf_loadMedelFile()
 					nLoof = FindNextFile (hSearch, &wfd);
 					if(nLoof==0)
 					{
-						//default.mod setting
-						m_sModelFile.Format(_T("%s"),_T("Model file load NG!!!"));
-						Gf_loadModelData();
 						return FALSE;
 					}
 				}
@@ -927,7 +1062,6 @@ BOOL CGIE_BoadAssyApp::Gf_loadMedelFile()
 				if(!strLFileName.Compare(strNFileName)) // When model file is existed in folder, this sentence is executed. : equal
 				{		
 					Gf_loadModelData();
-					m_sModelFile.Format(_T("%s"),_T("Model file load OK!!"));
 					break;
 				}
 			}
@@ -937,7 +1071,6 @@ BOOL CGIE_BoadAssyApp::Gf_loadMedelFile()
 	else // case : When Model folder is empty,
 	{
 		AfxMessageBox(_T("Error Module File"), MB_ICONSTOP);
-		m_sModelFile.Format(_T("%s"),_T("Error Model File"));
 		Gf_loadModelData();
 		FindClose (hSearch);
 	}
@@ -1839,10 +1972,18 @@ Send_RETRY:
 		Lf_setGmesValuePCHK();
 		nRtnCD = m_pCimNet->PCHK();
 
-		CString sLog;
-		m_pCimNet->GetFieldData(&strBuff, _T("RTN_PID"));
-		sLog.Format(_T("RTN_PID : %s"), strBuff);
-		Gf_writeLogData(_T("<MES>"),sLog);
+		if (nRtnCD == RTN_OK)
+		{
+			CString sLog;
+			m_pCimNet->GetFieldData(&strBuff, _T("RTN_PID"));
+			sLog.Format(_T("RTN_PID : %s"), strBuff);
+			Gf_writeLogData(_T("<MES>"), sLog);
+
+			m_pCimNet->GetFieldData(&strBuff, _T("TOP_MODEL_NAME"));
+			lpWorkInfo->m_sMesTopModelName.Format(_T("%s"), strBuff);
+			sLog.Format(_T("TOP_MODEL_NAME : %s"), strBuff);
+			Gf_writeLogData(_T("<MES>"), sLog);
+		}
 	}
 	else if(nHostCmd==HOST_EICR)
 	{
@@ -1943,7 +2084,7 @@ BOOL CGIE_BoadAssyApp::udp_sendPacket(CString ipAddress, int nTarget, int nComma
 	UINT ret = TRUE;
 	m_nAckCmd[nCommand] = FALSE;
 
-	if (DEBUG_232RECEIVE_OK)
+	if (DEBUG_UDP_RECEIVE_OK)
 		return TRUE;
 
 	if (recvACK == TRUE)
@@ -2225,15 +2366,15 @@ BOOL CGIE_BoadAssyApp::Gf_ftpDownloadModuleIniFile()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Gradation Station Function
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CGIE_BoadAssyApp::Gf_setGradientStatic(CGradientStatic* pGStt, long sttColor,  CFont* pFont, BOOL bSplit)
+void CGIE_BoadAssyApp::Gf_setGradientStatic(CGradientStatic* pGStt, long bkColor, long fontColor, CFont* pFont, BOOL bSplit)
 {
 	pGStt->SetFont(pFont);
 	pGStt->SetTextAlign(TEXT_ALIGN_CENTER);
-	pGStt->SetColor(sttColor);
-	pGStt->SetGradientColor(sttColor);
+	pGStt->SetColor(bkColor);
+	pGStt->SetGradientColor(bkColor);
 	pGStt->SetVerticalGradient();
 	if (bSplit == TRUE)	pGStt->SetSplitMode(TRUE);
-	pGStt->SetTextColor(RGB(0, 0, 0));
+	pGStt->SetTextColor(fontColor);
 }
 
 

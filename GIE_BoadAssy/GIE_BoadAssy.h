@@ -57,7 +57,8 @@ public:
 	void Gf_writeSummaryLog();
 	void Gf_writeInspCount(int Type);
 	void Gf_loadInspCount();
-	void Gf_loadSystemInfo();	
+	void Gf_loadSystemInfo();
+	BOOL Gf_findModelFile(CString fileName);
 	BOOL Gf_loadMedelFile();
 	BOOL Gf_loadPatternFile();
 	void Gf_loadModelData();
@@ -115,7 +116,7 @@ public:
 	///////////////////////////////////////////////////////////
 	// Gradient Static Function
 	///////////////////////////////////////////////////////////
-	void Gf_setGradientStatic(CGradientStatic* pGStt, long sttColor, CFont* pFont, BOOL bSplit);
+	void Gf_setGradientStatic(CGradientStatic* pGStt, long sttColor, long fontColor, CFont* pFont, BOOL bSplit);
 
 public:
 	CStatic* m_pStaticMainLog;

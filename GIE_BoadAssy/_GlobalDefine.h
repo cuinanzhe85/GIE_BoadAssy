@@ -3,6 +3,7 @@
 #ifndef _GOLBAL_DEFINE_
 #define _GOLBAL_DEFINE_
 
+#define MES_COMBI_CODE					0
 
 /////////////////////////////////////////////////////////////////////////////Đs
 #define _STR_DEFAULTMODEL				"DEFAULT_MODEL"
@@ -12,7 +13,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 #define	DEBUG_GMES_TEST_SERVER			0
-#define DEBUG_232RECEIVE_OK				0
+#define DEBUG_UDP_RECEIVE_OK			0
 #define DEBUG_RS232C_LOG				0
 #define DEBUG_PALLET_ARRIVE				0
 #define DEBUG_MES_NOT_USE				0

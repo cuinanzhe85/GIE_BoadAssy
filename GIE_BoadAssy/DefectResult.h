@@ -43,8 +43,21 @@ public:
 	CString Lf_getStaticReasonCode(int x, int y, CString strValue);
 	long Lf_getStaticButtonColor(int x, int y, CString strValue);
 
+	void Lf_getButtonReasonCode(int x, int y);
+
+	int FindRWKField(CString strCode);
+	CString GetRWKCodeToBadCode(CString strRWKCode[]);
+	CString BarCodeToBadCode(CString strBarCode);
+
+	void Lf_setDefectUndo();
+
+	CString* retReasonCode;
+
+
 protected:
 	DEFECT_BUTTON m_pDefectButton[10][10];
+
+	int preX, preY;
 
 
 private:
@@ -164,4 +177,107 @@ public:
 	CGradientStatic m_sttButton_10to8;
 	CGradientStatic m_sttButton_10to9;
 	CGradientStatic m_sttButton_10to10;
+	afx_msg void OnStnClickedSttDef1To1();
+	afx_msg void OnStnClickedSttDef1To2();
+	afx_msg void OnStnClickedSttDef1To3();
+	afx_msg void OnStnClickedSttDef1To4();
+	afx_msg void OnStnClickedSttDef1To5();
+	afx_msg void OnStnClickedSttDef1To6();
+	afx_msg void OnStnClickedSttDef1To7();
+	afx_msg void OnStnClickedSttDef1To8();
+	afx_msg void OnStnClickedSttDef1To9();
+	afx_msg void OnStnClickedSttDef1To10();
+	afx_msg void OnStnClickedSttDef2To1();
+	afx_msg void OnStnClickedSttDef2To2();
+	afx_msg void OnStnClickedSttDef2To3();
+	afx_msg void OnStnClickedSttDef2To4();
+	afx_msg void OnStnClickedSttDef2To5();
+	afx_msg void OnStnClickedSttDef2To6();
+	afx_msg void OnStnClickedSttDef2To7();
+	afx_msg void OnStnClickedSttDef2To8();
+	afx_msg void OnStnClickedSttDef2To9();
+	afx_msg void OnStnClickedSttDef2To10();
+	afx_msg void OnStnClickedSttDef3To1();
+	afx_msg void OnStnClickedSttDef3To2();
+	afx_msg void OnStnClickedSttDef3To3();
+	afx_msg void OnStnClickedSttDef3To4();
+	afx_msg void OnStnClickedSttDef3To5();
+	afx_msg void OnStnClickedSttDef3To6();
+	afx_msg void OnStnClickedSttDef3To7();
+	afx_msg void OnStnClickedSttDef3To8();
+	afx_msg void OnStnClickedSttDef3To9();
+	afx_msg void OnStnClickedSttDef3To10();
+	afx_msg void OnStnClickedSttDef4To1();
+	afx_msg void OnStnClickedSttDef4To2();
+	afx_msg void OnStnClickedSttDef4To3();
+	afx_msg void OnStnClickedSttDef4To4();
+	afx_msg void OnStnClickedSttDef4To5();
+	afx_msg void OnStnClickedSttDef4To6();
+	afx_msg void OnStnClickedSttDef4To7();
+	afx_msg void OnStnClickedSttDef4To8();
+	afx_msg void OnStnClickedSttDef4To9();
+	afx_msg void OnStnClickedSttDef4To10();
+	afx_msg void OnStnClickedSttDef5To1();
+	afx_msg void OnStnClickedSttDef5To2();
+	afx_msg void OnStnClickedSttDef5To3();
+	afx_msg void OnStnClickedSttDef5To4();
+	afx_msg void OnStnClickedSttDef5To5();
+	afx_msg void OnStnClickedSttDef5To6();
+	afx_msg void OnStnClickedSttDef5To7();
+	afx_msg void OnStnClickedSttDef5To8();
+	afx_msg void OnStnClickedSttDef5To9();
+	afx_msg void OnStnClickedSttDef5To10();
+	afx_msg void OnStnClickedSttDef6To1();
+	afx_msg void OnStnClickedSttDef6To2();
+	afx_msg void OnStnClickedSttDef6To3();
+	afx_msg void OnStnClickedSttDef6To4();
+	afx_msg void OnStnClickedSttDef6To5();
+	afx_msg void OnStnClickedSttDef6To6();
+	afx_msg void OnStnClickedSttDef6To7();
+	afx_msg void OnStnClickedSttDef6To8();
+	afx_msg void OnStnClickedSttDef6To9();
+	afx_msg void OnStnClickedSttDef6To10();
+	afx_msg void OnStnClickedSttDef7To1();
+	afx_msg void OnStnClickedSttDef7To2();
+	afx_msg void OnStnClickedSttDef7To3();
+	afx_msg void OnStnClickedSttDef7To4();
+	afx_msg void OnStnClickedSttDef7To5();
+	afx_msg void OnStnClickedSttDef7To6();
+	afx_msg void OnStnClickedSttDef7To7();
+	afx_msg void OnStnClickedSttDef7To8();
+	afx_msg void OnStnClickedSttDef7To9();
+	afx_msg void OnStnClickedSttDef7To10();
+	afx_msg void OnStnClickedSttDef8To1();
+	afx_msg void OnStnClickedSttDef8To2();
+	afx_msg void OnStnClickedSttDef8To3();
+	afx_msg void OnStnClickedSttDef8To4();
+	afx_msg void OnStnClickedSttDef8To5();
+	afx_msg void OnStnClickedSttDef8To6();
+	afx_msg void OnStnClickedSttDef8To7();
+	afx_msg void OnStnClickedSttDef8To8();
+	afx_msg void OnStnClickedSttDef8To9();
+	afx_msg void OnStnClickedSttDef8To10();
+	afx_msg void OnStnClickedSttDef9To1();
+	afx_msg void OnStnClickedSttDef9To2();
+	afx_msg void OnStnClickedSttDef9To3();
+	afx_msg void OnStnClickedSttDef9To4();
+	afx_msg void OnStnClickedSttDef9To5();
+	afx_msg void OnStnClickedSttDef9To6();
+	afx_msg void OnStnClickedSttDef9To7();
+	afx_msg void OnStnClickedSttDef9To8();
+	afx_msg void OnStnClickedSttDef9To9();
+	afx_msg void OnStnClickedSttDef9To10();
+	afx_msg void OnStnClickedSttDef10To1();
+	afx_msg void OnStnClickedSttDef10To2();
+	afx_msg void OnStnClickedSttDef10To3();
+	afx_msg void OnStnClickedSttDef10To4();
+	afx_msg void OnStnClickedSttDef10To5();
+	afx_msg void OnStnClickedSttDef10To6();
+	afx_msg void OnStnClickedSttDef10To7();
+	afx_msg void OnStnClickedSttDef10To8();
+	afx_msg void OnStnClickedSttDef10To9();
+	afx_msg void OnStnClickedSttDef10To10();
+	afx_msg void OnBnClickedBtnDefConfirm();
+	afx_msg void OnBnClickedBtnDefCancel();
+	afx_msg void OnBnClickedBtnDefUndo();
 };
