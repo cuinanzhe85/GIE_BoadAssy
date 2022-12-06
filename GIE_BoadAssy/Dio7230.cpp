@@ -49,7 +49,7 @@ U32 CDIO7230::Dio_DI_ReadPort()
 void CDIO7230::Gf_setDioWrite(U32 ulDOut)
 {
 	Dio_DO_WritePort(ulDOut);
-	delayMS(1000);
+	Sleep(500);
 	Dio_DO_WritePort(DIO_OUT_RESET);
 }
 

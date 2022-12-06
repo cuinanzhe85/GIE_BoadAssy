@@ -3,7 +3,7 @@
 #ifndef _GOLBAL_DEFINE_
 #define _GOLBAL_DEFINE_
 
-#define MES_COMBI_CODE					0
+#define MES_COMBI_CODE					1
 
 /////////////////////////////////////////////////////////////////////////////Đs
 #define _STR_DEFAULTMODEL				"DEFAULT_MODEL"
