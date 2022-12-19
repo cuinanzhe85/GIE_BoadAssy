@@ -1110,7 +1110,8 @@ void CDefectResult::Lf_initStaticButton()
 {
 	CString fileName, strSection, strKey, strValue;
 
-	fileName.Format(_T("./Module_Defect_Ini/HB_MODULE_20220622_01_VN.ANSI.ini"));
+	Read_SysIniFile(_T("DFS"), _T("MODULE_DEFECT_INI"), &fileName);
+	fileName.Insert(0, _T("./Module_Defect/"));
 	strSection.Format(_T("SIMPLIFY"));
 
 	for (int x = 0; x < 10; x++)

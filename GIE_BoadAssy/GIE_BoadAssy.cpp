@@ -2322,8 +2322,8 @@ BOOL CGIE_BoadAssyApp::Gf_ftpDownloadModuleIniFile()
 	DWORD dwFlags = 0;
 	BOOL bReturn = TRUE;
 
-	if ((_access(".\\Module_Defect_Ini", 0)) == -1)
-		_mkdir(".\\Module_Defect_Ini");
+	if ((_access(".\\Module_Defect", 0)) == -1)
+		_mkdir(".\\Module_Defect");
 
 #ifdef CODE_USE_SIMPLE_FTP
 	CString ftp_IP, ftp_Name, ftp_Passwd;
@@ -2350,12 +2350,14 @@ BOOL CGIE_BoadAssyApp::Gf_ftpDownloadModuleIniFile()
 
 	if (strFileName != _T(""))
 	{
-		strDownLoad.Format(_T("./Module_Defect_Ini/%s"), strFileName);
+		strDownLoad.Format(_T("./Module_Defect/%s"), strFileName);
 		dwFlags = FTP_TRANSFER_TYPE_BINARY | INTERNET_FLAG_RELOAD;
 		if (lpFtpDFS->ftp_FileDownload(strDownLoad) == FALSE)
 		{
 			bReturn = FALSE;
 		}
+
+		Write_SysIniFile(_T("DFS"), _T("MODULE_DEFECT_INI"), strFileName);
 	}
 #endif
 

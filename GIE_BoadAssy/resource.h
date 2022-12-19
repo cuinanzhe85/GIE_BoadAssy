@@ -404,8 +404,10 @@
 #define IDC_EDT_OFF_SEQ_DEL_3           1142
 #define IDC_STT_MAIN_FPGA_VALUE         1142
 #define IDC_STT_MODELINFODLG_TIT        1143
+#define IDC_STT_DFS_DEFECT_VERSION_TIT  1143
 #define IDC_STT_INITDLG_TIT             1144
 #define IDC_CMB_OFF_SEQ_OP_4            1144
+#define IDC_STT_DFS_DEFECT_VERSION_VALUE 1144
 #define IDC_STT_STATIONDLG_TIT          1145
 #define IDC_EDT_OFF_SEQ_DEL_4           1145
 #define IDC_STT_DP_FPGA_TIT             1145
@@ -525,7 +527,7 @@
 #define IDC_EDT_GAMMA_CH19              1194
 #define IDC_STT_EAS_LOCAL_SUBJ          1194
 #define IDC_STT_TP_COLOR_B_VAL          1195
-#define IDC_STT_MAIN_FW_VERSION_VIEW    1195
+#define IDC_STT_MAIN_MLOG_VIEW          1195
 #define IDC_EDT_GAMMA_CH20              1195
 #define IDC_STT_EAS_REMOTE_SUBJ         1195
 #define IDC_STT_TP_EDID_RESULT          1196

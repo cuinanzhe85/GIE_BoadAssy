@@ -524,7 +524,7 @@ BOOL CTestReady::Lf_sendGMESData()
 	{
 		int defecetResult = 0;
 
-#if (MES_COMBI_CODE==1)
+#if (MES_COMBI_CODE_USE==1)
 		m_pApp->Gf_writeLogData(_T("<MES>"), _T("QualityCode Dialog Open"));
 		defecetResult = ShowDefectResult(GetSafeOwner());
 		lpWorkInfo->m_sRwkCD = GetRWK_CD();
@@ -801,7 +801,7 @@ BOOL CTestReady::Lf_AutoModelChange()
 		else
 		{
 			CString sMsg;
-			sMsg.Format(_T("Auto Model Change Fail. '%s' model file does not exist."), lpSystemInfo->m_sModelName);
+			sMsg.Format(_T("Auto Model Change Fail. '%s' model file does not exist."), lpWorkInfo->m_sMesTopModelName);
 			m_pApp->Gf_ShowMessageBox(sMsg);
 			return FALSE;
 		}
