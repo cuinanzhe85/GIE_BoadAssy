@@ -201,16 +201,16 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		retStr = strCode;
 	}
 	////////////////////////////////////////////////////////////////////////// TA
-	else if( tmpStr == "TA" )	// CDrawCanvasY
+	else if (tmpStr == "TA")	// CDrawCanvasY
 	{
 		CString strCode("");
 		CString str("");
 		CString strBuf("");
 
 		// Reading
-		int nPTNType=PTN_NORMAL;
+//		int nPTNType=PTN_NORMAL;
 		int nCurPos = 1;
-		int nTotal  = (int)dStrAry.GetSize();
+		int nTotal = (int)dStrAry.GetSize();
 
 		int m_yindex = 0;
 		int m_xindex = 0;
@@ -222,11 +222,11 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 		CString BitCtrl;
 
 
-		nPTNType = isPatternType(&dStrAry);
+		// 		nPTNType = isPatternType(&dStrAry);
 
-		while(nCurPos < nTotal)
+		while (nCurPos < nTotal)
 		{
-			if((nCurPos+2) > nTotal)
+			if ((nCurPos + 2) > nTotal)
 				break;
 
 			tmpStr = dStrAry.GetAt(nCurPos++);
@@ -236,9 +236,9 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 			m_xindex = _tcstol(tmpStr, 0, 16);
 
 
-			if( m_xindex == 0 )
+			if (m_xindex == 0)
 			{
-				if((nCurPos + 5) > nTotal )
+				if ((nCurPos + 5) > nTotal)
 				{
 					break;
 				}
@@ -258,29 +258,35 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 				//////////////////////////////////
 				//8k  확장 알고리즘
 				m_Clr2 &= 0xFFF0;
-				m_Clr2 |= nColorOpt&0x0F;
+				m_Clr2 |= nColorOpt & 0x0F;
 				////////////////////////////////
 
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				Gradation = tmpStr;
 
-				if(nPTNType==PTN_UPGRADE)
-				{
-					tmpStr= dStrAry.GetAt(nCurPos++);
-					BitCtrl = tmpStr;
+				// 				if(nPTNType==PTN_UPGRADE)
+				// 				{
+				// 					tmpStr= dStrAry.GetAt(nCurPos++);
+				// 					BitCtrl = tmpStr;
+				// 				}
+
+				// 4의 배수값이 아닐 경우 4의 배소로 적용.
+				if (endX != hResol)
+				{// CanvasX 마지막 좌표값이 아닐 경우.
+					while (endX % 4)	endX--;
 				}
 
 				str.Format(_T("%04X%04X%s"),
-							endX,
-							m_Clr2,
-							Gradation);
+					endX,
+					m_Clr2,
+					Gradation);
 
 				strBuf += str;
 
 			}
-			else if( m_xindex > 0 )
+			else if (m_xindex > 0)
 			{
-				if((nCurPos + 4) > nTotal )
+				if ((nCurPos + 4) > nTotal)
 				{
 					break;
 				}
@@ -298,34 +304,41 @@ CString CT2CmdGen::makeSubStr(CString dataStr, int idx)
 				//////////////////////////////////
 				//8k  확장 알고리즘
 				m_Clr2 &= 0xFFF0;
-				m_Clr2 |= nColorOpt&0x0F;
+				m_Clr2 |= nColorOpt & 0x0F;
 				////////////////////////////////
 
 				tmpStr = dStrAry.GetAt(nCurPos++);
 				Gradation = tmpStr;
 
-				if(nPTNType==PTN_UPGRADE)
-				{
-					tmpStr= dStrAry.GetAt(nCurPos++);
-					BitCtrl = tmpStr;
+				// 				if(nPTNType==PTN_UPGRADE)
+				// 				{
+				// 					tmpStr= dStrAry.GetAt(nCurPos++);
+				// 					BitCtrl = tmpStr;
+				// 				}
+
+				// 4의 배수값이 아닐 경우 4의 배소로 적용.
+				if (endX != hResol)
+				{// CanvasX 마지막 좌표값이 아닐 경우.
+					while (endX % 4)	endX--;
 				}
 
 				// Store
 				str.Format(_T("%1X%02X%04X%04X%s"),
-							m_yindex,m_xindex,
-							endX,
-							m_Clr2,
-							Gradation);
-	
+					m_yindex, m_xindex,
+					endX,
+					m_Clr2,
+					Gradation);
+
 				strBuf += str;
 			}
 		}
 
-		strCode.Format(_T("TA%03d%1X%02X%04d"),strBuf.GetLength()+12,m_yindex,0,endY);
+		strCode.Format(_T("TA%03d%1X%02X%04d"), strBuf.GetLength() + 12, m_yindex, 0, endY);
 		strCode += strBuf;
 
 		retStr = strCode;
 	}
+
 	////////////////////////////////////////////////////////////////////////// BD
 	else if( tmpStr == "BD")
 	{
