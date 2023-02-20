@@ -659,30 +659,41 @@ BOOL CCommand::Gf_getAreYouReady()
 BOOL CCommand::Gf_setPowerSeqOnOff(int nOnOff, int nCh)
 {
 	BOOL bRtnCode;
-	CString strCmd=_T("");
+	CString strCmd=_T(""), sLog=_T("");
 	int len=0;
+	DWORD dWait;
 
 	strCmd.Format(_T("%01d%01d"), nOnOff, nCh);
 
 	wchar_To_char(strCmd.GetBuffer(0), m_szPacket);
 	m_PacketLength = (int)strlen(m_szPacket);
 
-	bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_SEQ_ONOFF, m_PacketLength, m_szPacket);
-	if (bRtnCode == TRUE)
+	if (nOnOff == POWER_ON)
 	{
-		DWORD dWait;
-		if (nOnOff == POWER_ON)
-			dWait = (lpModelInfo->m_nPowerOnSeqDelay01 + lpModelInfo->m_nPowerOnSeqDelay02 + lpModelInfo->m_nPowerOnSeqDelay03 + lpModelInfo->m_nPowerOnSeqDelay04
-				+ lpModelInfo->m_nPowerOnSeqDelay05 + lpModelInfo->m_nPowerOnSeqDelay06 + lpModelInfo->m_nPowerOnSeqDelay07 + lpModelInfo->m_nPowerOnSeqDelay08
-				+ lpModelInfo->m_nPowerOnSeqDelay09 + lpModelInfo->m_nPowerOnSeqDelay10 + lpModelInfo->m_nPowerOnSeqDelay11 + lpModelInfo->m_nPowerOnSeqDelay12
-				+ lpModelInfo->m_nPowerOnSeqDelay13 + lpModelInfo->m_nPowerOnSeqDelay14);
-		else
-			dWait = (lpModelInfo->m_nPowerOffSeqDelay01 + lpModelInfo->m_nPowerOffSeqDelay02 + lpModelInfo->m_nPowerOffSeqDelay03 + lpModelInfo->m_nPowerOffSeqDelay04
-				+ lpModelInfo->m_nPowerOffSeqDelay05 + lpModelInfo->m_nPowerOffSeqDelay06 + lpModelInfo->m_nPowerOffSeqDelay07 + lpModelInfo->m_nPowerOffSeqDelay08
-				+ lpModelInfo->m_nPowerOffSeqDelay09 + lpModelInfo->m_nPowerOffSeqDelay10 + lpModelInfo->m_nPowerOffSeqDelay11 + lpModelInfo->m_nPowerOffSeqDelay12
-				+ lpModelInfo->m_nPowerOffSeqDelay13 + lpModelInfo->m_nPowerOffSeqDelay14);
-		delayMS(dWait + 500);
+		bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_SEQ_ONOFF, m_PacketLength, m_szPacket);
+		dWait = (lpModelInfo->m_nPowerOnSeqDelay01 + lpModelInfo->m_nPowerOnSeqDelay02 + lpModelInfo->m_nPowerOnSeqDelay03 + lpModelInfo->m_nPowerOnSeqDelay04
+			+ lpModelInfo->m_nPowerOnSeqDelay05 + lpModelInfo->m_nPowerOnSeqDelay06 + lpModelInfo->m_nPowerOnSeqDelay07 + lpModelInfo->m_nPowerOnSeqDelay08
+			+ lpModelInfo->m_nPowerOnSeqDelay09 + lpModelInfo->m_nPowerOnSeqDelay10 + lpModelInfo->m_nPowerOnSeqDelay11 + lpModelInfo->m_nPowerOnSeqDelay12
+			+ lpModelInfo->m_nPowerOnSeqDelay13 + lpModelInfo->m_nPowerOnSeqDelay14);
+		sLog.Format(_T("Power Sequence ON (Delay : %dms)"), dWait);
+		m_pApp->Gf_writeLogData(_T("<TEST"), sLog);
 	}
+	else
+	{
+		bRtnCode = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_POWER_SEQ_ONOFF, m_PacketLength, m_szPacket);
+		dWait = (lpModelInfo->m_nPowerOffSeqDelay01 + lpModelInfo->m_nPowerOffSeqDelay02 + lpModelInfo->m_nPowerOffSeqDelay03 + lpModelInfo->m_nPowerOffSeqDelay04
+			+ lpModelInfo->m_nPowerOffSeqDelay05 + lpModelInfo->m_nPowerOffSeqDelay06 + lpModelInfo->m_nPowerOffSeqDelay07 + lpModelInfo->m_nPowerOffSeqDelay08
+			+ lpModelInfo->m_nPowerOffSeqDelay09 + lpModelInfo->m_nPowerOffSeqDelay10 + lpModelInfo->m_nPowerOffSeqDelay11 + lpModelInfo->m_nPowerOffSeqDelay12
+			+ lpModelInfo->m_nPowerOffSeqDelay13 + lpModelInfo->m_nPowerOffSeqDelay14);
+		sLog.Format(_T("Power Sequence OFF (Delay : %dms)"), dWait);
+		m_pApp->Gf_writeLogData(_T("<TEST"), sLog);
+	}
+
+	if(bRtnCode==TRUE)
+	{
+		delayMS(dWait + 100);
+	}
+
 	return bRtnCode;
 }
 

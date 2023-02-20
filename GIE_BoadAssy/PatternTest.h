@@ -59,6 +59,10 @@ protected:
 
 	void Lf_PtnTestEventView(CString Event);
 	void Lf_setPatternImageView(CString strPtnName);
+
+	void Lf_writeLogKeyIn(int keyValue);
+
+
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CListCtrl m_LCctrlPtnTestView;

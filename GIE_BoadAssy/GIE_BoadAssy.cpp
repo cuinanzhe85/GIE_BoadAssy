@@ -262,7 +262,10 @@ void CGIE_BoadAssyApp::Gf_writeLogData(char Event[MLOG_MAX_LENGTH],char Data[MLO
 	CString strEvent, strData;
 	strEvent = char_To_wchar(Event);
 	strData = char_To_wchar(Data);
+
+	Gf_writeLogData(strEvent, strData);
 }
+
 void CGIE_BoadAssyApp::Gf_writeLogData(CString Event, CString Data)
 {
 	CFile file;

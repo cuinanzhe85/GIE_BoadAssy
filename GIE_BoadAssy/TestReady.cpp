@@ -686,17 +686,19 @@ bool CTestReady::Lf_startTestOn()
 	// 검사 시작하면 배출할때까지 TEST_ING DIO 신호 살린다.
 	m_pApp->m_pDio7230->Gf_setDioOutTesting();
 
+	CString sLog;
+	sLog.Format(_T("TEST Start Delay (%dms)"), lpSystemInfo->m_nTestStartDelay);
+	m_pApp->Gf_writeLogData(_T("<TEST>"), sLog);
 	delayMS(lpSystemInfo->m_nTestStartDelay);
 
-	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("Start Pattern Test"));
+	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("Pattern Test START"));
 	CPatternTest ptnDlg;
 	ptnDlg.DoModal();
+	m_pApp->Gf_writeLogData(_T("<TEST>"), _T("Pattern Test END"));
 
 
 	Lf_openResult();
 	m_btnTestStart.SetFocus();
-
-	m_pApp->Gf_writeLogData(_T("<TEST>"), _T("Pattern Test END"));
 
 	lpWorkInfo->tt_endTime = CTime::GetCurrentTime();
 	m_pApp->Gf_writeSummaryLog();
@@ -726,6 +728,9 @@ void CTestReady::Lf_setVariableReset()
 	m_dioInputBit = 0x0000;
 	SetTimer(TIMER_PID_CHECK, 100, NULL);
 
+	CString sLog;
+	sLog.Format(_T("============================================= %s (%s) ============================================="), m_pApp->m_sSoftwareVersion, lpSystemInfo->m_sModelName);
+	m_pApp->Gf_writeLogData(sLog, _T(""));
 }
 
 BOOL CTestReady::Lf_SystemAutoFusing()

@@ -124,6 +124,7 @@ public:
 	CString m_sSysIniFile;
 	CString m_sPtnFile;
 	CString m_sSerialPort1,m_sSerialPort2,m_sSerialPort3,m_sSerialPort4,m_sSerialPort5,m_sSerialPort6;
+	CString m_sSoftwareVersion;
 
 	int *pPtnIndex;
 	int m_nOldVsync;

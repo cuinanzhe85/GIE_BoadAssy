@@ -97,7 +97,12 @@ void CPatternTest::OnDestroy()
 	{
 		m_Font[i].DeleteObject();
 	}
+
+	CString sLog;
+	sLog.Format(_T("BLU Duty (min) : %d"), lpModelInfo->m_nBluMin);
+	m_pApp->Gf_writeLogData(_T("<TEST>"), sLog);
 	m_pApp->m_pCommand->Gf_setBluDuty(lpModelInfo->m_nBluMin);
+
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_OFF);
 }
 
@@ -128,6 +133,7 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 				if (Lf_PatternLockTimeCheck() != TRUE)
 					return TRUE;
 
+				Lf_writeLogKeyIn((int)pMsg->wParam);
 				Lf_excutePatternList(pMsg);
 
 				return TRUE;
@@ -144,6 +150,7 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 				m_LCctrlPtnTestView.SetItemState(m_nSelNum, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
 				m_LCctrlPtnTestView.SetFocus();			
 
+				Lf_writeLogKeyIn((int)pMsg->wParam);
 				Lf_setPatternGrayLevel((int)pMsg->wParam);
 				return TRUE;
 			}
@@ -153,7 +160,7 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 				lpWorkInfo->m_sBadPattern.Format(_T("%s"), lpModelInfo->m_sLbPtnName[m_nSelNum].GetBuffer(0));
 				lpWorkInfo->m_bEscDetect = true;
 
-				Lf_PtnTestEventView(_T("ESC Key"));
+				Lf_PtnTestEventView(_T("'ESC' Key In"));
 				CDialog::OnCancel();
 				return TRUE;
 			}
@@ -163,24 +170,23 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 			return TRUE;
 		case 'C':
 		case 'c':
-
 			return TRUE;
 		case 'E':
 		case'e':
 			return TRUE;
 		case 'H':
-		case'h':				
+		case 'h':				
 			return TRUE;	
 		case 'W':
-		case'w':
+		case 'w':
 			return TRUE;
 		case 'x':
 		case 'X':
 			return TRUE;
 		case 'Q':
-		case'q':
+		case 'q':
 			return TRUE;
-		case'Z':
+		case 'Z':
 		case 'z':
 			return TRUE;
 
@@ -455,7 +461,7 @@ BOOL CPatternTest::Lf_sendBluData()
 	strmsg.Format(_T("BLU Duty : %d"), nBluDuty);
 	Lf_PtnTestEventView(strmsg);
 	if(m_pApp->m_pCommand->Gf_setBluDuty(nBluDuty) == FALSE)
-	{			
+	{
 		m_pApp->Gf_ShowMessageBox(_T("BLU Communication Error"));//AfxMessageBox(_T("BLU Communication Error"));
 	}
 
@@ -688,7 +694,6 @@ void CPatternTest::Lf_excutePatternList(MSG* pMsg)
 	case VK_RETURN:
 		if(lpModelInfo->m_nLbCnt-1 <= m_nSelNum)  
 		{ 
-			Lf_PtnTestEventView(_T("Pattern Test END"));
 			CDialog::OnOK();
 			return;
 		}
@@ -928,7 +933,6 @@ void CPatternTest::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		if(lpModelInfo->m_nLbCnt-1 <= m_nSelNum)  
 		{ 
-			Lf_PtnTestEventView(_T("Pattern Test END"));
 			CDialog::OnOK();
 			return;
 		}
@@ -978,7 +982,6 @@ void CPatternTest::Lf_setPatternGrayLevel(int wParam)
 {
 	CString strPattern;
 	CString strPacket;
-	CString strRdata, strGdata, strBdata;
 	int colorConf = 0;
 	int adjustValue = 0;
 	int R_Val = 0, G_Val = 0, B_Val = 0;
@@ -1072,7 +1075,11 @@ void CPatternTest::Lf_setPatternGrayLevel(int wParam)
 		G_Val = (G_Val << nBitShift) | 0x0F;
 		B_Val = (B_Val << nBitShift) | 0x0F;
 	}
-	
+
+	CString sLog;
+	sLog.Format(_T("Gray Level Set (R:%d) (G:%d) (b:%d)"), (R_Val >> nBitShift), (G_Val >> nBitShift), (B_Val >> nBitShift));
+	m_pApp->Gf_writeLogData(_T("<TEST>"), sLog);
+
 
 	strPacket.Format(_T("CFG%04X%04X%04X"), R_Val, G_Val, B_Val);
 
@@ -1240,6 +1247,7 @@ BOOL CPatternTest::Lf_PatternCurrentCheck()
 	}
 	return TRUE;
 }
+
 void CPatternTest::Lf_setPatternImageView(CString strPtnName)
 {
 	if (strPtnName.Find(_T(".BMP")) != -1)
@@ -1257,4 +1265,21 @@ void CPatternTest::Lf_setPatternImageView(CString strPtnName)
 	}
 	else
 		m_pApp->m_pPatternView->drawPattern(strPtnName);
+}
+
+void CPatternTest::Lf_writeLogKeyIn(int keyValue)
+{
+	CString sLog;
+	if(keyValue == VK_RETURN)			sLog.Format(_T("'ENTER' Key In"));
+	else if (keyValue == VK_SPACE)		sLog.Format(_T("'SPACE' Key In"));
+	else if (keyValue == VK_HOME)		sLog.Format(_T("'HOME' Key In"));
+	else if (keyValue == VK_BACK)		sLog.Format(_T("'BACK SPACE' Key In"));
+	else if (keyValue == VK_END)		sLog.Format(_T("'END' Key In"));
+	else if (keyValue == VK_RIGHT)		sLog.Format(_T("'RIGHT' Key In"));
+	else if (keyValue == VK_LEFT)		sLog.Format(_T("'LEFT' Key In"));
+	else if (keyValue == VK_UP)			sLog.Format(_T("'UP' Key In"));
+	else if (keyValue == VK_DOWN)		sLog.Format(_T("'DOWN' Key In"));
+	else								sLog.Format(_T("Key In (Key Value=%02X)"), keyValue);
+
+	m_pApp->Gf_writeLogData(_T("<TEST>"), sLog);
 }

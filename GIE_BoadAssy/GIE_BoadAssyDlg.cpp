@@ -554,11 +554,10 @@ void CGIE_BoadAssyDlg::InitProgramTitle()
 			}
 		}
 	}
-	CString m_sSoftwareVersion;
-	m_sSoftwareVersion.Format(_T("%s - %s"), char_To_wchar(Date_String), PGM_VERSION);
-	strPGMTitle.Format(_T("VH NK BA ( %s )"), m_sSoftwareVersion);
+	m_pApp->m_sSoftwareVersion.Format(_T("%s - %s"), char_To_wchar(Date_String), PGM_VERSION);
+	strPGMTitle.Format(_T("VH NK BA ( %s )"), m_pApp->m_sSoftwareVersion);
 
-	m_pApp->Gf_writeLogData(_T("Program Version"), m_sSoftwareVersion);
+	m_pApp->Gf_writeLogData(_T("Program Version"), m_pApp->m_sSoftwareVersion);
 
 	// Window Title Update
 	SetWindowText(strPGMTitle);
