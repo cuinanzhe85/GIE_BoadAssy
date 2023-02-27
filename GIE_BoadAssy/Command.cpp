@@ -86,22 +86,27 @@ BOOL CCommand::Gf_setPacketSendGfd250(BYTE nTarget, BYTE nMSCmd, BYTE nId, BYTE 
 }
 BOOL CCommand::Gf_setBluDuty(int Duty)
 {
+	int nRecCnt = 0;
 	char szpacket[512];
 	int packetlen;
+
 	sprintf_s(szpacket, "B0%04d%c", Duty, 0x0d);
 	packetlen = (int)strlen(szpacket);
 
 	m_pApp->m_nRcvMsgBlu = 0x00;
 
 	m_pApp->Gf_sendBLUData((BYTE*)szpacket, packetlen);
-	int nRecCnt = 0;
-	while (1)
+	if (DEBUG_UDP_RECEIVE_OK == 0)
 	{
-		if (m_pApp->m_nRcvMsgBlu == TRUE)
-			break;
-		if (nRecCnt++ > 30)
-			return FALSE;
-		delayMS(10);
+		nRecCnt = 0;
+		while (1)
+		{
+			if (m_pApp->m_nRcvMsgBlu == TRUE)
+				break;
+			if (nRecCnt++ > 30)
+				return FALSE;
+			delayMS(10);
+		}
 	}
 
 	sprintf_s(szpacket, "L1%c", 0x0d);
@@ -110,14 +115,17 @@ BOOL CCommand::Gf_setBluDuty(int Duty)
 	m_pApp->m_nRcvMsgBlu = 0x00;
 
 	m_pApp->Gf_sendBLUData((BYTE*)szpacket, packetlen);
-	nRecCnt = 0;
-	while (1)
+	if (DEBUG_UDP_RECEIVE_OK == 0)
 	{
-		if (m_pApp->m_nRcvMsgBlu == TRUE)
-			break;
-		if (nRecCnt++ > 30)
-			return FALSE;
-		delayMS(10);
+		nRecCnt = 0;
+		while (1)
+		{
+			if (m_pApp->m_nRcvMsgBlu == TRUE)
+				break;
+			if (nRecCnt++ > 30)
+				return FALSE;
+			delayMS(10);
+		}
 	}
 
 	return TRUE;

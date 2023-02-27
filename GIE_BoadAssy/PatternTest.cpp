@@ -59,6 +59,7 @@ BOOL CPatternTest::OnInitDialog()
 
 	m_pApp->m_pCommand->Gf_setPGInfoPatternName(_T("BLACK"));
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_ON);
+	m_pApp->Gf_setPatStartCheckTime(m_nSelNum);
 	Lf_sendPatternBluData();
 
 	SetTimer(1,200,NULL);	// EDID
@@ -1153,13 +1154,13 @@ void CPatternTest::Lf_getPatternGrayLevel(CString strPattern, int* r_level, int*
 BOOL CPatternTest::Lf_PatternLockTimeCheck()
 {
 	m_pApp->Gf_setPatEndCheckTime(m_nSelNum);
-	m_pApp->m_nPatTime[m_nSelNum] = (m_pApp->m_nEndCheckTime[m_nSelNum] - m_pApp->m_nStartCheckTime[m_nSelNum]);
+ 	m_pApp->m_nPatTime[m_nSelNum] = (m_pApp->m_nEndCheckTime[m_nSelNum] - m_pApp->m_nStartCheckTime[m_nSelNum]);
 
-	int SetTime;
+	int setTime;
 	m_pApp->Gf_setEndPtnLockTime(m_nSelNum);
-	SetTime = _ttoi(lpModelInfo->m_sLbPtnTms[m_nSelNum]) * 1000;
+	setTime = _ttoi(lpModelInfo->m_sLbPtnTms[m_nSelNum]) * 1000;
 
-	if ((m_pApp->m_nPtnLockTime[m_nSelNum] < SetTime) && (m_pApp->m_nPatLock[m_nSelNum] == FALSE))
+	if ((m_pApp->m_nPtnLockTime[m_nSelNum] < setTime) && (m_pApp->m_nPatLock[m_nSelNum] == FALSE))
 		return FALSE;
 	else
 		m_pApp->m_nPatLock[m_nSelNum] = TRUE;
