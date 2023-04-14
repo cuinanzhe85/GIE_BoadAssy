@@ -115,17 +115,22 @@
 #define DO_TEST_TESTING		DIO_OUT_03
 ////////////////////////////////////////////
 //------------GMES DEFINE-------------------
-#define	HOST_EAYT					0
-#define	HOST_UCHK					1
-#define	HOST_EDTI					2
-#define	HOST_PCHK					3
-#define	HOST_EPCR					4
-#define	HOST_FLDR					5
-#define	HOST_EICR					6
-#define	HOST_AGN_INSP				7
-#define	HOST_EQCC					8
-#define	HOST_APDR					9
-
+enum
+{
+	HOST_EAYT = 0,
+	HOST_UCHK,
+	HOST_EDTI,
+	HOST_PCHK,
+	HOST_FLDR,
+	HOST_EICR,
+	HOST_AGN_INSP,
+	HOST_EQCC,
+	HOST_APDR,
+	HOST_EWOQ,
+	HOST_EWCH,
+	HOST_EPIQ,
+	HOST_EPCR
+};
 
 #define SERVER_MES					0
 #define SERVER_EAS					1
@@ -312,6 +317,9 @@ typedef enum _COLOR_IDX_{
 #define SIG_8BIT	1
 #define SIG_10BIT	2
 #define SIG_12BIT	3
+
+#define SIGNAL_TYPE_LVDS						0
+#define SIGNAL_TYPE_DP							1
 
 /////////////////////////////////////////////////////////////////////////////
 // Macro Define

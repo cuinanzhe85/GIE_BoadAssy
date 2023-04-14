@@ -366,6 +366,9 @@ BOOL CCimNetCommApi::MessageSend (int nMode)	// Event
 	case ECS_MODE_POIR:
 		m_strHostSendMessage = m_strPOIR;
 		break;
+	case ECS_MODE_EWOQ:
+		m_strHostSendMessage = m_strEWOQ;
+		break;
 	default:
 		return RTN_MSG_NOT_SEND;	// 통신 NG
 	}
@@ -1829,3 +1832,69 @@ BOOL CCimNetCommApi::POIR()
 
 	return RTN_OK;	// normal
 }
+
+BOOL CCimNetCommApi::EWOQ()
+{
+	MakeClientTimeString();
+	m_strEWOQ.Format(_T("EWOQ ADDR=%s,%s EQP=%s COMPLETE_YN=Y USER_ID=%s MODE=AUTO CLIENT_DATE=%s")
+		, m_strLocalSubjectMesF
+		, m_strLocalSubjectMesF
+		, m_strMachineName
+		, m_strUserID
+		, m_strClientDate);
+
+
+	int nRetCode = MessageSend(ECS_MODE_EWOQ);
+	if (nRetCode != RTN_OK)
+	{
+		return nRetCode;
+	}
+
+	CString strMsg;
+	GetFieldData(&strMsg, _T("RTN_CD"));
+	if (strMsg.Compare(_T("0")))
+	{
+		return 3;	// return code is not zero...
+	}
+
+	return RTN_OK;
+}
+
+BOOL CCimNetCommApi::EWCH()
+{
+	MakeClientTimeString();
+	m_strEWOQ.Format(_T("EWCH ADDR=%s,%s EQP=%s COMPLETE_YN=N WODR=78LM0451 MODEL=LM190WX1-TLE1-G31-A USER_ID=%s MODE=AUTO CLIENT_DATE=%s COMMENT=[]")
+		, m_strLocalSubjectMesF
+		, m_strLocalSubjectMesF
+		, m_strMachineName
+		, m_strUserID
+		, m_strClientDate);
+
+
+	int nRetCode = MessageSend(ECS_MODE_EWOQ);
+	if (nRetCode != RTN_OK)
+	{
+		return nRetCode;
+	}
+
+	CString strMsg;
+	GetFieldData(&strMsg, _T("RTN_CD"));
+	if (strMsg.Compare(_T("0")))
+	{
+		return 3;	// return code is not zero...
+	}
+
+	return RTN_OK;
+}
+
+BOOL CCimNetCommApi::EPIQ()
+{
+	return RTN_OK;
+}
+
+BOOL CCimNetCommApi::EPCR()
+{
+	return RTN_OK;
+}
+
+

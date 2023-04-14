@@ -246,7 +246,8 @@ typedef struct _ST_MODELSETINFO_{
 
 typedef struct _ST_SYSTEMINFO_{
 
-	CString m_sMachinName;
+	CString m_sEQPNameAging;
+	CString m_sEQPNameBlu;
 	CString m_sModelName;
 	int		m_nBluType;
 	int		m_nBluFreq;
