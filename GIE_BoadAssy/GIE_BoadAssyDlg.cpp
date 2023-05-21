@@ -459,7 +459,7 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 {
 	CString sdata=_T("");
 	
-	GetDlgItem(IDC_STT_EQP_NAME_VALUE)->SetWindowText(lpSystemInfo->m_sEQPNameAging);
+	GetDlgItem(IDC_STT_EQP_NAME_VALUE)->SetWindowText(lpSystemInfo->m_sMachinName);
 
 	if(m_pApp->m_bUserIdGieng == true || m_pApp->m_bUserIdPM == true)
 		GetDlgItem(IDC_STT_OP_MODE_VALUE)->SetWindowText(_T("OFF-LINE"));
@@ -754,7 +754,7 @@ void CGIE_BoadAssyDlg::Lf_openToDayMLog()
 	CString filePath;
 	CTime time = CTime::GetCurrentTime();
 
-	filePath.Format(_T(".\\Logs\\MLog\\%s_%04d%02d%02d.txt"), lpSystemInfo->m_sEQPNameAging, time.GetYear(), time.GetMonth(), time.GetDay());
+	filePath.Format(_T(".\\Logs\\MLog\\%s_%04d%02d%02d.txt"), lpSystemInfo->m_sMachinName, time.GetYear(), time.GetMonth(), time.GetDay());
 
 	SHELLEXECUTEINFO sel;
 	sel.cbSize = sizeof(sel);

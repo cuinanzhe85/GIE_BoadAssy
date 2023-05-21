@@ -281,7 +281,7 @@ void CGIE_BoadAssyApp::Gf_writeLogData(CString Event, CString Data)
 
 
 	//	Read_SysIniFile(_T("SYSTEM"), _T("STATION_NO"), &lpSystemInfo->m_sStationNo);
-	strFileName.Format(_T("%s_%04d%02d%02d"), lpSystemInfo->m_sEQPNameAging, time.GetYear(), time.GetMonth(), time.GetDay());
+	strFileName.Format(_T("%s_%04d%02d%02d"), lpSystemInfo->m_sMachinName, time.GetYear(), time.GetMonth(), time.GetDay());
 	path.Format(_T(".\\Logs\\MLog\\%s.txt"), strFileName);
 
 	if ((_access(".\\Logs", 0)) == -1)
@@ -360,7 +360,7 @@ void CGIE_BoadAssyApp::Gf_writeSummaryLog()
 	sdata = lpWorkInfo->m_sFirmwareVersion.Left(npos);
 	m_summaryInfo.m_sumData[SUM_FW_VER] = sdata;
 	m_summaryInfo.m_sumData[SUM_MODEL] = lpSystemInfo->m_sModelName;
-	m_summaryInfo.m_sumData[SUM_EQP_ID] = lpSystemInfo->m_sEQPNameAging;
+	m_summaryInfo.m_sumData[SUM_EQP_ID] = lpSystemInfo->m_sMachinName;
 	m_summaryInfo.m_sumData[SUM_PID] = lpWorkInfo->m_sPanelID;
 	if (lpWorkInfo->m_sRwkCD == _T(""))
 	{
@@ -450,8 +450,7 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 
 	////////////////////////////////////////////////////////////
 	lpSystemInfo->m_sModelName=_T("");
-	lpSystemInfo->m_sEQPNameAging = _T("");
-	lpSystemInfo->m_sEQPNameBlu = _T("");
+	lpSystemInfo->m_sMachinName=_T("");
 	lpSystemInfo->m_nMeasureInterval=0;
 	lpSystemInfo->m_nBluType=0;
 	lpSystemInfo->m_nBluFreq=0;
@@ -749,8 +748,7 @@ void CGIE_BoadAssyApp::Lf_parsingModFileData(CString szData, TCHAR (*szParseData
 void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 {
 	Read_SysIniFile(_T("SYSTEM"),		_T("LAST_MODELNAME"),				&lpSystemInfo->m_sModelName);
-	Read_SysIniFile(_T("SYSTEM"),		_T("MACHIN_NAME"),					&lpSystemInfo->m_sEQPNameAging);
-	Read_SysIniFile(_T("SYSTEM"),		_T("MACHIN_NAME_BLU"),				&lpSystemInfo->m_sEQPNameBlu);
+	Read_SysIniFile(_T("SYSTEM"),		_T("MACHIN_NAME"),					&lpSystemInfo->m_sMachinName);
 	Read_SysIniFile(_T("SYSTEM"),		_T("MEASURE_INTERVAL"),				&lpSystemInfo->m_nMeasureInterval);
 	Read_SysIniFile(_T("SYSTEM"),		_T("BLU_TYPE"),						&lpSystemInfo->m_nBluType);
 	Read_SysIniFile(_T("SYSTEM"),		_T("BLU_FREQ"),						&lpSystemInfo->m_nBluFreq);
@@ -1833,7 +1831,7 @@ BOOL CGIE_BoadAssyApp::Gf_gmesConnect(int nServerType)
 {
 	char szBuffer[64]={0,};
 
-	m_pCimNet->SetMachineName(lpSystemInfo->m_sEQPNameAging);
+	m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 
 	if(m_pCimNet->ConnectTibRv(nServerType) == TRUE)
 	{
@@ -1852,7 +1850,7 @@ BOOL CGIE_BoadAssyApp::Gf_gmesInitServer(BOOL nServerType)
 {
 	if ((DEBUG_GMES_TEST_SERVER == TRUE) && (nServerType == SERVER_MES))
 	{
-		m_pCimNet->SetMachineName(lpSystemInfo->m_sEQPNameAging);
+		m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 		m_pCimNet->SetLocalTest(nServerType);
 	}
 	else if ((DEBUG_GMES_TEST_SERVER == TRUE) && (nServerType == SERVER_EAS))
@@ -1882,18 +1880,16 @@ void CGIE_BoadAssyApp::Gf_setGMesBadInfo()
 {
 	m_pCimNet->SetPF(_T("F"));
 }
-
 void CGIE_BoadAssyApp::Lf_setGmesValuePCHK()
 {
-	m_pCimNet->SetMachineName(lpSystemInfo->m_sEQPNameAging);
 	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
 	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
-}
+	m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 
+}
 void CGIE_BoadAssyApp::Lf_setEasValueAPDR()
 {
 	CString sAPDInfo;
-	m_pCimNet->SetMachineName(lpSystemInfo->m_sEQPNameAging);
 	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
 	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
 	m_pCimNet->SetBLID(_T(""));
@@ -1901,10 +1897,8 @@ void CGIE_BoadAssyApp::Lf_setEasValueAPDR()
 
 	m_pCimNet->SetAPDInfo(sAPDInfo);
 }
-
 void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 {
-	m_pCimNet->SetMachineName(lpSystemInfo->m_sEQPNameAging);
 	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
 	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
 	m_pCimNet->SetBLID(_T(""));
@@ -1932,35 +1926,6 @@ void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 	// Pattern 정보 설정
 	m_pCimNet->SetPatternInfo(Lf_getPatternData());
 }
-
-void CGIE_BoadAssyApp::Lf_setGmesValueEWOQ()
-{
-	m_pCimNet->SetMachineName(lpSystemInfo->m_sEQPNameBlu);
-	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
-	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
-}
-
-void CGIE_BoadAssyApp::Lf_setGmesValueEWCH()
-{
-	m_pCimNet->SetMachineName(lpSystemInfo->m_sEQPNameBlu);
-	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
-	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
-}
-
-void CGIE_BoadAssyApp::Lf_setGmesValueEPIQ()
-{
-	m_pCimNet->SetMachineName(lpSystemInfo->m_sEQPNameBlu);
-	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
-	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
-}
-
-void CGIE_BoadAssyApp::Lf_setGmesValueEPCR()
-{
-	m_pCimNet->SetMachineName(lpSystemInfo->m_sEQPNameBlu);
-	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
-	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
-}
-
 
 CString CGIE_BoadAssyApp::Gf_getGmesRTNCD()
 {
@@ -1998,7 +1963,7 @@ void CGIE_BoadAssyApp::Gf_showPanelIdNg()
 	msg_dlg.DoModal();
 }
 
-BOOL CGIE_BoadAssyApp::Gf_gmesSendHost(int nHostCmd)
+BOOL CGIE_BoadAssyApp::Gf_sendGmesHost(int nHostCmd)
 {
 	CMessageQuestion RetryMsgDlg;
 	int nRtnCD;
@@ -2055,27 +2020,6 @@ Send_RETRY:
 		Lf_setEasValueAPDR();
 		nRtnCD = m_pCimNet->APDR();
 	}
-	else if (nHostCmd == HOST_EWOQ)
-	{
-		Lf_setGmesValueEWOQ();
-		nRtnCD = m_pCimNet->EWOQ();
-	}
-	else if (nHostCmd == HOST_EWCH)
-	{
-		Lf_setGmesValueEWCH();
-		nRtnCD = m_pCimNet->EWCH();
-	}
-	else if (nHostCmd == HOST_EPIQ)
-	{
-		Lf_setGmesValueEPIQ();
-		nRtnCD = m_pCimNet->EPIQ();
-	}
-	else if (nHostCmd == HOST_EPCR)
-	{
-		Lf_setGmesValueEPCR();
-		nRtnCD = m_pCimNet->EPCR();
-	}
-
 	Gf_writeLogData(_T("[HOST_R]"), m_pCimNet->GetHostRecvMessage());
 
 	if(nRtnCD==RTN_OK)
@@ -2244,46 +2188,26 @@ void CGIE_BoadAssyApp::Gf_QtyCountResetCheck()
 
 BOOL CGIE_BoadAssyApp::Gf_PinBlockOpenCheck()
 {
-	int nOpenValue1, nOpenValue2;
+	int nOpenValue;
 	if (lpSystemInfo->m_nPinBlockOpenCheck == _ON_)
 	{
 		while (1)
 		{
 			if (m_pApp->m_pCommand->Gf_CheckCableOpen() == TRUE)
 			{
-				sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA], "%04X%04X", &nOpenValue1, &nOpenValue2);
-
-				if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_LVDS)
+				sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA], "%04X", &nOpenValue);
+				if ((nOpenValue & 0x0003) != 0)
 				{
-					if ((nOpenValue1 & 0x0003) != 0)
-					{
-						return TRUE;
-					}
-					else
-					{
-						CMessageQuestion retry_dlg;
-						retry_dlg.m_strQMessage.Format(_T("PIN Block Closed. Please PIN Block Open!!"));
-						retry_dlg.m_strLButton = _T("RETRY");
-						retry_dlg.m_nMessageColor = 1;
-						if (retry_dlg.DoModal() == IDCANCEL)
-							return FALSE;
-					}
+					return TRUE;
 				}
-				else if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_DP)
+				else
 				{
-					if((nOpenValue2 & 0x0400) != 0)
-					{
-						return TRUE;
-					}
-					else
-					{
-						CMessageQuestion retry_dlg;
-						retry_dlg.m_strQMessage.Format(_T("PIN Block Closed. Please PIN Block Open!!"));
-						retry_dlg.m_strLButton = _T("RETRY");
-						retry_dlg.m_nMessageColor = 1;
-						if (retry_dlg.DoModal() == IDCANCEL)
-							return FALSE;
-					}
+					CMessageQuestion retry_dlg;
+					retry_dlg.m_strQMessage.Format(_T("PIN Block Closed. Please PIN Block Open!!"));
+					retry_dlg.m_strLButton = _T("RETRY");
+					retry_dlg.m_nMessageColor = 1;
+					if (retry_dlg.DoModal() == IDCANCEL)
+						return FALSE;
 				}
 			}
 			else

@@ -85,7 +85,7 @@ public:
 	CString Gf_getGmesRTNCD();
 	void Gf_showLocalErrorMsg();
 	void Gf_showPanelIdNg();
-	BOOL Gf_gmesSendHost(int nHostCmd);
+	BOOL Gf_sendGmesHost(int nHostCmd);
 
 	void Gf_ShowMessageBox(CString strMessage);
 	void Gf_QtyCountReset();
@@ -183,13 +183,6 @@ protected:
 	void Lf_setGmesValueEICR();
 	void Lf_setEasValueAPDR();
 	void Lf_setGmesValuePCHK();
-
-	void Lf_setGmesValueEWOQ();
-	void Lf_setGmesValueEWCH();
-	void Lf_setGmesValueEPIQ();
-	void Lf_setGmesValueEPCR();
-
-
 
 protected:
 	LPFUSINGINFO			lpFusingInfo;

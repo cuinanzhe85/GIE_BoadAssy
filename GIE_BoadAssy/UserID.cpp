@@ -135,7 +135,7 @@ void CUserID::OnBnClickedOk()
 			
 			if(m_sUserId.GetLength() > 4)
 			{
-				if(m_pApp->Gf_gmesSendHost(HOST_EAYT)==FALSE)
+				if(m_pApp->Gf_sendGmesHost(HOST_EAYT)==FALSE)	
 				{
 					GetDlgItem(IDOK)->EnableWindow(TRUE);
 					return;
@@ -144,12 +144,12 @@ void CUserID::OnBnClickedOk()
 				m_pApp->m_pCimNet->SetUserId(m_sUserId);
 				lpWorkInfo->m_sUserID.Format(_T("%s"), m_sUserId);					
 
-				if(m_pApp->Gf_gmesSendHost(HOST_UCHK)==FALSE)
+				if(m_pApp->Gf_sendGmesHost(HOST_UCHK)==FALSE)
 				{
 					GetDlgItem(IDOK)->EnableWindow(TRUE);
 					return;
 				}
-				if(m_pApp->Gf_gmesSendHost(HOST_EDTI)==FALSE)
+				if(m_pApp->Gf_sendGmesHost(HOST_EDTI)==FALSE)
 				{
 					GetDlgItem(IDOK)->EnableWindow(TRUE);
 					return;

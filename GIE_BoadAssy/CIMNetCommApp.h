@@ -38,7 +38,6 @@
 #define	ECS_MODE_SCRP				0x1E
 #define ECS_MODE_PPSET				0x1F
 #define ECS_MODE_POIR				0x20
-#define ECS_MODE_EWOQ				0x21
 
 #define UTC_ZONE_VIETNAM			0x00
 #define UTC_ZONE_CHINA				0x01
@@ -81,6 +80,8 @@ public:
 	BOOL EDTI ();
 	BOOL PCHK (int ipa_mode=FALSE, int ipa_value=FALSE);
 	// ----------------------------------------
+	BOOL EPCR ();
+	// ----------------------------------------
 
 	BOOL IISQ ();
 	BOOL EICR ();
@@ -94,13 +95,8 @@ public:
 	BOOL APDR ();
 	BOOL MILT ();
 	BOOL WDCR ();
-	BOOL FLDR ();
 
-	// ----------------------------------------
-	BOOL EWOQ();
-	BOOL EWCH();
-	BOOL EPIQ();
-	BOOL EPCR();
+	BOOL FLDR ();
 
 	// ---------------------------------------
 	BOOL BICD (char * pszBuff);
@@ -279,7 +275,6 @@ protected:
 	CString m_strAGN_CTR;
 	CString m_strAPTR;
 	CString m_strPOIR;
-	CString m_strEWOQ;
 
 	CString m_strDefectComCode;
 

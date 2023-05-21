@@ -571,7 +571,7 @@ void CTestReady::Lf_openResult()
 
 		if(lpWorkInfo->m_nPassOrFail == GMES_PNF_PASS) 
 		{
-			if (m_pApp->Gf_gmesSendHost(HOST_EICR) == TRUE)
+			if (m_pApp->Gf_sendGmesHost(HOST_EICR) == TRUE)
 			{
 				m_pApp->m_pDio7230->Gf_setDioOutOK();
 				Lf_createCount(GOOD_CNT);
@@ -579,7 +579,7 @@ void CTestReady::Lf_openResult()
 		}
 		else if(lpWorkInfo->m_nPassOrFail == GMES_PNF_FAIL)
 		{
-			if (m_pApp->Gf_gmesSendHost(HOST_EICR) == TRUE)
+			if (m_pApp->Gf_sendGmesHost(HOST_EICR) == TRUE)
 			{
 				m_pApp->m_pDio7230->Gf_setDioOutNG();
 				Lf_createCount(BAD_CNT);
@@ -665,7 +665,7 @@ bool CTestReady::Lf_startTestOn()
 	lpWorkInfo->m_nPassOrFail = GMES_PNF_NONE;
 	lpWorkInfo->m_sRwkCD.Empty();
 	
-	if (m_pApp->Gf_gmesSendHost(HOST_PCHK) == FALSE)
+	if (m_pApp->Gf_sendGmesHost(HOST_PCHK) == FALSE)
 	{
 		return false;
 	}
@@ -755,49 +755,28 @@ BOOL CTestReady::Lf_SystemAutoFusing()
 
 BOOL CTestReady::Lf_CableOpenCheck()
 {
-	int nOpenValue1, nOpenValue2;
-	BOOL bOpenLvds40P=0, bOpenLvds50P=0, bOpenDP;
+	int nOpenValue;
+	BOOL bOpen40P=0, bOpen50P=0;
 	if (lpModelInfo->m_nCableOpenUse == _ON_)
 	{
 		if (m_pApp->m_pCommand->Gf_CheckCableOpen() == TRUE)
 		{
-			sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA], "%04X%04X", &nOpenValue1, &nOpenValue2);
-			if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_LVDS)
+			sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA], "%04X", &nOpenValue);
+			bOpen40P = nOpenValue & 0x000C;
+			bOpen50P = nOpenValue & 0x0003;
+			if ((bOpen40P == 0) && (bOpen50P == 0))
 			{
-				bOpenLvds40P = nOpenValue1 & 0x000C;
-				bOpenLvds50P = nOpenValue1 & 0x0003;
-				if ((bOpenLvds40P == 0) && (bOpenLvds50P == 0))
-				{
-					return TRUE;
-				}
-				else
-				{
-					CString strMsg;
-					strMsg.Format(_T("User Cable Open Check Fail. "));
-					if (bOpenLvds40P != 0)	strMsg.Append(_T("(40P) "));
-					if (bOpenLvds50P != 0)	strMsg.Append(_T("(50P or PIN Block)"));
-					m_pApp->Gf_ShowMessageBox(strMsg);
-				}
-				return FALSE;
+				return TRUE;
 			}
-			else if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_DP)
+			else
 			{
-				bOpenLvds40P = nOpenValue1 & 0x000C;
-				bOpenDP = nOpenValue2 & 0x0400;
-				if ((bOpenLvds40P == 0) && (bOpenDP == 0))
-				{
-					return TRUE;
-				}
-				else
-				{
-					CString strMsg;
-					strMsg.Format(_T("User Cable Open Check Fail. "));
-					if (bOpenLvds40P != 0)	strMsg.Append(_T("(DP 40P Cable Open"));
-					if (bOpenDP != 0)	strMsg.Append(_T("(DP IPEX Cable Open"));
-					m_pApp->Gf_ShowMessageBox(strMsg);
-				}
-				return FALSE;
+				CString strMsg;
+				strMsg.Format(_T("User Cable Open Check Fail. "));
+				if (bOpen40P != 0)	strMsg.Append(_T("(40P) "));
+				if (bOpen50P != 0)	strMsg.Append(_T("(50P or PIN Block)"));
+				m_pApp->Gf_ShowMessageBox(strMsg);
 			}
+			return FALSE;
 		}
 	}
 

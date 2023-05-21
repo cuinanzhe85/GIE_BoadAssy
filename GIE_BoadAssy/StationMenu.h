@@ -38,8 +38,7 @@ protected:
 	CString Lf_FileLoadDialog(CString Temp);
 
 public:	
-	CEdit m_edtEqpNameAging;
-	CEdit m_edtEqpNameBlu;
+	CEdit m_edtEqpName;
 	CEdit m_edtTestStartDelay;
 	CComboBox m_cboBcrComPort;
 	CComboBox m_cboBluComPort;

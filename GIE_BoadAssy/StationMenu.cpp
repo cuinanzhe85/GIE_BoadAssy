@@ -26,8 +26,7 @@ void CStationMenu::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CBO_AUTO_BCR_COMPORT, m_cboBcrComPort);
 	DDX_Control(pDX, IDC_CBO_BLU_COMPORT, m_cboBluComPort);
-	DDX_Control(pDX, IDC_EDT_EQP_NAME_AGING, m_edtEqpNameAging);
-	DDX_Control(pDX, IDC_EDT_EQP_NAME_BLU, m_edtEqpNameBlu);
+	DDX_Control(pDX, IDC_EDT_EQP_NAME, m_edtEqpName);
 	DDX_Control(pDX, IDC_EDT_TEST_START_DELAY, m_edtTestStartDelay);
 	DDX_Control(pDX, IDC_EDIT_MES_SERVICEPORT, m_edtMesServicePort);
 	DDX_Control(pDX, IDC_EDIT_MES_NETWORK, m_edtMesNetwork);
@@ -151,8 +150,7 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			pDC->SetTextColor(COLOR_BLACK);
 			return m_Brush[COLOR_IDX_LIGHT_BLUE];
 		}
-		if ((pWnd->GetDlgCtrlID() == IDC_STT_EQP_NAME_AGING)
-			|| (pWnd->GetDlgCtrlID() == IDC_STT_EQP_NAME_BLU)
+		if ((pWnd->GetDlgCtrlID() == IDC_STT_EQP_NAME)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_TEST_START_DELAY)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_PINBLOCK_OPEN_CHECK)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_AUTO_BCR_PORT)
@@ -236,8 +234,7 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_STT_DFS_TIT)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(15, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
-	GetDlgItem(IDC_EDT_EQP_NAME_AGING)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_EDT_EQP_NAME_BLU)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_EDT_EQP_NAME)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_EDT_TEST_START_DELAY)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CMB_PINBLOCK_OPEN_CHECK)->SetFont(&m_Font[4]);
 
@@ -258,8 +255,7 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_EDT_PTN_FILE_PATH)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_EDT_EDID_FILE_PATH)->SetFont(&m_Font[4]);
 
-	GetDlgItem(IDC_STT_EQP_NAME_AGING)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_EQP_NAME_BLU)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_EQP_NAME)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_TEST_START_DELAY)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_PINBLOCK_OPEN_CHECK)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_AUTO_BCR_PORT)->SetFont(&m_Font[4]);
@@ -323,8 +319,7 @@ void CStationMenu::Lf_initControls()
 {
 	CString sdata=_T("");
 
-	m_edtEqpNameAging.SetWindowText(lpSystemInfo->m_sEQPNameAging);
-	m_edtEqpNameBlu.SetWindowText(lpSystemInfo->m_sEQPNameBlu);
+	m_edtEqpName.SetWindowText(lpSystemInfo->m_sMachinName);
 
 	sdata.Format(_T("%d"), lpSystemInfo->m_nTestStartDelay);
 	m_edtTestStartDelay.SetWindowText(sdata);
@@ -375,13 +370,9 @@ void CStationMenu::Lf_saveSystemInfo()
 
 	m_pApp->Gf_writeLogData(_T("<WND>"),_T("SYSTEM Setting Save"));
 
-	m_edtEqpNameAging.GetWindowText(sdata);
-	lpSystemInfo->m_sEQPNameAging.Format(_T("%s"),sdata);
-	Write_SysIniFile(_T("SYSTEM"), _T("MACHIN_NAME"), lpSystemInfo->m_sEQPNameAging);
-
-	m_edtEqpNameBlu.GetWindowText(sdata);
-	lpSystemInfo->m_sEQPNameBlu.Format(_T("%s"), sdata);
-	Write_SysIniFile(_T("SYSTEM"), _T("MACHIN_NAME_BLU"), lpSystemInfo->m_sEQPNameBlu);
+	m_edtEqpName.GetWindowText(sdata);
+	lpSystemInfo->m_sMachinName.Format(_T("%s"),sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("MACHIN_NAME"), lpSystemInfo->m_sMachinName);
 
 	m_edtTestStartDelay.GetWindowText(sdata);
 	lpSystemInfo->m_nTestStartDelay = _ttoi(sdata);
