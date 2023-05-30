@@ -85,7 +85,7 @@ public:
 	CString Gf_getGmesRTNCD();
 	void Gf_showLocalErrorMsg();
 	void Gf_showPanelIdNg();
-	BOOL Gf_sendGmesHost(int nHostCmd);
+	BOOL Gf_gmesSendHost(int nHostCmd);
 
 	void Gf_ShowMessageBox(CString strMessage);
 	void Gf_QtyCountReset();

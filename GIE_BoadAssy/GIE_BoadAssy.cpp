@@ -1963,7 +1963,7 @@ void CGIE_BoadAssyApp::Gf_showPanelIdNg()
 	msg_dlg.DoModal();
 }
 
-BOOL CGIE_BoadAssyApp::Gf_sendGmesHost(int nHostCmd)
+BOOL CGIE_BoadAssyApp::Gf_gmesSendHost(int nHostCmd)
 {
 	CMessageQuestion RetryMsgDlg;
 	int nRtnCD;
@@ -2188,26 +2188,46 @@ void CGIE_BoadAssyApp::Gf_QtyCountResetCheck()
 
 BOOL CGIE_BoadAssyApp::Gf_PinBlockOpenCheck()
 {
-	int nOpenValue;
+	int nOpenValue1, nOpenValue2;
 	if (lpSystemInfo->m_nPinBlockOpenCheck == _ON_)
 	{
 		while (1)
 		{
 			if (m_pApp->m_pCommand->Gf_CheckCableOpen() == TRUE)
 			{
-				sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA], "%04X", &nOpenValue);
-				if ((nOpenValue & 0x0003) != 0)
+				sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA], "%04X%04X", &nOpenValue1, &nOpenValue2);
+
+				if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_LVDS)
 				{
-					return TRUE;
+					if ((nOpenValue1 & 0x0003) != 0)
+					{
+						return TRUE;
+					}
+					else
+					{
+						CMessageQuestion retry_dlg;
+						retry_dlg.m_strQMessage.Format(_T("PIN Block Closed. Please PIN Block Open!!"));
+						retry_dlg.m_strLButton = _T("RETRY");
+						retry_dlg.m_nMessageColor = 1;
+						if (retry_dlg.DoModal() == IDCANCEL)
+							return FALSE;
+					}
 				}
-				else
+				else if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_DP)
 				{
-					CMessageQuestion retry_dlg;
-					retry_dlg.m_strQMessage.Format(_T("PIN Block Closed. Please PIN Block Open!!"));
-					retry_dlg.m_strLButton = _T("RETRY");
-					retry_dlg.m_nMessageColor = 1;
-					if (retry_dlg.DoModal() == IDCANCEL)
-						return FALSE;
+					if((nOpenValue2 & 0x0400) != 0)
+					{
+						return TRUE;
+					}
+					else
+					{
+						CMessageQuestion retry_dlg;
+						retry_dlg.m_strQMessage.Format(_T("PIN Block Closed. Please PIN Block Open!!"));
+						retry_dlg.m_strLButton = _T("RETRY");
+						retry_dlg.m_nMessageColor = 1;
+						if (retry_dlg.DoModal() == IDCANCEL)
+							return FALSE;
+					}
 				}
 			}
 			else

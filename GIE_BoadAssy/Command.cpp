@@ -179,7 +179,7 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerActive);						makePacket.Append(sdata);	// V Active
 
 	float fMclock = lpModelInfo->m_fTimingFreq;
-	if (lpModelInfo->m_nSignalType == 1)	// DP Type 일때 MCLOCK/2
+	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_DP)	// DP Type 일때 MCLOCK/2
 	{
 		fMclock = lpModelInfo->m_fTimingFreq / 2;
 	}

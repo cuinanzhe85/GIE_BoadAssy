@@ -495,7 +495,7 @@ void CInitialize::Lf_loadData()
 			m_pApp->Gf_writeLogData(_T("<PG>"), strlog);
 		}
 
-		if (lpModelInfo->m_nSignalType == 0)
+		if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_LVDS)
 		{
 			m_pApp->m_pCommand->Gf_setSRunerTypeSelect(0);
 			if (m_pApp->m_pCommand->Gf_getFpgaeVersion() == TRUE)
