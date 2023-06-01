@@ -134,6 +134,9 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 				if (Lf_PatternLockTimeCheck() != TRUE)
 					return TRUE;
 
+				if (m_bPowerMeasureComplete[m_nSelNum] == FALSE)
+					return TRUE;
+
 				Lf_writeLogKeyIn((int)pMsg->wParam);
 				Lf_excutePatternList(pMsg);
 
@@ -328,6 +331,8 @@ void CPatternTest::Lf_initVariable()
 {
 	m_nBluDutyOld = 0;
 	m_nSelNum=0;	
+	memset(m_bPowerMeasureComplete, 0x00, sizeof(m_bPowerMeasureComplete));
+
 	m_pApp->m_nOldVsync = 0;
 	m_pApp->pPtnIndex = &m_nSelNum;
 	lpWorkInfo->m_bEscDetect = false;
@@ -496,7 +501,11 @@ void CPatternTest::OnTimer(UINT_PTR nIDEvent)
 	{
 		KillTimer(2);
 		if (Lf_updateMeasureInfo() == TRUE)
+		{
 			SetTimer(2, 1000, NULL);
+		}
+
+		m_bPowerMeasureComplete[m_nSelNum] = TRUE;		// Power Measure가 동작했으면 Flag를 ON 한다.
 	}
 	else if(nIDEvent==3)
 	{
@@ -680,6 +689,12 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 		GetDlgItem(IDC_STT_IGH_MEASURE)->SetWindowText(sdata);
 		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGL] / 1000.f));
 		GetDlgItem(IDC_STT_IGL_MEASURE)->SetWindowText(sdata);
+
+
+		lpWorkInfo->m_nMeasPowerVCC[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_VCC];
+		lpWorkInfo->m_nMeasPowerVDD[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_VDD];
+		lpWorkInfo->m_nMeasPowerICC[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_ICC];
+		lpWorkInfo->m_nMeasPowerIDD[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_IDD];
 	}
 	return TRUE;
 }
@@ -727,6 +742,8 @@ void CPatternTest::Lf_excutePatternList(MSG* pMsg)
 	m_pApp->Gf_setPatStartCheckTime(m_nSelNum);
 	m_pApp->Gf_setStartPtnLockTime(m_nSelNum);
 	Lf_sendPatternBluData();
+
+	SetTimer(2, 200, NULL);	// Power Measure
 }
 
 
@@ -915,7 +932,10 @@ void CPatternTest::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CString sdata=_T("");
-	
+
+	if (m_bPowerMeasureComplete[m_nSelNum] == FALSE)
+		return;
+
 	m_pApp->Gf_setPatEndCheckTime(m_nSelNum);
 	m_pApp->m_nPatTime[m_nSelNum] = (m_pApp->m_nEndCheckTime[m_nSelNum] - m_pApp->m_nStartCheckTime[m_nSelNum]);
 
@@ -947,6 +967,8 @@ void CPatternTest::OnLButtonDown(UINT nFlags, CPoint point)
 	m_pApp->Gf_setStartPtnLockTime(m_nSelNum);
 	Lf_sendPatternBluData();
 
+	SetTimer(2, 200, NULL);	// Power Measure
+
 	CDialog::OnLButtonDown(nFlags, point);
 }
 
@@ -956,7 +978,11 @@ void CPatternTest::OnRButtonDown(UINT nFlags, CPoint point)
 	if(m_nSelNum <= 0)  
 	{ 
 		return;
-	}		
+	}
+
+	if (m_bPowerMeasureComplete[m_nSelNum] == FALSE)
+		return;
+
 	m_LCctrlPtnTestView.SetSelectionMark(--m_nSelNum); 
 	m_LCctrlPtnTestView.SetItemState(m_nSelNum, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
 	m_LCctrlPtnTestView.SetFocus();
@@ -964,6 +990,8 @@ void CPatternTest::OnRButtonDown(UINT nFlags, CPoint point)
 	RemoveMessageFromQueue();
 	m_pApp->Gf_setStartPtnLockTime(m_nSelNum);
 	Lf_sendPatternBluData();
+
+	SetTimer(2, 200, NULL);	// Power Measure
 
 	CDialog::OnRButtonDown(nFlags, point);
 }

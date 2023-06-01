@@ -762,6 +762,11 @@ BOOL CTestReady::Lf_CableOpenCheck()
 		if (m_pApp->m_pCommand->Gf_CheckCableOpen() == TRUE)
 		{
 			sscanf_s(&m_pApp->m_pCommand->gszudpRcvPacket[PACKET_PT_DATA], "%04X%04X", &nOpenValue1, &nOpenValue2);
+
+			CString sLog;
+			sLog.Format(_T("Cable Open Check Return Value : %04X %04X"), nOpenValue1, nOpenValue2);
+			m_pApp->Gf_writeLogData(_T("<TEST>"), sLog);
+
 			if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_LVDS)
 			{
 				bOpenLvds40P = nOpenValue1 & 0x000C;
@@ -792,8 +797,8 @@ BOOL CTestReady::Lf_CableOpenCheck()
 				{
 					CString strMsg;
 					strMsg.Format(_T("User Cable Open Check Fail. "));
-					if (bOpenLvds40P != 0)	strMsg.Append(_T("(DP 40P Cable Open"));
-					if (bOpenDP != 0)	strMsg.Append(_T("(DP IPEX Cable Open"));
+					if (bOpenLvds40P != 0)	strMsg.Append(_T("(DP 40P Cable Open)"));
+					if (bOpenDP != 0)	strMsg.Append(_T("(DP IPEX Cable Open)"));
 					m_pApp->Gf_ShowMessageBox(strMsg);
 				}
 				return FALSE;

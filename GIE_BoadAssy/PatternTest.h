@@ -38,6 +38,8 @@ protected:
 	float m_fPatternVccOld;
 	float m_fPatternVddOld;
 
+	BYTE m_bPowerMeasureComplete[TOTALPATTERN];
+
 protected:
 	void RemoveMessageFromQueue();
 	void Lf_sendPtnData();
@@ -72,6 +74,7 @@ public:
 private:
 	CFont m_Font[FONT_IDX_MAX];
 	CBrush m_Brush[COLOR_IDX_MAX];
+
 public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
