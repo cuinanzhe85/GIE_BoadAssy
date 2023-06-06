@@ -391,6 +391,7 @@ void CGIE_BoadAssyApp::Gf_writeSummaryLog()
 		, lpWorkInfo->tt_endTime.GetSecond()
 	);
 
+#if (SUMMARY_LOG_VOLT_CURR==1)
 	int ptnNum = 0;
 	int idx = SUM_1ST_PTN_TIME;
 	while (ptnNum < lpModelInfo->m_nLbCnt)
@@ -465,6 +466,46 @@ void CGIE_BoadAssyApp::Gf_writeSummaryLog()
 		, m_summaryInfo.m_sumData[SUM_8TH_PTN_IDD]
 	);
 	sprintf_s(buff, "%s", wchar_To_char(sdata.GetBuffer(0)));
+#else
+	int ptnNum = 0;
+	int idx = SUM_1ST_PTN_TIME;
+	while (ptnNum < lpModelInfo->m_nLbCnt)
+	{
+		m_summaryInfo.m_sumData[idx++].Format(_T("%s(%sHz) %.2fSec"), lpModelInfo->m_sLbPtnName[ptnNum], lpModelInfo->m_sLbPtnVsync[ptnNum], (float)(m_nPatTime[ptnNum] * 0.001));
+
+		ptnNum++;
+	}
+
+	if (bNewCsv == TRUE)
+	{
+		sprintf_s(buff, "Date,PM/MES,S/W_Ver,H/W_Ver,SCRIPT_NAME(Model),EQP_ID,PANEL_ID,FINAL_PASS_FAIL,RWK_CD,TACT_TIME(s),START_TIME,END_TIME,1st_PTN(T/T),2nd_PTN(T/T),3rd_PTN(T/T),4th_PTN(T/T),5th_PTN(T/T),6th_PTN(T/T),7th_PTN(T/T),8th_PTN(T/T)\n");
+		fprintf(fp, "%s", buff);
+	}
+
+	sdata.Format(_T("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n")
+		, m_summaryInfo.m_sumData[SUM_DATE]
+		, m_summaryInfo.m_sumData[SUM_PM_MES]
+		, m_summaryInfo.m_sumData[SUM_SW_VER]
+		, m_summaryInfo.m_sumData[SUM_FW_VER]
+		, m_summaryInfo.m_sumData[SUM_MODEL]
+		, m_summaryInfo.m_sumData[SUM_EQP_ID]
+		, m_summaryInfo.m_sumData[SUM_PID]
+		, m_summaryInfo.m_sumData[SUM_PASS_FAIL]
+		, m_summaryInfo.m_sumData[SUM_RWK_CD]
+		, m_summaryInfo.m_sumData[SUM_TACT_TIME]
+		, m_summaryInfo.m_sumData[SUM_START_TIME]
+		, m_summaryInfo.m_sumData[SUM_END_TIME]
+		, m_summaryInfo.m_sumData[SUM_1ST_PTN_TIME]
+		, m_summaryInfo.m_sumData[SUM_2ND_PTN_TIME]
+		, m_summaryInfo.m_sumData[SUM_3RD_PTN_TIME]
+		, m_summaryInfo.m_sumData[SUM_4TH_PTN_TIME]
+		, m_summaryInfo.m_sumData[SUM_5TH_PTN_TIME]
+		, m_summaryInfo.m_sumData[SUM_6TH_PTN_TIME]
+		, m_summaryInfo.m_sumData[SUM_7TH_PTN_TIME]
+		, m_summaryInfo.m_sumData[SUM_8TH_PTN_TIME]
+	);
+	sprintf_s(buff, "%s", wchar_To_char(sdata.GetBuffer(0)));
+#endif
 
 	fseek(fp, 0L, SEEK_END);
 	fprintf(fp, "%s", buff);

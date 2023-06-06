@@ -134,8 +134,10 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 				if (Lf_PatternLockTimeCheck() != TRUE)
 					return TRUE;
 
+#if (SUMMARY_LOG_VOLT_CURR==1)
 				if (m_bPowerMeasureComplete[m_nSelNum] == FALSE)
 					return TRUE;
+#endif
 
 				Lf_writeLogKeyIn((int)pMsg->wParam);
 				Lf_excutePatternList(pMsg);
@@ -331,7 +333,10 @@ void CPatternTest::Lf_initVariable()
 {
 	m_nBluDutyOld = 0;
 	m_nSelNum=0;	
+
+#if (SUMMARY_LOG_VOLT_CURR==1)
 	memset(m_bPowerMeasureComplete, 0x00, sizeof(m_bPowerMeasureComplete));
+#endif
 
 	m_pApp->m_nOldVsync = 0;
 	m_pApp->pPtnIndex = &m_nSelNum;
@@ -505,7 +510,9 @@ void CPatternTest::OnTimer(UINT_PTR nIDEvent)
 			SetTimer(2, 1000, NULL);
 		}
 
+#if (SUMMARY_LOG_VOLT_CURR==1)
 		m_bPowerMeasureComplete[m_nSelNum] = TRUE;		// Power Measure가 동작했으면 Flag를 ON 한다.
+#endif
 	}
 	else if(nIDEvent==3)
 	{
@@ -691,10 +698,12 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 		GetDlgItem(IDC_STT_IGL_MEASURE)->SetWindowText(sdata);
 
 
+#if (SUMMARY_LOG_VOLT_CURR==1)
 		lpWorkInfo->m_nMeasPowerVCC[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_VCC];
 		lpWorkInfo->m_nMeasPowerVDD[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_VDD];
 		lpWorkInfo->m_nMeasPowerICC[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_ICC];
 		lpWorkInfo->m_nMeasPowerIDD[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_IDD];
+#endif
 	}
 	return TRUE;
 }
@@ -933,8 +942,10 @@ void CPatternTest::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CString sdata=_T("");
 
+#if (SUMMARY_LOG_VOLT_CURR==1)
 	if (m_bPowerMeasureComplete[m_nSelNum] == FALSE)
 		return;
+#endif
 
 	m_pApp->Gf_setPatEndCheckTime(m_nSelNum);
 	m_pApp->m_nPatTime[m_nSelNum] = (m_pApp->m_nEndCheckTime[m_nSelNum] - m_pApp->m_nStartCheckTime[m_nSelNum]);
@@ -980,8 +991,10 @@ void CPatternTest::OnRButtonDown(UINT nFlags, CPoint point)
 		return;
 	}
 
+#if (SUMMARY_LOG_VOLT_CURR==1)
 	if (m_bPowerMeasureComplete[m_nSelNum] == FALSE)
 		return;
+#endif
 
 	m_LCctrlPtnTestView.SetSelectionMark(--m_nSelNum); 
 	m_LCctrlPtnTestView.SetItemState(m_nSelNum, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);

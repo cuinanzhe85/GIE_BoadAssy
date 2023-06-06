@@ -38,7 +38,9 @@ protected:
 	float m_fPatternVccOld;
 	float m_fPatternVddOld;
 
+#if (SUMMARY_LOG_VOLT_CURR==1)
 	BYTE m_bPowerMeasureComplete[TOTALPATTERN];
+#endif
 
 protected:
 	void RemoveMessageFromQueue();
