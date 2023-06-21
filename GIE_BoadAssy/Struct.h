@@ -339,6 +339,7 @@ typedef struct _ST_SYSTEMINFO_{
 	CString		m_sDfsPassword;
 
 	int			m_nPinBlockOpenCheck;
+	int			m_nSystemAutoFusing;
 
 }SYSTEMINFO, *LPSYSTEMINFO;
 

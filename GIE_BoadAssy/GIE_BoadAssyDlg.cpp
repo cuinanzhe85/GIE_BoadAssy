@@ -328,7 +328,15 @@ void CGIE_BoadAssyDlg::OnBnClickedBtnModelChange()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CModelChange mcDlg;
-	mcDlg.DoModal();
+	if (mcDlg.DoModal() == IDOK)
+	{
+		if (lpSystemInfo->m_nSystemAutoFusing == FALSE)
+		{
+			m_pApp->Gf_ShowMessageBox(_T("System auto fusing function is OFF. Please operate fusing manually."));
+			CModelInfo modDlg;
+			modDlg.DoModal();
+		}
+	}
 }
 
 void CGIE_BoadAssyDlg::OnBnClickedBtnModelinfo()

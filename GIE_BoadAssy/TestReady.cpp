@@ -735,21 +735,28 @@ void CTestReady::Lf_setVariableReset()
 
 BOOL CTestReady::Lf_SystemAutoFusing()
 {
-	m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing"));
-	if (m_pApp->m_pCommand->Gf_setFusingSystemInfo() == TRUE)
+	if (lpSystemInfo->m_nSystemAutoFusing == TRUE)
 	{
-		m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing => OK"));
-		return TRUE;
+		m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing"));
+		if (m_pApp->m_pCommand->Gf_setFusingSystemInfo() == TRUE)
+		{
+			m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing => OK"));
+			return TRUE;
+		}
+		else
+		{
+			m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing => NG"));
+
+			CString strMsg;
+			strMsg.Format(_T("<PG> System Auto Fusing Error. No Reponse PG"));
+			m_pApp->Gf_ShowMessageBox(strMsg);
+
+			return FALSE;
+		}
 	}
 	else
 	{
-		m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing => NG"));
-
-		CString strMsg;
-		strMsg.Format(_T("<PG> System Auto Fusing Error. No Reponse PG"));
-		m_pApp->Gf_ShowMessageBox(strMsg);
-
-		return FALSE;
+		m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing => SKIP"));
 	}
 }
 

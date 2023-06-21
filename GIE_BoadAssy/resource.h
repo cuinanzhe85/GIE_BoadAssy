@@ -232,6 +232,8 @@
 #define IDC_BTN_CHANGE                  1082
 #define IDC_STT_VDD_SET                 1082
 #define IDC_STT_VGH_MEASURE             1082
+#define IDC_CMB_PINBLOCK_OPEN_CHECK2    1082
+#define IDC_CMB_SYSTEM_AUTO_FUSING      1082
 #define IDC_BTN_ALL                     1083
 #define IDC_STT_TACT_TIME               1083
 #define IDC_BTN_TEST_START              1083
@@ -489,6 +491,7 @@
 #define IDC_STT_PINBLOCK_OPEN_CHECK     1176
 #define IDC_STT_PANELID_NG              1177
 #define IDC_EDT_GAMMA_CH2               1177
+#define IDC_STT_SYSTEM_AUTO_FUSING      1177
 #define IDC_STT_PG_PORT                 1178
 #define IDC_EDT_GAMMA_CH3               1178
 #define IDC_STT_GFD250_PORT             1179

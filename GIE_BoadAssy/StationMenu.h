@@ -73,6 +73,7 @@ public:
 	CEdit m_edtPlcPort;
 	afx_msg void OnCbnSelchangeCmbPlcDeviceNum();
 	CComboBox m_cmbPinBlockOpenCheck;
+	CComboBox m_cmbSystemAutoFusing;
 	afx_msg void OnBnClickedBtnQuantityCountReset();
 	CComboBox m_cmbDfsUse;
 	CIPAddressCtrl m_ipaDfsIPAddress;

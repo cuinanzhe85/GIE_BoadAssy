@@ -570,6 +570,7 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpSystemInfo->m_sDfsPassword.Empty();
 
 	lpSystemInfo->m_nPinBlockOpenCheck = 0;
+	lpSystemInfo->m_nSystemAutoFusing = 0;
 
 	////////////////////////////////////////////////////////////
 	lpModelInfo->m_nEdidUse=0;
@@ -846,6 +847,7 @@ void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 	Read_SysIniFile(_T("SYSTEM"),		_T("IF_BD_SELECT"),					&lpSystemInfo->m_nIFBoardSelect);
 	Read_SysIniFile(_T("SYSTEM"),		_T("EDP_INIT_CODE_SEL"),			&lpSystemInfo->m_neDPInitCodeSelect);
 	Read_SysIniFile(_T("SYSTEM"),		_T("PIN_BLOCK_OPEN_CHECK"),			&lpSystemInfo->m_nPinBlockOpenCheck);
+	Read_SysIniFile(_T("SYSTEM"),		_T("SYSTEM_AUTO_FUSING"),			&lpSystemInfo->m_nSystemAutoFusing);
 
 	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_DEVICE_USE"),				&lpSystemInfo->m_nPlcDeviceUse);
 	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_DEVICE_NUM"),				&lpSystemInfo->m_nPlcDeviceNum);
