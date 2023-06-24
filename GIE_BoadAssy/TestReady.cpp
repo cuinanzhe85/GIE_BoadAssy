@@ -758,6 +758,7 @@ BOOL CTestReady::Lf_SystemAutoFusing()
 	{
 		m_pApp->Gf_writeLogData(_T("<TEST>"), _T("System Auto Fusing => SKIP"));
 	}
+	return TRUE;
 }
 
 BOOL CTestReady::Lf_CableOpenCheck()
