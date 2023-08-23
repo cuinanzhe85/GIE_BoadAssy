@@ -175,8 +175,10 @@ void CMaint::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == 10)
 	{
 		KillTimer(10);
-		Lf_getPowerMeasureAll();
-		SetTimer(10, 1000, NULL);
+		if (Lf_getPowerMeasureAll() == TRUE)
+		{
+			SetTimer(10, 1000, NULL);
+		}
 	}
 	CDialog::OnTimer(nIDEvent);
 }
@@ -366,118 +368,120 @@ void CMaint::OnBnClickedBtnPowerOff()
 }
 BOOL CMaint::Lf_getPowerMeasureAll()
 {
+	BOOL bRet = TRUE;
 	CString sdata;
 	memset(m_pApp->m_nLcmPInfo, 0x00, sizeof(m_pApp->m_nLcmPInfo));
+
 	if (m_pApp->m_pCommand->Gf_getPowerMeasure() == TRUE)
 	{
 		if (m_pApp->m_nLcmPInfo[PINFO_ERR_RESULT] == OVER_CURRENT)
 		{
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VCC)
 			{
-				sdata.Format(_T("VCC Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVccMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VCC Over Voltage (High Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVccMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VDD)
 			{
-				sdata.Format(_T("VDD Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VDD Over Voltage (High Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VBL)
 			{
-				sdata.Format(_T("VBL Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVblMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VBL Over Voltage (High Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVblMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
-				sdata.Format(_T("ICC Over Current (High Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				sdata.Format(_T("ICC Over Current (High Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIccMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
-				sdata.Format(_T("IDD Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE]/1000.f);
+				sdata.Format(_T("IDD Over Current (High Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIddMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE]/1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IBL)
 			{
-				sdata.Format(_T("IBL Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIblMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				sdata.Format(_T("IBL Over Current (High Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIblMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
 			{
-				sdata.Format(_T("VGH Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVghMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VGH Over Voltage (High Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVghMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGL)
 			{
-				sdata.Format(_T("VGL Over Voltage (High Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VGL Over Voltage (High Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVddMax, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGH)
 			{
-				sdata.Format(_T("IGH Over Current (High Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIghMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				sdata.Format(_T("IGH Over Current (High Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIghMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGL)
 			{
-				sdata.Format(_T("IGL Over Current (High Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIglMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				sdata.Format(_T("IGL Over Current (High Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIglMax, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 
-			return FALSE;
+			bRet = FALSE;
 		}
 		else if (m_pApp->m_nLcmPInfo[PINFO_ERR_RESULT] == LOW_CURRENT)
 		{
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VCC)
 			{
-				sdata.Format(_T("VCC Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVccMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VCC Low Voltage (Low Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVccMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VDD)
 			{
-				sdata.Format(_T("VDD Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VDD Low Voltage (Low Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VBL)
 			{
-				sdata.Format(_T("VBL Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVblMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VBL Low Voltage (Low Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVblMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_ICC)
 			{
-				sdata.Format(_T("ICC Low Current (Low Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIccMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				sdata.Format(_T("ICC Low Current (Low Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIccMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IDD)
 			{
-				sdata.Format(_T("IDD Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIddMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				sdata.Format(_T("IDD Low Current (Low Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIddMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IBL)
 			{
-				sdata.Format(_T("IBL Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIblMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				sdata.Format(_T("IBL Low Current (Low Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIblMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGH)
 			{
-				sdata.Format(_T("VGH Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVghMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VGH Low Voltage (Low Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVghMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_VGL)
 			{
-				sdata.Format(_T("VGL Low Voltage (Low Set: %.2f, Measure: %.2f)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
+				sdata.Format(_T("VGL Low Voltage (Low Set: %.2fV, Measure: %.2fV)"), (float)lpModelInfo->m_fLimitVddMin, (float)(m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f));
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGH)
 			{
-				sdata.Format(_T("IGH Low Current (Low Set: %.2f, Measure: %d)"), (float)lpModelInfo->m_fLimitIghMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				sdata.Format(_T("IGH Low Current (Low Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIghMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
 			else if (m_pApp->m_nLcmPInfo[PINFO_ERR_NAME] == PINFO_IGL)
 			{
-				sdata.Format(_T("IGL Low Current (Low Set: %d, Measure: %d)"), (float)lpModelInfo->m_fLimitIglMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
+				sdata.Format(_T("IGL Low Current (Low Set: %.2fA, Measure: %.2fA)"), (float)lpModelInfo->m_fLimitIglMin, m_pApp->m_nLcmPInfo[PINFO_ERR_VALUE] / 1000.f);
 				m_pApp->Gf_ShowMessageBox(sdata);//AfxMessageBox(sdata);
 			}
-			return FALSE;
+			bRet = FALSE;
 		}
 		sdata.Format(_T("%.3f V"), (float)(m_pApp->m_nLcmPInfo[PINFO_VCC] / 1000.f));
 		GetDlgItem(IDC_STT_MT_VCC_MEASURE)->SetWindowText(sdata);
@@ -503,7 +507,7 @@ BOOL CMaint::Lf_getPowerMeasureAll()
 	}
 
 
-	return TRUE;
+	return bRet;
 }
 
 void CMaint::OnCbnSelchangeCmbPatternList()

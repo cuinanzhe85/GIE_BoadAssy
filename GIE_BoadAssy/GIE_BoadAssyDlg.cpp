@@ -515,7 +515,7 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	// Firmware Version
 	int npos = 0;
 	npos = lpWorkInfo->m_sFirmwareVersion.ReverseFind(' ');
-	sdata = lpWorkInfo->m_sFirmwareVersion.Left(npos);
+	sdata = lpWorkInfo->m_sFirmwareVersion.Left(16);
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(sdata);
 
 	// LVDS FPGA Version

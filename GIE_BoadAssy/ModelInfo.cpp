@@ -1888,7 +1888,7 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			else if (m_bfusingflag == 2)
 			{
-				pDC->SetBkColor(COLOR_RED);
+				pDC->SetBkColor(COLOR_RED128);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_RED128];
 			}
