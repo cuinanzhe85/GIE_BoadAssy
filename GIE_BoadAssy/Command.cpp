@@ -329,6 +329,17 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);	// PWM Duty
 	sdata.Format(_T("%01d"), lpModelInfo->m_nI2cLevel);								makePacket.Append(sdata);	// I2C Level 
 	sdata.Format(_T("%01d"), lpModelInfo->m_nI2cPullup);							makePacket.Append(sdata);	// I2C PullUP
+	sdata.Format(_T("%03d"), 100);													makePacket.Append(sdata);	// I2C Clock (Khz)
+
+	if (lpModelInfo->m_nPixelOverlapMode == FALSE)
+	{
+		sdata.Format(_T("%01d"), 0);												makePacket.Append(sdata);	// Pixel Overlap Mode, 0=1:1출력, 1=2분할 모드, 2=OverlapMode
+	}
+	else
+	{
+		sdata.Format(_T("%01d"), 2);												makePacket.Append(sdata);	// Pixel Overlap Mode, 0=1:1출력, 1=2분할 모드, 2=OverlapMode
+	}
+	sdata.Format(_T("%03d"), 4);													makePacket.Append(sdata);	// Pixel Overlap Count, 일단은 16인치 4Pixel 모델만 있다. 향후 필요시 옵션 추가한다.
 
 	wchar_To_char(makePacket.GetBuffer(), packet);
 }

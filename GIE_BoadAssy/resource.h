@@ -95,6 +95,8 @@
 #define IDC_CMB_EDP_INITCODE            1023
 #define IDC_CMB_INTERFACE               1024
 #define IDC_CMB_DCLK_INVERSE            1025
+#define IDC_CMB_PIXEL_OVERLAP           1025
+#define IDC_CMB_PIXEL_OVERLAP_MODE      1025
 #define IDC_CMB_BIT_SWAP                1026
 #define IDC_CMB_VSYNC_POLALITY          1027
 #define IDC_CMB_CLOCK_RISING            1027

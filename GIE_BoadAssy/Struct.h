@@ -92,6 +92,7 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nLcmInfoMode;
 	int m_nLcmInfoBitsSwap;
 	int m_nClockDelay;
+	int m_nPixelOverlapMode;
 	int m_nClockRising;
 	int m_nHSyncPolarity;
 	int m_nVSyncPolarity;

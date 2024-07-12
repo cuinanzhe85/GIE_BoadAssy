@@ -652,6 +652,7 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpModelInfo->m_fVoltVcom1 = 0;
 	lpModelInfo->m_fVoltVcom2 = 0;
 	lpModelInfo->m_nClockDelay = 0;
+	lpModelInfo->m_nPixelOverlapMode = 0;
 	lpModelInfo->m_nClockRising = 0;
 	lpModelInfo->m_nHSyncPolarity = 0;
 	lpModelInfo->m_nVSyncPolarity = 0;
@@ -953,21 +954,22 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGL_LOW_LIMIT"),		&lpModelInfo->m_fLimitIglMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIghMax);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_LOW_LIMIT"),		&lpModelInfo->m_fLimitIghMin);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("IBL_HIGH_LIMIT"), &lpModelInfo->m_fLimitIblMax);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("IBL_LOW_LIMIT"), &lpModelInfo->m_fLimitIblMin);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VBL_HIGH_LIMIT"), &lpModelInfo->m_fLimitVblMax);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VBL_LOW_LIMIT"), &lpModelInfo->m_fLimitVblMin);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IBL_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIblMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IBL_LOW_LIMIT"),		&lpModelInfo->m_fLimitIblMin);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VBL_HIGH_LIMIT"),		&lpModelInfo->m_fLimitVblMax);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VBL_LOW_LIMIT"),		&lpModelInfo->m_fLimitVblMin);
 
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_TYPE"),			&lpModelInfo->m_nSignalType);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_BIT"),			&lpModelInfo->m_nSignalBit);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BIT_SELECT"),			&lpModelInfo->m_nBitSel);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("PIXEL_TYPE"), &lpModelInfo->m_nPixelType);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("BITSWAP"), &lpModelInfo->m_nLcmInfoBitsSwap);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_DELAY"), &lpModelInfo->m_nClockDelay);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_RISING"), &lpModelInfo->m_nClockRising);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("HSYNC_POLARITY"), &lpModelInfo->m_nHSyncPolarity);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VSYNC_POLARITY"), &lpModelInfo->m_nVSyncPolarity);
-	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("ODD_EVEN"), &lpModelInfo->m_nOddEven);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("PIXEL_TYPE"),			&lpModelInfo->m_nPixelType);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BITSWAP"),				&lpModelInfo->m_nLcmInfoBitsSwap);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("CLOCK_DELAY"),			&lpModelInfo->m_nClockDelay);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("PIXEL_OVERLAP_MODE"),	&lpModelInfo->m_nPixelOverlapMode);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("CLOCK_RISING"),			&lpModelInfo->m_nClockRising);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("HSYNC_POLARITY"),		&lpModelInfo->m_nHSyncPolarity);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VSYNC_POLARITY"),		&lpModelInfo->m_nVSyncPolarity);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("ODD_EVEN"),				&lpModelInfo->m_nOddEven);
 
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_01"), &lpModelInfo->m_nPowerOnSeqType01);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_02"), &lpModelInfo->m_nPowerOnSeqType02);

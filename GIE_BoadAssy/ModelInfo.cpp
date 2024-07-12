@@ -162,6 +162,7 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_OFF_SEQ_DEL_16, m_edtOffSeqDelay16);
 	DDX_Control(pDX, IDC_EDT_OFF_SEQ_DEL_17, m_edtOffSeqDelay17);
 	DDX_Control(pDX, IDC_EDT_CLOCK_DELAY, m_edtClockDelay);
+	DDX_Control(pDX, IDC_CMB_PIXEL_OVERLAP_MODE, m_cboPixelOverlapMode);
 
 	DDX_Control(pDX, IDC_EDT_VCOM1, m_edtPowerVcom1);
 	DDX_Control(pDX, IDC_EDT_VCOM2, m_edtPowerVcom2);
@@ -384,6 +385,9 @@ void CModelInfo::Lf_loadModelData()
 
 	sdata.Format(_T("%d"), lpModelInfo->m_nClockDelay);
 	m_edtClockDelay.SetWindowTextW(sdata);
+
+	m_cboPixelOverlapMode.SetCurSel(lpModelInfo->m_nPixelOverlapMode);
+	
 
 	m_cmbOnSeqOp01.SetCurSel(lpModelInfo->m_nPowerOnSeqType01);
 	m_cmbOnSeqOp02.SetCurSel(lpModelInfo->m_nPowerOnSeqType02);
@@ -856,19 +860,22 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 
 	m_edtClockDelay.GetWindowTextW(sdata);
 	lpModelInfo->m_nClockDelay = (int)_ttoi(sdata);
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_DELAY"), lpModelInfo->m_nClockDelay);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_DELAY"),				lpModelInfo->m_nClockDelay);
+
+	lpModelInfo->m_nPixelOverlapMode = m_cboPixelOverlapMode.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("PIXEL_OVERLAP_MODE"),		lpModelInfo->m_nPixelOverlapMode);
 
 	lpModelInfo->m_nClockRising = m_cmbClockRising.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_RISING"), lpModelInfo->m_nClockRising);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("CLOCK_RISING"),			lpModelInfo->m_nClockRising);
 
 	lpModelInfo->m_nHSyncPolarity = m_cmbHSyncPolarity.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("HSYNC_POLARITY"), lpModelInfo->m_nHSyncPolarity);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("HSYNC_POLARITY"),			lpModelInfo->m_nHSyncPolarity);
 
 	lpModelInfo->m_nVSyncPolarity = m_cmbVSyncPolarity.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VSYNC_POLARITY"), lpModelInfo->m_nVSyncPolarity);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VSYNC_POLARITY"),			lpModelInfo->m_nVSyncPolarity);
 
 	lpModelInfo->m_nOddEven = m_cmbOddEven.GetCurSel();
-	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("ODD_EVEN"), lpModelInfo->m_nOddEven);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("ODD_EVEN"),				lpModelInfo->m_nOddEven);
 
 	lpModelInfo->m_nPowerOnSeqType01 = m_cmbOnSeqOp01.GetCurSel();
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_ON_SEQ_OP_01"), lpModelInfo->m_nPowerOnSeqType01);

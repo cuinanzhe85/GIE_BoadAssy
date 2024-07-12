@@ -222,7 +222,9 @@ public:
 	CEdit m_edtOffSeqDelay17;
 	CEdit m_edtPowerVcom1;
 	CEdit m_edtPowerVcom2;
-	
+	CEdit m_edtClockDelay;
+	CComboBox m_cboPixelOverlapMode;
+
 	afx_msg void OnEnChangeEdtHActive();
 	afx_msg void OnEnChangeEdtHWidth();
 	afx_msg void OnEnChangeEdtHFrontPorch();
@@ -231,7 +233,6 @@ public:
 	afx_msg void OnEnChangeEdtVWidth();
 	afx_msg void OnEnChangeEdtVFrontPorch();
 	afx_msg void OnEnChangeEdtVBackPorch();
-	CEdit m_edtClockDelay;
 	
 	afx_msg void OnBnClickedBtnGammaVoltageSet();
 	afx_msg void OnStnClickedSttFusing();
