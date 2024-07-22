@@ -377,6 +377,7 @@ void CGIE_BoadAssyDlg::OnBnClickedBtnInitialize()
 	KillTimer(99);
 	CInitialize initDlg;
 	initDlg.DoModal();
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 
 	SetTimer(99, 1000, NULL);
 }
@@ -518,16 +519,22 @@ LRESULT CGIE_BoadAssyDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	sdata = lpWorkInfo->m_sFirmwareVersion.Left(16);
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(sdata);
 
-	// LVDS FPGA Version
-	npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
-	sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
-	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(sdata);
-	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
-
-	// DP FPGA Version
-	npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
-	sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
-	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
+	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_LVDS)
+	{
+		// LVDS FPGA Version
+		npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
+		sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
+		GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(sdata);
+		GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(_T(""));
+	}
+	else if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_DP)
+	{
+		// DP FPGA Version
+		npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
+		sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
+		GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(_T(""));
+		GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
+	}
 
 	// DFS Defect Code Version
 	CString fileName;

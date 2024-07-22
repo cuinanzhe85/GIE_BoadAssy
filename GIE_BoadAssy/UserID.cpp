@@ -57,6 +57,8 @@ void CUserID::OnDestroy()
 	CDialog::OnDestroy();
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
 	for(int i=0; i<COLOR_IDX_MAX; i++)
 	{
 		m_Brush[i].DeleteObject();
@@ -96,7 +98,6 @@ void CUserID::OnBnClickedOk()
 			m_pApp->m_bUserIdGieng = true;
 			m_pApp->Gf_writeLogData(_T("USER ID"),m_sUserId.GetBuffer(0));
 
-			AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 			CDialog::OnOK();
 		}
 		else if((!m_sUserId.Compare(_T("PM"))) || (!m_sUserId.Compare(_T("pm"))))
@@ -110,7 +111,6 @@ void CUserID::OnBnClickedOk()
 			m_pApp->m_bUserIdPM = true;
 			m_pApp->Gf_writeLogData(_T("USER ID"),m_sUserId.GetBuffer(0));
 
-			AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 			CDialog::OnOK();
 		}
 		else
@@ -155,7 +155,6 @@ void CUserID::OnBnClickedOk()
 					return;
 				}
 
-				AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 				CDialog::OnOK();
 			}
 			else
