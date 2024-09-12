@@ -236,6 +236,7 @@ typedef struct _ST_MODELSETINFO_{
 	CString m_sLbPtnIccHigh[TOTALPATTERN];
 	CString m_sLbPtnIddLow[TOTALPATTERN];
 	CString m_sLbPtnIddHigh[TOTALPATTERN];
+	int m_nLbPtnPower[TOTALPATTERN];
 	CString m_sHotPattern[10];
 	int m_nHotPatternGrayFg[10];
 	int m_nHotPatternGrayBg[10];
@@ -432,18 +433,15 @@ typedef struct _ST_INSPWORKINFO_{
 	CTime tt_startTime;
 	CTime tt_endTime;
 
-#if (SUMMARY_LOG_VOLT_CURR==1)
 	int m_nMeasPowerVCC[TOTALPATTERN];
 	int m_nMeasPowerVDD[TOTALPATTERN];
 	int m_nMeasPowerICC[TOTALPATTERN];
 	int m_nMeasPowerIDD[TOTALPATTERN];
-#endif
 
 	CString m_sMesTopModelName;
 
 }INSPWORKINFO, *LPINSPWORKINFO;
 
-#if (SUMMARY_LOG_VOLT_CURR==1)
 enum
 {
 	SUM_DATE = 0,
@@ -500,32 +498,7 @@ enum
 	SUM_8TH_PTN_IDD,
 	SUM_INFO_MAX
 };
-#else
-enum
-{
-	SUM_DATE = 0,
-	SUM_PM_MES,
-	SUM_SW_VER,
-	SUM_FW_VER,
-	SUM_MODEL,
-	SUM_EQP_ID,
-	SUM_PID,
-	SUM_PASS_FAIL,
-	SUM_RWK_CD,
-	SUM_TACT_TIME,
-	SUM_START_TIME,
-	SUM_END_TIME,
-	SUM_1ST_PTN_TIME,
-	SUM_2ND_PTN_TIME,
-	SUM_3RD_PTN_TIME,
-	SUM_4TH_PTN_TIME,
-	SUM_5TH_PTN_TIME,
-	SUM_6TH_PTN_TIME,
-	SUM_7TH_PTN_TIME,
-	SUM_8TH_PTN_TIME,
-	SUM_INFO_MAX
-};
-#endif
+
 
 typedef struct _ST_SUMMARY_
 {

@@ -241,6 +241,7 @@
 #define IDC_STT_MODEL_NAME              1084
 #define IDC_STT_IDD_MEASURE             1084
 #define IDC_CMB_GFD250_ONOFF            1084
+#define IDC_STT_PTN_POWER_CLK           1084
 #define IDC_STT_TOTAL_CNT_TIT           1085
 #define IDC_COMBO1                      1085
 #define IDC_CMB_TEST_MODE               1085
@@ -334,6 +335,8 @@
 #define IDC_STT_PTN_IMAGE_TITLE         1108
 #define IDC_STT_OP_MODE_VALUE           1109
 #define IDC_EDT_ON_SEQ_DEL_5            1109
+#define IDC_STT_PTN_BLU2                1109
+#define IDC_STT_PTN_POWER               1109
 #define IDC_STT_USER_ID_VALUE           1110
 #define IDC_CMB_ON_SEQ_OP_6             1110
 #define IDC_STT_USER_NAME_VALUE         1111
@@ -425,6 +428,7 @@
 #define IDC_EDT_OFF_SEQ_DEL_6           1149
 #define IDC_STT_FW_STATUS               1150
 #define IDC_STT_GFD250_STATUS           1150
+#define IDC_CMB_PTN_POWER               1150
 #define IDC_STT_SYSTEM_STATUS           1151
 #define IDC_STT_SYSTEM_STATUS_TIT       1152
 #define IDC_STT_GFD250_STATUS_TIT       1153

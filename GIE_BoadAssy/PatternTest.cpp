@@ -60,7 +60,7 @@ BOOL CPatternTest::OnInitDialog()
 	m_pApp->m_pCommand->Gf_setPGInfoPatternName(_T("BLACK"));
 	m_pApp->m_pCommand->Gf_setPowerSeqOnOff(POWER_ON);
 	m_pApp->Gf_setPatStartCheckTime(m_nSelNum);
-	Lf_sendPatternBluData();
+	Lf_sendPatternBluAndFunction();
 
 	SetTimer(1,200,NULL);	// EDID
 	SetTimer(3, 1000, NULL);  // OK,NG DIO Input Check
@@ -131,11 +131,6 @@ BOOL CPatternTest::PreTranslateMessage(MSG* pMsg)
 			{
 				if (Lf_PatternLockTimeCheck() != TRUE)
 					return TRUE;
-
-#if (SUMMARY_LOG_VOLT_CURR==1)
-				if (m_bPowerMeasureComplete[m_nSelNum] == FALSE)
-					return TRUE;
-#endif
 
 				Lf_writeLogKeyIn((int)pMsg->wParam);
 				Lf_excutePatternList(pMsg);
@@ -332,10 +327,6 @@ void CPatternTest::Lf_initVariable()
 	m_nBluDutyOld = 0;
 	m_nSelNum=0;	
 
-#if (SUMMARY_LOG_VOLT_CURR==1)
-	memset(m_bPowerMeasureComplete, 0x00, sizeof(m_bPowerMeasureComplete));
-#endif
-
 	m_pApp->m_nOldVsync = 0;
 	m_pApp->pPtnIndex = &m_nSelNum;
 	lpWorkInfo->m_bEscDetect = false;
@@ -477,10 +468,46 @@ BOOL CPatternTest::Lf_sendBluData()
 	return TRUE;
 }
 
-void CPatternTest::Lf_sendPatternBluData()
+void CPatternTest::Lf_measureSumLogPower()
 {
+	CString sLog;
+
+	if (lpModelInfo->m_nLbPtnPower[m_nSelNum] == TRUE)
+	{	
+		Lf_PtnTestEventView(_T("Power Measure : Delay 200(ms)"));
+		delayMS(200);
+
+		Lf_PtnTestEventView(_T("Power Measure : Start"));
+		if (m_pApp->m_pCommand->Gf_getPowerMeasure() == TRUE)
+		{
+			lpWorkInfo->m_nMeasPowerVCC[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_VCC];
+			lpWorkInfo->m_nMeasPowerVDD[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_VDD];
+			lpWorkInfo->m_nMeasPowerICC[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_ICC];
+			lpWorkInfo->m_nMeasPowerIDD[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_IDD];
+
+			sLog.Format(_T("Power Measure : OK.  VCC(%.3fV) ICC(%.3fA)"), (float)lpWorkInfo->m_nMeasPowerVCC[m_nSelNum] / 1000.f, (float)lpWorkInfo->m_nMeasPowerICC[m_nSelNum] / 1000.f);
+			Lf_PtnTestEventView(sLog);
+		}
+		else
+		{
+			// -1은 Read Fail 을 의미한다.
+			lpWorkInfo->m_nMeasPowerVCC[m_nSelNum] = -1;
+			lpWorkInfo->m_nMeasPowerVDD[m_nSelNum] = -1;
+			lpWorkInfo->m_nMeasPowerICC[m_nSelNum] = -1;
+			lpWorkInfo->m_nMeasPowerIDD[m_nSelNum] = -1;
+			Lf_PtnTestEventView(_T("Power Measure : NG (Communication Fail)"));
+		}
+	}
+}
+
+void CPatternTest::Lf_sendPatternBluAndFunction()
+{
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// ★주의★ Lf_sendPtnData() 함수와 Lf_measureSumLogPower() 함수는 위치가 바뀌면 안된다.
+	//////////////////////////////////////////////////////////////////////////////////////////
 	Lf_sendPtnData();
 	Lf_sendBluData();
+	Lf_measureSumLogPower();
 	/*if (Lf_PatternVoltageSetting() == FALSE)
 	{
 		CDialog::OnCancel();
@@ -517,10 +544,6 @@ void CPatternTest::OnTimer(UINT_PTR nIDEvent)
 		{
 			KillTimer(99);	// 마우스 고정
 		}
-
-#if (SUMMARY_LOG_VOLT_CURR==1)
-		m_bPowerMeasureComplete[m_nSelNum] = TRUE;		// Power Measure가 동작했으면 Flag를 ON 한다.
-#endif
 	}
 	else if(nIDEvent==3)
 	{
@@ -704,14 +727,6 @@ BOOL CPatternTest::Lf_updateMeasureInfo()
 		GetDlgItem(IDC_STT_IGH_MEASURE)->SetWindowText(sdata);
 		sdata.Format(_T("%.3f"), (float)(m_pApp->m_nLcmPInfo[PINFO_IGL] / 1000.f));
 		GetDlgItem(IDC_STT_IGL_MEASURE)->SetWindowText(sdata);
-
-
-#if (SUMMARY_LOG_VOLT_CURR==1)
-		lpWorkInfo->m_nMeasPowerVCC[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_VCC];
-		lpWorkInfo->m_nMeasPowerVDD[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_VDD];
-		lpWorkInfo->m_nMeasPowerICC[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_ICC];
-		lpWorkInfo->m_nMeasPowerIDD[m_nSelNum] = m_pApp->m_nLcmPInfo[PINFO_IDD];
-#endif
 	}
 	return TRUE;
 }
@@ -758,7 +773,7 @@ void CPatternTest::Lf_excutePatternList(MSG* pMsg)
 	RemoveMessageFromQueue();
 	m_pApp->Gf_setPatStartCheckTime(m_nSelNum);
 	m_pApp->Gf_setStartPtnLockTime(m_nSelNum);
-	Lf_sendPatternBluData();
+	Lf_sendPatternBluAndFunction();
 
 	SetTimer(2, 200, NULL);	// Power Measure
 }
@@ -770,41 +785,42 @@ void CPatternTest::Lf_insertListColum()
 	DWORD dwStype;
 
 	m_LCctrlPtnTestView.GetClientRect(&rect);
-	m_LCctrlPtnTestView.InsertColumn( 0, _T("No"), LVCFMT_LEFT, -1, -1);
-	m_LCctrlPtnTestView.InsertColumn( 1, _T("Pattern Name"), LVCFMT_LEFT, -1, -1 );
-	m_LCctrlPtnTestView.InsertColumn( 2, _T("VCC"), LVCFMT_LEFT, -1, -1 );
-	m_LCctrlPtnTestView.InsertColumn( 3, _T("VDD"), LVCFMT_LEFT, -1, -1 );
-	m_LCctrlPtnTestView.InsertColumn( 4, _T("T(s)"), LVCFMT_LEFT, -1, -1 );
-	m_LCctrlPtnTestView.InsertColumn( 5, _T("VSync"), LVCFMT_LEFT, -1, -1 );
+	m_LCctrlPtnTestView.InsertColumn(0, _T("No"), LVCFMT_LEFT, -1, -1);
+	m_LCctrlPtnTestView.InsertColumn(1, _T("Pattern Name"), LVCFMT_LEFT, -1, -1 );
+	m_LCctrlPtnTestView.InsertColumn(2, _T("VCC"), LVCFMT_LEFT, -1, -1 );
+	m_LCctrlPtnTestView.InsertColumn(3, _T("VDD"), LVCFMT_LEFT, -1, -1 );
+	m_LCctrlPtnTestView.InsertColumn(4, _T("T(s)"), LVCFMT_LEFT, -1, -1 );
+	m_LCctrlPtnTestView.InsertColumn(5, _T("VSync"), LVCFMT_LEFT, -1, -1 );
 	m_LCctrlPtnTestView.InsertColumn(6, _T("ICC L"), LVCFMT_LEFT, -1, -1);
 	m_LCctrlPtnTestView.InsertColumn(7, _T("ICC H"), LVCFMT_LEFT, -1, -1);
 	m_LCctrlPtnTestView.InsertColumn(8, _T("IDD L"), LVCFMT_LEFT, -1, -1);
 	m_LCctrlPtnTestView.InsertColumn(9, _T("IDD H"), LVCFMT_LEFT, -1, -1);
 	m_LCctrlPtnTestView.InsertColumn(10, _T("BLU"), LVCFMT_LEFT, -1, -1);
+	m_LCctrlPtnTestView.InsertColumn(11, _T("Power"), LVCFMT_LEFT, -1, -1);
 
-	m_LCctrlPtnTestView.SetColumnWidth( 0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // NO
+	m_LCctrlPtnTestView.SetColumnWidth(0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // NO
 	GetDlgItem(IDC_STT_NUM)->GetWindowRect(&rect2);
-	m_LCctrlPtnTestView.SetColumnWidth( 0, rect2.Width());
+	m_LCctrlPtnTestView.SetColumnWidth(0, rect2.Width());
 
-	m_LCctrlPtnTestView.SetColumnWidth( 1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // Pattern
+	m_LCctrlPtnTestView.SetColumnWidth(1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // Pattern
 	GetDlgItem(IDC_STT_PTN_NAME)->GetWindowRect(&rect2);
-	m_LCctrlPtnTestView.SetColumnWidth( 1, rect2.Width());
+	m_LCctrlPtnTestView.SetColumnWidth(1, rect2.Width());
 
-	m_LCctrlPtnTestView.SetColumnWidth( 2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCC
+	m_LCctrlPtnTestView.SetColumnWidth(2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCC
 	GetDlgItem(IDC_STT_VCC)->GetWindowRect(&rect2);
-	m_LCctrlPtnTestView.SetColumnWidth( 2, rect2.Width());
+	m_LCctrlPtnTestView.SetColumnWidth(2, rect2.Width());
 
-	m_LCctrlPtnTestView.SetColumnWidth( 3, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VDD
+	m_LCctrlPtnTestView.SetColumnWidth(3, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VDD
 	GetDlgItem(IDC_STT_VDD)->GetWindowRect(&rect2);
-	m_LCctrlPtnTestView.SetColumnWidth( 3, rect2.Width());
+	m_LCctrlPtnTestView.SetColumnWidth(3, rect2.Width());
 
-	m_LCctrlPtnTestView.SetColumnWidth( 4, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // T(ms)
+	m_LCctrlPtnTestView.SetColumnWidth(4, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // T(ms)
 	GetDlgItem(IDC_STT_TMS)->GetWindowRect(&rect2);
-	m_LCctrlPtnTestView.SetColumnWidth( 4, rect2.Width());
+	m_LCctrlPtnTestView.SetColumnWidth(4, rect2.Width());
 
-	m_LCctrlPtnTestView.SetColumnWidth( 5, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VSYNC
+	m_LCctrlPtnTestView.SetColumnWidth(5, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VSYNC
 	GetDlgItem(IDC_STT_VSYNC)->GetWindowRect(&rect2);
-	m_LCctrlPtnTestView.SetColumnWidth( 5, rect2.Width());
+	m_LCctrlPtnTestView.SetColumnWidth(5, rect2.Width());
 
 	m_LCctrlPtnTestView.SetColumnWidth(6, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // ICC LOW
 	GetDlgItem(IDC_STT_PTN_ICC_LOW)->GetWindowRect(&rect2);
@@ -826,6 +842,10 @@ void CPatternTest::Lf_insertListColum()
 	GetDlgItem(IDC_STT_PTN_BLU)->GetWindowRect(&rect2);
 	m_LCctrlPtnTestView.SetColumnWidth(10, rect2.Width());
 
+	m_LCctrlPtnTestView.SetColumnWidth(11, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // POWER
+	GetDlgItem(IDC_STT_PTN_POWER)->GetWindowRect(&rect2);
+	m_LCctrlPtnTestView.SetColumnWidth(11, rect2.Width());
+
 	dwStype = m_LCctrlPtnTestView.GetExtendedStyle();
 	dwStype |= LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES;
 	m_LCctrlPtnTestView.SetExtendedStyle(dwStype);
@@ -834,7 +854,7 @@ void CPatternTest::Lf_insertListColum()
 void CPatternTest::Lf_insertListItem()
 {
 	int loop=0;
-	CString strNum= _T("");
+	CString strNum= _T(""), strData;
 
 	for(loop=0; loop< lpModelInfo->m_nLbCnt; loop++)
 	{
@@ -850,6 +870,10 @@ void CPatternTest::Lf_insertListItem()
 		m_LCctrlPtnTestView.SetItemText(loop, 8, lpModelInfo->m_sLbPtnIddLow[loop]);
 		m_LCctrlPtnTestView.SetItemText(loop, 9, lpModelInfo->m_sLbPtnIddHigh[loop]);
 		m_LCctrlPtnTestView.SetItemText(loop, 10, lpModelInfo->m_sLbPtnBlu[loop]);
+		if(lpModelInfo->m_nLbPtnPower[loop] == TRUE)
+			m_LCctrlPtnTestView.SetItemText(loop, 11, _T("ON"));
+		else
+			m_LCctrlPtnTestView.SetItemText(loop, 11, _T("OFF"));
 	}
 
 	m_LCctrlPtnTestView.SetSelectionMark(m_nSelNum); 
@@ -950,11 +974,6 @@ void CPatternTest::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CString sdata=_T("");
 
-#if (SUMMARY_LOG_VOLT_CURR==1)
-	if (m_bPowerMeasureComplete[m_nSelNum] == FALSE)
-		return;
-#endif
-
 	m_pApp->Gf_setPatEndCheckTime(m_nSelNum);
 	m_pApp->m_nPatTime[m_nSelNum] = (m_pApp->m_nEndCheckTime[m_nSelNum] - m_pApp->m_nStartCheckTime[m_nSelNum]);
 
@@ -983,8 +1002,9 @@ void CPatternTest::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 
 	RemoveMessageFromQueue();
+	m_pApp->Gf_setPatStartCheckTime(m_nSelNum);
 	m_pApp->Gf_setStartPtnLockTime(m_nSelNum);
-	Lf_sendPatternBluData();
+	Lf_sendPatternBluAndFunction();
 
 	SetTimer(2, 200, NULL);	// Power Measure
 
@@ -999,18 +1019,14 @@ void CPatternTest::OnRButtonDown(UINT nFlags, CPoint point)
 		return;
 	}
 
-#if (SUMMARY_LOG_VOLT_CURR==1)
-	if (m_bPowerMeasureComplete[m_nSelNum] == FALSE)
-		return;
-#endif
-
 	m_LCctrlPtnTestView.SetSelectionMark(--m_nSelNum); 
 	m_LCctrlPtnTestView.SetItemState(m_nSelNum, LVIS_SELECTED | LVIS_FOCUSED, LVNI_SELECTED | LVNI_FOCUSED);
 	m_LCctrlPtnTestView.SetFocus();
 
 	RemoveMessageFromQueue();
+	m_pApp->Gf_setPatStartCheckTime(m_nSelNum);
 	m_pApp->Gf_setStartPtnLockTime(m_nSelNum);
-	Lf_sendPatternBluData();
+	Lf_sendPatternBluAndFunction();
 
 	SetTimer(2, 200, NULL);	// Power Measure
 

@@ -54,6 +54,7 @@ BOOL CTestReady::OnInitDialog()
 	Lf_initFontSet();
 	Lf_initVariable();
 	Lf_updateCount();
+	Lf_setVariableReset();
 
 	SetTimer(1, 100, NULL);
 	SetTimer(TIMER_PID_CHECK, 100, NULL);
@@ -717,6 +718,11 @@ void CTestReady::Lf_setVariableReset()
 	ZeroMemory(m_pApp->m_nStartCheckTime, sizeof(m_pApp->m_nStartCheckTime));
 	ZeroMemory(m_pApp->m_nEndCheckTime, sizeof(m_pApp->m_nEndCheckTime));
 	ZeroMemory(m_pApp->m_nPatTime, sizeof(m_pApp->m_nPatTime));
+	ZeroMemory(lpWorkInfo->m_nMeasPowerVCC, sizeof(lpWorkInfo->m_nMeasPowerVCC));
+	ZeroMemory(lpWorkInfo->m_nMeasPowerVDD, sizeof(lpWorkInfo->m_nMeasPowerVDD));
+	ZeroMemory(lpWorkInfo->m_nMeasPowerICC, sizeof(lpWorkInfo->m_nMeasPowerICC));
+	ZeroMemory(lpWorkInfo->m_nMeasPowerIDD, sizeof(lpWorkInfo->m_nMeasPowerIDD));
+
 	lpWorkInfo->m_bIsEdidFail = false;
 	m_pApp->m_pCimNet->SetRwkCode(_T(""));
 

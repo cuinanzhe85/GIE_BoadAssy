@@ -769,7 +769,7 @@ void CGIE_BoadAssyDlg::Lf_openToDayMLog()
 	CString filePath;
 	CTime time = CTime::GetCurrentTime();
 
-	filePath.Format(_T(".\\Logs\\MLog\\%s_%04d%02d%02d.txt"), lpSystemInfo->m_sMachinName, time.GetYear(), time.GetMonth(), time.GetDay());
+	filePath.Format(_T("./Logs/MLog/%s_%04d%02d%02d.txt"), lpSystemInfo->m_sMachinName, time.GetYear(), time.GetMonth(), time.GetDay());
 
 	SHELLEXECUTEINFO sel;
 	sel.cbSize = sizeof(sel);

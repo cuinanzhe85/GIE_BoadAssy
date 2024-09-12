@@ -58,6 +58,7 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_PTN_TMS, m_edtPtnTMS);
 	DDX_Control(pDX, IDC_EDT_PTN_VSYNC, m_edtPtnVSync);
 	DDX_Control(pDX, IDC_EDT_PTN_BLU, m_edtPtnBlu);
+	DDX_Control(pDX, IDC_CMB_PTN_POWER, m_cmbPtnPower);
 	DDX_Control(pDX, IDC_CMB_EEPROM_ADDR, m_cboEepAddr);
 	DDX_Control(pDX, IDC_PIC_MD_PTN_PREVIEW, m_picPatternPreview);
 	DDX_Control(pDX, IDC_EDT_PTN_ICC_LOW, m_edtPtnIccLow);
@@ -207,6 +208,7 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialog)
 	ON_STN_CLICKED(IDC_STT_ICC_HIGH, &CModelInfo::OnStnClickedSttIccHigh)
 	ON_STN_CLICKED(IDC_STT_IDD_LOW, &CModelInfo::OnStnClickedSttIddLow)
 	ON_STN_CLICKED(IDC_STT_IDD_HIGH, &CModelInfo::OnStnClickedSttIddHigh)
+	ON_STN_CLICKED(IDC_STT_PTN_POWER_CLK, &CModelInfo::OnStnClickedSttPtnPowerClk)
 END_MESSAGE_MAP()
 
 
@@ -662,6 +664,8 @@ void CModelInfo::Lf_loadModelData()
 	sdata.Format(_T("%s"), lpModelInfo->m_sLbPtnBlu[0]);
 	m_edtPtnBlu.SetWindowText(sdata);
 
+	m_cmbPtnPower.SetCurSel(lpModelInfo->m_nLbPtnPower[0]);
+
 	for(loop = 0;loop < lpModelInfo->m_nLbCnt; loop++)
 	{
 		m_lcPtnSetList.InsertItem(loop, lpModelInfo->m_sLbPtnName[loop]);
@@ -674,6 +678,11 @@ void CModelInfo::Lf_loadModelData()
 		m_lcPtnSetList.SetItemText(loop, 7, lpModelInfo->m_sLbPtnIddLow[loop]);
 		m_lcPtnSetList.SetItemText(loop, 8, lpModelInfo->m_sLbPtnIddHigh[loop]);
 		m_lcPtnSetList.SetItemText(loop, 9, lpModelInfo->m_sLbPtnBlu[loop]);
+
+		if(lpModelInfo->m_nLbPtnPower[loop] == TRUE)
+			m_lcPtnSetList.SetItemText(loop, 10, _T("ON"));
+		else
+			m_lcPtnSetList.SetItemText(loop, 10, _T("OFF"));
 	}
 
 
@@ -740,36 +749,37 @@ void CModelInfo::Lf_insertListColum()
 	int offset=2;
 
 	m_lcPtnSetList.GetClientRect(&rect);
-	m_lcPtnSetList.InsertColumn( 0, _T("PATTERN NAME"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 1, _T("VCC"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 2, _T("VDD"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 3, _T("T(s)"), LVCFMT_LEFT, -1, -1 );
-	m_lcPtnSetList.InsertColumn( 4, _T("Vsync"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn(0, _T("PATTERN NAME"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn(1, _T("VCC"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn(2, _T("VDD"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn(3, _T("T(s)"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn(4, _T("Vsync"), LVCFMT_LEFT, -1, -1 );
 	m_lcPtnSetList.InsertColumn(5, _T("ICC L"), LVCFMT_LEFT, -1, -1);
 	m_lcPtnSetList.InsertColumn(6, _T("ICC H"), LVCFMT_LEFT, -1, -1);
 	m_lcPtnSetList.InsertColumn(7, _T("IDD L"), LVCFMT_LEFT, -1, -1);
 	m_lcPtnSetList.InsertColumn(8, _T("IDD H"), LVCFMT_LEFT, -1, -1);
-	m_lcPtnSetList.InsertColumn( 9, _T("BLU"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn(9, _T("BLU"), LVCFMT_LEFT, -1, -1 );
+	m_lcPtnSetList.InsertColumn(10, _T("Power"), LVCFMT_LEFT, -1, -1);
 
-	m_lcPtnSetList.SetColumnWidth( 0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // Pattern
+	m_lcPtnSetList.SetColumnWidth(0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // Pattern
 	GetDlgItem(IDC_CMB_PTN_NAME)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 0, rect2.Width());
+	m_lcPtnSetList.SetColumnWidth(0, rect2.Width());
 
-	m_lcPtnSetList.SetColumnWidth( 1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCC
+	m_lcPtnSetList.SetColumnWidth(1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VCC
 	GetDlgItem(IDC_EDT_PTN_VCC)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 1, rect2.Width()+offset);
+	m_lcPtnSetList.SetColumnWidth(1, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VDD
+	m_lcPtnSetList.SetColumnWidth(2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VDD
 	GetDlgItem(IDC_EDT_PTN_VDD)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 2, rect2.Width()+offset);
+	m_lcPtnSetList.SetColumnWidth(2, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 3, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // T(ms)
+	m_lcPtnSetList.SetColumnWidth(3, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // T(ms)
 	GetDlgItem(IDC_EDT_PTN_TMS)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 3, rect2.Width()+offset);
+	m_lcPtnSetList.SetColumnWidth(3, rect2.Width()+offset);
 
-	m_lcPtnSetList.SetColumnWidth( 4, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VSYNC
+	m_lcPtnSetList.SetColumnWidth(4, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // VSYNC
 	GetDlgItem(IDC_EDT_PTN_VSYNC)->GetWindowRect(&rect2);
-	m_lcPtnSetList.SetColumnWidth( 4, rect2.Width()+offset);
+	m_lcPtnSetList.SetColumnWidth(4, rect2.Width()+offset);
 
 	m_lcPtnSetList.SetColumnWidth(5, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // ICC LOW
 	GetDlgItem(IDC_EDT_PTN_ICC_LOW)->GetWindowRect(&rect2);
@@ -790,6 +800,10 @@ void CModelInfo::Lf_insertListColum()
 	m_lcPtnSetList.SetColumnWidth( 9, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER ); // BLU
 	GetDlgItem(IDC_EDT_PTN_BLU)->GetWindowRect(&rect2);
 	m_lcPtnSetList.SetColumnWidth( 9, rect2.Width()+offset);
+
+	m_lcPtnSetList.SetColumnWidth(10, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // POWER
+	GetDlgItem(IDC_CMB_PTN_POWER)->GetWindowRect(&rect2);
+	m_lcPtnSetList.SetColumnWidth(10, rect2.Width() + offset);
 
 	DWORD dwStype = m_lcPtnSetList.GetExtendedStyle();
 	dwStype |= LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES;
@@ -1321,7 +1335,10 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 		strPtnInfo += strTemp;
 
 		strTemp.Format(_T(",%s"),m_lcPtnSetList.GetItemText(i, 12) );
-		strPtnInfo += strTemp;
+		if(!strTemp.CompareNoCase(_T("ON")))
+			strPtnInfo += _T("1");
+		else
+			strPtnInfo += _T("0");
 
 		strTemp.Format(_T(",%s"),m_lcPtnSetList.GetItemText(i, 13) );
 		strPtnInfo += strTemp;
@@ -1383,7 +1400,7 @@ void CModelInfo::Lf_setSwapData(int pos1, int pos2)
 	CString strTemp1 = _T(""), strTemp2 = _T("");
 	int i = 0;
 
-	for(i=0;i<10;i++)
+	for(i=0;i<11;i++)
 	{		
 		m_lcPtnSetList.GetItemText(pos1, i, temp1, 30);
 		m_lcPtnSetList.GetItemText(pos2, i, temp2, 30);
@@ -1427,6 +1444,12 @@ void CModelInfo::Lf_setPtnDataChange(int sel)
 	m_edtPtnIddLow.SetWindowText(m_lcPtnSetList.GetItemText(sel, 7));
 	m_edtPtnIddHigh.SetWindowText(m_lcPtnSetList.GetItemText(sel, 8));
 	m_edtPtnBlu.SetWindowText(m_lcPtnSetList.GetItemText(sel,9));
+	
+	sdata = m_lcPtnSetList.GetItemText(sel, 10);
+	if(!sdata.CompareNoCase(_T("ON")))
+		m_cmbPtnPower.SetCurSel(1);
+	else
+		m_cmbPtnPower.SetCurSel(0);
 
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -1480,6 +1503,9 @@ void CModelInfo::Lf_setChangeFont()
 
 	if (m_nChangeFont & 0x0100) { GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[1]); }
 	else						{ GetDlgItem(IDC_STT_BLU_CLK)->SetFont(&m_Font[2]); }
+
+	if (m_nChangeFont & 0x0200) { GetDlgItem(IDC_STT_PTN_POWER_CLK)->SetFont(&m_Font[1]); }
+	else						{ GetDlgItem(IDC_STT_PTN_POWER_CLK)->SetFont(&m_Font[2]); }
 }
 
 void CModelInfo::OnBnClickedBtnAdd()
@@ -1530,6 +1556,9 @@ void CModelInfo::OnBnClickedBtnAdd()
 
 	m_edtPtnBlu.GetWindowText(sdata);
 	m_lcPtnSetList.SetItem(nPos, 9, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+
+	m_cmbPtnPower.GetWindowText(sdata);
+	m_lcPtnSetList.SetItem(nPos, 10, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 
 	m_lcPtnSetList.SetSelectionMark(nPos); // Item Select & Focus
@@ -1664,6 +1693,7 @@ void CModelInfo::OnBnClickedBtnChange()
 	m_edtPtnIddLow.GetWindowText(sdata);	m_lcPtnSetList.SetItem(nPos, 7, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 	m_edtPtnIddHigh.GetWindowText(sdata);	m_lcPtnSetList.SetItem(nPos, 8, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 	m_edtPtnBlu.GetWindowText(sdata);	m_lcPtnSetList.SetItem(nPos, 9, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+	m_cmbPtnPower.GetWindowText(sdata);	m_lcPtnSetList.SetItem(nPos, 10, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 
 	m_lcPtnSetList.EnsureVisible( nPos, FALSE);
 
@@ -1769,6 +1799,14 @@ void CModelInfo::OnBnClickedBtnAll()
 			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE, 0, 0);
 		}
 	}
+	if (m_nSelClkFlags == 10)
+	{
+		for (nVertical = 0; nVertical < nCnt; nVertical++)
+		{
+			m_cmbPtnPower.GetWindowText(sdata);
+			m_lcPtnSetList.SetItem(nVertical, m_nSelClkFlags, LVIF_TEXT, sdata.GetBuffer(0), 0, LVIF_STATE, 0, 0);
+		}
+	}
 	UpdateData(FALSE);
 }
 
@@ -1854,6 +1892,15 @@ void CModelInfo::OnStnClickedSttBluClk()
 	Lf_setChangeFont();
 }
 
+void CModelInfo::OnStnClickedSttPtnPowerClk()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nSelClkFlags = 10;
+	m_nChangeFont &= 0x0000;
+	m_nChangeFont |= 0x0200;
+	Lf_setChangeFont();
+}
+
 void CModelInfo::OnBnClickedBtnCancel()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -1927,10 +1974,12 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| pWnd->GetDlgCtrlID() == IDC_STT_BLU_CLK
 			|| pWnd->GetDlgCtrlID() == IDC_STT_PTN_ICC
 			|| pWnd->GetDlgCtrlID() == IDC_STT_PTN_IDD
-			||pWnd->GetDlgCtrlID() == IDC_STT_ICC_LOW
+			|| pWnd->GetDlgCtrlID() == IDC_STT_ICC_LOW
 			|| pWnd->GetDlgCtrlID() == IDC_STT_ICC_HIGH
 			|| pWnd->GetDlgCtrlID() == IDC_STT_IDD_LOW
-			|| pWnd->GetDlgCtrlID() == IDC_STT_IDD_HIGH)
+			|| pWnd->GetDlgCtrlID() == IDC_STT_IDD_HIGH
+			|| pWnd->GetDlgCtrlID() == IDC_STT_PTN_POWER_CLK
+			)
 		{
 			pDC->SetBkColor(COLOR_BLUISH);
 			pDC->SetTextColor(COLOR_WHITE);
@@ -2276,4 +2325,5 @@ void CModelInfo::OnStnClickedSttFusing()
 	GetDlgItem(IDC_STT_FUSING)->EnableWindow(TRUE);
 	GetDlgItem(IDC_STT_FUSING)->Invalidate(FALSE);
 }
+
 

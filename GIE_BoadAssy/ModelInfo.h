@@ -109,6 +109,7 @@ public:
 	afx_msg void OnBnClickedBtnCancel();
 	afx_msg void OnStnClickedSttBluClk();
 	CEdit m_edtPtnBlu;
+	CComboBox m_cmbPtnPower;
 	CComboBox m_cboEepAddr;
 	CStatic m_sttMicroPtnPath;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
@@ -240,4 +241,5 @@ public:
 	afx_msg void OnStnClickedSttIccHigh();
 	afx_msg void OnStnClickedSttIddLow();
 	afx_msg void OnStnClickedSttIddHigh();
+	afx_msg void OnStnClickedSttPtnPowerClk();
 };

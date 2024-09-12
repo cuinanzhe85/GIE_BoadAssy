@@ -38,15 +38,12 @@ protected:
 	float m_fPatternVccOld;
 	float m_fPatternVddOld;
 
-#if (SUMMARY_LOG_VOLT_CURR==1)
-	BYTE m_bPowerMeasureComplete[TOTALPATTERN];
-#endif
-
 protected:
 	void RemoveMessageFromQueue();
 	void Lf_sendPtnData();
 	BOOL Lf_sendBluData();
-	void Lf_sendPatternBluData();
+	void Lf_measureSumLogPower();
+	void Lf_sendPatternBluAndFunction();
 	BOOL Lf_updateMeasureInfo();
 	void Lf_excutePatternList(MSG* pMsg);
 	void Lf_insertListColum();

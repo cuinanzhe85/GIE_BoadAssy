@@ -4,7 +4,6 @@
 #define _GOLBAL_DEFINE_
 
 #define MES_COMBI_CODE_USE				0
-#define SUMMARY_LOG_VOLT_CURR			0
 
 /////////////////////////////////////////////////////////////////////////////Đs
 #define _STR_DEFAULTMODEL				"DEFAULT_MODEL"
