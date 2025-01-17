@@ -335,7 +335,6 @@
 #define IDC_STT_PTN_IMAGE_TITLE         1108
 #define IDC_STT_OP_MODE_VALUE           1109
 #define IDC_EDT_ON_SEQ_DEL_5            1109
-#define IDC_STT_PTN_BLU2                1109
 #define IDC_STT_PTN_POWER               1109
 #define IDC_STT_USER_ID_VALUE           1110
 #define IDC_CMB_ON_SEQ_OP_6             1110
@@ -430,8 +429,11 @@
 #define IDC_STT_GFD250_STATUS           1150
 #define IDC_CMB_PTN_POWER               1150
 #define IDC_STT_SYSTEM_STATUS           1151
+#define IDC_STT_GRP_PWM_SET             1151
 #define IDC_STT_SYSTEM_STATUS_TIT       1152
+#define IDC_EDT_PWM_FREQ                1152
 #define IDC_STT_GFD250_STATUS_TIT       1153
+#define IDC_EDT_PWM_DUTY                1153
 #define IDC_CMB_TARGET_SELECT           1154
 #define IDC_CMB_OFF_SEQ_OP_7            1154
 #define IDC_STT_TARGET_SEL              1155

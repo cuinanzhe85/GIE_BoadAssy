@@ -164,10 +164,11 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_OFF_SEQ_DEL_17, m_edtOffSeqDelay17);
 	DDX_Control(pDX, IDC_EDT_CLOCK_DELAY, m_edtClockDelay);
 	DDX_Control(pDX, IDC_CMB_PIXEL_OVERLAP_MODE, m_cboPixelOverlapMode);
-
 	DDX_Control(pDX, IDC_EDT_VCOM1, m_edtPowerVcom1);
 	DDX_Control(pDX, IDC_EDT_VCOM2, m_edtPowerVcom2);
-	
+	DDX_Control(pDX, IDC_EDT_PWM_FREQ, m_edtPwmFreq);
+	DDX_Control(pDX, IDC_EDT_PWM_DUTY, m_edtPwmDuty);
+
 	
 }
 
@@ -282,7 +283,7 @@ void CModelInfo::Lf_initItemValue()
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_OTHERS)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_PATTERN)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_I2C_OPTION)->m_hWnd, _T(""), _T(""));
-	SetWindowTheme(GetDlgItem(IDC_STT_GRP_POWER_VCOM)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_PWM_SET)->m_hWnd, _T(""), _T(""));
 	HICON hIcon;
 	CButton* pBtn;
 	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_ADD);
@@ -327,7 +328,7 @@ void CModelInfo::Lf_initFontSet()
 	GetDlgItem(IDC_STT_GRP_TIMING)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_EDID)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_I2C_OPTION)->SetFont(&m_Font[0]);
-	GetDlgItem(IDC_STT_GRP_POWER_VCOM)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_GRP_PWM_SET)->SetFont(&m_Font[0]);
 
 	m_Font[1].CreateFont( 17, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
@@ -630,6 +631,12 @@ void CModelInfo::Lf_loadModelData()
 
 	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVcom2);
 	m_edtPowerVcom2.SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpModelInfo->m_nPwmFreq);
+	m_edtPwmFreq.SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpModelInfo->m_nPwmDuty);
+	m_edtPwmDuty.SetWindowText(sdata);
 
 	m_cmbI2cPullUp.SetCurSel(lpModelInfo->m_nI2cPullup);
 	m_cmbI2cFreq.SetCurSel(lpModelInfo->m_nI2cFreq);
@@ -1275,11 +1282,17 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 	lpModelInfo->m_fVoltVcom2 = (float)_tstof(sdata);
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("VCOM2"), lpModelInfo->m_fVoltVcom2);
 
-	CString strKey = _T("");
-	
+	m_edtPwmFreq.GetWindowText(sdata);
+	lpModelInfo->m_nPwmFreq = _ttoi(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("PWM_FREQ"), lpModelInfo->m_nPwmFreq);
 
-	int i=0,nLbItemCnt=0;
-	CString strPtnInfo = _T(""), strTemp = _T("");
+	m_edtPwmDuty.GetWindowText(sdata);
+	lpModelInfo->m_nPwmDuty = _ttoi(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("PWM_DUTY"), lpModelInfo->m_nPwmDuty);
+
+
+	int i = 0, nLbItemCnt = 0;
+	CString strKey = _T(""), strPtnInfo = _T(""), strTemp = _T("");
 
 	nLbItemCnt = m_lcPtnSetList.GetItemCount();
 
@@ -1994,7 +2007,7 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_EDID)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_PATTERN)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_I2C_OPTION)
-			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_POWER_VCOM)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_PWM_SET)
 			)
 		{
 			pDC->SetBkColor(COLOR_WHITE);

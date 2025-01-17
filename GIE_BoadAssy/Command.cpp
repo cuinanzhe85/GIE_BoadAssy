@@ -325,8 +325,8 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// LED Ovp
 	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);	// LED ISet
 	sdata.Format(_T("%01d"), 0);													makePacket.Append(sdata);	// Cable Open Check (Chamber용)
-	sdata.Format(_T("%05d"), 0);													makePacket.Append(sdata);	// PWM Freq
-	sdata.Format(_T("%03d"), 0);													makePacket.Append(sdata);	// PWM Duty
+	sdata.Format(_T("%05d"), lpModelInfo->m_nPwmFreq);								makePacket.Append(sdata);	// PWM Freq
+	sdata.Format(_T("%03d"), lpModelInfo->m_nPwmDuty);								makePacket.Append(sdata);	// PWM Duty
 	sdata.Format(_T("%01d"), lpModelInfo->m_nI2cLevel);								makePacket.Append(sdata);	// I2C Level 
 	sdata.Format(_T("%01d"), lpModelInfo->m_nI2cPullup);							makePacket.Append(sdata);	// I2C PullUP
 	sdata.Format(_T("%03d"), 100);													makePacket.Append(sdata);	// I2C Clock (Khz)

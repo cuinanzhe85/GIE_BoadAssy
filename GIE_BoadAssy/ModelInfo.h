@@ -223,6 +223,8 @@ public:
 	CEdit m_edtOffSeqDelay17;
 	CEdit m_edtPowerVcom1;
 	CEdit m_edtPowerVcom2;
+	CEdit m_edtPwmFreq;
+	CEdit m_edtPwmDuty;
 	CEdit m_edtClockDelay;
 	CComboBox m_cboPixelOverlapMode;
 

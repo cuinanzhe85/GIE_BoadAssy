@@ -605,6 +605,8 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpModelInfo->m_nVcomBitShift = 0;
 	lpModelInfo->m_fVoltVcom1 = 0;
 	lpModelInfo->m_fVoltVcom2 = 0;
+	lpModelInfo->m_nPwmFreq = 0;
+	lpModelInfo->m_nPwmDuty = 0;
 	lpModelInfo->m_nClockDelay = 0;
 	lpModelInfo->m_nPixelOverlapMode = 0;
 	lpModelInfo->m_nClockRising = 0;
@@ -994,17 +996,15 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_15"), &lpModelInfo->m_nPowerOffSeqDelay15);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_16"), &lpModelInfo->m_nPowerOffSeqDelay16);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("POWER_OFF_SEQ_DELAY_17"), &lpModelInfo->m_nPowerOffSeqDelay17);
-
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_PULLUP"), &lpModelInfo->m_nI2cPullup);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_FREQ"), &lpModelInfo->m_nI2cFreq);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("I2C_LEVEL"), &lpModelInfo->m_nI2cLevel);
-
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VBR"), &lpModelInfo->m_fVoltVbr);
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VBL"), &lpModelInfo->m_fVoltVbl);
-
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VCOM1"), &lpModelInfo->m_fVoltVcom1);
-
 	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("VCOM2"), &lpModelInfo->m_fVoltVcom2);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("PWM_FREQ"), &lpModelInfo->m_nPwmFreq);
+	Read_ModelFile(modelName, _T("MODEL_INFO"), _T("PWM_DUTY"), &lpModelInfo->m_nPwmDuty);
 
 	for (int i = 0; i < 32; i++)
 	{

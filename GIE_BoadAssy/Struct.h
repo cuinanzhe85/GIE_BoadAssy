@@ -211,6 +211,9 @@ typedef struct _ST_MODELSETINFO_{
 	float m_fVoltVcom2;
 	float m_fVoltGamma[32];
 
+	int	  m_nPwmFreq;
+	int	  m_nPwmDuty;
+
 	BYTE gucFGColor;
 	BYTE gucLineColor;
 
