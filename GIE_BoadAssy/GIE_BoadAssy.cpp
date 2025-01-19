@@ -908,8 +908,10 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGH_HIGH_LIMIT"),		&lpModelInfo->m_fLimitVghMax);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGH_LOW_LIMIT"),		&lpModelInfo->m_fLimitVghMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGL_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIglMax);
+	lpModelInfo->m_fLimitIglMax = 99;
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGL_LOW_LIMIT"),		&lpModelInfo->m_fLimitIglMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIghMax);
+	lpModelInfo->m_fLimitIghMax = 99;
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_LOW_LIMIT"),		&lpModelInfo->m_fLimitIghMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IBL_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIblMax);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IBL_LOW_LIMIT"),		&lpModelInfo->m_fLimitIblMin);

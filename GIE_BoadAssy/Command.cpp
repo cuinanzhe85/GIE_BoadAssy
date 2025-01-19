@@ -242,10 +242,10 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIddMax * 1000 + 0.5));		makePacket.Append(sdata);	// Idd high
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIblMin * 1000 + 0.5));		makePacket.Append(sdata);	// Ibl low
 	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIblMax * 1000 + 0.5));		makePacket.Append(sdata);	// Ibl high
-	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIghMin * 1000 + 0.5);		makePacket.Append(sdata);	// Igh low
-	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIghMax * 1000 + 0.5);		makePacket.Append(sdata);	// Igh high
-	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIglMin * 1000 + 0.5);		makePacket.Append(sdata);	// Igl low
-	sdata.Format(_T("%05d"), (int)lpModelInfo->m_fLimitIglMax * 1000 + 0.5);		makePacket.Append(sdata);	// Igl high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIghMin * 1000 + 0.5));		makePacket.Append(sdata);	// Igh low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIghMax * 1000 + 0.5));		makePacket.Append(sdata);	// Igh high
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIglMin * 1000 + 0.5));		makePacket.Append(sdata);	// Igl low
+	sdata.Format(_T("%05d"), (int)(lpModelInfo->m_fLimitIglMax * 1000 + 0.5));		makePacket.Append(sdata);	// Igl high
 
 	// Power On Sequence
 	sdata.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeqType01);						makePacket.Append(sdata);	// Power On Seq Type 1
