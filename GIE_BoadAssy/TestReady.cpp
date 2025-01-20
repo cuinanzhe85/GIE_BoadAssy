@@ -703,6 +703,7 @@ bool CTestReady::Lf_startTestOn()
 
 	lpWorkInfo->tt_endTime = CTime::GetCurrentTime();
 	m_pApp->Gf_writeSummaryLog();
+	m_pApp->Gf_InitSummaryInfo();
 
 	/*********************************************************************************************************************/	
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("TEST READY"));

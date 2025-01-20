@@ -55,8 +55,9 @@ public:
 	void Gf_writeLogData(CString strEvent,CString strData);
 	void Gf_writeLogData(char Event[MLOG_MAX_LENGTH],char Data[MLOG_MAX_LENGTH]);
 	void Gf_writeSummaryLog();
-	void Gf_writeInspCount(int Type);
+	void Gf_InitSummaryInfo();
 	void Gf_loadInspCount();
+	void Gf_writeInspCount(int Type);
 	void Gf_loadSystemInfo();
 	BOOL Gf_findModelFile(CString fileName);
 	BOOL Gf_loadMedelFile();

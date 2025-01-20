@@ -467,6 +467,14 @@ void CGIE_BoadAssyApp::Gf_writeSummaryLog()
 	fclose(fp);
 }
 
+void CGIE_BoadAssyApp::Gf_InitSummaryInfo()
+{
+	for (int i = 0; i < SUM_INFO_MAX; i++)
+	{
+		m_summaryInfo.m_sumData[i].Empty();
+	}
+}
+
 void CGIE_BoadAssyApp::Lf_initVariable()
 {
 	int i=0;
