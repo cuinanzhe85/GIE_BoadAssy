@@ -49,6 +49,7 @@ void CStationMenu::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_TCPIP_PLC_PORT, m_edtPlcPort);
 	DDX_Control(pDX, IDC_CMB_PINBLOCK_OPEN_CHECK, m_cmbPinBlockOpenCheck);
 	DDX_Control(pDX, IDC_CMB_SYSTEM_AUTO_FUSING, m_cmbSystemAutoFusing);
+ 	DDX_Control(pDX, IDC_CMB_SYSTEM_DEBUG_MLOG, m_cmbSystemDebugMLog);
 	DDX_Control(pDX, IDC_CMB_DFS_USE, m_cmbDfsUse);
 	DDX_Control(pDX, IDC_IPA_DFS_IP_ADDRESS, m_ipaDfsIPAddress);
 	DDX_Control(pDX, IDC_EDT_DFS_USER_ID, m_edtDfsUserId);
@@ -155,6 +156,7 @@ HBRUSH CStationMenu::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_TEST_START_DELAY)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_PINBLOCK_OPEN_CHECK)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_SYSTEM_AUTO_FUSING)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_SYSTEM_DEBUG_MLOG)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_AUTO_BCR_PORT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_BLU_PORT)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_MES_SERV_PORT)
@@ -240,6 +242,7 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_EDT_TEST_START_DELAY)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CMB_PINBLOCK_OPEN_CHECK)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CMB_SYSTEM_AUTO_FUSING)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_SYSTEM_DEBUG_MLOG)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_CBO_AUTO_BCR_COMPORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_CBO_BLU_COMPORT)->SetFont(&m_Font[4]);
@@ -262,6 +265,7 @@ void CStationMenu::Lf_initFontSet()
 	GetDlgItem(IDC_STT_TEST_START_DELAY)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_PINBLOCK_OPEN_CHECK)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_SYSTEM_AUTO_FUSING)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_SYSTEM_DEBUG_MLOG)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_AUTO_BCR_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_BLU_PORT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MES_SERV_PORT)->SetFont(&m_Font[4]);
@@ -359,6 +363,7 @@ void CStationMenu::Lf_initControls()
 
 	m_cmbPinBlockOpenCheck.SetCurSel(lpSystemInfo->m_nPinBlockOpenCheck);
 	m_cmbSystemAutoFusing.SetCurSel(lpSystemInfo->m_nSystemAutoFusing);
+	m_cmbSystemDebugMLog.SetCurSel(lpSystemInfo->m_nSystemDebugMLog);
 
 	m_edtModFilePath.SetWindowText(lpSystemInfo->m_sModelDnPath);
 	m_edtPtnFilePath.SetWindowText(lpSystemInfo->m_sPatternPath);
@@ -455,6 +460,9 @@ void CStationMenu::Lf_saveSystemInfo()
 
 	lpSystemInfo->m_nSystemAutoFusing = m_cmbSystemAutoFusing.GetCurSel();
 	Write_SysIniFile(_T("SYSTEM"), _T("SYSTEM_AUTO_FUSING"), lpSystemInfo->m_nSystemAutoFusing);
+
+	lpSystemInfo->m_nSystemDebugMLog = m_cmbSystemDebugMLog.GetCurSel();
+	Write_SysIniFile(_T("SYSTEM"), _T("SYSTEM_DEBUG_MLOG"), lpSystemInfo->m_nSystemDebugMLog);
 
  	m_edtModFilePath.GetWindowText(lpSystemInfo->m_sModelDnPath);
  	Write_SysIniFile(_T("SYSTEM"), _T("MODEL_FILE_PATH"), lpSystemInfo->m_sModelDnPath);

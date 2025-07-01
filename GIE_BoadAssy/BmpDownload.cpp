@@ -549,12 +549,25 @@ BOOL CBmpDownload::Lf_sendBmpRawData(LPBMPDOWNINFO pBmpInfo)
 
 	iptr_width = (pBitmapInfo->bmiHeader.biWidth * SIZE_OF_1PIXEL);
 
-	// point offset의 값을 256배수로 맞춘다.
-	while (1)
+	if (lpModelInfo->m_nPixelType == TRIPLE)
 	{
-		if ((iptr_width % 512) == 0)
-			break;
-		iptr_width++;
+		// point offset의 값을 LVDS:129, DP:384배수로 맞춘다.
+		while (1)
+		{
+			if ((iptr_width % 384) == 0)
+				break;
+			iptr_width++;
+		}
+	}
+	else
+	{
+		// point offset의 값을 256배수로 맞춘다.
+		while (1)
+		{
+			if ((iptr_width % 512) == 0)
+				break;
+			iptr_width++;
+		}
 	}
 
 	for (LineNo = 0; LineNo < pBitmapInfo->bmiHeader.biHeight; LineNo++)

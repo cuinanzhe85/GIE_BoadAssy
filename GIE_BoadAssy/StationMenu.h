@@ -74,6 +74,7 @@ public:
 	afx_msg void OnCbnSelchangeCmbPlcDeviceNum();
 	CComboBox m_cmbPinBlockOpenCheck;
 	CComboBox m_cmbSystemAutoFusing;
+	CComboBox m_cmbSystemDebugMLog;
 	afx_msg void OnBnClickedBtnQuantityCountReset();
 	CComboBox m_cmbDfsUse;
 	CIPAddressCtrl m_ipaDfsIPAddress;

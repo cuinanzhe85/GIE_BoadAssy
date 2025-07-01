@@ -533,6 +533,7 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 
 	lpSystemInfo->m_nPinBlockOpenCheck = 0;
 	lpSystemInfo->m_nSystemAutoFusing = 0;
+	lpSystemInfo->m_nSystemDebugMLog = 0;
 
 	////////////////////////////////////////////////////////////
 	lpModelInfo->m_nEdidUse=0;
@@ -814,6 +815,7 @@ void CGIE_BoadAssyApp::Gf_loadSystemInfo()
 	Read_SysIniFile(_T("SYSTEM"),		_T("EDP_INIT_CODE_SEL"),			&lpSystemInfo->m_neDPInitCodeSelect);
 	Read_SysIniFile(_T("SYSTEM"),		_T("PIN_BLOCK_OPEN_CHECK"),			&lpSystemInfo->m_nPinBlockOpenCheck);
 	Read_SysIniFile(_T("SYSTEM"),		_T("SYSTEM_AUTO_FUSING"),			&lpSystemInfo->m_nSystemAutoFusing);
+	Read_SysIniFile(_T("SYSTEM"),		_T("SYSTEM_DEBUG_MLOG"),			&lpSystemInfo->m_nSystemDebugMLog);
 
 	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_DEVICE_USE"),				&lpSystemInfo->m_nPlcDeviceUse);
 	Read_SysIniFile(_T("TCPIP_PLC"),	_T("PLC_DEVICE_NUM"),				&lpSystemInfo->m_nPlcDeviceNum);
@@ -915,16 +917,31 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGL_LOW_LIMIT"),		&lpModelInfo->m_fLimitVglMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGH_HIGH_LIMIT"),		&lpModelInfo->m_fLimitVghMax);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGH_LOW_LIMIT"),		&lpModelInfo->m_fLimitVghMin);
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGL_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIglMax);
 	lpModelInfo->m_fLimitIglMax = 99;
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGL_LOW_LIMIT"),		&lpModelInfo->m_fLimitIglMin);
+	lpModelInfo->m_fLimitIglMin = 0;
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIghMax);
 	lpModelInfo->m_fLimitIghMax = 99;
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IGH_LOW_LIMIT"),		&lpModelInfo->m_fLimitIghMin);
+	lpModelInfo->m_fLimitIghMin = 0;
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IBL_HIGH_LIMIT"),		&lpModelInfo->m_fLimitIblMax);
+	lpModelInfo->m_fLimitIblMax = 99;
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("IBL_LOW_LIMIT"),		&lpModelInfo->m_fLimitIblMin);
+	lpModelInfo->m_fLimitIblMin = 0;
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VBL_HIGH_LIMIT"),		&lpModelInfo->m_fLimitVblMax);
+	lpModelInfo->m_fLimitVblMax = 99;
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VBL_LOW_LIMIT"),		&lpModelInfo->m_fLimitVblMin);
+	lpModelInfo->m_fLimitVblMin = 0;
+
 
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_TYPE"),			&lpModelInfo->m_nSignalType);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SIGNAL_BIT"),			&lpModelInfo->m_nSignalBit);
@@ -1566,7 +1583,7 @@ void CGIE_BoadAssyApp::Lf_parsingAckData(CString strAckData)
 	recvCMD	= _tcstol(strAckData.Mid(PACKET_PT_CMD, 2), NULL, 16);
 	nResult = strAckData.GetAt(PACKET_PT_RET);
 
-	if(DEBUG_RS232C_LOG)
+	if(lpSystemInfo->m_nSystemDebugMLog == TRUE)
 	{
 		sLog.Format(_T("CMD:0x%02X  DATA:%s"), recvCMD, strAckData); 
 
@@ -1623,7 +1640,7 @@ void CGIE_BoadAssyApp::Lf_parsingAckGfd250Data(CString strAckData)
 	recvCMD	= _tcstol(strAckData.Mid(9, 2), NULL, 16);
 	nResult = strAckData.GetAt(13);
 
-	if(DEBUG_RS232C_LOG)
+	if (lpSystemInfo->m_nSystemDebugMLog == TRUE)
 	{
 		sLog.Format(_T("CMD:0x%02X  DATA:%s"), recvCMD, strAckData); 
 
@@ -2140,7 +2157,7 @@ BOOL CGIE_BoadAssyApp::udp_sendPacket(CString ipAddress, int nTarget, int nComma
 	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
 	szpacket[packetlen] = 0x00;
 
-	if (DEBUG_RS232C_LOG)
+	if (lpSystemInfo->m_nSystemDebugMLog == TRUE)
 	{
 		Gf_writeLogData("<UDP_SEND>", szpacket);
 	}

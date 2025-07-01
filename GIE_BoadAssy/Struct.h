@@ -345,6 +345,7 @@ typedef struct _ST_SYSTEMINFO_{
 
 	int			m_nPinBlockOpenCheck;
 	int			m_nSystemAutoFusing;
+	int			m_nSystemDebugMLog;
 
 }SYSTEMINFO, *LPSYSTEMINFO;
 

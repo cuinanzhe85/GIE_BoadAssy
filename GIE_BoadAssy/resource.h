@@ -238,6 +238,8 @@
 #define IDC_BTN_ALL                     1083
 #define IDC_STT_TACT_TIME               1083
 #define IDC_BTN_TEST_START              1083
+#define IDC_CMB_SYSTEM_AUTO_FUSING2     1083
+#define IDC_CMB_SYSTEM_DEBUG_MLOG       1083
 #define IDC_STT_MODEL_NAME              1084
 #define IDC_STT_IDD_MEASURE             1084
 #define IDC_CMB_GFD250_ONOFF            1084
@@ -501,6 +503,7 @@
 #define IDC_STT_SYSTEM_AUTO_FUSING      1177
 #define IDC_STT_PG_PORT                 1178
 #define IDC_EDT_GAMMA_CH3               1178
+#define IDC_STT_SYSTEM_DEBUG_MLOG       1178
 #define IDC_STT_GFD250_PORT             1179
 #define IDC_EDT_GAMMA_CH4               1179
 #define IDC_STT_AUTO_BCR_PORT           1180

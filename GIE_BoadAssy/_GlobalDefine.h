@@ -14,7 +14,6 @@
 /////////////////////////////////////////////////////////////////////////////
 #define DEBUG_UDP_RECEIVE_OK			0
 #define	DEBUG_GMES_TEST_SERVER			0
-#define DEBUG_RS232C_LOG				0
 #define DEBUG_PALLET_ARRIVE				0
 #define DEBUG_MES_NOT_USE				0
 
@@ -52,6 +51,7 @@
 #define SINGLE							0
 #define DUAL							1
 #define QUAD							2
+#define TRIPLE							3
 
 /////////////////////////////////////////////////////////////////////////////
 #define PTNLST_MAX						200

@@ -60,7 +60,7 @@ public:
 	BOOL Gf_setPGInfoGFD250(CString strPtnName, BOOL bHotKeyFlags = FALSE, BOOL bHkeyFlags = FALSE);
 	CString MakeT2PtnDataGFD250(CString szPtnName, BOOL bHotKeyFlags, BOOL bHkeyFlags);
 	BOOL Gf_setGFD250InfoPatternString(CString strPtnPacket, BOOL Ack = TRUE);
-	BOOL Gf_setGFD250Timeing();
+	BOOL Gf_setGFD250Timing();
 	BOOL Gf_serGfd250SignalOnOff(char onoff);
 	BOOL Gf_serGfd250SignalSelect(char sel);
 	BOOL Gf_serGfd250FirmwareVersion();

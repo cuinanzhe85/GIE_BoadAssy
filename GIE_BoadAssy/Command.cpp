@@ -169,9 +169,10 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 
 	sdata.Format(_T("INFO"));														makePacket.Append(sdata);
 
-	if(lpModelInfo->m_nPixelType == SINGLE)			nInterface=0;
-	else if(lpModelInfo->m_nPixelType == DUAL)		nInterface=1;
-	else if(lpModelInfo->m_nPixelType == QUAD)		nInterface=2;
+	if (lpModelInfo->m_nPixelType == SINGLE)		nInterface = 0;
+	else if (lpModelInfo->m_nPixelType == DUAL)		nInterface = 1;
+	else if (lpModelInfo->m_nPixelType == QUAD)		nInterface = 2;
+	else if (lpModelInfo->m_nPixelType == TRIPLE)	nInterface = 7;
 
 	sdata.Format(_T("%02X"), (nInterface | nBitsSwap));								makePacket.Append(sdata);	// MODE
 	sdata.Format(_T("%01X"), (nHsyncPolarity | nVsyncPolarity));					makePacket.Append(sdata);	// Polarity
@@ -179,7 +180,7 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingVerActive);						makePacket.Append(sdata);	// V Active
 
 	float fMclock = lpModelInfo->m_fTimingFreq;
-	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_DP)	// DP Type 일때 MCLOCK/2
+	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_DP)
 	{
 		fMclock = lpModelInfo->m_fTimingFreq / 2;
 	}
@@ -194,6 +195,10 @@ void CCommand::Lf_makeSystemFusingData(char* packet)
 	else if (lpModelInfo->m_nPixelType == QUAD)
 	{
 		sdata.Format(_T("%06.2f"), fMclock / 4.f);									makePacket.Append(sdata);	// M Clock
+	}
+	else if (lpModelInfo->m_nPixelType == TRIPLE)
+	{
+		sdata.Format(_T("%06.2f"), fMclock / 3.f);									makePacket.Append(sdata);	// M Clock
 	}
 
 	sdata.Format(_T("%04d"), lpModelInfo->m_nTimingHorWidth);						makePacket.Append(sdata);	// H Width
@@ -1040,7 +1045,7 @@ BOOL CCommand::Gf_setPGInfoGFD250(CString strPtnName, BOOL bHotKeyFlags, BOOL bH
 	return bRtnCode;
 }
 
-BOOL CCommand::Gf_setGFD250Timeing()
+BOOL CCommand::Gf_setGFD250Timing()
 {
 	int nInterface = 0;
 	int nMode = 0;
@@ -1053,9 +1058,10 @@ BOOL CCommand::Gf_setGFD250Timeing()
 
 	sdata.Format(_T("INFO"));														makePacket.Append(sdata);
 
-	if(lpModelInfo->m_nPixelType == SINGLE)			nInterface=0;
-	else if(lpModelInfo->m_nPixelType == DUAL)		nInterface=1;
-	else if(lpModelInfo->m_nPixelType == QUAD)		nInterface=2;
+	if (lpModelInfo->m_nPixelType == SINGLE)			nInterface = 0;
+	else if (lpModelInfo->m_nPixelType == DUAL)			nInterface = 1;
+	else if (lpModelInfo->m_nPixelType == QUAD)			nInterface = 2;
+	else if (lpModelInfo->m_nPixelType == TRIPLE)		nInterface = 7;
 
 	sdata.Format(_T("%02X"), (nInterface | nMode | nBitsSwap));						makePacket.Append(sdata);
 	sdata.Format(_T("%01X"), (nDotClockInv | nHsyncPolarity | nVsyncPolarity));		makePacket.Append(sdata);
@@ -1069,6 +1075,8 @@ BOOL CCommand::Gf_setGFD250Timeing()
 		fMclk = (lpModelInfo->m_fTimingFreq / 2.f);
 	else if(lpModelInfo->m_nPixelType == QUAD)
 		fMclk = (lpModelInfo->m_fTimingFreq / 4.f);
+	else if (lpModelInfo->m_nPixelType == TRIPLE)
+		fMclk = (lpModelInfo->m_fTimingFreq / 3.f);
 
 	// HBR3는 /2 를 한번 더 함
 	fMclk = fMclk / 2.0f;				
