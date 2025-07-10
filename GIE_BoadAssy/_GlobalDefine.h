@@ -16,6 +16,7 @@
 #define	DEBUG_GMES_TEST_SERVER			0
 #define DEBUG_PALLET_ARRIVE				0
 #define DEBUG_MES_NOT_USE				0
+#define DEBUG_MOUSE_HOLD_NOTUSE			0
 
 /////////////////////////////////////////////////////////////////////////////
 // DebugMode

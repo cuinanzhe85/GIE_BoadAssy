@@ -168,6 +168,7 @@ void CGIE_BoadAssyApp::InitLocalHostIPAddress()
 	m_pSocketUDP->getLocalIPAddress();
 	m_pSocketUDP->getLocalGateWay();
 }
+
 void CGIE_BoadAssyApp::udp_processPacket(char* wParam, int lParam)
 {
 	char szbuf[10] = { 0, };
@@ -181,6 +182,13 @@ void CGIE_BoadAssyApp::udp_processPacket(char* wParam, int lParam)
 	recvRet = wParam[PACKET_PT_RET];
 
 	memcpy(m_pCommand->gszudpRcvPacket, wParam, lParam);
+
+	if (lpSystemInfo->m_nSystemDebugMLog == TRUE)
+	{
+		CString sLog;
+		sLog.Format(_T("CMD:0x%02X  DATA:%s"), recvCMD, char_To_wchar(wParam));
+		Gf_writeLogData(_T("<UDP_RECV>"), sLog.GetBuffer(0));
+	}
 
 	// Message 처리
 	switch (recvCMD)
@@ -1587,7 +1595,7 @@ void CGIE_BoadAssyApp::Lf_parsingAckData(CString strAckData)
 	{
 		sLog.Format(_T("CMD:0x%02X  DATA:%s"), recvCMD, strAckData); 
 
-		Gf_writeLogData(_T("<UDP_RECV>"), sLog.GetBuffer(0));
+		Gf_writeLogData(_T("<RS232_RECV>"), sLog.GetBuffer(0));
 	}
 
 	switch(recvCMD)

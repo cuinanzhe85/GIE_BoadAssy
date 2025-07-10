@@ -1437,7 +1437,7 @@ void CModelInfo::Lf_setPtnDataChange(int sel)
 
 	strPtnName = m_lcPtnSetList.GetItemText(sel,0);
 	nAllPtn = m_cboPtnName.FindStringExact(nAllPtn, strPtnName);
-	
+	 
 	if(nAllPtn == CB_ERR)
 	{
 		AfxMessageBox(_T("Pattern File Can Not Search..."));

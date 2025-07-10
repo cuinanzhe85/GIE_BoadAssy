@@ -508,11 +508,11 @@ void CPatternTest::Lf_sendPatternBluAndFunction()
 	Lf_sendPtnData();
 	Lf_sendBluData();
 	Lf_measureSumLogPower();
-	/*if (Lf_PatternVoltageSetting() == FALSE)
+	if (Lf_PatternVoltageSetting() == FALSE)
 	{
 		CDialog::OnCancel();
 	}
-	if (Lf_PatternCurrentCheck() == FALSE)
+	/*if (Lf_PatternCurrentCheck() == FALSE)
 	{
 		CDialog::OnCancel();
 	}*/
@@ -571,12 +571,15 @@ void CPatternTest::OnTimer(UINT_PTR nIDEvent)
 	}
 	else if (nIDEvent == 99)
 	{
-		KillTimer(99);
-		CRect rcFrame;
-		GetDlgItem(IDC_STT_PTN_IMAGE_VIEW_SIZE)->GetWindowRect(rcFrame);
-		::SetCursorPos(rcFrame.left + rcFrame.Width() / 2, rcFrame.top + rcFrame.Height() / 2);
+		if (DEBUG_MOUSE_HOLD_NOTUSE == 0)
+		{
+			KillTimer(99);
+			CRect rcFrame;
+			GetDlgItem(IDC_STT_PTN_IMAGE_VIEW_SIZE)->GetWindowRect(rcFrame);
+			::SetCursorPos(rcFrame.left + rcFrame.Width() / 2, rcFrame.top + rcFrame.Height() / 2);
 
-		SetTimer(99, 200, NULL);
+			SetTimer(99, 200, NULL);
+		}
 	}
 	else if(nIDEvent==100)
 	{

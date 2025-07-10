@@ -890,6 +890,10 @@ BOOL CCommand::Gf_CheckCableOpen()
 	ret = m_pApp->udp_sendPacket(UDP_MAIN_IP, TARGET_CTRL, CMD_CTRL_CABLE_OPEN_TEST, 0, "");
 	if (ret == TRUE)
 	{
+#if (DEBUG_UDP_RECEIVE_OK == 1)
+		return TRUE;
+#endif
+
 		if (gszudpRcvPacket[PACKET_PT_RET] == '0')
 		{
 			return TRUE;
