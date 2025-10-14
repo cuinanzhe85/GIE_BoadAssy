@@ -12,7 +12,7 @@
 #define MLOG_MAX_LENGTH					16*1024
 
 /////////////////////////////////////////////////////////////////////////////
-#define DEBUG_UDP_RECEIVE_OK			0
+#define DEBUG_UDP_RECEIVE_OK			1
 #define	DEBUG_GMES_TEST_SERVER			0
 #define DEBUG_PALLET_ARRIVE				0
 #define DEBUG_MES_NOT_USE				0
@@ -61,6 +61,10 @@
 #define OFF_LINE						0
 #define IN_LINE							1
 
+/////////////////////////////////////////////////////////////////////////////
+#define ID_TYPE_PID						0
+#define ID_TYPE_SERIAL_NO				1
+#define ID_TYPE_PCBID					2
 
 /////////////////////////////////////////////////////////////////////////////
 // PLC Interface define

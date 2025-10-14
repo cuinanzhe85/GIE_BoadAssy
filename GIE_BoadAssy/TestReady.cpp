@@ -460,6 +460,7 @@ BOOL CTestReady::Lf_checkPanelId()
 		m_pApp->Gf_ShowMessageBox(strlog);
 		lpWorkInfo->m_sPanelID.Empty();
 		lpWorkInfo->m_sSerialNumber.Empty();
+		lpWorkInfo->m_sPcbID.Empty();
 		CPanelID pidDlg;
 		if (pidDlg.DoModal() == IDCANCEL)
 			return FALSE;
@@ -475,6 +476,7 @@ BOOL CTestReady::Lf_checkPanelId()
 			m_pApp->Gf_ShowMessageBox(strlog);
 			lpWorkInfo->m_sPanelID.Empty();
 			lpWorkInfo->m_sSerialNumber.Empty();
+			lpWorkInfo->m_sPcbID.Empty();
 			CPanelID pidDlg;
 			if (pidDlg.DoModal() == IDCANCEL)
 				return FALSE;
@@ -485,6 +487,7 @@ BOOL CTestReady::Lf_checkPanelId()
 	{
 		lpWorkInfo->m_sPanelID.Empty();
 		lpWorkInfo->m_sSerialNumber = lpWorkInfo->m_sReceivePID;
+		lpWorkInfo->m_sPcbID.Empty();
 
 		m_pApp->m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
 	}
@@ -492,6 +495,7 @@ BOOL CTestReady::Lf_checkPanelId()
 	{
 		lpWorkInfo->m_sPanelID = lpWorkInfo->m_sReceivePID;
 		lpWorkInfo->m_sSerialNumber.Empty();
+		lpWorkInfo->m_sPcbID.Empty();
 
 		m_pApp->m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
 	}
@@ -633,7 +637,7 @@ bool CTestReady::Lf_startTestOn()
 	lpWorkInfo->tt_startTime = CTime::GetCurrentTime();
 
 	GetDlgItem(IDC_STT_STATUS_MSG)->SetWindowText(_T("[DIO PLC -> PC] JIG IN"));
-	if ((lpWorkInfo->m_sPanelID.IsEmpty() == TRUE) && (lpWorkInfo->m_sSerialNumber.IsEmpty() == TRUE))
+	if ((lpWorkInfo->m_sPanelID.IsEmpty() == TRUE) && (lpWorkInfo->m_sSerialNumber.IsEmpty() == TRUE) && (lpWorkInfo->m_sPcbID.IsEmpty() == TRUE))
 	{
 		CPanelID piddlg;
 		if (piddlg.DoModal() == IDOK)
@@ -645,6 +649,10 @@ bool CTestReady::Lf_startTestOn()
 			else if (lpWorkInfo->m_sSerialNumber.IsEmpty() == FALSE)
 			{
 				GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sSerialNumber);
+			}
+			else if (lpWorkInfo->m_sPcbID.IsEmpty() == FALSE)
+			{
+				GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sPcbID);
 			}
 		}
 		else
@@ -730,6 +738,7 @@ void CTestReady::Lf_setVariableReset()
 	// 검사 함번할때마다 PID 다시 입력하도록 수정.(최종검수때 요청) 2022-10-04 CNZ
 	lpWorkInfo->m_sPanelID.Empty();
 	lpWorkInfo->m_sSerialNumber.Empty();
+	lpWorkInfo->m_sPcbID.Empty();
 	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(_T(""));
 
 	m_dioInputBit = 0x0000;

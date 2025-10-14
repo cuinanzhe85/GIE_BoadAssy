@@ -612,6 +612,7 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpModelInfo->m_nIccCheck=0;
 	lpModelInfo->m_nCableOpenUse = 0;
 	lpModelInfo->m_nShortTestUse = 0;
+	lpModelInfo->m_nIdInputType = 0;
 	lpModelInfo->m_nVcomAddr = 0;
 	lpModelInfo->m_nVcomLine = 0;
 	lpModelInfo->m_nVcomMinMaxUse = 0;
@@ -908,6 +909,7 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BLU_MIN"),				&lpModelInfo->m_nBluMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("CABLE_OPEN_USE"),		&lpModelInfo->m_nCableOpenUse);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SHORT_TEST_USE"),		&lpModelInfo->m_nShortTestUse);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("ID_INPUT_TYPE"),		&lpModelInfo->m_nIdInputType);
 	
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCC"),					&lpModelInfo->m_fVoltVcc);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VDD"),					&lpModelInfo->m_fVoltVdd);
@@ -1516,6 +1518,13 @@ void CGIE_BoadAssyApp::Lf_parsingMeasureAllPower(CString strAckData)
 {
 	if (strAckData.Mid(PACKET_PT_RET, 1) == _T("0"))
 	{
+		CString strTmp;
+		strTmp = strAckData.Mid(PACKET_PT_DATA + 1, 1);
+		m_nLcmPInfo[PINFO_ERR_RESULT] = (int)_ttoi(strTmp);
+		m_nLcmPInfo[PINFO_ERR_NAME] = (int)_ttoi(strAckData.Mid(PACKET_PT_DATA + 2, 1));
+		m_nLcmPInfo[PINFO_ERR_VALUE] = (int)_ttoi(strAckData.Mid(PACKET_PT_DATA + 3, 5));
+
+
 		int nstartLength= PACKET_PT_DATA + 15;
 		m_nLcmPInfo[PINFO_VCC] = (int)_ttoi(strAckData.Mid(nstartLength, 5));
 		nstartLength += 5;
@@ -1543,10 +1552,6 @@ void CGIE_BoadAssyApp::Lf_parsingMeasureAllPower(CString strAckData)
 		m_nLcmPInfo[PINFO_VLED_FB] = (int)_ttoi(strAckData.Mid(nstartLength, 5));
 		nstartLength += 5;
 		m_nLcmPInfo[PINFO_THERMISTOR] = (int)_ttoi(strAckData.Mid(nstartLength, 5));
-
-		m_nLcmPInfo[PINFO_ERR_RESULT] = (int)_ttoi(strAckData.Mid(PACKET_PT_DATA+1, 1));
-		m_nLcmPInfo[PINFO_ERR_NAME] = (int)_ttoi(strAckData.Mid(PACKET_PT_DATA + 1 + 1, 1));
-		m_nLcmPInfo[PINFO_ERR_VALUE] = (int)_ttoi(strAckData.Mid(PACKET_PT_DATA + 1 + 1 + 1, 5));
 	}
 	
 }
@@ -1956,6 +1961,7 @@ void CGIE_BoadAssyApp::Lf_setGmesValuePCHK()
 {
 	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
 	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
+	m_pCimNet->SetPcbID(lpWorkInfo->m_sPcbID);
 	m_pCimNet->SetMachineName(lpSystemInfo->m_sMachinName);
 
 }
@@ -1964,6 +1970,7 @@ void CGIE_BoadAssyApp::Lf_setEasValueAPDR()
 	CString sAPDInfo;
 	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
 	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
+	m_pCimNet->SetPcbID(lpWorkInfo->m_sPcbID);
 	m_pCimNet->SetBLID(_T(""));
 	m_pCimNet->SetPalletID(_T(""));
 
@@ -1973,6 +1980,7 @@ void CGIE_BoadAssyApp::Lf_setGmesValueEICR()
 {
 	m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
 	m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
+	m_pCimNet->SetPcbID(lpWorkInfo->m_sPcbID);
 	m_pCimNet->SetBLID(_T(""));
 	m_pCimNet->SetPalletID(_T(""));
 

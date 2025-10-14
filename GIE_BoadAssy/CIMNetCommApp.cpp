@@ -879,6 +879,11 @@ void CCimNetCommApi::SetSerialNumber (CString strBuff)
 	m_strSerialNumber.Format(_T("%s"), strBuff);
 }
 
+void CCimNetCommApi::SetPcbID(CString strBuff)
+{
+	m_strPcbID.Format(_T("%s"), strBuff);
+}
+
 void CCimNetCommApi::SetModelName (CString strBuff)
 {
 	m_strModelName.Format(_T("%s"), strBuff);
@@ -1149,37 +1154,19 @@ BOOL CCimNetCommApi::PCHK (int ipa_mode, int ipa_value)
 {
 	MakeClientTimeString ();
 
-//	if(ipa_mode == FALSE)
-//	{
-		m_strPCHK.Format (_T ("PCHK ADDR=%s,%s EQP=%s PID=%s SERIAL_NO=%s BLID=[%s] PPALLET=%s SKD_BOX_ID= USER_ID=%s MODE=AUTO CLIENT_DATE=%s COMMENT=[%s]"),
-			m_strLocalSubjectMesF,
-			m_strLocalSubjectMesF,
-			m_strMachineName,
-			m_strPanelID,
-			m_strSerialNumber,
-			m_strBLID,
-			m_strPalletID,
-			m_strUserID,
-			m_strClientDate,
-			_T("")	// Comment
-			);
-//	}
-//	else
-//	{
-//		m_strPCHK.Format (_T ("PCHK ADDR=%s,%s EQP=%s PID=%s SERIAL_NO=%s BLID=[%s] PPALLET=%s SKD_BOX_ID= IPA_MODE=%S USER_ID=%s MODE=AUTO CLIENT_DATE=%s COMMENT=[%s]"),
-//			m_strLocalSubject,
-//			m_strLocalSubject,
-//			m_strMachineName,
-//			m_strPanelID,
-//			m_strSerialNumber,
-//			m_strBLID,
-//			m_strPalletID,
-//			((ipa_value==TRUE) ? "Y" : "N"),
-//			m_strUserID,
-//			m_strClientDate,
-//			_T("")	// Comment
-//			);
-//	}
+	m_strPCHK.Format (_T ("PCHK ADDR=%s,%s EQP=%s PID=%s SERIAL_NO=%s PCBID=%s BLID=[%s] PPALLET=%s SKD_BOX_ID= USER_ID=%s MODE=AUTO CLIENT_DATE=%s COMMENT=[%s]"),
+		m_strLocalSubjectMesF,
+		m_strLocalSubjectMesF,
+		m_strMachineName,
+		m_strPanelID,
+		m_strSerialNumber,
+		m_strPcbID,
+		m_strBLID,
+		m_strPalletID,
+		m_strUserID,
+		m_strClientDate,
+		_T("")	// Comment
+		);
 
 	int nRetCode = MessageSend (ECS_MODE_PCHK);
 	if (nRetCode != RTN_OK)
@@ -1210,12 +1197,13 @@ BOOL CCimNetCommApi::EICR ()
 		else
 			m_strPF.Format(_T("F"));	// ng
 	}
-	m_strEICR.Format(_T ("EICR ADDR=%s,%s EQP=%s PID=%s SERIAL_NO=%s BLID=[%s] PF=%s RWK_CD=%s PPALLET=%s EXPECTED_RWK=%s PATTERN_INFO=[%s] DEFECT_PATTERN=%s EDID=%s PVCOM_ADJUST_VALUE=%s PVCOM_ADJUST_DROP_VALUE=%s OVERHAUL_FLAG=%s DEFECT_COMMENT_CODE=%s MODE=AUTO CLIENT_DATE=%s USER_ID=%s COMMENT=[%s] BA_EXI_FLAG=%s MATERIAL_INFO=[] BUYER_SERIAL_NO=%s CGID= VTH_VALUE=%s BD_INFO=[%s] WDR_INFO=[%s] WDR_END=%s REMARK=[%s] NG_PORT_OUT=%s TACT=%s"),
+	m_strEICR.Format(_T ("EICR ADDR=%s,%s EQP=%s PID=%s SERIAL_NO=%s PCBID=%s BLID=[%s] PF=%s RWK_CD=%s PPALLET=%s EXPECTED_RWK=%s PATTERN_INFO=[%s] DEFECT_PATTERN=%s EDID=%s PVCOM_ADJUST_VALUE=%s PVCOM_ADJUST_DROP_VALUE=%s OVERHAUL_FLAG=%s DEFECT_COMMENT_CODE=%s MODE=AUTO CLIENT_DATE=%s USER_ID=%s COMMENT=[%s] BA_EXI_FLAG=%s MATERIAL_INFO=[] BUYER_SERIAL_NO=%s CGID= VTH_VALUE=%s BD_INFO=[%s] WDR_INFO=[%s] WDR_END=%s REMARK=[%s] NG_PORT_OUT=%s TACT=%s"),
 						  m_strLocalSubjectMesF,
 						  m_strLocalSubjectMesF,
 						  m_strMachineName,
 						  m_strPanelID,
 						  m_strSerialNumber,
+						  m_strPcbID,
 						  m_strBLID,
 						  m_strPF,
 						  m_strRwkCode,
@@ -1267,11 +1255,12 @@ BOOL CCimNetCommApi::RPLT(int Station)
 	//	정밀검사 default: N, 정밀검사 사용시 Y
 	MakeClientTimeString();
 
-	m_strRPLT.Format(_T ("RPLT ADDR=%s,%s EQP=%s PID=%s SS_FLAG=%s MATERIAL_INFO=[:%s:%s::::%s:] REPAIR_CD=[%s] GIB_CD=%s RWK_TIMEKEY=%s RESP_DEPT=%s USER_ID=%s RECYCLE_INFO=[%s:%s] SERIAL_NO=%s MODE=%s CLIENT_DATE=%s COMMENT=[%s] REPAIR_TYPE_CD=%s TO_OPER=%s REPAIR_INSP_FLAG=%s TACT=%s"),
+	m_strRPLT.Format(_T ("RPLT ADDR=%s,%s EQP=%s PID=%s PCBID=%s SS_FLAG=%s MATERIAL_INFO=[:%s:%s::::%s:] REPAIR_CD=[%s] GIB_CD=%s RWK_TIMEKEY=%s RESP_DEPT=%s USER_ID=%s RECYCLE_INFO=[%s:%s] SERIAL_NO=%s MODE=%s CLIENT_DATE=%s COMMENT=[%s] REPAIR_TYPE_CD=%s TO_OPER=%s REPAIR_INSP_FLAG=%s TACT=%s"),
 		m_strLocalSubjectMesF,		// ADDR
 		m_strLocalSubjectMesF,		// ADDR
 		m_strMachineName,			// EQP
-		m_strPanelID,				// PID
+		m_strPanelID,				// Panel ID
+		m_strPcbID,					// PCB ID
 		_T("N"),					// SS_FLAG
 		_T("4BLTZ"),				// MATERIAL_TYPE : MATERIAL_INFO
 		_T("1"),					// MATERIAL_QTY : MATERIAL_INFO
@@ -1431,12 +1420,13 @@ BOOL CCimNetCommApi::MSET ()
 {
 	MakeClientTimeString ();
 
-	m_strMSET.Format (_T ("MSET ADDR=%s,%s EQP=%s PID=%s SERIAL_NO=%s BLID=%s MATERIAL_INFO=[%s] USER_ID=%s MODE=AUTO CLIENT_DATE=%s"),
+	m_strMSET.Format (_T ("MSET ADDR=%s,%s EQP=%s PID=%s SERIAL_NO=%s PCBID=%s BLID=%s MATERIAL_INFO=[%s] USER_ID=%s MODE=AUTO CLIENT_DATE=%s"),
 		m_strLocalSubjectMesF,
 		m_strLocalSubjectMesF,
 		m_strMachineName,
 		m_strPanelID,
 		m_strSerialNumber,
+		m_strPcbID,
 		m_strBLID,
 		m_strMaterialInfo,
 		m_strUserID,
@@ -1529,13 +1519,14 @@ BOOL CCimNetCommApi::APDR ()
 	//	정밀검사 default: N, 정밀검사 사용시 Y
 	MakeClientTimeString ();
 
-	m_strAPDR.Format(_T ("APDR ADDR=%s,%s EQP=%s MODEL=%s PID=%s SERIAL_NO=%s APD_INFO=[%s] USER_ID=%s MODE=AUTO CLIENT_DATE=%s COMMENT=[%s]"),
+	m_strAPDR.Format(_T ("APDR ADDR=%s,%s EQP=%s MODEL=%s PID=%s SERIAL_NO=%s PCBID=%s APD_INFO=[%s] USER_ID=%s MODE=AUTO CLIENT_DATE=%s COMMENT=[%s]"),
 		m_strLocalSubjectEasF,
 		m_strLocalSubjectEasF,
 		m_strMachineName,
 		m_strModelName,
 		m_strPanelID,
 		m_strSerialNumber,
+		m_strPcbID,
 		m_strAPDInfo,
 		m_strUserID,
 		m_strClientDate,

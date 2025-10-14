@@ -508,14 +508,16 @@ void CPatternTest::Lf_sendPatternBluAndFunction()
 	Lf_sendPtnData();
 	Lf_sendBluData();
 	Lf_measureSumLogPower();
-	if (Lf_PatternVoltageSetting() == FALSE)
-	{
-		CDialog::OnCancel();
-	}
-	/*if (Lf_PatternCurrentCheck() == FALSE)
-	{
-		CDialog::OnCancel();
-	}*/
+
+	// 	if (Lf_PatternVoltageSetting() == FALSE)
+// 	{
+// 		CDialog::OnCancel();
+// 	}
+
+// 	if (Lf_PatternCurrentCheck() == FALSE)
+// 	{
+// 		CDialog::OnCancel();
+// 	}
 }
 
 void CPatternTest::OnTimer(UINT_PTR nIDEvent)

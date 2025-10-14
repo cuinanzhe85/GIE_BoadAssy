@@ -570,6 +570,10 @@ void CMaint::OnBnClickedBtnBcrRead()
 	{
 		GetDlgItem(IDC_EDT_BCR_PID)->SetWindowTextW(lpWorkInfo->m_sSerialNumber);
 	}
+	else if (lpWorkInfo->m_sPcbID.IsEmpty() == FALSE)
+	{
+		GetDlgItem(IDC_EDT_BCR_PID)->SetWindowTextW(lpWorkInfo->m_sPcbID);
+	}
 	else
 	{
 		GetDlgItem(IDC_EDT_BCR_PID)->SetWindowTextW(_T(""));

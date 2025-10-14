@@ -71,6 +71,7 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nSpiLevel;
 	int m_nCableOpenUse;
 	int m_nShortTestUse;
+	int m_nIdInputType;
 	
 	int m_nEdidUse;
 	int m_nEdidAddr;
@@ -402,6 +403,7 @@ typedef struct _ST_INSPWORKINFO_{
 	CString	m_sReceivePID;
 	CString	m_sPanelID;
 	CString m_sSerialNumber;
+	CString m_sPcbID;
 
 	int m_nFastDioJudge;
 	

@@ -148,6 +148,7 @@ public:
 	CComboBox m_cmbI2cLevel;
 	CComboBox m_cmbCableOpenUse;
 	CComboBox m_cmbShortTestUse;
+	CComboBox m_cmbIdInputType;
 	CComboBox m_cmbClockDelay;
 	CComboBox m_cmbClockRising;
 	CComboBox m_cmbHSyncPolarity;

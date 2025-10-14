@@ -49,6 +49,7 @@ BOOL CPanelID::OnInitDialog()
 	lpModelInfo		= m_pApp->GetModelInfo();
 	lpWorkInfo		= m_pApp->GetWorkInfo();
 
+	Lf_InitValue();
 	Lf_InitFont();
 	Lf_InitBrush();
 
@@ -71,6 +72,18 @@ void CPanelID::OnDestroy()
 	}
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
+
+void CPanelID::Lf_InitValue()
+{
+	if (lpModelInfo->m_nIdInputType == ID_TYPE_PID)
+		GetDlgItem(IDC_STT_PID_INPUT_TITLE)->SetWindowText(_T("PID INPUT"));
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_SERIAL_NO)
+		GetDlgItem(IDC_STT_PID_INPUT_TITLE)->SetWindowText(_T("SERIAL NO INPUT"));
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_PCBID)
+		GetDlgItem(IDC_STT_PID_INPUT_TITLE)->SetWindowText(_T("PCB ID INPUT"));
+
+}
+
 void CPanelID::Lf_InitFont()
 {
 	
@@ -100,23 +113,43 @@ void CPanelID::Lf_InitBrush()
 void CPanelID::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString sLog, sdata;
 	CString strInputID=_T("");
 	BOOL isDataOK = TRUE;
 	char cbuff[128]={0,};
 	int i=0,len=0;
 	WORD wPID[20];
-	
-	m_edtPanelId.GetWindowText(strInputID);
-	if(((strInputID.GetLength() < 7) || (strInputID.GetLength() > 20)) && (strInputID != _T("ESC")) )
+
+	int len_min, len_max;
+	if (lpModelInfo->m_nIdInputType == ID_TYPE_PID)
 	{
-		m_pApp->Gf_ShowMessageBox(_T("<BCR> Panel ID Min 7, Max 20"));
+		len_min = 7;
+		len_max = 20;
+	}
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_SERIAL_NO)
+	{
+		len_min = 7;
+		len_max = 20;
+	}
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_PCBID)
+	{
+		len_min = 7;
+		len_max = 20;
+	}
+
+	m_edtPanelId.GetWindowText(strInputID);
+	if(((strInputID.GetLength() < len_min) || (strInputID.GetLength() > len_max)) && (strInputID != _T("ESC")) )
+	{
+		sdata.Format(_T("<BCR> ID Range Min 7, Max 20"));
+		m_pApp->Gf_ShowMessageBox(sdata);
 		m_edtPanelId.SetWindowText(_T(""));
 		return;
 	}
 	strInputID.Replace(_T("\r"), _T(""));
 	strInputID.Replace(_T("\n"), _T(""));
 
-	m_pApp->Gf_writeLogData(_T("<PID INPUT>"), strInputID.GetBuffer(0));
+	sLog.Format(_T("ID Input Data : %s"), strInputID);
+	m_pApp->Gf_writeLogData(_T("<BCR>"), sLog);
 	wchar_To_char(strInputID.GetBuffer(0), cbuff);
 	len = (int)strlen(cbuff);
 	for(i=0; i<len; i++)
@@ -135,7 +168,7 @@ void CPanelID::OnBnClickedOk()
 
 	if( isDataOK == FALSE )
 	{
-		m_pApp->Gf_ShowMessageBox(_T("<BCR> Incorrected Panel ID"));
+		m_pApp->Gf_ShowMessageBox(_T("<BCR> Incorrected ID data"));
 		m_edtPanelId.SetSel(0, strInputID.GetLength());
 		return;
 	}
@@ -183,17 +216,13 @@ void CPanelID::OnBnClickedOk()
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	lpWorkInfo->m_sPanelID.Empty();
+	lpWorkInfo->m_sSerialNumber.Empty();
+	lpWorkInfo->m_sPcbID.Empty();
 
-	if (strInputID.GetLength() > 15)			// 입력 ID의 길이가 15자리보다 클 경우 Serial Number 로 인식.
-	{
-		lpWorkInfo->m_sPanelID.Empty();
-		lpWorkInfo->m_sSerialNumber = strInputID;
-	}
-	else
-	{
-		lpWorkInfo->m_sPanelID = strInputID;
-		lpWorkInfo->m_sSerialNumber.Empty();
-	}
+	if (lpModelInfo->m_nIdInputType == ID_TYPE_PID)					lpWorkInfo->m_sPanelID = strInputID;
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_SERIAL_NO)		lpWorkInfo->m_sSerialNumber = strInputID;
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_PCBID)			lpWorkInfo->m_sPcbID = strInputID;
 
 	CDialog::OnOK();
 }

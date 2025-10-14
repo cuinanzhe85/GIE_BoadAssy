@@ -25,6 +25,7 @@ protected:
 	LPSYSTEMINFO	lpSystemInfo;
 	LPINSPWORKINFO	lpWorkInfo;
 
+	void Lf_InitValue();
 	void Lf_InitFont();
 	void Lf_InitBrush();
 

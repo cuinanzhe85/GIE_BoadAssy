@@ -494,7 +494,10 @@
 #define IDC_STT_BLU_FREQ                1174
 #define IDC_STT_GRP_POWER_VCOM          1174
 #define IDC_STT_IBL_MEA_TIT             1174
+#define IDC_STT_GRP_PWM_SET2            1174
+#define IDC_STT_GRP_ID_INPUT_TYPE       1174
 #define IDC_STT_TEST_START_DELAY        1175
+#define IDC_CMB_ID_INPUT_TYPE           1175
 #define IDC_STT_FAST_JUDGE              1176
 #define IDC_EDT_GAMMA_CH1               1176
 #define IDC_STT_PINBLOCK_OPEN_CHECK     1176

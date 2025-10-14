@@ -135,6 +135,7 @@ public:
 	void SetPanelID(CString strBuff);
 	void SetBLID(CString strBuff);
 	void SetSerialNumber(CString strBuff);
+	void SetPcbID(CString strBuff);
 	void SetModelName(CString strBuff);
 	void SetPalletID(CString strBuff);
 	void SetPF(CString strBuff);
@@ -220,6 +221,7 @@ protected:
 	CString m_strFrom_Oper;
 	CString m_strBLID;
 	CString m_strSerialNumber;
+	CString m_strPcbID;
 	CString m_strModelName;
 	CString m_strPalletID;
 	CString m_strPF;

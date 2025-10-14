@@ -90,6 +90,7 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_I2C_LEVEL, m_cmbI2cLevel);
 	DDX_Control(pDX, IDC_CMB_CABLE_OPEN, m_cmbCableOpenUse);
 	DDX_Control(pDX, IDC_CMB_SHORT_TEST, m_cmbShortTestUse);
+	DDX_Control(pDX, IDC_CMB_ID_INPUT_TYPE, m_cmbIdInputType);
 	DDX_Control(pDX, IDC_CMB_CLOCK_RISING, m_cmbClockRising);
 	DDX_Control(pDX, IDC_CMB_HSYNC_POLARITY, m_cmbHSyncPolarity);
 	DDX_Control(pDX, IDC_CMB_VSYNC_POLARITY, m_cmbVSyncPolarity);
@@ -284,6 +285,8 @@ void CModelInfo::Lf_initItemValue()
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_PATTERN)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_I2C_OPTION)->m_hWnd, _T(""), _T(""));
 	SetWindowTheme(GetDlgItem(IDC_STT_GRP_PWM_SET)->m_hWnd, _T(""), _T(""));
+	SetWindowTheme(GetDlgItem(IDC_STT_GRP_ID_INPUT_TYPE)->m_hWnd, _T(""), _T(""));
+
 	HICON hIcon;
 	CButton* pBtn;
 	hIcon = AfxGetApp()->LoadIconW(IDI_ICON_ADD);
@@ -329,6 +332,7 @@ void CModelInfo::Lf_initFontSet()
 	GetDlgItem(IDC_STT_GRP_EDID)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_I2C_OPTION)->SetFont(&m_Font[0]);
 	GetDlgItem(IDC_STT_GRP_PWM_SET)->SetFont(&m_Font[0]);
+	GetDlgItem(IDC_STT_GRP_ID_INPUT_TYPE)->SetFont(&m_Font[0]);
 
 	m_Font[1].CreateFont( 17, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _T("Segoe UI Symbol"));
 
@@ -537,6 +541,8 @@ void CModelInfo::Lf_loadModelData()
 	m_cmbCableOpenUse.SetCurSel(lpModelInfo->m_nCableOpenUse);
 
 	m_cmbShortTestUse.SetCurSel(lpModelInfo->m_nShortTestUse);
+
+	m_cmbIdInputType.SetCurSel(lpModelInfo->m_nIdInputType);
 
 	m_cboEdidOnOff.SetCurSel(lpModelInfo->m_nEdidUse);
 
@@ -1252,6 +1258,9 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 
 	lpModelInfo->m_nShortTestUse = m_cmbShortTestUse.GetCurSel();
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("SHORT_TEST_USE"), lpModelInfo->m_nShortTestUse);
+
+	lpModelInfo->m_nIdInputType = m_cmbIdInputType.GetCurSel();
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("ID_INPUT_TYPE"), lpModelInfo->m_nIdInputType);
 
 	m_edtBluMin.GetWindowText(sdata);
 	lpModelInfo->m_nBluMin = _ttoi(sdata);
@@ -2008,6 +2017,7 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_PATTERN)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_I2C_OPTION)
 			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_PWM_SET)
+			|| (pWnd->GetDlgCtrlID() == IDC_STT_GRP_ID_INPUT_TYPE)
 			)
 		{
 			pDC->SetBkColor(COLOR_WHITE);
