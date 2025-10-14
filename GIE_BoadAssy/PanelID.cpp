@@ -120,27 +120,10 @@ void CPanelID::OnBnClickedOk()
 	int i=0,len=0;
 	WORD wPID[20];
 
-	int len_min, len_max;
-	if (lpModelInfo->m_nIdInputType == ID_TYPE_PID)
-	{
-		len_min = 7;
-		len_max = 20;
-	}
-	else if (lpModelInfo->m_nIdInputType == ID_TYPE_SERIAL_NO)
-	{
-		len_min = 7;
-		len_max = 20;
-	}
-	else if (lpModelInfo->m_nIdInputType == ID_TYPE_PCBID)
-	{
-		len_min = 7;
-		len_max = 20;
-	}
-
 	m_edtPanelId.GetWindowText(strInputID);
-	if(((strInputID.GetLength() < len_min) || (strInputID.GetLength() > len_max)) && (strInputID != _T("ESC")) )
+	if(((strInputID.GetLength() < lpModelInfo->m_nIdLengthMin) || (strInputID.GetLength() > lpModelInfo->m_nIdLengthMax)) && (strInputID != _T("ESC")) )
 	{
-		sdata.Format(_T("<BCR> ID Range Min 7, Max 20"));
+		sdata.Format(_T("<BCR> ID Range Min %d, Max %d"), lpModelInfo->m_nIdLengthMin, lpModelInfo->m_nIdLengthMax);
 		m_pApp->Gf_ShowMessageBox(sdata);
 		m_edtPanelId.SetWindowText(_T(""));
 		return;

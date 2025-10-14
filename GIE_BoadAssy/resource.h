@@ -494,16 +494,17 @@
 #define IDC_STT_BLU_FREQ                1174
 #define IDC_STT_GRP_POWER_VCOM          1174
 #define IDC_STT_IBL_MEA_TIT             1174
-#define IDC_STT_GRP_PWM_SET2            1174
 #define IDC_STT_GRP_ID_INPUT_TYPE       1174
 #define IDC_STT_TEST_START_DELAY        1175
 #define IDC_CMB_ID_INPUT_TYPE           1175
 #define IDC_STT_FAST_JUDGE              1176
 #define IDC_EDT_GAMMA_CH1               1176
 #define IDC_STT_PINBLOCK_OPEN_CHECK     1176
+#define IDC_EDT_ID_LENGTH_MIN           1176
 #define IDC_STT_PANELID_NG              1177
 #define IDC_EDT_GAMMA_CH2               1177
 #define IDC_STT_SYSTEM_AUTO_FUSING      1177
+#define IDC_EDT_ID_LENGTH_MAX           1177
 #define IDC_STT_PG_PORT                 1178
 #define IDC_EDT_GAMMA_CH3               1178
 #define IDC_STT_SYSTEM_DEBUG_MLOG       1178
@@ -756,6 +757,7 @@
 #define IDC_STT_DEF_DETAIL              1353
 #define IDC_BTN_DEF_CONFIRM             1354
 #define IDC_BTN_DEF_CANCEL              1355
+#define IDC_STT_ID_LENGTH_UNIT          1355
 #define IDC_BTN_DEF_UNDO                1356
 
 // Next default values for new objects
@@ -764,7 +766,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        200
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1355
+#define _APS_NEXT_CONTROL_VALUE         1356
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

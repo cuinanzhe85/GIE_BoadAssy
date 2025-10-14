@@ -12,7 +12,7 @@
 #define MLOG_MAX_LENGTH					16*1024
 
 /////////////////////////////////////////////////////////////////////////////
-#define DEBUG_UDP_RECEIVE_OK			1
+#define DEBUG_UDP_RECEIVE_OK			0
 #define	DEBUG_GMES_TEST_SERVER			0
 #define DEBUG_PALLET_ARRIVE				0
 #define DEBUG_MES_NOT_USE				0

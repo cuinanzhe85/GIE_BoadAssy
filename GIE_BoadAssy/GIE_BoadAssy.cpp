@@ -613,6 +613,8 @@ void CGIE_BoadAssyApp::Lf_initVariable()
 	lpModelInfo->m_nCableOpenUse = 0;
 	lpModelInfo->m_nShortTestUse = 0;
 	lpModelInfo->m_nIdInputType = 0;
+	lpModelInfo->m_nIdLengthMin = 0;
+	lpModelInfo->m_nIdLengthMax = 0;
 	lpModelInfo->m_nVcomAddr = 0;
 	lpModelInfo->m_nVcomLine = 0;
 	lpModelInfo->m_nVcomMinMaxUse = 0;
@@ -909,8 +911,15 @@ void CGIE_BoadAssyApp::Gf_loadModelData()
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("BLU_MIN"),				&lpModelInfo->m_nBluMin);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("CABLE_OPEN_USE"),		&lpModelInfo->m_nCableOpenUse);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("SHORT_TEST_USE"),		&lpModelInfo->m_nShortTestUse);
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("ID_INPUT_TYPE"),		&lpModelInfo->m_nIdInputType);
-	
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("ID_LENGTH_MIN"),		&sdata);
+	if (sdata.GetLength() == 0)		lpModelInfo->m_nIdLengthMin = 7;
+	else							lpModelInfo->m_nIdLengthMin = _ttoi(sdata);
+	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("ID_LENGTH_MAX"),		&sdata);
+	if (sdata.GetLength() == 0)		lpModelInfo->m_nIdLengthMax = 25;
+	else							lpModelInfo->m_nIdLengthMax = _ttoi(sdata);
+
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VCC"),					&lpModelInfo->m_fVoltVcc);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VDD"),					&lpModelInfo->m_fVoltVdd);
 	Read_ModelFile(modelName,	_T("MODEL_INFO"),	_T("VGH"),					&lpModelInfo->m_fVoltVgh);
@@ -2083,6 +2092,7 @@ Send_RETRY:
 			m_pCimNet->GetFieldData(&strBuff, _T("RTN_PID"));
 			sLog.Format(_T("RTN_PID : %s"), strBuff);
 			Gf_writeLogData(_T("<MES>"), sLog);
+			lpWorkInfo->m_sPanelID.Format(_T("%s"), strBuff);
 
 			m_pCimNet->GetFieldData(&strBuff, _T("TOP_MODEL_NAME"));
 			lpWorkInfo->m_sMesTopModelName.Format(_T("%s"), strBuff);

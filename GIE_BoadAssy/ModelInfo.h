@@ -149,6 +149,8 @@ public:
 	CComboBox m_cmbCableOpenUse;
 	CComboBox m_cmbShortTestUse;
 	CComboBox m_cmbIdInputType;
+	CEdit m_edtIdLengthMin;
+	CEdit m_edtIdLengthMax;
 	CComboBox m_cmbClockDelay;
 	CComboBox m_cmbClockRising;
 	CComboBox m_cmbHSyncPolarity;

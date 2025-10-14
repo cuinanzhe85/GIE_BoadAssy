@@ -72,6 +72,8 @@ typedef struct _ST_MODELSETINFO_{
 	int m_nCableOpenUse;
 	int m_nShortTestUse;
 	int m_nIdInputType;
+	int m_nIdLengthMin;
+	int m_nIdLengthMax;
 	
 	int m_nEdidUse;
 	int m_nEdidAddr;

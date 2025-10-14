@@ -91,6 +91,8 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_CABLE_OPEN, m_cmbCableOpenUse);
 	DDX_Control(pDX, IDC_CMB_SHORT_TEST, m_cmbShortTestUse);
 	DDX_Control(pDX, IDC_CMB_ID_INPUT_TYPE, m_cmbIdInputType);
+	DDX_Control(pDX, IDC_EDT_ID_LENGTH_MIN, m_edtIdLengthMin);
+	DDX_Control(pDX, IDC_EDT_ID_LENGTH_MAX, m_edtIdLengthMax);
 	DDX_Control(pDX, IDC_CMB_CLOCK_RISING, m_cmbClockRising);
 	DDX_Control(pDX, IDC_CMB_HSYNC_POLARITY, m_cmbHSyncPolarity);
 	DDX_Control(pDX, IDC_CMB_VSYNC_POLARITY, m_cmbVSyncPolarity);
@@ -539,19 +541,18 @@ void CModelInfo::Lf_loadModelData()
 	m_edtBluMin.SetWindowText(sdata);
 
 	m_cmbCableOpenUse.SetCurSel(lpModelInfo->m_nCableOpenUse);
-
 	m_cmbShortTestUse.SetCurSel(lpModelInfo->m_nShortTestUse);
 
 	m_cmbIdInputType.SetCurSel(lpModelInfo->m_nIdInputType);
+	sdata.Format(_T("%d"), lpModelInfo->m_nIdLengthMin);
+	m_edtIdLengthMin.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nIdLengthMax);
+	m_edtIdLengthMax.SetWindowText(sdata);
 
 	m_cboEdidOnOff.SetCurSel(lpModelInfo->m_nEdidUse);
-
 	m_cboEdidSize.SetCurSel(lpModelInfo->m_nEdidSize);
-
 	m_cboEdidLine.SetCurSel(lpModelInfo->m_nEdidLine);
-
 	m_cboEepType.SetCurSel(lpModelInfo->m_nEEPRomType);
-
 	m_cboEepAddr.SetCurSel(lpModelInfo->m_nEEPRomAddr);
 
 	sdata.Format(_T("%.3f"), lpModelInfo->m_fVoltVcc);
@@ -1261,6 +1262,14 @@ void CModelInfo::Lf_saveCtrlData(CString modelName)
 
 	lpModelInfo->m_nIdInputType = m_cmbIdInputType.GetCurSel();
 	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("ID_INPUT_TYPE"), lpModelInfo->m_nIdInputType);
+
+	m_edtIdLengthMin.GetWindowText(sdata);
+	lpModelInfo->m_nIdLengthMin = _ttoi(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("ID_LENGTH_MIN"), lpModelInfo->m_nIdLengthMin);
+
+	m_edtIdLengthMax.GetWindowText(sdata);
+	lpModelInfo->m_nIdLengthMax = _ttoi(sdata);
+	Write_ModelFile(modelName, _T("MODEL_INFO"), _T("ID_LENGTH_MAX"), lpModelInfo->m_nIdLengthMax);
 
 	m_edtBluMin.GetWindowText(sdata);
 	lpModelInfo->m_nBluMin = _ttoi(sdata);
@@ -2022,6 +2031,12 @@ HBRUSH CModelInfo::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			pDC->SetBkColor(COLOR_WHITE);
 			pDC->SetTextColor(COLOR_GRAY64);
+			return m_Brush[COLOR_IDX_WHITE];
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_ID_LENGTH_UNIT)
+		{
+			pDC->SetBkColor(COLOR_WHITE);
+			pDC->SetTextColor(COLOR_BLACK);
 			return m_Brush[COLOR_IDX_WHITE];
 		}
 		break;
