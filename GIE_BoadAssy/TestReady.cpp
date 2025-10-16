@@ -483,25 +483,29 @@ BOOL CTestReady::Lf_checkPanelId()
 		}
 	}
 
-	if (lpWorkInfo->m_sReceivePID.GetLength() > 15)
-	{
-		lpWorkInfo->m_sPanelID.Empty();
-		lpWorkInfo->m_sSerialNumber = lpWorkInfo->m_sReceivePID;
-		lpWorkInfo->m_sPcbID.Empty();
-
-		m_pApp->m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
-	}
-	else
+	if(lpModelInfo->m_nIdInputType == ID_TYPE_PID)
 	{
 		lpWorkInfo->m_sPanelID = lpWorkInfo->m_sReceivePID;
 		lpWorkInfo->m_sSerialNumber.Empty();
 		lpWorkInfo->m_sPcbID.Empty();
-
 		m_pApp->m_pCimNet->SetPanelID(lpWorkInfo->m_sPanelID);
+	}
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_SERIAL_NO)
+	{
+		lpWorkInfo->m_sPanelID.Empty();
+		lpWorkInfo->m_sSerialNumber = lpWorkInfo->m_sReceivePID;
+		lpWorkInfo->m_sPcbID.Empty();
+		m_pApp->m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
+	}
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_SERIAL_NO)
+	{
+		lpWorkInfo->m_sPanelID.Empty();
+		lpWorkInfo->m_sSerialNumber.Empty();
+		lpWorkInfo->m_sPcbID = lpWorkInfo->m_sReceivePID;
+		m_pApp->m_pCimNet->SetPcbID(lpWorkInfo->m_sPcbID);
 	}
 
 	GetDlgItem(IDC_STT_PANEL_ID_VALUE)->SetWindowText(lpWorkInfo->m_sReceivePID);
-	m_pApp->Gf_writeLogData(_T("<MES>"), lpWorkInfo->m_sReceivePID);
 	return TRUE;
 }
 

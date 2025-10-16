@@ -867,6 +867,10 @@ void CCimNetCommApi::SetFLDRFileName(CString strBuff)
 void CCimNetCommApi::SetPanelID (CString strBuff)
 {
 	m_strPanelID.Format(_T("%s"), strBuff);
+
+	CString sLog;
+	sLog.Format(_T("MES ID Set (Panel ID) : %s"), strBuff);
+	m_pApp->Gf_writeLogData(_T("<MES>"), sLog);
 }
 
 void CCimNetCommApi::SetBLID (CString strBuff)
@@ -877,11 +881,19 @@ void CCimNetCommApi::SetBLID (CString strBuff)
 void CCimNetCommApi::SetSerialNumber (CString strBuff)
 {
 	m_strSerialNumber.Format(_T("%s"), strBuff);
+
+	CString sLog;
+	sLog.Format(_T("MES ID Set (Serial No) : %s"), strBuff);
+	m_pApp->Gf_writeLogData(_T("<MES>"), sLog);
 }
 
 void CCimNetCommApi::SetPcbID(CString strBuff)
 {
 	m_strPcbID.Format(_T("%s"), strBuff);
+
+	CString sLog;
+	sLog.Format(_T("MES ID Set (PCB ID) : %s"), strBuff);
+	m_pApp->Gf_writeLogData(_T("<MES>"), sLog);
 }
 
 void CCimNetCommApi::SetModelName (CString strBuff)
