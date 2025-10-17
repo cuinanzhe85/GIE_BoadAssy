@@ -369,7 +369,13 @@ void CGIE_BoadAssyApp::Gf_writeSummaryLog()
 	m_summaryInfo.m_sumData[SUM_FW_VER] = sdata;
 	m_summaryInfo.m_sumData[SUM_MODEL] = lpSystemInfo->m_sModelName;
 	m_summaryInfo.m_sumData[SUM_EQP_ID] = lpSystemInfo->m_sMachinName;
-	m_summaryInfo.m_sumData[SUM_PID] = lpWorkInfo->m_sPanelID;
+	if(lpModelInfo->m_nIdInputType == ID_TYPE_PID)
+		m_summaryInfo.m_sumData[SUM_PID] = lpWorkInfo->m_sPanelID;
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_SERIAL_NO)
+		m_summaryInfo.m_sumData[SUM_PID] = lpWorkInfo->m_sSerialNumber;
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_PCBID)
+		m_summaryInfo.m_sumData[SUM_PID] = lpWorkInfo->m_sPcbID;
+
 	if (lpWorkInfo->m_sRwkCD == _T(""))
 	{
 		m_summaryInfo.m_sumData[SUM_PASS_FAIL] = _T("PASS");

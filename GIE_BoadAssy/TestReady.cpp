@@ -497,7 +497,7 @@ BOOL CTestReady::Lf_checkPanelId()
 		lpWorkInfo->m_sPcbID.Empty();
 		m_pApp->m_pCimNet->SetSerialNumber(lpWorkInfo->m_sSerialNumber);
 	}
-	else if (lpModelInfo->m_nIdInputType == ID_TYPE_SERIAL_NO)
+	else if (lpModelInfo->m_nIdInputType == ID_TYPE_PCBID)
 	{
 		lpWorkInfo->m_sPanelID.Empty();
 		lpWorkInfo->m_sSerialNumber.Empty();
